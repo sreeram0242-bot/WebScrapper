@@ -4,7 +4,13 @@ strDir = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScript.
 
 ' Run pythonw.exe completely invisible (0 = hidden window)
 WshShell.CurrentDirectory = strDir
-WshShell.Run "pythonw.exe app.py", 0, False
+Dim pythonExe
+If CreateObject("Scripting.FileSystemObject").FileExists(strDir & "\venv\Scripts\pythonw.exe") Then
+    pythonExe = """" & strDir & "\venv\Scripts\pythonw.exe"""
+Else
+    pythonExe = "pythonw.exe"
+End If
+WshShell.Run pythonExe & " app.py", 0, False
 
 ' Brief pause to allow Flask server to initialize
 WScript.Sleep 1500
