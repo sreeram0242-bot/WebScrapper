@@ -163,7 +163,8 @@ def start_scrape():
     except (ValueError, TypeError):
         max_results = None
 
-    require_phone = bool(data.get("require_phone", True))
+    require_phone = bool(data.get("require_phone", False))
+    district_deep = bool(data.get("district_deep", True))
 
     # Validation
     if mode == "query" and not query:
@@ -194,7 +195,8 @@ def start_scrape():
         state.start_timestamp = time.time()
         state.duration = 0
 
-    state.add_log(f"Starting Ultra-Fast Search for: '{query or mode.upper()}' (Limit: {max_results or 'Unlimited'})", "INFO")
+    mode_label = f"District Deep Search for: '{query}'" if (mode == "query" and district_deep) else f"Search for: '{query or mode.upper()}'"
+    state.add_log(f"Starting {mode_label} (Limit: {max_results or 'Unlimited'})", "INFO")
 
     # Callbacks
     def handle_log(msg: str, lvl: str = "INFO"):
@@ -214,9 +216,11 @@ def start_scrape():
             state.status = res.get("status", "completed")
             state.phase = "Finished" if state.status == "completed" else "Stopped"
             state.duration = res.get("duration", 0)
+            details_base = os.path.basename(res["details_file"]) if res.get("details_file") else None
             state.files = {
                 "links": os.path.basename(res["links_file"]) if res.get("links_file") else None,
-                "details": os.path.basename(res["details_file"]) if res.get("details_file") else None,
+                "details": details_base,
+                "download_url": f"/api/download/{details_base}" if details_base else None,
             }
         state.broadcast("completed", state.get_snapshot())
 
@@ -239,6 +243,7 @@ def start_scrape():
         links_only=links_only,
         max_results=max_results,
         require_phone=require_phone,
+        district_deep=district_deep,
         on_log=handle_log,
         on_phase=handle_phase,
         on_progress=handle_progress,
@@ -359,6 +364,27 @@ def get_history():
                     "is_links": "_links.csv" in f,
                 })
     return jsonify({"files": files})
+
+
+@app.route("/api/expand-preview", methods=["GET"])
+def expand_preview():
+    """Preview sub-area expansion for a given search query."""
+    q = request.args.get("query", "").strip()
+    if not q:
+        return jsonify({"count": 0, "localities": [], "location": "", "biz_type": ""})
+    try:
+        from district_expander import expand_district_query, parse_query_location
+        biz_type, loc_name = parse_query_location(q)
+        expanded = expand_district_query(q)
+        return jsonify({
+            "query": q,
+            "biz_type": biz_type,
+            "location": loc_name,
+            "count": len(expanded),
+            "localities": expanded
+        })
+    except Exception as e:
+        return jsonify({"error": str(e), "count": 1, "localities": [q]}), 500
 
 
 @app.route("/api/download/<filename>")

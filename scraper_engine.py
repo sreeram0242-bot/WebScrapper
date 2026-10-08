@@ -75,7 +75,8 @@ class ScraperEngine:
         headless: bool = True,
         links_only: bool = False,
         max_results: Optional[int] = 50,
-        require_phone: bool = True,
+        require_phone: bool = False,
+        district_deep: bool = True,
         on_log: Optional[Callable[[str, str], None]] = None,
         on_phase: Optional[Callable[[str], None]] = None,
         on_progress: Optional[Callable[[Dict[str, Any]], None]] = None,
@@ -94,6 +95,7 @@ class ScraperEngine:
         self.links_only = links_only
         self.max_results = max_results if (max_results and max_results > 0) else None
         self.require_phone = require_phone
+        self.district_deep = district_deep
 
         # Callbacks
         self.on_log = on_log
@@ -206,7 +208,7 @@ class ScraperEngine:
         return driver
 
     def _enrich_single_http(self, item: Dict[str, Any]) -> Dict[str, Any]:
-        """Fetch missing phone number or website via 100ms lightweight background HTTP request."""
+        """Fetch missing phone number or website via lightweight background HTTP request."""
         if not item or not item.get("link"):
             return item
         if item.get("phone") and item.get("website"):
@@ -224,20 +226,47 @@ class ScraperEngine:
             with urllib.request.urlopen(req, timeout=6) as resp:
                 html = resp.read().decode("utf-8", errors="ignore")
 
-            m_blob = re.search(r'window\.APP_INITIALIZATION_STATE\s*=\s*(\[.*?\]);', html, re.DOTALL)
-            if m_blob:
-                blob = m_blob.group(1)
-                if not item.get("phone"):
+            # 1. Search for telephone property in JSON-LD / schema or tel: href
+            if not item.get("phone"):
+                tel_links = re.findall(r'href=["\']tel:([^"\']+)["\']', html)
+                for tl in tel_links:
+                    cleaned_tl = clean_text(tl)
+                    if is_valid_phone(cleaned_tl):
+                        item["phone"] = cleaned_tl
+                        break
+
+            # 2. Search for schema telephone
+            if not item.get("phone"):
+                schema_phones = re.findall(r'["\']telephone["\']\s*:\s*["\']([^"\']+)["\']', html)
+                for sp in schema_phones:
+                    cleaned_sp = clean_text(sp)
+                    if is_valid_phone(cleaned_sp):
+                        item["phone"] = cleaned_sp
+                        break
+
+            # 3. Search for window.APP_INITIALIZATION_STATE blob
+            if not item.get("phone"):
+                m_blob = re.search(r'window\.APP_INITIALIZATION_STATE\s*=\s*(\[.*?\]);', html, re.DOTALL)
+                if m_blob:
+                    blob = m_blob.group(1)
                     phones = re.findall(r'"(\+?\d{1,3}[\s-]?(?:\(?\d{2,5}\)?[\s-]?)?\d{3,5}[\s-]?\d{3,5})"', blob)
-                    valid_phones = [p for p in phones if len(re.sub(r'\D', '', p)) >= 10 and not p.startswith(('2025', '2026'))]
+                    valid_phones = [p for p in phones if len(re.sub(r'\D', '', p)) >= 10 and not p.startswith(('2024', '2025', '2026', '1920', '1080'))]
                     if valid_phones:
                         item["phone"] = clean_text(valid_phones[0])
 
-                if not item.get("website"):
-                    urls = re.findall(r'"(https?://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}[^"]*)"', blob)
-                    biz_urls = [u for u in urls if not any(x in u for x in ['google.com', 'gstatic.com', 'schema.org', 'ggpht.com', 'w3.org'])]
-                    if biz_urls:
-                        item["website"] = biz_urls[0]
+            # 4. Search for general Indian phone numbers (10 digits starting with 6-9, or landline with 0)
+            if not item.get("phone"):
+                raw_matches = re.findall(r'(?:(?:\+91|0)[\s-]?)?[6-9]\d{4}[\s-]?\d{5}', html)
+                valid_raw = [p for p in raw_matches if not any(x in p for x in ['2024', '2025', '2026', '1920', '1080', '0000'])]
+                if valid_raw:
+                    item["phone"] = clean_text(valid_raw[0])
+
+            # Website extraction
+            if not item.get("website"):
+                urls = re.findall(r'"(https?://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}[^"]*)"', html)
+                biz_urls = [u for u in urls if not any(x in u for x in ['google.', 'gstatic.', 'schema.org', 'ggpht.', 'w3.org', 'facebook.com/tr', 'googletagmanager'])]
+                if biz_urls:
+                    item["website"] = biz_urls[0]
         except Exception:
             pass
 
@@ -345,17 +374,14 @@ class ScraperEngine:
                         "link": clink,
                     }
 
-                    # Filter: If phone is required, keep if phone found, or mark for micro-enrichment
+                    # Check phone and stream immediately to UI
                     has_phone = is_valid_phone(item_data["phone"])
-                    if not self.require_phone or has_phone:
-                        self.scraped_items.append(item_data)
-                        self.log(f"+ Found: {item_data['name']} (Phone: {item_data['phone'] or 'N/A'})", "SUCCESS")
-                        if self.on_item_scraped:
-                            self.on_item_scraped(item_data)
-                    else:
-                        # Queue for quick parallel enrichment
+                    if not has_phone:
                         item_data["_needs_enrich"] = True
-                        self.scraped_items.append(item_data)
+                    self.scraped_items.append(item_data)
+                    self.log(f"+ Found: {item_data['name']} (Phone: {item_data['phone'] or 'Pending scan'})", "SUCCESS")
+                    if self.on_item_scraped:
+                        self.on_item_scraped(item_data)
 
                     if self.details_file and len(self.scraped_items) % 3 == 0:
                         clean_export = [dict(x) for x in self.scraped_items]
@@ -480,9 +506,35 @@ class ScraperEngine:
                 self._scrape_feed(self.url.strip())
 
             elif self.query:
-                clean_q = self.query.strip().replace(" ", "+")
-                q_url = f"https://www.google.com/maps/search/{clean_q}/"
-                self._scrape_feed(q_url)
+                sub_queries = [self.query]
+                if self.district_deep:
+                    try:
+                        from district_expander import expand_district_query, parse_query_location
+                        expanded = expand_district_query(self.query)
+                        if len(expanded) > 1:
+                            sub_queries = expanded
+                            _, loc_name = parse_query_location(self.query)
+                            self.log(f"District Deep Search activated! Covering all {len(sub_queries)} localities in {loc_name.title() or self.query}.", "INFO")
+                    except Exception as e:
+                        self.log(f"District expansion note: {e}", "WARN")
+
+                if len(sub_queries) > 1:
+                    for s_idx, sq in enumerate(sub_queries, 1):
+                        if self.is_stopped:
+                            break
+                        self.log(f"[{s_idx}/{len(sub_queries)}] Scanning locality: '{sq}'...", "INFO")
+                        if self.on_phase:
+                            self.on_phase(f"Area {s_idx}/{len(sub_queries)}: {sq}")
+                        clean_q = sq.strip().replace(" ", "+")
+                        q_url = f"https://www.google.com/maps/search/{clean_q}/"
+                        self._scrape_feed(q_url)
+                        if self.max_results and len(self.scraped_items) >= self.max_results:
+                            self.log(f"Reached limit of {self.max_results} places across district.", "SUCCESS")
+                            break
+                else:
+                    clean_q = self.query.strip().replace(" ", "+")
+                    q_url = f"https://www.google.com/maps/search/{clean_q}/"
+                    self._scrape_feed(q_url)
 
             # Close browser immediately after feed scroll to free all RAM
             try:
@@ -511,27 +563,32 @@ class ScraperEngine:
                         except Exception:
                             pass
 
-            # Filter items if require_phone is True
+            # Finalize items - NEVER discard discovered leads!
             final_items = []
             for it in self.scraped_items:
                 it.pop("_needs_enrich", None)
-                if self.require_phone:
-                    if is_valid_phone(it.get("phone")):
-                        final_items.append(it)
-                else:
-                    if it.get("name"):
-                        final_items.append(it)
+                if it.get("name"):
+                    it["has_phone"] = "Yes" if is_valid_phone(it.get("phone")) else "No"
+                    final_items.append(it)
+
+            # If user explicitly selected require_phone AND we have items with phone, sort or prioritize them
+            if self.require_phone:
+                with_phones = [x for x in final_items if x.get("has_phone") == "Yes"]
+                if with_phones:
+                    # Keep phone leads first, followed by others
+                    without_phones = [x for x in final_items if x.get("has_phone") != "Yes"]
+                    final_items = with_phones + without_phones
 
             self.scraped_items = final_items
 
-            # Save clean outputs
+            # Save clean outputs (always save if we found places)
             if self.links:
-                pd.DataFrame({"link": self.links}).to_csv(self.links_file, index=False)
+                pd.DataFrame({"link": self.links}).to_csv(self.links_file, index=False, encoding="utf-8-sig")
             if self.scraped_items:
-                pd.DataFrame(self.scraped_items).to_csv(self.details_file, index=False, encoding="utf-8")
+                pd.DataFrame(self.scraped_items).to_csv(self.details_file, index=False, encoding="utf-8-sig")
 
             duration = round(time.time() - start_time, 1)
-            self.log(f"Scraping Completed in {duration}s! Extracted {len(self.scraped_items)} verified leads.", "SUCCESS")
+            self.log(f"Scraping Completed in {duration}s! Extracted {len(self.scraped_items)} leads.", "SUCCESS")
 
             summary = {
                 "status": "completed",

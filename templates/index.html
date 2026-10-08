@@ -3,142 +3,164 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fast Map Leads — 1-Click Google Maps Scraper</title>
+  <title>Fast Map Leads — Glassmorphic Google Maps Scraper</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: linear-gradient(135deg, #f0f7ff 0%, #eef2ff 50%, #f5f3ff 100%);
-      --glass-bg: rgba(255, 255, 255, 0.85);
-      --glass-card-bg: rgba(255, 255, 255, 0.92);
-      --glass-border: rgba(226, 232, 240, 0.9);
-      --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
-      --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.8);
-      --shadow-lg: 0 20px 40px -15px rgba(37, 99, 235, 0.12);
+      /* Pure White Canvas */
+      --canvas-bg: #ffffff;
+      
+      /* Pure Glassmorphic Tokens */
+      --glass-surface: rgba(255, 255, 255, 0.78);
+      --glass-surface-hover: rgba(255, 255, 255, 0.92);
+      --glass-surface-subtle: rgba(248, 250, 252, 0.7);
+      --glass-border: rgba(226, 232, 240, 0.85);
+      --glass-border-focus: rgba(37, 99, 235, 0.45);
+      --glass-blur: blur(20px) saturate(180%);
+      
+      /* Glass Shadows */
+      --glass-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.04), 0 2px 8px -2px rgba(15, 23, 42, 0.02);
+      --glass-shadow-hover: 0 12px 36px 0 rgba(15, 23, 42, 0.07), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+      --glass-bevel: inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
 
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
+      /* Accent & Typography */
+      --primary: #0f172a;
+      --primary-accent: #2563eb;
+      --primary-accent-hover: #1d4ed8;
       --success: #16a34a;
-      --success-hover: #15803d;
+      --success-light: #f0fdf4;
+      --success-border: #bbf7d0;
       --danger: #dc2626;
-      --danger-hover: #b91c1c;
-
+      --danger-light: #fef2f2;
+      --danger-border: #fecaca;
+      
       --text-main: #0f172a;
+      --text-body: #334155;
       --text-muted: #64748b;
-      --radius: 16px;
+      --text-light: #94a3b8;
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-font-smoothing: antialiased;
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--canvas-bg);
       color: var(--text-main);
       min-height: 100vh;
       line-height: 1.5;
       padding-bottom: 60px;
     }
 
-    /* Ambient glow elements */
-    .glow-blob {
+    /* Ambient frosted glass canvas backdrop (Subtle, pure white base) */
+    .glass-backdrop {
       position: fixed;
-      border-radius: 50%;
-      filter: blur(100px);
-      z-index: 0;
+      inset: 0;
       pointer-events: none;
-      opacity: 0.5;
+      z-index: 0;
+      background: radial-gradient(circle at 10% 10%, rgba(241, 245, 249, 0.8) 0%, transparent 40%),
+                  radial-gradient(circle at 90% 90%, rgba(248, 250, 252, 0.8) 0%, transparent 40%);
     }
-    .blob-1 { width: 500px; height: 500px; background: #bfdbfe; top: -100px; left: -100px; }
-    .blob-2 { width: 500px; height: 500px; background: #bbf7d0; bottom: -100px; right: -100px; }
 
     .app-shell {
       position: relative;
       z-index: 1;
-      max-width: 1400px;
+      max-width: 1420px;
       margin: 0 auto;
-      padding: 20px 20px 40px 20px;
+      padding: 18px 24px 40px 24px;
     }
 
-    /* Header */
-    .top-header {
+    /* Top Navigation Header (Frosted Glass) */
+    .glass-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 24px;
-      background: var(--glass-card-bg);
-      backdrop-filter: blur(20px);
+      padding: 12px 20px;
+      background: var(--glass-surface);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
       border: 1px solid var(--glass-border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--glass-shadow), var(--glass-bevel);
+      margin-bottom: 20px;
       flex-wrap: wrap;
       gap: 12px;
     }
 
-    .brand-title {
+    .brand-section {
       display: flex;
       align-items: center;
       gap: 12px;
     }
-    .brand-icon {
-      width: 46px;
-      height: 46px;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
-      border-radius: 14px;
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #ffffff;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
-      box-shadow: 0 8px 16px rgba(37, 99, 235, 0.25);
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
     }
-    .brand-text h1 {
-      font-size: 1.25rem;
+    .brand-title h1 {
+      font-size: 1.05rem;
       font-weight: 800;
+      letter-spacing: -0.02em;
       color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 8px;
     }
     .brand-badge {
-      font-size: 0.68rem;
-      font-weight: 800;
-      background: #dcfce7;
-      color: #15803d;
-      padding: 2px 8px;
-      border-radius: 12px;
-      border: 1px solid #bbf7d0;
+      font-size: 0.65rem;
+      font-weight: 700;
+      background: #f1f5f9;
+      color: #475569;
+      padding: 2px 7px;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
     .brand-sub {
-      font-size: 0.8rem;
+      font-size: 0.74rem;
       color: var(--text-muted);
       font-weight: 500;
     }
 
-    .header-actions {
+    .header-controls {
       display: flex;
       align-items: center;
       gap: 10px;
     }
     .status-pill {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 7px 14px;
-      background: white;
+      gap: 7px;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.9);
       border: 1px solid var(--glass-border);
-      border-radius: 30px;
-      font-size: 0.82rem;
-      font-weight: 700;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-body);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
     .status-dot {
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: #10b981;
     }
@@ -152,758 +174,966 @@
       100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
     }
 
-    .btn-header-action {
-      display: flex;
+    /* COMPACT, SLEEK BUTTON SYSTEM (No big clumsy bricks) */
+    .btn-compact {
+      display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
-      padding: 8px 14px;
-      background: white;
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
+      height: 38px;
+      padding: 0 16px;
       font-size: 0.82rem;
       font-weight: 600;
-      color: var(--text-main);
+      letter-spacing: 0.01em;
+      border-radius: var(--radius-sm);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid transparent;
+      user-select: none;
+      white-space: nowrap;
     }
-    .btn-header-action:hover {
-      background: #f8fafc;
+    .btn-compact:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .btn-primary-glass {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    .btn-primary-glass:hover:not(:disabled) {
+      background: linear-gradient(135deg, #1e293b, #334155);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.16);
+    }
+
+    .btn-emerald-glass {
+      background: linear-gradient(135deg, #15803d, #166534);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.18);
+    }
+    .btn-emerald-glass:hover:not(:disabled) {
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.24);
+    }
+
+    .btn-outline-glass {
+      background: var(--glass-surface);
+      color: var(--text-body);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .btn-outline-glass:hover:not(:disabled) {
+      background: #ffffff;
       border-color: #cbd5e1;
+      color: var(--text-main);
+      transform: translateY(-1px);
+      box-shadow: var(--glass-shadow);
+    }
+
+    .btn-danger-glass {
+      background: var(--danger-light);
+      color: var(--danger);
+      border: 1px solid var(--danger-border);
+    }
+    .btn-danger-glass:hover:not(:disabled) {
+      background: #fee2e2;
       transform: translateY(-1px);
     }
 
-    /* Main Grid */
-    .main-grid {
+    .btn-subtle-sm {
+      height: 30px;
+      padding: 0 10px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      border-radius: 6px;
+      background: rgba(248, 250, 252, 0.85);
+      border: 1px solid #e2e8f0;
+      color: #475569;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s;
+    }
+    .btn-subtle-sm:hover:not(:disabled) {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      color: var(--text-main);
+    }
+
+    /* Main Grid Layout */
+    .main-layout {
       display: grid;
-      grid-template-columns: 460px 1fr;
-      gap: 24px;
+      grid-template-columns: 430px 1fr;
+      gap: 20px;
       align-items: start;
     }
     @media (max-width: 1024px) {
-      .main-grid {
+      .main-layout {
         grid-template-columns: 1fr;
       }
     }
 
     /* Glass Cards */
-    .card {
-      background: var(--glass-card-bg);
-      backdrop-filter: blur(24px);
+    .glass-card {
+      background: var(--glass-surface);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
       border: 1px solid var(--glass-border);
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: var(--shadow-md);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--glass-shadow), var(--glass-bevel);
     }
 
-    /* Step Headers */
-    .step-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .step-number {
-      width: 28px;
-      height: 28px;
-      background: #2563eb;
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-      font-weight: 800;
-    }
-    .step-title {
-      font-size: 1rem;
-      font-weight: 800;
+    .section-title {
+      font-size: 0.92rem;
+      font-weight: 700;
       color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .section-title svg {
+      color: var(--primary-accent);
     }
 
-    /* Big Search Input */
-    .search-box-wrapper {
+    /* Search Box */
+    .search-input-container {
       position: relative;
       margin-bottom: 12px;
     }
-    .search-icon {
+    .search-input-icon {
       position: absolute;
-      left: 16px;
+      left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 1.25rem;
-      color: #94a3b8;
+      color: var(--text-light);
+      pointer-events: none;
     }
-    .big-search-input {
+    .glass-input {
       width: 100%;
-      padding: 16px 16px 16px 50px;
-      font-size: 1.05rem;
+      height: 44px;
+      padding: 0 14px 0 42px;
+      font-size: 0.92rem;
       font-weight: 600;
-      border: 2px solid #cbd5e1;
-      border-radius: 14px;
-      outline: none;
-      background: white;
       color: var(--text-main);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      outline: none;
       transition: all 0.2s;
     }
-    .big-search-input:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+    .glass-input:focus {
+      background: #ffffff;
+      border-color: var(--primary-accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
 
-    /* 1-Click Suggestions */
-    .suggestion-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 24px;
+    /* District Deep Search Glass Card */
+    .district-deep-card {
+      background: rgba(240, 249, 255, 0.65);
+      border: 1px solid rgba(186, 230, 253, 0.8);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      transition: all 0.2s;
     }
-    .chip {
-      background: white;
-      border: 1.5px solid #e2e8f0;
-      padding: 6px 12px;
-      border-radius: 30px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: #334155;
-      cursor: pointer;
-      transition: all 0.15s;
+    .district-deep-header {
       display: flex;
       align-items: center;
-      gap: 5px;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
     }
-    .chip:hover {
+    .district-deep-info {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .district-deep-info svg {
+      color: #0284c7;
+      flex-shrink: 0;
+    }
+    .district-deep-text strong {
+      font-size: 0.82rem;
+      color: #0369a1;
+      display: block;
+    }
+    .district-deep-text span {
+      font-size: 0.72rem;
+      color: #0c4a6e;
+    }
+    .switch-toggle {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+    .switch-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #cbd5e1;
+      transition: .25s;
+      border-radius: 22px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .25s;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    input:checked + .slider {
+      background-color: #0284c7;
+    }
+    input:checked + .slider:before {
+      transform: translateX(16px);
+    }
+
+    /* Dynamic Sub-Area Preview Chips */
+    .district-preview-box {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(186, 230, 253, 0.9);
+      display: none;
+    }
+    .district-preview-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #0284c7;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .district-chips-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      max-height: 84px;
+      overflow-y: auto;
+    }
+    .area-chip {
+      font-size: 0.68rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(186, 230, 253, 0.9);
+      color: #0369a1;
+      padding: 2px 7px;
+      border-radius: 12px;
+    }
+
+    /* Popular Quick Chips */
+    .quick-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .quick-chip {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--glass-border);
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--text-body);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+    .quick-chip:hover {
       background: #eff6ff;
-      border-color: #93c5fd;
+      border-color: #bfdbfe;
       color: #1d4ed8;
       transform: translateY(-1px);
     }
 
-    /* Leads Amount Selector */
-    .limit-options {
+    /* Limit Selector Grid */
+    .limit-selector-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 24px;
+      gap: 6px;
+      margin-bottom: 16px;
     }
-    .limit-btn {
-      padding: 12px 6px;
-      background: white;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      font-size: 0.85rem;
+    .limit-pill {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
       font-weight: 700;
-      color: #475569;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .limit-pill.active {
+      background: #eff6ff;
+      border-color: #2563eb;
+      color: #1d4ed8;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+    .limit-pill:hover:not(.active) {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    /* Form Actions Row */
+    .form-actions-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .form-actions-row button {
+      flex: 1;
+    }
+
+    /* Advanced Section */
+    .advanced-toggle {
+      font-size: 0.74rem;
+      color: var(--text-muted);
       cursor: pointer;
       text-align: center;
-      transition: all 0.2s;
-    }
-    .limit-btn.active {
-      border-color: #2563eb;
-      background: #eff6ff;
-      color: #1d4ed8;
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-    }
-    .limit-btn:hover:not(.active) {
-      border-color: #cbd5e1;
-      background: #f8fafc;
-    }
-
-    /* Phone Filter Toggle */
-    .filter-card {
-      background: #f0fdf4;
-      border: 1.5px solid #bbf7d0;
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 24px;
+      margin-top: 10px;
+      user-select: none;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
+      justify-content: center;
+      gap: 4px;
     }
-    .filter-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .advanced-toggle:hover {
+      color: var(--primary-accent);
     }
-    .filter-icon {
-      font-size: 1.3rem;
-    }
-    .filter-text strong {
-      font-size: 0.88rem;
-      color: #15803d;
-      display: block;
-    }
-    .filter-text span {
-      font-size: 0.74rem;
-      color: #166534;
-    }
-    .filter-checkbox {
-      width: 22px;
-      height: 22px;
-      accent-color: #16a34a;
-      cursor: pointer;
+    .advanced-body {
+      display: none;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--glass-border);
     }
 
-    /* Start / Stop CTA Buttons */
-    .cta-button-group {
-      display: flex;
-      flex-direction: column;
+    /* RIGHT COLUMN: Live Stats & Table */
+    .stats-trio {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 12px;
       margin-bottom: 16px;
     }
-
-    .btn-start {
-      width: 100%;
-      padding: 18px 24px;
-      background: linear-gradient(135deg, #16a34a, #15803d);
-      color: white;
-      border: none;
-      border-radius: 16px;
-      font-size: 1.15rem;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      box-shadow: 0 10px 25px rgba(22, 163, 74, 0.35);
-      transition: all 0.2s;
-    }
-    .btn-start:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 30px rgba(22, 163, 74, 0.45);
-      background: linear-gradient(135deg, #15803d, #166534);
-    }
-    .btn-start:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .btn-stop {
-      width: 100%;
-      padding: 16px 24px;
-      background: #fee2e2;
-      color: #dc2626;
-      border: 2px solid #fecaca;
-      border-radius: 16px;
-      font-size: 1rem;
-      font-weight: 800;
-      cursor: pointer;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.2s;
-    }
-    .btn-stop:hover:not(:disabled) {
-      background: #fecaca;
-    }
-
-    /* Advanced Section Trigger */
-    .advanced-trigger {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      cursor: pointer;
-      text-align: center;
-      margin-top: 8px;
-      user-select: none;
-    }
-    .advanced-trigger:hover {
-      color: #2563eb;
-    }
-    .advanced-content {
-      display: none;
-      margin-top: 14px;
-      padding-top: 14px;
-      border-top: 1px dashed #cbd5e1;
-    }
-
-    /* RIGHT: Live Results & Hero Stats */
-    .hero-stats-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 20px;
-    }
-    @media (max-width: 640px) {
-      .hero-stats-row {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .hero-stat-card {
-      background: white;
+    .stat-glass-card {
+      background: var(--glass-surface);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
       border: 1px solid var(--glass-border);
-      border-radius: var(--radius);
-      padding: 18px 20px;
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
       display: flex;
       align-items: center;
-      gap: 14px;
-      box-shadow: var(--shadow-sm);
+      gap: 12px;
+      box-shadow: var(--glass-shadow), var(--glass-bevel);
     }
-    .hero-stat-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+    .stat-icon-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      flex-shrink: 0;
     }
-    .hero-stat-icon.green { background: #dcfce7; color: #16a34a; }
-    .hero-stat-icon.blue { background: #dbeafe; color: #2563eb; }
-    .hero-stat-icon.purple { background: #f3e8ff; color: #9333ea; }
-    .hero-stat-number {
-      font-size: 1.5rem;
-      font-weight: 900;
+    .stat-icon-wrap.emerald { background: #dcfce7; color: #15803d; }
+    .stat-icon-wrap.blue { background: #dbeafe; color: #1d4ed8; }
+    .stat-icon-wrap.purple { background: #ede9fe; color: #6d28d9; }
+    .stat-val {
+      font-size: 1.25rem;
+      font-weight: 800;
       color: var(--text-main);
       line-height: 1.1;
     }
-    .hero-stat-label {
-      font-size: 0.78rem;
-      color: var(--text-muted);
+    .stat-lbl {
+      font-size: 0.72rem;
       font-weight: 600;
+      color: var(--text-muted);
     }
 
-    /* Big Action Buttons for Results */
-    .export-actions-bar {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
+    /* COMPLETION & EXPORT BANNER */
+    .completion-banner {
+      background: linear-gradient(135deg, rgba(240, 253, 244, 0.9), rgba(220, 252, 231, 0.8));
+      border: 1px solid #86efac;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      box-shadow: 0 4px 16px rgba(22, 163, 74, 0.08);
+      animation: fadeInDown 0.3s ease;
     }
-    .btn-export-excel {
-      flex: 1;
-      min-width: 220px;
-      padding: 16px 20px;
-      background: #16a34a;
-      color: white;
-      border: none;
-      border-radius: 14px;
-      font-size: 1rem;
-      font-weight: 800;
-      cursor: pointer;
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .banner-text strong {
+      font-size: 0.88rem;
+      color: #14532d;
+      display: block;
+    }
+    .banner-text span {
+      font-size: 0.76rem;
+      color: #166534;
+    }
+    .banner-buttons {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      box-shadow: 0 8px 20px rgba(22, 163, 74, 0.25);
-      transition: all 0.2s;
-    }
-    .btn-export-excel:hover:not(:disabled) {
-      background: #15803d;
-      transform: translateY(-1px);
-    }
-    .btn-export-excel:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+      gap: 8px;
     }
 
-    .btn-copy-phones {
-      flex: 1;
-      min-width: 220px;
-      padding: 16px 20px;
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 14px;
-      font-size: 1rem;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
-      transition: all 0.2s;
-    }
-    .btn-copy-phones:hover:not(:disabled) {
-      background: #1d4ed8;
-      transform: translateY(-1px);
-    }
-    .btn-copy-phones:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    /* Live Table Card */
-    .table-container {
-      background: white;
+    /* Table Glass Card */
+    .table-glass-card {
+      background: var(--glass-surface);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
       border: 1px solid var(--glass-border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-    }
-    .table-header-row {
+      border-radius: var(--radius-lg);
       padding: 16px 20px;
-      border-bottom: 1px solid #e2e8f0;
+      box-shadow: var(--glass-shadow), var(--glass-bevel);
+    }
+
+    .table-toolbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 10px;
+      margin-bottom: 14px;
     }
-    .table-title {
-      font-size: 0.95rem;
-      font-weight: 800;
+    .table-tabs {
       display: flex;
       align-items: center;
-      gap: 8px;
+      background: rgba(241, 245, 249, 0.85);
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
     }
-    .table-search-box {
-      padding: 8px 14px;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 10px;
-      font-size: 0.82rem;
-      outline: none;
-      width: 220px;
+    .tab-btn {
+      padding: 5px 12px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tab-btn.active {
+      background: #ffffff;
+      color: var(--text-main);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
 
-    .leads-table-scroll {
+    .table-filter-wrap {
+      position: relative;
+    }
+    .table-filter-input {
+      height: 32px;
+      padding: 0 10px 0 28px;
+      font-size: 0.76rem;
+      border: 1px solid var(--glass-border);
+      border-radius: 6px;
+      outline: none;
+      background: rgba(255, 255, 255, 0.9);
+      width: 180px;
+      transition: all 0.2s;
+    }
+    .table-filter-input:focus {
+      width: 220px;
+      border-color: var(--primary-accent);
+      background: #ffffff;
+    }
+    .table-filter-icon {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+    }
+
+    /* Leads Table */
+    .table-scroll-wrap {
       max-height: 480px;
       overflow-y: auto;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: var(--radius-sm);
     }
     table {
       width: 100%;
       border-collapse: collapse;
+      font-size: 0.78rem;
       text-align: left;
     }
     thead {
       position: sticky;
       top: 0;
-      background: #f8fafc;
+      background: rgba(248, 250, 252, 0.95);
+      backdrop-filter: blur(8px);
       z-index: 2;
-    }
-    th {
-      padding: 12px 16px;
-      font-size: 0.74rem;
-      font-weight: 700;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
       border-bottom: 1px solid #e2e8f0;
     }
+    th {
+      padding: 10px 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
     td {
-      padding: 14px 16px;
-      font-size: 0.85rem;
-      border-bottom: 1px solid #f1f5f9;
-      vertical-align: middle;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(241, 245, 249, 0.85);
+      color: var(--text-body);
     }
     tr:hover td {
-      background: #f8fafc;
+      background: rgba(248, 250, 252, 0.6);
     }
 
-    .lead-name {
+    .lead-title {
       font-weight: 700;
       color: var(--text-main);
-      font-size: 0.9rem;
     }
-    .lead-phone {
-      font-weight: 800;
-      color: #15803d;
-      font-size: 0.92rem;
+    .lead-phone-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      background: #f0fdf4;
-      padding: 4px 10px;
-      border-radius: 8px;
-      border: 1px solid #bbf7d0;
-    }
-    .btn-copy-mini {
-      background: white;
-      border: 1px solid #cbd5e1;
+      gap: 5px;
+      background: var(--success-light);
+      border: 1px solid var(--success-border);
+      color: #15803d;
+      padding: 3px 8px;
       border-radius: 6px;
-      padding: 2px 6px;
-      cursor: pointer;
-      font-size: 0.7rem;
-      color: #475569;
+      font-weight: 700;
+      font-size: 0.78rem;
     }
-    .btn-copy-mini:hover {
-      background: #e2e8f0;
+    .lead-rating-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      color: #b45309;
+      font-weight: 700;
+    }
+    .map-link-btn {
+      color: var(--primary-accent);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .map-link-btn:hover {
+      text-decoration: underline;
     }
 
-    /* Live Friendly Status Stream */
-    .status-stream-box {
-      margin-top: 20px;
-      background: #0f172a;
-      border-radius: 14px;
-      padding: 16px 20px;
-      color: #e2e8f0;
-      font-size: 0.82rem;
-      font-family: monospace;
-      max-height: 120px;
+    /* Live Activity Log Drawer (Compact) */
+    .stream-log-box {
+      margin-top: 14px;
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      color: #cbd5e1;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      max-height: 80px;
       overflow-y: auto;
     }
-    .log-entry {
-      margin-bottom: 4px;
+    .log-line {
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .log-line.SUCCESS { color: #4ade80; }
+    .log-line.WARN { color: #facc15; }
+    .log-line.ERROR { color: #f87171; }
+
+    /* Saved Files Modal (Glass) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.35);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-glass-sheet {
+      background: #ffffff;
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 760px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+      overflow: hidden;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid #e2e8f0;
+      background: rgba(248, 250, 252, 0.7);
+    }
+    .modal-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 8px;
     }
-    .log-entry.SUCCESS { color: #4ade80; }
-    .log-entry.WARN { color: #facc15; }
-    .log-entry.ERROR { color: #f87171; }
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      border-radius: 6px;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-close-btn:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+    .modal-body {
+      padding: 16px 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
 
-    /* Toast */
-    .toast-container {
+    /* Toast Notification */
+    .toast-tray {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 9999;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10000;
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
-    .toast {
-      background: #0f172a;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 12px;
-      font-size: 0.88rem;
+    .glass-toast {
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(12px);
+      color: #ffffff;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
       font-weight: 600;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.3s;
     }
   </style>
 </head>
 <body>
 
-  <div class="glow-blob blob-1"></div>
-  <div class="glow-blob blob-2"></div>
+  <div class="glass-backdrop"></div>
 
   <div class="app-shell">
-    
-    <!-- Top Bar -->
-    <header class="top-header">
-      <div class="brand-title">
-        <div class="brand-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+
+    <!-- Frosted Top Header -->
+    <header class="glass-header">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
         </div>
-        <div class="brand-text">
-          <h1>Fast Map Leads <span class="brand-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -1px; margin-right: 3px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>ULTRA-FAST</span></h1>
-          <p class="brand-sub">Simple 1-Click Phone Number & Business Finder</p>
+        <div class="brand-title">
+          <h1>Fast Map Leads <span class="brand-badge">GLASS EDITION</span></h1>
+          <p class="brand-sub">Automated Google Maps Lead Extractor & District Deep Scanner</p>
         </div>
       </div>
 
-      <div class="header-actions">
+      <div class="header-controls">
         <div id="statusPill" class="status-pill">
           <span id="statusDot" class="status-dot"></span>
           <span id="statusLabel">Ready</span>
         </div>
-        <button class="btn-header-action" onclick="openOutputFolder()" title="Open Folder">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
-          <span>Open Saved Files</span>
+        <button class="btn-compact btn-outline-glass" onclick="openSavedFilesModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+          <span>Saved Files</span>
         </button>
       </div>
     </header>
 
-    <!-- Main 2-Column Interface -->
-    <main class="main-grid">
+    <!-- Main 2-Column Glass Interface -->
+    <main class="main-layout">
 
-      <!-- LEFT: Simple Search Card -->
-      <section class="card">
+      <!-- LEFT: Search & Controls Card -->
+      <section class="glass-card">
         
-        <!-- Step 1: Query Input -->
-        <div class="step-header">
-          <div class="step-number">1</div>
-          <h2 class="step-title">What business do you want to find?</h2>
+        <div class="section-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <span>Target Business Search</span>
         </div>
 
-        <div class="search-box-wrapper">
-          <span class="search-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <div class="search-input-container">
+          <span class="search-input-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </span>
           <input 
             type="text" 
             id="searchInput" 
-            class="big-search-input" 
-            placeholder="e.g. Gyms in Chennai, Hotels in Mumbai..." 
-            value="Gyms in Chennai"
+            class="glass-input" 
+            placeholder="e.g. Gyms in Karur, Schools in Chennai..." 
+            value="Gyms in Karur"
+            oninput="handleQueryInput(this.value)"
             autofocus
           />
         </div>
 
-        <!-- 1-Click Popular Suggestions -->
-        <div class="suggestion-chips">
-          <span class="chip" onclick="setQuery('Gyms in Chennai')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/></svg>
-            Gyms in Chennai
+        <!-- 1-Click Fast Suggestions -->
+        <div class="quick-chips-row">
+          <span class="quick-chip" onclick="setQuery('Gyms in Karur')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/></svg>
+            Gyms in Karur
           </span>
-          <span class="chip" onclick="setQuery('Hospitals in Coimbatore')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12"/><path d="M6 12h12"/><rect width="20" height="20" x="2" y="2" rx="5"/></svg>
-            Hospitals in Coimbatore
-          </span>
-          <span class="chip" onclick="setQuery('Hotels in Madurai')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
-            Hotels in Madurai
-          </span>
-          <span class="chip" onclick="setQuery('Restaurants in Bangalore')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2v6a3 3 0 0 1-3 3 3 3 0 0 1-3-3V2"/><path d="M15 11v11"/><path d="M5 2v20"/><path d="M2 6h6"/></svg>
-            Restaurants in Bangalore
-          </span>
-          <span class="chip" onclick="setQuery('Schools in Salem')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
-            Schools in Salem
-          </span>
-          <span class="chip" onclick="setQuery('Clinics in Trichy')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-            Clinics in Trichy
-          </span>
+          <span class="quick-chip" onclick="setQuery('Gyms in Chennai')">Gyms in Chennai</span>
+          <span class="quick-chip" onclick="setQuery('Hospitals in Coimbatore')">Hospitals in Coimbatore</span>
+          <span class="quick-chip" onclick="setQuery('Hotels in Madurai')">Hotels in Madurai</span>
+          <span class="quick-chip" onclick="setQuery('Schools in Salem')">Schools in Salem</span>
+          <span class="quick-chip" onclick="setQuery('Clinics in Trichy')">Clinics in Trichy</span>
         </div>
 
-        <!-- Step 2: Amount Selector -->
-        <div class="step-header">
-          <div class="step-number">2</div>
-          <h2 class="step-title">How many leads do you want?</h2>
+        <!-- DISTRICT DEEP SEARCH TOGGLE (Crucial User Requirement) -->
+        <div class="district-deep-card">
+          <div class="district-deep-header" onclick="toggleDistrictDeep()">
+            <div class="district-deep-info">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+              <div class="district-deep-text">
+                <strong>District Sub-Area Deep Search</strong>
+                <span>Scans every small area & locality in the district</span>
+              </div>
+            </div>
+            <label class="switch-toggle" onclick="event.stopPropagation()">
+              <input type="checkbox" id="districtDeepCheckbox" checked onchange="handleDeepToggle(this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <!-- Dynamic Localities Preview Drawer -->
+          <div id="districtPreviewBox" class="district-preview-box">
+            <div class="district-preview-label">
+              <span id="previewCountText">Sub-Areas Detected</span>
+              <span style="font-weight: 500; color: #0284c7;">Auto-Covering All</span>
+            </div>
+            <div id="districtChipsWrap" class="district-chips-wrap">
+              <!-- Dynamically populated chips -->
+            </div>
+          </div>
         </div>
 
-        <div class="limit-options">
-          <div class="limit-btn" onclick="selectLimit(25, this)">25</div>
-          <div class="limit-btn active" onclick="selectLimit(50, this)">50 (Best)</div>
-          <div class="limit-btn" onclick="selectLimit(100, this)">100</div>
-          <div class="limit-btn" onclick="selectLimit(null, this)">All (Max)</div>
+        <!-- Leads Limit Selector -->
+        <div class="section-title" style="margin-top: 14px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          <span>Leads Target</span>
+        </div>
+        <div class="limit-selector-grid">
+          <div class="limit-pill" onclick="selectLimit(25, this)">25</div>
+          <div class="limit-pill active" onclick="selectLimit(50, this)">50 (Fast)</div>
+          <div class="limit-pill" onclick="selectLimit(100, this)">100</div>
+          <div class="limit-pill" onclick="selectLimit(null, this)">All (Max)</div>
         </div>
         <input type="hidden" id="selectedLimit" value="50" />
 
-        <!-- Step 3: Phone Number Filter -->
-        <div class="filter-card" onclick="togglePhoneFilter()">
-          <div class="filter-info">
-            <span class="filter-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            </span>
-            <div class="filter-text">
-              <strong>Only Save Leads With Phone Numbers</strong>
-              <span>Skips listings that don't have a contact number</span>
-            </div>
-          </div>
-          <input type="checkbox" id="requirePhoneCheckbox" class="filter-checkbox" checked onclick="event.stopPropagation()" />
-        </div>
-
-        <!-- BIG ACTION BUTTONS -->
-        <div class="cta-button-group">
-          <button id="btnStart" class="btn-start" onclick="startScraping()">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-            <span>START SEARCH (1-CLICK)</span>
+        <!-- SLEEK COMPACT ACTION BUTTONS (Clean, not oversized) -->
+        <div class="form-actions-row">
+          <button id="btnStart" class="btn-compact btn-primary-glass" onclick="startScraping()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+            <span>Start Extraction</span>
           </button>
-          <button id="btnStop" class="btn-stop" onclick="stopScraping()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
-            <span>STOP SEARCH</span>
+          <button id="btnStop" class="btn-compact btn-danger-glass" onclick="stopScraping()" style="display: none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+            <span>Stop Search</span>
           </button>
         </div>
 
-        <!-- Advanced Collapsible Trigger -->
-        <div class="advanced-trigger" onclick="toggleAdvanced()">
-          <span id="advancedTriggerText">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-            More Options: Batch Multiple Areas (Optional)
+        <!-- Advanced Batch Box Toggle -->
+        <div class="advanced-toggle" onclick="toggleAdvanced()">
+          <span id="advancedToggleLabel">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Batch Multiple Query Lines (Optional)
           </span>
         </div>
-
-        <div id="advancedBox" class="advanced-content">
-          <label style="font-size: 0.78rem; font-weight: 700; display: block; margin-bottom: 6px;">
-            Search Multiple Locations (One per line):
-          </label>
+        <div id="advancedBody" class="advanced-body">
           <textarea 
             id="batchQueriesInput" 
-            rows="5" 
-            style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 10px; font-size: 0.8rem; font-family: inherit;"
+            rows="4" 
+            class="glass-input" 
+            style="height: auto; padding: 10px; font-size: 0.78rem; font-family: inherit;"
             placeholder="Gyms in Anna Nagar, Chennai&#10;Gyms in T. Nagar, Chennai&#10;Gyms in Velachery, Chennai"
           ></textarea>
         </div>
 
       </section>
 
-      <!-- RIGHT: Live Results & 1-Click Export -->
+      <!-- RIGHT: Hero Metrics, Live Results Table, and Instant CSV Download -->
       <section>
-        
-        <!-- Hero Stats Cards -->
-        <div class="hero-stats-row">
-          <div class="hero-stat-card">
-            <div class="hero-stat-icon green">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+
+        <!-- Metrics Row -->
+        <div class="stats-trio">
+          <div class="stat-glass-card">
+            <div class="stat-icon-wrap emerald">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             </div>
             <div>
-              <div id="statPhoneCount" class="hero-stat-number">0</div>
-              <div class="hero-stat-label">Phone Numbers Found</div>
+              <div id="metricPhoneCount" class="stat-val">0</div>
+              <div class="stat-lbl">Phone Numbers</div>
             </div>
           </div>
 
-          <div class="hero-stat-card">
-            <div class="hero-stat-icon blue">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div class="stat-glass-card">
+            <div class="stat-icon-wrap blue">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
             </div>
             <div>
-              <div id="statTotalCount" class="hero-stat-number">0</div>
-              <div class="hero-stat-label">Total Places Found</div>
+              <div id="metricTotalCount" class="stat-val">0</div>
+              <div class="stat-lbl">Places Discovered</div>
             </div>
           </div>
 
-          <div class="hero-stat-card">
-            <div class="hero-stat-icon purple">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div class="stat-glass-card">
+            <div class="stat-icon-wrap purple">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
             <div>
-              <div id="statDuration" class="hero-stat-number">0s</div>
-              <div class="hero-stat-label">Search Time</div>
+              <div id="metricDuration" class="stat-val">0s</div>
+              <div class="stat-lbl">Duration</div>
             </div>
           </div>
         </div>
 
-        <!-- Prominent Download Buttons -->
-        <div class="export-actions-bar">
-          <button id="btnDownload" class="btn-export-excel" onclick="downloadCSV()" disabled>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-            <span>DOWNLOAD EXCEL FILE (CSV)</span>
-          </button>
-          <button id="btnCopyAll" class="btn-copy-phones" onclick="copyAllPhones()" disabled>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
-            <span>COPY ALL PHONE NUMBERS</span>
-          </button>
+        <!-- COMPLETION INSTANT DOWNLOAD BANNER -->
+        <div id="completionBanner" class="completion-banner">
+          <div class="banner-text">
+            <strong id="bannerSuccessTitle">Extraction Completed Successfully!</strong>
+            <span id="bannerSuccessSub">CSV File ready for instant download on your device.</span>
+          </div>
+          <div class="banner-buttons">
+            <button id="bannerDownloadBtn" class="btn-compact btn-emerald-glass" onclick="downloadCurrentCSV()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              <span>Download CSV</span>
+            </button>
+            <button class="btn-compact btn-outline-glass" onclick="openSavedFilesModal()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+              <span>View All Saved</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Live Results Table Card -->
-        <div class="table-container">
-          <div class="table-header-row">
-            <div class="table-title">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>
-              <span>Live Results Preview (<span id="tableCountBadge">0</span>)</span>
+        <!-- Live Table Glass Container -->
+        <div class="table-glass-card">
+          <div class="table-toolbar">
+            
+            <div class="table-tabs">
+              <button id="tabAll" class="tab-btn active" onclick="setTableFilterTab('all')">
+                All Leads (<span id="tabCountAll">0</span>)
+              </button>
+              <button id="tabWithPhone" class="tab-btn" onclick="setTableFilterTab('phone')">
+                With Phone (<span id="tabCountPhone">0</span>)
+              </button>
+              <button id="tabWithWeb" class="tab-btn" onclick="setTableFilterTab('website')">
+                With Website (<span id="tabCountWeb">0</span>)
+              </button>
             </div>
-            <input 
-              type="text" 
-              id="tableFilter" 
-              class="table-search-box" 
-              placeholder="Filter by name or phone..." 
-              oninput="renderTable()"
-            />
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div class="table-filter-wrap">
+                <span class="table-filter-icon">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                </span>
+                <input 
+                  type="text" 
+                  id="tableSearchInput" 
+                  class="table-filter-input" 
+                  placeholder="Filter results..." 
+                  oninput="renderTable()"
+                />
+              </div>
+
+              <button id="btnCopyPhones" class="btn-subtle-sm" onclick="copyAllPhones()" disabled title="Copy all phone numbers">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+                <span>Copy Phones</span>
+              </button>
+
+              <button id="btnTableDownload" class="btn-subtle-sm" onclick="downloadCurrentCSV()" disabled title="Download CSV">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                <span>Export CSV</span>
+              </button>
+            </div>
+
           </div>
 
-          <div class="leads-table-scroll">
+          <div class="table-scroll-wrap">
             <table>
               <thead>
                 <tr>
                   <th style="width: 40px;">#</th>
                   <th>Business Name</th>
                   <th>Phone Number</th>
-                  <th>Area / Address</th>
+                  <th>Area / Category</th>
                   <th>Rating</th>
-                  <th>Map</th>
+                  <th>Link</th>
                 </tr>
               </thead>
               <tbody id="tableBody">
                 <tr>
                   <td colspan="6" style="text-align: center; color: #94a3b8; padding: 40px 10px;">
-                    No results yet. Type what you want to find and click <strong>START SEARCH</strong>.
+                    No results extracted yet. Type what you want to find and click <strong>Start Extraction</strong>.
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-        </div>
 
-        <!-- Simple Status Log -->
-        <div id="statusStream" class="status-stream-box">
-          <div class="log-entry"><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981;"></span> System Ready. Enter a query and click Start Search.</div>
+          <!-- Compact Status Stream -->
+          <div id="statusLogBox" class="stream-log-box">
+            <div class="log-line"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#10b981;"></span> Scraper engine ready. Enter target query to begin.</div>
+          </div>
+
         </div>
 
       </section>
@@ -912,66 +1142,164 @@
 
   </div>
 
-  <div id="toastContainer" class="toast-container"></div>
+  <!-- SAVED FILES HISTORY MODAL (Solves "Where is the CSV file?") -->
+  <div id="historyModal" class="modal-backdrop" onclick="closeSavedFilesModal(event)">
+    <div class="modal-glass-sheet" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+          <span>Saved CSV Exports Manager</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button class="btn-subtle-sm" onclick="openOutputFolderOnPC()" title="Open Folder in Windows File Explorer">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+            <span>Open PC Folder</span>
+          </button>
+          <button class="modal-close-btn" onclick="closeSavedFilesModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom: 12px; font-size: 0.78rem; color: #64748b;">
+          All scraped searches automatically save to your system's output directory. Click <strong>Download</strong> to save any file directly to your computer.
+        </div>
+        <div class="table-scroll-wrap" style="max-height: 380px;">
+          <table>
+            <thead>
+              <tr>
+                <th>File Name</th>
+                <th>Rows / Leads</th>
+                <th>File Size</th>
+                <th>Date Modified</th>
+                <th style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody">
+              <tr>
+                <td colspan="5" style="text-align: center; color: #94a3b8; padding: 25px;">Loading saved files...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastTray" class="toast-tray"></div>
 
   <script>
+    // State
     let allItems = [];
     let isRunning = false;
     let timer = null;
     let seconds = 0;
     let eventSource = null;
+    let currentFilterTab = 'all'; // 'all' | 'phone' | 'website'
+    let lastDownloadUrl = null;
+    let previewDebounce = null;
 
+    // Set query
     function setQuery(text) {
-      document.getElementById('searchInput').value = text;
-      document.getElementById('searchInput').focus();
+      const inp = document.getElementById('searchInput');
+      inp.value = text;
+      inp.focus();
+      handleQueryInput(text);
+    }
+
+    // Handle query input with debounce to preview District Localities
+    function handleQueryInput(val) {
+      clearTimeout(previewDebounce);
+      previewDebounce = setTimeout(() => {
+        checkDistrictExpansion(val);
+      }, 300);
+    }
+
+    async function checkDistrictExpansion(query) {
+      const isDeepChecked = document.getElementById('districtDeepCheckbox').checked;
+      const previewBox = document.getElementById('districtPreviewBox');
+      const chipsWrap = document.getElementById('districtChipsWrap');
+      const countText = document.getElementById('previewCountText');
+
+      if (!isDeepChecked || !query.trim()) {
+        previewBox.style.display = 'none';
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/expand-preview?query=${encodeURIComponent(query.trim())}`);
+        const data = await res.json();
+        if (data.count && data.count > 1) {
+          countText.textContent = `${data.count} Sub-Areas in ${data.location ? data.location.toUpperCase() : 'District'}:`;
+          chipsWrap.innerHTML = data.localities.map(loc => {
+            const shortArea = loc.replace(new RegExp(`^${data.biz_type}\\s+in\\s+`, 'i'), '');
+            return `<span class="area-chip">${escapeHtml(shortArea)}</span>`;
+          }).join('');
+          previewBox.style.display = 'block';
+        } else {
+          previewBox.style.display = 'none';
+        }
+      } catch (e) {
+        previewBox.style.display = 'none';
+      }
+    }
+
+    function toggleDistrictDeep() {
+      const chk = document.getElementById('districtDeepCheckbox');
+      chk.checked = !chk.checked;
+      handleDeepToggle(chk.checked);
+    }
+
+    function handleDeepToggle(checked) {
+      if (checked) {
+        checkDistrictExpansion(document.getElementById('searchInput').value);
+      } else {
+        document.getElementById('districtPreviewBox').style.display = 'none';
+      }
     }
 
     function selectLimit(val, el) {
-      document.querySelectorAll('.limit-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.limit-pill').forEach(b => b.classList.remove('active'));
       el.classList.add('active');
       document.getElementById('selectedLimit').value = val === null ? '' : val;
     }
 
-    function togglePhoneFilter() {
-      const chk = document.getElementById('requirePhoneCheckbox');
-      chk.checked = !chk.checked;
-    }
-
     function toggleAdvanced() {
-      const box = document.getElementById('advancedBox');
-      const isVisible = box.style.display === 'block';
-      box.style.display = isVisible ? 'none' : 'block';
-      document.getElementById('advancedTriggerText').innerHTML = isVisible 
-        ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg> More Options: Batch Multiple Areas (Optional)`
-        : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><path d="m18 15-6-6-6 6"/></svg> Close Batch Options`;
+      const body = document.getElementById('advancedBody');
+      const isVisible = body.style.display === 'block';
+      body.style.display = isVisible ? 'none' : 'block';
+      document.getElementById('advancedToggleLabel').innerHTML = isVisible
+        ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Batch Multiple Query Lines (Optional)`
+        : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg> Close Batch Input`;
     }
 
     function showToast(msg) {
-      const container = document.getElementById('toastContainer');
+      const tray = document.getElementById('toastTray');
       const t = document.createElement('div');
-      t.className = 'toast';
-      t.textContent = msg;
-      container.appendChild(t);
+      t.className = 'glass-toast';
+      t.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> <span>${escapeHtml(msg)}</span>`;
+      tray.appendChild(t);
       setTimeout(() => {
         t.style.opacity = '0';
-        t.style.transition = '0.3s';
         setTimeout(() => t.remove(), 300);
-      }, 3000);
+      }, 3500);
     }
 
-    // Start Scraping
+    // START SCRAPING
     async function startScraping() {
       const query = document.getElementById('searchInput').value.trim();
       const batchText = document.getElementById('batchQueriesInput').value.trim();
       const limitVal = document.getElementById('selectedLimit').value;
-      const requirePhone = document.getElementById('requirePhoneCheckbox').checked;
+      const districtDeep = document.getElementById('districtDeepCheckbox').checked;
 
       const payload = {
         mode: batchText ? 'batch' : 'query',
         query: query,
         queries: batchText ? batchText.split('\n').filter(l => l.trim()) : null,
         max_results: limitVal ? parseInt(limitVal) : null,
-        require_phone: requirePhone,
+        require_phone: false, // Always preserve all leads in CSV!
+        district_deep: districtDeep,
         output_name: query.toLowerCase().replace(/[^a-z0-9]/g, '_') || 'leads'
       };
 
@@ -982,6 +1310,7 @@
 
       allItems = [];
       renderTable();
+      document.getElementById('completionBanner').style.display = 'none';
       setRunningUI(true);
 
       try {
@@ -995,7 +1324,7 @@
           showToast(data.error || 'Failed to start.');
           setRunningUI(false);
         } else {
-          showToast('Search started at maximum speed!');
+          showToast(districtDeep ? 'District Deep Search initiated across all localities!' : 'Search initiated!');
         }
       } catch (e) {
         showToast('Connection error: ' + e.message);
@@ -1003,11 +1332,11 @@
       }
     }
 
-    // Stop Scraping
+    // STOP SCRAPING
     async function stopScraping() {
       try {
         await fetch('/api/scrape/stop', { method: 'POST' });
-        showToast('Stopping search...');
+        showToast('Stopping search gracefully...');
       } catch (e) {
         showToast('Error stopping: ' + e.message);
       }
@@ -1023,92 +1352,115 @@
 
       if (running) {
         btnStart.style.display = 'none';
-        btnStop.style.display = 'flex';
+        btnStop.style.display = 'inline-flex';
         statusDot.className = 'status-dot pulsing';
-        statusLabel.textContent = 'Searching...';
+        statusLabel.textContent = 'Scanning...';
 
         seconds = 0;
         clearInterval(timer);
         timer = setInterval(() => {
           seconds++;
-          document.getElementById('statDuration').textContent = seconds + 's';
+          document.getElementById('metricDuration').textContent = seconds + 's';
         }, 1000);
       } else {
         clearInterval(timer);
-        btnStart.style.display = 'flex';
+        btnStart.style.display = 'inline-flex';
         btnStop.style.display = 'none';
         statusDot.className = 'status-dot';
-        statusLabel.textContent = 'Finished';
+        statusLabel.textContent = 'Completed';
       }
+    }
+
+    // Table Filter Tabs
+    function setTableFilterTab(tab) {
+      currentFilterTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      if (tab === 'all') document.getElementById('tabAll').classList.add('active');
+      if (tab === 'phone') document.getElementById('tabWithPhone').classList.add('active');
+      if (tab === 'website') document.getElementById('tabWithWeb').classList.add('active');
+      renderTable();
     }
 
     // Render Table
     function renderTable() {
       const tbody = document.getElementById('tableBody');
-      const filter = (document.getElementById('tableFilter').value || '').toLowerCase();
+      const searchFilter = (document.getElementById('tableSearchInput').value || '').toLowerCase();
 
-      const filtered = allItems.filter(i => {
-        return (i.name || '').toLowerCase().includes(filter) || (i.phone || '').toLowerCase().includes(filter);
-      });
-
-      document.getElementById('tableCountBadge').textContent = filtered.length;
-      document.getElementById('statTotalCount').textContent = allItems.length;
+      // Counts
+      const totalCount = allItems.length;
       const phoneCount = allItems.filter(i => i.phone && i.phone.trim()).length;
-      document.getElementById('statPhoneCount').textContent = phoneCount;
+      const webCount = allItems.filter(i => i.website && i.website.trim()).length;
 
-      const hasData = allItems.length > 0;
-      document.getElementById('btnDownload').disabled = !hasData;
-      document.getElementById('btnCopyAll').disabled = phoneCount === 0;
+      document.getElementById('metricTotalCount').textContent = totalCount;
+      document.getElementById('metricPhoneCount').textContent = phoneCount;
+      document.getElementById('tabCountAll').textContent = totalCount;
+      document.getElementById('tabCountPhone').textContent = phoneCount;
+      document.getElementById('tabCountWeb').textContent = webCount;
+
+      document.getElementById('btnCopyPhones').disabled = phoneCount === 0;
+      document.getElementById('btnTableDownload').disabled = totalCount === 0;
+
+      // Filter by tab + search
+      const filtered = allItems.filter(i => {
+        if (currentFilterTab === 'phone' && (!i.phone || !i.phone.trim())) return false;
+        if (currentFilterTab === 'website' && (!i.website || !i.website.trim())) return false;
+        if (!searchFilter) return true;
+        return (i.name || '').toLowerCase().includes(searchFilter) ||
+               (i.phone || '').toLowerCase().includes(searchFilter) ||
+               (i.address || '').toLowerCase().includes(searchFilter) ||
+               (i.category || '').toLowerCase().includes(searchFilter);
+      });
 
       if (filtered.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="6" style="text-align: center; color: #94a3b8; padding: 30px;">
-              ${allItems.length === 0 ? 'No results yet. Click START SEARCH.' : 'No matching results found.'}
+            <td colspan="6" style="text-align: center; color: #94a3b8; padding: 35px 10px;">
+              ${totalCount === 0 ? 'No results extracted yet. Click <strong>Start Extraction</strong>.' : 'No matching places found for this filter.'}
             </td>
           </tr>
         `;
         return;
       }
 
-      let html = '';
+      let rowsHtml = '';
       filtered.forEach((it, idx) => {
         const phone = it.phone ? `
-          <span class="lead-phone">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span class="lead-phone-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             <span>${escapeHtml(it.phone)}</span>
-            <button class="btn-copy-mini" onclick="copyText('${escapeHtml(it.phone)}')" title="Copy Phone">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg> Copy
+            <button class="btn-subtle-sm" style="height: 20px; padding: 0 4px; font-size: 0.65rem;" onclick="copyText('${escapeHtml(it.phone)}')" title="Copy Phone">
+              Copy
             </button>
+          </span>
+        ` : '<span style="color: #cbd5e1; font-weight: 500;">—</span>';
+
+        const rating = it.rating ? `
+          <span class="lead-rating-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>${escapeHtml(it.rating)}</span>
           </span>
         ` : '<span style="color: #cbd5e1;">—</span>';
 
-        const rating = it.rating ? `
-          <span style="display:inline-flex; align-items:center; gap:4px; font-weight:700; color:#b45309;">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span>${escapeHtml(it.rating)}</span>
-          </span>
-        ` : '—';
-
         const link = it.link ? `
-          <a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="color: #2563eb; font-weight: 700; text-decoration: none; display:inline-flex; align-items:center; gap:4px;">
-            <span>View</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+          <a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" class="map-link-btn">
+            <span>Map</span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
           </a>
         ` : '—';
 
-        html += `
+        rowsHtml += `
           <tr>
             <td style="color: #94a3b8; font-weight: 600;">${idx + 1}</td>
-            <td class="lead-name">${escapeHtml(it.name || 'Unknown')}</td>
+            <td class="lead-title">${escapeHtml(it.name || 'Unknown')}</td>
             <td>${phone}</td>
-            <td style="color: #475569; max-width: 260px;">${escapeHtml(it.address || it.category || '—')}</td>
+            <td style="max-width: 260px; color: #475569;">${escapeHtml(it.address || it.category || '—')}</td>
             <td>${rating}</td>
             <td>${link}</td>
           </tr>
         `;
       });
-      tbody.innerHTML = html;
+
+      tbody.innerHTML = rowsHtml;
     }
 
     function escapeHtml(str) {
@@ -1122,19 +1474,28 @@
     function copyAllPhones() {
       const phones = allItems.map(i => i.phone).filter(p => p && p.trim());
       if (phones.length === 0) {
-        showToast('No phone numbers to copy yet!');
+        showToast('No phone numbers extracted yet.');
         return;
       }
       navigator.clipboard.writeText(phones.join('\n')).then(() => {
-        showToast(`Copied all ${phones.length} phone numbers!`);
+        showToast(`Copied ${phones.length} phone numbers to clipboard!`);
       });
     }
 
-    function downloadCSV() {
+    // Direct CSV Download Trigger (Solves "Where is the CSV file?")
+    function downloadCurrentCSV() {
+      if (lastDownloadUrl) {
+        window.location.href = lastDownloadUrl;
+        showToast('Downloading verified CSV export...');
+        return;
+      }
+
       if (allItems.length === 0) {
         showToast('No leads to download yet!');
         return;
       }
+
+      // Client-side fallback CSV generator with UTF-8 BOM
       const headers = ['Business Name', 'Phone Number', 'Address', 'Category', 'Rating', 'Google Maps Link'];
       const rows = allItems.map(i => [
         `"${(i.name || '').replace(/"/g, '""')}"`,
@@ -1151,17 +1512,65 @@
       const a = document.createElement('a');
       a.href = url;
       a.download = `leads_${Date.now()}.csv`;
+      document.body.appendChild(a);
       a.click();
-      showToast('Downloaded Excel CSV file!');
+      a.remove();
+      showToast('Downloaded CSV file to your Downloads folder!');
     }
 
-    function openOutputFolder() {
+    // Saved Files Modal Functions
+    async function openSavedFilesModal() {
+      const modal = document.getElementById('historyModal');
+      modal.style.display = 'flex';
+      const tbody = document.getElementById('historyTableBody');
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:20px;">Fetching saved CSV files...</td></tr>';
+
+      try {
+        const res = await fetch('/api/history');
+        const data = await res.json();
+        const files = data.files || [];
+
+        if (files.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:25px;">No saved CSV files found in output directory yet.</td></tr>';
+          return;
+        }
+
+        let html = '';
+        files.forEach(f => {
+          html += `
+            <tr>
+              <td style="font-weight:700; color:#0f172a;">${escapeHtml(f.name)}</td>
+              <td style="color:#15803d; font-weight:700;">${f.rows} leads</td>
+              <td style="color:#64748b;">${f.size_kb} KB</td>
+              <td style="color:#64748b;">${escapeHtml(f.modified)}</td>
+              <td style="text-align:right;">
+                <a href="/api/download/${encodeURIComponent(f.name)}" class="btn-subtle-sm" style="text-decoration:none;" download>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                  <span>Download</span>
+                </a>
+              </td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444; padding:20px;">Error loading saved files: ${escapeHtml(e.message)}</td></tr>`;
+      }
+    }
+
+    function closeSavedFilesModal(e) {
+      if (!e || e.target.id === 'historyModal') {
+        document.getElementById('historyModal').style.display = 'none';
+      }
+    }
+
+    function openOutputFolderOnPC() {
       fetch('/api/open-folder', { method: 'POST' })
-        .then(() => showToast('Opening folder on your computer...'))
-        .catch(() => showToast('Could not open folder.'));
+        .then(() => showToast('Opened output directory in Windows File Explorer!'))
+        .catch(() => showToast('Could not open folder automatically.'));
     }
 
-    // Connect Server-Sent Events (Live streaming)
+    // Connect SSE for Real-Time Streaming
     function connectSSE() {
       if (eventSource) eventSource.close();
       eventSource = new EventSource('/api/scrape/stream');
@@ -1169,36 +1578,77 @@
       eventSource.addEventListener('init', e => {
         const data = JSON.parse(e.data);
         if (data.status === 'running') setRunningUI(true);
-        if (data.items) {
+        if (data.items && data.items.length > 0) {
           allItems = data.items;
           renderTable();
+        }
+        if (data.files && data.files.download_url) {
+          lastDownloadUrl = data.files.download_url;
         }
       });
 
       eventSource.addEventListener('item', e => {
         const item = JSON.parse(e.data);
-        allItems.unshift(item);
-        renderTable();
+        // Avoid duplicate by link
+        const exists = allItems.some(x => x.link && item.link && x.link === item.link);
+        if (!exists) {
+          allItems.unshift(item);
+          renderTable();
+        }
+      });
+
+      eventSource.addEventListener('phase', e => {
+        const p = JSON.parse(e.data);
+        if (p.phase) {
+          document.getElementById('statusLabel').textContent = p.phase;
+        }
       });
 
       eventSource.addEventListener('log', e => {
         const log = JSON.parse(e.data);
-        const box = document.getElementById('statusStream');
-        const entry = document.createElement('div');
-        entry.className = `log-entry ${log.level}`;
-        entry.textContent = `• ${log.text}`;
-        box.appendChild(entry);
+        const box = document.getElementById('statusLogBox');
+        const line = document.createElement('div');
+        line.className = `log-line ${log.level}`;
+        line.textContent = `• ${log.text}`;
+        box.appendChild(line);
         box.scrollTop = box.scrollHeight;
       });
 
       eventSource.addEventListener('completed', e => {
+        const snap = JSON.parse(e.data);
         setRunningUI(false);
-        showToast('Search finished successfully!');
+
+        if (snap.files && snap.files.download_url) {
+          lastDownloadUrl = snap.files.download_url;
+        }
+
+        // Show prominent glass completion banner
+        const banner = document.getElementById('completionBanner');
+        const title = document.getElementById('bannerSuccessTitle');
+        const sub = document.getElementById('bannerSuccessSub');
+        
+        title.textContent = `Extraction Complete! ${allItems.length} Verified Leads Ready`;
+        sub.textContent = `Saved to ${snap.files?.details || 'CSV'}. Click below to download.`;
+        banner.style.display = 'flex';
+
+        showToast(`Extraction complete! ${allItems.length} leads found.`);
+
+        // AUTO-DOWNLOAD: Trigger instant browser download so user never wonders where the file is!
+        if (lastDownloadUrl) {
+          const downloadAnchor = document.createElement('a');
+          downloadAnchor.href = lastDownloadUrl;
+          downloadAnchor.download = snap.files?.details || 'leads.csv';
+          document.body.appendChild(downloadAnchor);
+          downloadAnchor.click();
+          downloadAnchor.remove();
+        }
       });
     }
 
+    // Initialize
     window.addEventListener('DOMContentLoaded', () => {
       connectSSE();
+      checkDistrictExpansion(document.getElementById('searchInput').value);
     });
   </script>
 </body>
