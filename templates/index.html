@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     :root {
       /* Pure White Canvas */
@@ -869,6 +870,399 @@
     }
 
     /* ==========================================================================
+       USER PORTAL, IN-APP WALLET & AUTHENTICATION STYLES (GLASSMORPHISM)
+       ========================================================================== */
+    .wallet-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+    .wallet-pill:hover {
+      background: #ffffff;
+      border-color: rgba(37, 99, 235, 0.5);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15);
+    }
+    .wallet-icon-box {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #eff6ff;
+      color: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .wallet-text-group {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .wallet-lbl {
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: #64748b;
+      letter-spacing: 0.05em;
+    }
+    .wallet-amount {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #16a34a;
+    }
+    .wallet-add-btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: background 0.15s;
+    }
+    .wallet-add-btn:hover {
+      background: #1d4ed8;
+    }
+
+    /* Profile Dropdown Wrap */
+    .profile-wrap {
+      position: relative;
+    }
+    .profile-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 5px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--glass-border);
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-main);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .profile-pill:hover {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      transform: translateY(-1px);
+    }
+    .profile-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #1e40af);
+      color: white;
+      font-weight: 800;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .profile-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 280px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.14);
+      padding: 12px;
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .profile-dropdown.show {
+      display: flex;
+    }
+    .dropdown-header {
+      padding: 4px 6px 8px 6px;
+    }
+    .dropdown-user-name {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .dropdown-user-email {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .dropdown-user-phone {
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
+    .dropdown-divider {
+      height: 1px;
+      background: rgba(226, 232, 240, 0.8);
+      margin: 4px 0;
+    }
+    .dropdown-balance-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      margin: 4px 0;
+    }
+    .dropdown-bal-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .dropdown-bal-val {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #16a34a;
+    }
+    .dropdown-bal-leads {
+      font-size: 0.7rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-body);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      transition: background 0.15s;
+    }
+    .dropdown-item:hover {
+      background: #f1f5f9;
+      color: var(--text-main);
+    }
+    .dropdown-item.danger {
+      color: #dc2626;
+    }
+    .dropdown-item.danger:hover {
+      background: #fee2e2;
+    }
+
+    /* Flat Pricing Banner */
+    .pricing-lead-badge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: rgba(240, 253, 244, 0.85);
+      border: 1px solid rgba(187, 247, 208, 0.9);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      margin-bottom: 12px;
+    }
+    .pricing-pill {
+      font-size: 0.78rem;
+      color: #15803d;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pricing-highlight {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #166534;
+      background: #dcfce7;
+      padding: 2px 7px;
+      border-radius: 5px;
+    }
+    .pricing-free-bonus {
+      font-size: 0.72rem;
+      color: #166534;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Auth Modal Tabs & Inputs */
+    .auth-tabs {
+      display: flex;
+      gap: 6px;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 8px;
+      width: 100%;
+    }
+    .auth-tab-btn {
+      flex: 1;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      background: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .auth-tab-btn.active {
+      background: white;
+      color: var(--text-main);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+    .form-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .form-control {
+      padding: 9px 12px;
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.15s;
+      background: white;
+      width: 100%;
+    }
+    .form-control:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+    .btn-google {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      height: 40px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-sm);
+      color: #334155;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-top: 10px;
+    }
+    .btn-google:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+
+    /* Wallet Recharge Modal Packs */
+    .wallet-balance-banner {
+      background: linear-gradient(135deg, #f0fdf4, #eff6ff);
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .wallet-bal-title {
+      font-size: 0.72rem;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .wallet-bal-large {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #16a34a;
+    }
+    .wallet-bal-leads {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #2563eb;
+    }
+    .wallet-rate-tag {
+      background: white;
+      border: 1px solid #cbd5e1;
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #334155;
+    }
+    .pack-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .pack-card {
+      border: 1px solid var(--glass-border);
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.18s;
+    }
+    .pack-card:hover {
+      border-color: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.08);
+    }
+    .pack-card.active {
+      border-color: #2563eb;
+      background: #eff6ff;
+      box-shadow: 0 0 0 2px #2563eb;
+    }
+    .pack-card.popular .pack-badge {
+      position: absolute;
+      top: -8px;
+      right: 12px;
+      background: #2563eb;
+      color: white;
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+    .pack-val {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .pack-leads {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #2563eb;
+    }
+
+    /* ==========================================================================
        MOBILE & TABLET RESPONSIVE PADDING & LAYOUT FIXES
        ========================================================================== */
     @media (max-width: 768px) {
@@ -1148,6 +1542,74 @@
           <span id="statusDot" class="status-dot"></span>
           <span id="statusLabel">Ready</span>
         </div>
+
+        <!-- In-App Live Wallet Balance Pill -->
+        <div id="walletBadge" class="wallet-pill" onclick="openWalletModal()" title="In-App Wallet: Flat ₹0.25 per lead" style="display: none;">
+          <div class="wallet-icon-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+          </div>
+          <div class="wallet-text-group">
+            <span class="wallet-lbl">WALLET</span>
+            <span id="headerWalletBal" class="wallet-amount">₹100.00</span>
+          </div>
+          <button class="wallet-add-btn" type="button" title="Add funds via Razorpay">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>+ Add</span>
+          </button>
+        </div>
+
+        <!-- Logged In User Profile Pill & Dropdown -->
+        <div id="userProfileWrap" class="profile-wrap" style="display: none;">
+          <button class="profile-pill" onclick="toggleProfileDropdown(event)" id="profilePillBtn" type="button">
+            <div class="profile-avatar" id="avatarInitial">U</div>
+            <span class="profile-name" id="navUserName">My Account</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="dropdown-header">
+              <div class="dropdown-user-name" id="dropdownUserName">Member</div>
+              <div class="dropdown-user-email" id="dropdownUserEmail">user@example.com</div>
+              <div class="dropdown-user-phone" id="dropdownUserPhone"></div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-balance-box">
+              <div class="dropdown-bal-label">Live In-App Balance (@ ₹0.25/lead)</div>
+              <div class="dropdown-bal-val" id="dropdownWalletBal">₹100.00</div>
+              <div class="dropdown-bal-leads" id="dropdownLeadsCount">≈ 400 Leads Available</div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item" onclick="openWalletModal()" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              <span>Recharge Wallet (Razorpay)</span>
+            </button>
+            <button class="dropdown-item" onclick="openTransactionsModal()" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <span>Transaction & Scrape History</span>
+            </button>
+            <a href="/admin" class="dropdown-item" id="adminPortalLink" style="display: none; text-decoration: none;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Admin Portal (/admin)</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item danger" onclick="handleUserLogout()" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Logged Out Guest Controls -->
+        <div id="authGuestWrap" style="display: flex; align-items: center; gap: 8px;">
+          <button class="btn-compact btn-primary-glass" onclick="openAuthModal('signup')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            <span>Get ₹100 Free Bonus</span>
+          </button>
+          <button class="btn-compact btn-outline-glass" onclick="openAuthModal('login')">
+            <span>Sign In</span>
+          </button>
+        </div>
+
         <button class="btn-compact btn-outline-glass" onclick="openSavedFilesModal()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
           <span>Saved Files</span>
@@ -1161,6 +1623,18 @@
       <!-- LEFT: Search & Controls Card -->
       <section class="glass-card">
         
+        <!-- Transparent Pricing Highlight Banner -->
+        <div class="pricing-lead-badge">
+          <div class="pricing-pill">
+            <span class="pricing-highlight">₹0.25 (25 paise)</span>
+            <span>flat per verified lead</span>
+          </div>
+          <div class="pricing-free-bonus">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>₹100 Free Signup Bonus (= 400 Leads)</span>
+          </div>
+        </div>
+
         <div class="section-title">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <span>Target Business Search</span>
@@ -1442,6 +1916,184 @@
     </div>
   </div>
 
+  <!-- AUTHENTICATION MODAL (Sign In & Register with Google & ₹100 Free Bonus) -->
+  <div id="authModal" class="modal-backdrop" onclick="closeAuthModal(event)">
+    <div class="modal-glass-sheet" style="max-width: 440px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="auth-tabs">
+          <button id="authTabLogin" class="auth-tab-btn active" onclick="switchAuthTab('login')">Sign In</button>
+          <button id="authTabSignup" class="auth-tab-btn" onclick="switchAuthTab('signup')">Create Account</button>
+        </div>
+        <button class="modal-close-btn" onclick="closeAuthModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Sign In Form -->
+        <form id="loginForm" onsubmit="handleUserLoginSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Email or Mobile Number</label>
+            <input type="text" id="loginIdentifier" class="form-control" placeholder="e.g. name@company.com or 9876543210" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required />
+          </div>
+          <button type="submit" class="btn-compact btn-primary-glass" style="width: 100%; height: 42px; margin-top: 6px;">
+            Sign In to Account
+          </button>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form id="signupForm" onsubmit="handleUserSignupSubmit(event)" style="display: none;">
+          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; font-size: 0.76rem; color: #166534; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Instant ₹100 Free Signup Bonus (= 400 Leads free!)</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="signupName" class="form-control" placeholder="e.g. Suresh Kumar" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="signupEmail" class="form-control" placeholder="e.g. suresh@gmail.com" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mobile Number</label>
+            <input type="tel" id="signupPhone" class="form-control" placeholder="e.g. 9876543210" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Create Password</label>
+            <input type="password" id="signupPassword" class="form-control" placeholder="Minimum 6 characters" minlength="6" required />
+          </div>
+          <button type="submit" class="btn-compact btn-emerald-glass" style="width: 100%; height: 42px; margin-top: 6px;">
+            Claim ₹100 & Register
+          </button>
+        </form>
+
+        <!-- Divider & Google Auth -->
+        <div style="display: flex; align-items: center; gap: 10px; margin: 16px 0 10px 0;">
+          <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
+          <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 700;">OR</span>
+          <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
+        </div>
+
+        <button type="button" class="btn-google" onclick="triggerGoogleAuth()">
+          <svg width="18" height="18" viewBox="0 0 24 24">
+            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/>
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
+            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2c0 2.8.7 5.5 1.9 7.9l3.7-2.9z"/>
+            <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/>
+          </svg>
+          <span>Continue with Google</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IN-APP WALLET RECHARGE MODAL (Razorpay Integration) -->
+  <div id="walletModal" class="modal-backdrop" onclick="closeWalletModal(event)">
+    <div class="modal-glass-sheet" style="max-width: 520px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+          <span>In-App Wallet & Recharge</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeWalletModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Wallet Balance Banner -->
+        <div class="wallet-balance-banner">
+          <div>
+            <div class="wallet-bal-title">Available Balance</div>
+            <div class="wallet-bal-large" id="modalWalletAmount">₹100.00</div>
+            <div class="wallet-bal-leads" id="modalAvailableLeads">≈ 400 Leads Available</div>
+          </div>
+          <div class="wallet-rate-tag">Flat ₹0.25 / Lead</div>
+        </div>
+
+        <div style="font-size: 0.82rem; font-weight: 700; color: #1e293b; margin-bottom: 8px;">
+          Select Recharge Pack
+        </div>
+
+        <!-- 4 Quick Recharge Packs -->
+        <div class="pack-grid">
+          <div class="pack-card" onclick="selectRechargePack(100)" id="pack100">
+            <div class="pack-val">₹100</div>
+            <div class="pack-leads">400 Leads</div>
+          </div>
+          <div class="pack-card popular active" onclick="selectRechargePack(250)" id="pack250">
+            <div class="pack-badge">Best Value</div>
+            <div class="pack-val">₹250</div>
+            <div class="pack-leads">1,000 Leads</div>
+          </div>
+          <div class="pack-card" onclick="selectRechargePack(500)" id="pack500">
+            <div class="pack-val">₹500</div>
+            <div class="pack-leads">2,000 Leads</div>
+          </div>
+          <div class="pack-card" onclick="selectRechargePack(1000)" id="pack1000">
+            <div class="pack-val">₹1,000</div>
+            <div class="pack-leads">4,000 Leads</div>
+          </div>
+        </div>
+
+        <!-- Custom Amount -->
+        <div class="form-group">
+          <label class="form-label">Or Custom Amount (₹)</label>
+          <input type="number" id="customRechargeAmount" class="form-control" placeholder="Enter amount (min ₹10)" value="250" min="10" oninput="handleCustomAmount(this.value)" />
+        </div>
+
+        <!-- Pay Button -->
+        <button id="btnPayRazorpay" type="button" class="btn-compact btn-emerald-glass" style="width: 100%; height: 44px; margin-top: 8px; font-size: 0.88rem;" onclick="executeRazorpayPayment()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          <span id="payBtnLabel">Pay ₹250 via Razorpay (UPI, GPay, Cards)</span>
+        </button>
+
+        <div style="font-size: 0.72rem; color: #64748b; text-align: center; margin-top: 10px;">
+          Instant 256-bit encrypted checkout. Leads are billed automatically at flat ₹0.25 per extracted result.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER TRANSACTIONS & AUDIT MODAL -->
+  <div id="txHistoryModal" class="modal-backdrop" onclick="closeTransactionsModal(event)">
+    <div class="modal-glass-sheet" style="max-width: 680px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span>Wallet Transactions & Scrapes History</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeTransactionsModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="table-scroll-wrap" style="max-height: 400px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Balance After</th>
+              </tr>
+            </thead>
+            <tbody id="userTxTableBody">
+              <tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 25px;">Loading transaction history...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Container -->
   <div id="toastTray" class="toast-tray"></div>
 
@@ -1455,6 +2107,414 @@
     let currentFilterTab = 'all'; // 'all' | 'phone' | 'website'
     let lastDownloadUrl = null;
     let previewDebounce = null;
+
+    // User Auth & In-App Wallet State
+    let currentUser = null;
+    let currentUserToken = localStorage.getItem('auth_token') || '';
+    let selectedRecharge = 250;
+
+    // Check user session
+    async function checkAuthSession() {
+      try {
+        const headers = {};
+        if (currentUserToken) headers['Authorization'] = `Bearer ${currentUserToken}`;
+        const res = await fetch('/api/auth/me', { headers });
+        const data = await res.json();
+        if (data.authenticated && data.user) {
+          currentUser = data.user;
+          updateUserHeaderUI();
+        } else {
+          currentUser = null;
+          updateUserHeaderUI();
+        }
+      } catch (e) {
+        currentUser = null;
+        updateUserHeaderUI();
+      }
+    }
+
+    function updateUserHeaderUI() {
+      const walletBadge = document.getElementById('walletBadge');
+      const userProfileWrap = document.getElementById('userProfileWrap');
+      const authGuestWrap = document.getElementById('authGuestWrap');
+      const adminLink = document.getElementById('adminPortalLink');
+
+      if (currentUser) {
+        walletBadge.style.display = 'inline-flex';
+        userProfileWrap.style.display = 'block';
+        authGuestWrap.style.display = 'none';
+
+        const bal = Number(currentUser.wallet_balance || 0);
+        document.getElementById('headerWalletBal').textContent = `₹${bal.toFixed(2)}`;
+        document.getElementById('navUserName').textContent = (currentUser.name || 'Account').split(' ')[0];
+        document.getElementById('avatarInitial').textContent = (currentUser.name ? currentUser.name[0] : 'U').toUpperCase();
+
+        document.getElementById('dropdownUserName').textContent = currentUser.name;
+        document.getElementById('dropdownUserEmail').textContent = currentUser.email;
+        document.getElementById('dropdownUserPhone').textContent = currentUser.phone ? `+91 ${currentUser.phone}` : 'No mobile registered';
+        document.getElementById('dropdownWalletBal').textContent = `₹${bal.toFixed(2)}`;
+        
+        const leadsAvailable = Math.floor(bal / 0.25);
+        document.getElementById('dropdownLeadsCount').textContent = `≈ ${leadsAvailable.toLocaleString()} Leads Available`;
+        document.getElementById('modalWalletAmount').textContent = `₹${bal.toFixed(2)}`;
+        document.getElementById('modalAvailableLeads').textContent = `≈ ${leadsAvailable.toLocaleString()} Leads Available`;
+
+        if (currentUser.role === 'admin') {
+          adminLink.style.display = 'flex';
+        } else {
+          adminLink.style.display = 'none';
+        }
+      } else {
+        walletBadge.style.display = 'none';
+        userProfileWrap.style.display = 'none';
+        authGuestWrap.style.display = 'flex';
+        document.getElementById('profileDropdown').classList.remove('show');
+      }
+    }
+
+    function toggleProfileDropdown(e) {
+      if (e) e.stopPropagation();
+      const drop = document.getElementById('profileDropdown');
+      drop.classList.toggle('show');
+    }
+
+    document.addEventListener('click', (e) => {
+      const drop = document.getElementById('profileDropdown');
+      if (drop && drop.classList.contains('show') && !e.target.closest('#userProfileWrap')) {
+        drop.classList.remove('show');
+      }
+    });
+
+    function openAuthModal(tab = 'signup') {
+      switchAuthTab(tab);
+      document.getElementById('authModal').style.display = 'flex';
+    }
+
+    function closeAuthModal(e) {
+      if (!e || e.target.id === 'authModal' || (e.target.closest && e.target.closest('.modal-close-btn'))) {
+        document.getElementById('authModal').style.display = 'none';
+      }
+    }
+
+    function switchAuthTab(tab) {
+      const tabLogin = document.getElementById('authTabLogin');
+      const tabSignup = document.getElementById('authTabSignup');
+      const formLogin = document.getElementById('loginForm');
+      const formSignup = document.getElementById('signupForm');
+
+      if (tab === 'login') {
+        tabLogin.classList.add('active');
+        tabSignup.classList.remove('active');
+        formLogin.style.display = 'block';
+        formSignup.style.display = 'none';
+      } else {
+        tabSignup.classList.add('active');
+        tabLogin.classList.remove('active');
+        formSignup.style.display = 'block';
+        formLogin.style.display = 'none';
+      }
+    }
+
+    async function handleUserLoginSubmit(e) {
+      e.preventDefault();
+      const identifier = document.getElementById('loginIdentifier').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier, password })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.error || 'Login failed.');
+          return;
+        }
+
+        currentUser = data.user;
+        currentUserToken = data.token;
+        localStorage.setItem('auth_token', data.token);
+        updateUserHeaderUI();
+        closeAuthModal();
+        showToast(`Welcome back, ${currentUser.name}!`);
+      } catch (err) {
+        showToast('Login error: ' + err.message);
+      }
+    }
+
+    async function handleUserSignupSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const phone = document.getElementById('signupPhone').value.trim();
+      const password = document.getElementById('signupPassword').value;
+
+      try {
+        const res = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, phone, password })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.error || 'Registration failed.');
+          return;
+        }
+
+        currentUser = data.user;
+        currentUserToken = data.token;
+        localStorage.setItem('auth_token', data.token);
+        updateUserHeaderUI();
+        closeAuthModal();
+        showToast(`Welcome ${currentUser.name}! ₹100 Free Bonus credited.`);
+      } catch (err) {
+        showToast('Registration error: ' + err.message);
+      }
+    }
+
+    async function triggerGoogleAuth() {
+      const name = prompt("Enter your Name for Google Account:", currentUser ? currentUser.name : "Google User");
+      if (!name) return;
+      const email = prompt("Enter your Google Email Address:", (name.toLowerCase().replace(/[^a-z]/g, '') || 'user') + "@gmail.com");
+      if (!email) return;
+
+      try {
+        const res = await fetch('/api/auth/google', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, google_id: 'goog_' + Date.now() })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.error || 'Google auth failed.');
+          return;
+        }
+
+        currentUser = data.user;
+        currentUserToken = data.token;
+        localStorage.setItem('auth_token', data.token);
+        updateUserHeaderUI();
+        closeAuthModal();
+        showToast(`Signed in with Google as ${currentUser.name}!`);
+      } catch (err) {
+        showToast('Google auth error: ' + err.message);
+      }
+    }
+
+    async function handleUserLogout() {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST' });
+      } catch (e) {}
+      currentUser = null;
+      currentUserToken = '';
+      localStorage.removeItem('auth_token');
+      updateUserHeaderUI();
+      showToast('Signed out successfully.');
+    }
+
+    // IN-APP WALLET & RAZORPAY PAYMENT
+    function openWalletModal() {
+      if (!currentUser) {
+        showToast('Please sign in to access your wallet.');
+        openAuthModal('signup');
+        return;
+      }
+      selectRechargePack(250);
+      document.getElementById('walletModal').style.display = 'flex';
+      updateUserHeaderUI();
+    }
+
+    function closeWalletModal(e) {
+      if (!e || e.target.id === 'walletModal' || (e.target.closest && e.target.closest('.modal-close-btn'))) {
+        document.getElementById('walletModal').style.display = 'none';
+      }
+    }
+
+    function selectRechargePack(amount) {
+      selectedRecharge = amount;
+      document.querySelectorAll('.pack-card').forEach(c => c.classList.remove('active'));
+      const activeCard = document.getElementById(`pack${amount}`);
+      if (activeCard) activeCard.classList.add('active');
+
+      document.getElementById('customRechargeAmount').value = amount;
+      document.getElementById('payBtnLabel').textContent = `Pay ₹${amount} via Razorpay (UPI, GPay, Cards)`;
+    }
+
+    function handleCustomAmount(val) {
+      const num = parseFloat(val) || 0;
+      selectedRecharge = num;
+      document.querySelectorAll('.pack-card').forEach(c => c.classList.remove('active'));
+      const matchingPack = document.getElementById(`pack${num}`);
+      if (matchingPack) matchingPack.classList.add('active');
+
+      document.getElementById('payBtnLabel').textContent = `Pay ₹${num} via Razorpay (UPI, GPay, Cards)`;
+    }
+
+    async function executeRazorpayPayment() {
+      if (!currentUser) {
+        openAuthModal('signup');
+        return;
+      }
+      const amount = parseFloat(document.getElementById('customRechargeAmount').value) || selectedRecharge;
+      if (amount < 10) {
+        showToast('Minimum recharge amount is ₹10.');
+        return;
+      }
+
+      const btn = document.getElementById('btnPayRazorpay');
+      btn.disabled = true;
+      btn.textContent = 'Initiating Secure Order...';
+
+      try {
+        const orderRes = await fetch('/api/wallet/create-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentUserToken}`
+          },
+          body: JSON.stringify({ amount })
+        });
+        const orderData = await orderRes.json();
+        if (!orderRes.ok) {
+          showToast(orderData.error || 'Failed to create payment order.');
+          btn.disabled = false;
+          selectRechargePack(amount);
+          return;
+        }
+
+        if (orderData.is_simulation) {
+          const proceed = confirm(`Test Simulation Mode:\nRazorpay API keys not yet configured in /admin.\n\nSimulate successful payment of ₹${amount} to top-up wallet?`);
+          if (proceed) {
+            const verifyRes = await fetch('/api/wallet/verify-payment', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${currentUserToken}`
+              },
+              body: JSON.stringify({
+                razorpay_order_id: orderData.order_id,
+                razorpay_payment_id: 'pay_sim_' + Date.now(),
+                razorpay_signature: 'sim_sig',
+                is_simulation: true
+              })
+            });
+            const vData = await verifyRes.json();
+            if (verifyRes.ok) {
+              currentUser.wallet_balance = vData.new_balance;
+              updateUserHeaderUI();
+              closeWalletModal();
+              showToast(`Wallet recharged! ₹${amount} added. New balance: ₹${vData.new_balance.toFixed(2)}`);
+            } else {
+              showToast(vData.error || 'Payment verification failed.');
+            }
+          }
+          btn.disabled = false;
+          selectRechargePack(amount);
+        } else {
+          const options = {
+            key: orderData.key_id,
+            amount: Math.round(amount * 100),
+            currency: 'INR',
+            name: 'LeadScrapper',
+            description: `Wallet Recharge (≈ ${(amount / 0.25).toLocaleString()} leads)`,
+            order_id: orderData.order_id,
+            prefill: {
+              name: currentUser.name,
+              email: currentUser.email,
+              contact: currentUser.phone || ''
+            },
+            theme: { color: '#2563eb' },
+            handler: async function (response) {
+              showToast('Verifying payment cryptographically...');
+              const vRes = await fetch('/api/wallet/verify-payment', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${currentUserToken}`
+                },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature
+                })
+              });
+              const vData = await vRes.json();
+              if (vRes.ok) {
+                if (vData.status === 'approved') {
+                  currentUser.wallet_balance = vData.new_balance;
+                  updateUserHeaderUI();
+                  closeWalletModal();
+                  showToast(`Wallet recharged! ₹${amount} added. New balance: ₹${vData.new_balance.toFixed(2)}`);
+                } else {
+                  closeWalletModal();
+                  showToast('Payment recorded. Awaiting Admin Approval.');
+                }
+              } else {
+                showToast(vData.error || 'Payment signature verification failed.');
+              }
+            },
+            modal: {
+              ondismiss: function () {
+                btn.disabled = false;
+                selectRechargePack(amount);
+              }
+            }
+          };
+
+          const rzp = new Razorpay(options);
+          rzp.open();
+        }
+      } catch (err) {
+        showToast('Payment error: ' + err.message);
+        btn.disabled = false;
+        selectRechargePack(amount);
+      }
+    }
+
+    // USER TRANSACTIONS MODAL
+    async function openTransactionsModal() {
+      if (!currentUser) return;
+      document.getElementById('txHistoryModal').style.display = 'flex';
+      const tbody = document.getElementById('userTxTableBody');
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 25px;">Loading transaction history...</td></tr>`;
+
+      try {
+        const res = await fetch('/api/wallet/transactions', {
+          headers: { 'Authorization': `Bearer ${currentUserToken}` }
+        });
+        const data = await res.json();
+        const txs = data.transactions || [];
+        if (!txs.length) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 25px;">No transactions recorded yet.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = txs.map(t => `
+          <tr>
+            <td style="color: #64748b; font-size: 0.75rem;">${t.created_at}</td>
+            <td>
+              <span class="status-badge ${t.type === 'credit' ? 'badge-approved' : 'badge-rejected'}" style="font-size: 0.7rem; padding: 2px 7px;">
+                ${t.type.toUpperCase()}
+              </span>
+            </td>
+            <td style="font-weight: 600; color: #1e293b;">${escapeHtml(t.description)}</td>
+            <td style="font-weight: 800; color: ${t.type === 'credit' ? '#16a34a' : '#dc2626'};">
+              ${t.type === 'credit' ? '+' : '-'}₹${Number(t.amount).toFixed(2)}
+            </td>
+            <td style="font-weight: 700; color: #0f172a;">₹${Number(t.balance_after).toFixed(2)}</td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #ef4444; padding: 25px;">Error: ${escapeHtml(e.message)}</td></tr>`;
+      }
+    }
+
+    function closeTransactionsModal(e) {
+      if (!e || e.target.id === 'txHistoryModal' || (e.target.closest && e.target.closest('.modal-close-btn'))) {
+        document.getElementById('txHistoryModal').style.display = 'none';
+      }
+    }
 
     // Set query
     function setQuery(text) {
@@ -1542,8 +2602,23 @@
       }, 3500);
     }
 
-    // START SCRAPING
+    // START SCRAPING (Protected by User Auth & Flat ₹0.25/Lead Rate)
     async function startScraping() {
+      // 1. Enforce Authentication
+      if (!currentUser) {
+        showToast('Please sign in or create an account to start scraping leads. (Claim ₹100 Free Bonus!)');
+        openAuthModal('signup');
+        return;
+      }
+
+      // 2. Enforce Minimum Wallet Balance (At least ₹0.25 for 1 lead)
+      const bal = Number(currentUser.wallet_balance || 0);
+      if (bal < 0.25) {
+        showToast(`Insufficient wallet balance (₹${bal.toFixed(2)}). Minimum ₹0.25 required to search.`);
+        openWalletModal();
+        return;
+      }
+
       const query = document.getElementById('searchInput').value.trim();
       const batchText = document.getElementById('batchQueriesInput').value.trim();
       const limitVal = document.getElementById('selectedLimit').value;
@@ -1554,7 +2629,7 @@
         query: query,
         queries: batchText ? batchText.split('\n').filter(l => l.trim()) : null,
         max_results: limitVal ? parseInt(limitVal) : null,
-        require_phone: false, // Always preserve all leads in CSV!
+        require_phone: false,
         district_deep: districtDeep,
         output_name: query.toLowerCase().replace(/[^a-z0-9]/g, '_') || 'leads'
       };
@@ -1569,13 +2644,28 @@
       document.getElementById('completionBanner').style.display = 'none';
       setRunningUI(true);
 
+      const headers = { 'Content-Type': 'application/json' };
+      if (currentUserToken) headers['Authorization'] = `Bearer ${currentUserToken}`;
+
       try {
         const res = await fetch('/api/scrape/start', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: headers,
           body: JSON.stringify(payload)
         });
         const data = await res.json();
+        if (res.status === 401) {
+          showToast('Authentication required. Please sign in.');
+          openAuthModal('login');
+          setRunningUI(false);
+          return;
+        }
+        if (res.status === 402 || data.needs_recharge) {
+          showToast(data.error || 'Insufficient wallet balance. Please add funds.');
+          openWalletModal();
+          setRunningUI(false);
+          return;
+        }
         if (!res.ok) {
           showToast(data.error || 'Failed to start.');
           setRunningUI(false);
@@ -1899,10 +2989,23 @@
           downloadAnchor.remove();
         }
       });
+
+      // Real-Time In-App Wallet Updates
+      eventSource.addEventListener('wallet_update', e => {
+        try {
+          const d = JSON.parse(e.data);
+          if (currentUser && currentUser.id === d.user_id) {
+            currentUser.wallet_balance = d.new_balance;
+            updateUserHeaderUI();
+            showToast(`Wallet: Deducted ₹${Number(d.cost_deducted).toFixed(2)} for ${d.lead_count} leads (@ ₹0.25/lead). Balance: ₹${Number(d.new_balance).toFixed(2)}`);
+          }
+        } catch (ex) {}
+      });
     }
 
     // Initialize
     window.addEventListener('DOMContentLoaded', () => {
+      checkAuthSession();
       connectSSE();
       checkDistrictExpansion(document.getElementById('searchInput').value);
     });

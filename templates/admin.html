@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal - LeadScrapper</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    :root {
+      --bg-base: #f8fafc;
+      --surface-glass: rgba(255, 255, 255, 0.85);
+      --surface-card: #ffffff;
+      --border-subtle: rgba(226, 232, 240, 0.8);
+      --border-accent: rgba(59, 130, 246, 0.3);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #16a34a;
+      --success-bg: #dcfce7;
+      --warning: #d97706;
+      --warning-bg: #fef3c7;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-glass: 0 10px 30px -5px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: #ffffff;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(239, 246, 255, 0.8) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(243, 232, 255, 0.6) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(240, 253, 250, 0.7) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation */
+    .admin-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-badge {
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-secondary {
+      background: white;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-secondary:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-danger {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid rgba(220, 38, 38, 0.2);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-danger:hover {
+      background: #fee2e2;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-success:hover {
+      background: #15803d;
+    }
+
+    /* Container */
+    .admin-container {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      flex: 1;
+    }
+
+    /* Tabs Header */
+    .tabs-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 6px;
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      background: white;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .tab-badge {
+      background: #fee2e2;
+      color: var(--danger);
+      font-size: 0.72rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    /* Metric Cards Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .metric-card {
+      background: var(--surface-glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-glass);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.06);
+    }
+
+    .metric-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .metric-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .metric-icon-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #eff6ff;
+      color: var(--primary);
+    }
+
+    .metric-value {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.03em;
+    }
+
+    .metric-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Glass Card Panel */
+    .panel-card {
+      background: var(--surface-glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-glass);
+      margin-bottom: 24px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .panel-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    thead th {
+      background: #f8fafc;
+      padding: 12px 16px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-subtle);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: #fbfcfe;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
+    .badge-approved {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid rgba(22, 163, 74, 0.2);
+    }
+
+    .badge-pending {
+      background: var(--warning-bg);
+      color: var(--warning);
+      border: 1px solid rgba(217, 119, 6, 0.2);
+    }
+
+    .badge-rejected {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid rgba(220, 38, 38, 0.2);
+    }
+
+    .badge-user {
+      background: #eff6ff;
+      color: #2563eb;
+    }
+
+    .badge-admin {
+      background: #f3e8ff;
+      color: #7c3aed;
+    }
+
+    /* Settings Form */
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .setting-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .setting-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .setting-hint {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .input-control {
+      padding: 10px 14px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      background: white;
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .input-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: white;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transform: scale(0.95);
+      transition: transform 0.2s ease;
+    }
+
+    .modal-backdrop.open .modal-box {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border-radius: 6px;
+    }
+    .close-btn:hover {
+      background: #f1f5f9;
+      color: var(--text-main);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: white;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Monospace file tags */
+    .mono-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #334155;
+    }
+
+    /* Auth Guard Overlay */
+    #authOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .auth-card {
+      background: white;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Admin Navigation Header -->
+  <header class="admin-nav">
+    <div class="brand-group">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+      </div>
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="brand-title">LeadScrapper</span>
+          <span class="brand-badge">Admin Suite</span>
+        </div>
+        <div style="font-size: 0.72rem; color: var(--text-muted);">Production Management Portal</div>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <a href="/" class="btn-secondary" title="Switch to user view">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+        Back to Scraper
+      </a>
+      <button onclick="handleAdminLogout()" class="btn-secondary" style="color: var(--danger);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Sign Out
+      </button>
+    </div>
+  </header>
+
+  <!-- Admin Main Container -->
+  <main class="admin-container">
+    
+    <!-- Top Stats Row -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-top">
+          <span class="metric-label">Total Users</span>
+          <div class="metric-icon-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+        </div>
+        <div class="metric-value" id="statUsers">--</div>
+        <div class="metric-sub">Registered accounts</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-top">
+          <span class="metric-label">Leads Scraped</span>
+          <div class="metric-icon-box" style="background: #f0fdf4; color: #16a34a;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+        </div>
+        <div class="metric-value" id="statLeads">--</div>
+        <div class="metric-sub" id="statCostLabel">@ ₹0.25 flat per lead</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-top">
+          <span class="metric-label">Total Revenue</span>
+          <div class="metric-icon-box" style="background: #eff6ff; color: #2563eb;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="23"/>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+        </div>
+        <div class="metric-value" id="statRevenue">₹0.00</div>
+        <div class="metric-sub">Approved top-up payments</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-top">
+          <span class="metric-label">Pending Approvals</span>
+          <div class="metric-icon-box" style="background: #fef3c7; color: #d97706;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+        </div>
+        <div class="metric-value" id="statPending">0</div>
+        <div class="metric-sub" id="statModeBadge">Mode: Auto-Approve</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('users')" id="tabBtnUsers">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Users & Wallets
+      </button>
+
+      <button class="tab-btn" onclick="switchTab('payments')" id="tabBtnPayments">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+          <line x1="1" y1="10" x2="23" y2="10"/>
+        </svg>
+        Payments & Approvals
+        <span class="tab-badge" id="pendingPill" style="display: none;">0</span>
+      </button>
+
+      <button class="tab-btn" onclick="switchTab('scrapes')" id="tabBtnScrapes">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        Scraped Files & Audits
+      </button>
+
+      <button class="tab-btn" onclick="switchTab('settings')" id="tabBtnSettings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        Pricing & Settings
+      </button>
+    </div>
+
+    <!-- TAB 1: USERS MANAGEMENT -->
+    <section id="panelUsers" class="panel-card">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">User Accounts & Balances</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Manage member accounts, wallet balances, and access privileges.</div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="userSearchInput" placeholder="Search by name, email, phone..." class="input-control" style="width: 280px;" oninput="filterUsersTable()">
+          <button onclick="loadUsers()" class="btn-secondary" title="Refresh Users">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"/>
+              <polyline points="1 20 1 14 7 14"/>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User</th>
+              <th>Contact Details</th>
+              <th>Wallet Balance</th>
+              <th>Leads Scraped</th>
+              <th>Total Paid</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody">
+            <tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 32px;">Loading registered users...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 2: PAYMENTS & APPROVALS -->
+    <section id="panelPayments" class="panel-card" style="display: none;">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Razorpay Payments & Approvals</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">View all transaction records and approve pending manual wallet recharges.</div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button onclick="loadPayments()" class="btn-secondary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"/>
+              <polyline points="1 20 1 14 7 14"/>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User</th>
+              <th>Amount (₹)</th>
+              <th>Razorpay Order ID</th>
+              <th>Payment ID</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="paymentsTableBody">
+            <tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 32px;">Loading payment records...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 3: SCRAPES AUDIT LOG -->
+    <section id="panelScrapes" class="panel-card" style="display: none;">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">All Scraped Extractions</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Audit log of all queries extracted across the platform with direct downloads.</div>
+        </div>
+        <button onclick="loadScrapes()" class="btn-secondary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"/>
+            <polyline points="1 20 1 14 7 14"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+          Refresh
+        </button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User</th>
+              <th>Query / Target</th>
+              <th>Leads Extracted</th>
+              <th>Cost Deducted</th>
+              <th>CSV File</th>
+              <th>Timestamp</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="scrapesTableBody">
+            <tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 32px;">Loading scrape history...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 4: SYSTEM & PRICING SETTINGS -->
+    <section id="panelSettings" class="panel-card" style="display: none;">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Pricing & Platform Settings</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Configure lead billing rates, free bonus, approval mode, and payment keys.</div>
+        </div>
+      </div>
+
+      <form id="settingsForm" onsubmit="saveSettings(event)" class="settings-grid">
+        <div class="setting-item">
+          <label class="setting-label">Cost Per Lead (₹)</label>
+          <input type="number" step="0.01" min="0" id="setCostPerLead" class="input-control" required>
+          <span class="setting-hint">Flat price per lead extracted (Default: ₹0.25 = 25 paise per lead).</span>
+        </div>
+
+        <div class="setting-item">
+          <label class="setting-label">Free Signup Bonus (₹)</label>
+          <input type="number" step="1" min="0" id="setSignupBonus" class="input-control" required>
+          <span class="setting-hint">Free wallet balance granted to each new registration (Default: ₹100 = 400 free leads).</span>
+        </div>
+
+        <div class="setting-item">
+          <label class="setting-label">Payment Approval Mode</label>
+          <select id="setApprovalMode" class="input-control">
+            <option value="auto">Auto-Approve (Instant wallet credit on payment verification)</option>
+            <option value="manual">Manual Approval (Admin reviews and approves in this portal)</option>
+          </select>
+          <span class="setting-hint">Switch between zero-touch auto-credit or manual administrative approval.</span>
+        </div>
+
+        <div class="setting-item">
+          <label class="setting-label">Razorpay Key ID</label>
+          <input type="text" id="setRzpKeyId" class="input-control" placeholder="rzp_live_... or rzp_test_...">
+          <span class="setting-hint">From Razorpay Dashboard -> Settings -> API Keys.</span>
+        </div>
+
+        <div class="setting-item">
+          <label class="setting-label">Razorpay Key Secret</label>
+          <input type="password" id="setRzpSecret" class="input-control" placeholder="Enter new secret to update">
+          <span class="setting-hint" id="rzpSecretMasked">Configured secret is securely stored.</span>
+        </div>
+
+        <div style="grid-column: 1 / -1; margin-top: 12px; display: flex; justify-content: flex-end;">
+          <button type="submit" class="btn-primary" style="padding: 12px 28px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/>
+              <polyline points="7 3 7 8 15 8"/>
+            </svg>
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- Adjust Wallet Modal -->
+  <div class="modal-backdrop" id="walletModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title" id="modalUserName">Adjust User Wallet</div>
+        <button class="close-btn" onclick="closeModal('walletModal')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form onsubmit="submitWalletAdjustment(event)" style="display: flex; flex-direction: column; gap: 14px;">
+        <input type="hidden" id="adjustUserId">
+        <div class="setting-item">
+          <label class="setting-label">Amount (₹)</label>
+          <input type="number" step="0.5" id="adjustAmount" class="input-control" placeholder="e.g. 100 or -50" required>
+          <span class="setting-hint">Use positive value to credit funds, negative to deduct.</span>
+        </div>
+        <div class="setting-item">
+          <label class="setting-label">Reason / Reference</label>
+          <input type="text" id="adjustReason" class="input-control" placeholder="e.g. Loyalty Bonus or Refund" required>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px;">
+          <button type="button" onclick="closeModal('walletModal')" class="btn-secondary">Cancel</button>
+          <button type="submit" class="btn-primary">Update Balance</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Auth Required Overlay for Non-Admins -->
+  <div id="authOverlay">
+    <div class="auth-card">
+      <div style="width: 50px; height: 50px; border-radius: 14px; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+      <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px;">Admin Authorization Required</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px;">Please sign in with administrator credentials to access the platform control center.</p>
+      <form onsubmit="handleAdminLogin(event)" style="display: flex; flex-direction: column; gap: 12px; text-align: left;">
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 600;">Email or Mobile</label>
+          <input type="text" id="adminEmailInput" class="input-control" style="width: 100%; margin-top: 4px;" value="admin@leadscrapper.com" required>
+        </div>
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 600;">Password</label>
+          <input type="password" id="adminPwdInput" class="input-control" style="width: 100%; margin-top: 4px;" placeholder="Enter password" required>
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 8px; padding: 12px;">Sign In to Admin</button>
+        <a href="/" style="font-size: 0.82rem; color: var(--text-muted); text-align: center; text-decoration: none; margin-top: 6px;">Return to Scraper</a>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <span id="toastMsg">Action completed</span>
+  </div>
+
+  <script>
+    let allUsersData = [];
+    let currentAdminToken = localStorage.getItem("auth_token") || "";
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      document.getElementById("toastMsg").innerText = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 3500);
+    }
+
+    function getAuthHeaders() {
+      const headers = { "Content-Type": "application/json" };
+      if (currentAdminToken) {
+        headers["Authorization"] = `Bearer ${currentAdminToken}`;
+      }
+      return headers;
+    }
+
+    // Tab Switching
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".panel-card").forEach(p => p.style.display = "none");
+
+      if (tabId === "users") {
+        document.getElementById("tabBtnUsers").classList.add("active");
+        document.getElementById("panelUsers").style.display = "block";
+        loadUsers();
+      } else if (tabId === "payments") {
+        document.getElementById("tabBtnPayments").classList.add("active");
+        document.getElementById("panelPayments").style.display = "block";
+        loadPayments();
+      } else if (tabId === "scrapes") {
+        document.getElementById("tabBtnScrapes").classList.add("active");
+        document.getElementById("panelScrapes").style.display = "block";
+        loadScrapes();
+      } else if (tabId === "settings") {
+        document.getElementById("tabBtnSettings").classList.add("active");
+        document.getElementById("panelSettings").style.display = "block";
+        loadSettings();
+      }
+    }
+
+    // Initial Auth Check & Dashboard Load
+    async function initAdmin() {
+      try {
+        const res = await fetch("/api/admin/stats", { headers: getAuthHeaders() });
+        if (res.status === 401 || res.status === 403) {
+          document.getElementById("authOverlay").style.display = "flex";
+          return;
+        }
+        document.getElementById("authOverlay").style.display = "none";
+        const stats = await res.json();
+        renderStats(stats);
+        loadUsers();
+      } catch (e) {
+        document.getElementById("authOverlay").style.display = "flex";
+      }
+    }
+
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const identifier = document.getElementById("adminEmailInput").value.trim();
+      const password = document.getElementById("adminPwdInput").value;
+
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ identifier, password })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          alert(data.error || "Login failed");
+          return;
+        }
+
+        if (data.user && data.user.role !== "admin") {
+          alert("Access denied: You must be an administrator to access this area.");
+          return;
+        }
+
+        currentAdminToken = data.token;
+        localStorage.setItem("auth_token", data.token);
+        document.getElementById("authOverlay").style.display = "none";
+        showToast("Signed in as Administrator");
+        initAdmin();
+      } catch (err) {
+        alert("Server error: " + err.message);
+      }
+    }
+
+    async function handleAdminLogout() {
+      await fetch("/api/auth/logout", { method: "POST" });
+      localStorage.removeItem("auth_token");
+      window.location.href = "/";
+    }
+
+    function renderStats(s) {
+      document.getElementById("statUsers").innerText = s.users_count || 0;
+      document.getElementById("statLeads").innerText = (s.total_leads_scraped || 0).toLocaleString();
+      document.getElementById("statRevenue").innerText = `₹${(s.total_revenue || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      document.getElementById("statPending").innerText = s.pending_payments || 0;
+      document.getElementById("statCostLabel").innerText = `@ ₹${s.cost_per_lead || '0.25'} flat per lead`;
+      
+      const modeText = s.payment_mode === "auto" ? "Mode: Auto-Approve" : "Mode: Manual Review";
+      document.getElementById("statModeBadge").innerText = modeText;
+
+      const pill = document.getElementById("pendingPill");
+      if (s.pending_payments > 0) {
+        pill.innerText = s.pending_payments;
+        pill.style.display = "inline-block";
+      } else {
+        pill.style.display = "none";
+      }
+    }
+
+    // Load Users
+    async function loadUsers() {
+      try {
+        const res = await fetch("/api/admin/users", { headers: getAuthHeaders() });
+        const data = await res.json();
+        allUsersData = data.users || [];
+        renderUsersTable(allUsersData);
+      } catch (e) {
+        console.error("Error loading users:", e);
+      }
+    }
+
+    function renderUsersTable(users) {
+      const tbody = document.getElementById("usersTableBody");
+      if (!users.length) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 32px;">No registered users found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = users.map(u => `
+        <tr>
+          <td><span class="mono-tag">#${u.id}</span></td>
+          <td>
+            <div style="font-weight: 700; color: var(--text-main);">${escapeHtml(u.name)}</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Joined: ${u.created_at.split(' ')[0]}</div>
+          </td>
+          <td>
+            <div style="font-size: 0.82rem; font-weight: 500;">${escapeHtml(u.email)}</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">${escapeHtml(u.phone || 'No phone')}</div>
+          </td>
+          <td>
+            <div style="font-weight: 800; color: ${u.wallet_balance > 0 ? '#16a34a' : '#dc2626'}; font-size: 0.95rem;">
+              ₹${Number(u.wallet_balance).toFixed(2)}
+            </div>
+          </td>
+          <td><span style="font-weight: 600;">${u.total_leads.toLocaleString()}</span></td>
+          <td><span style="font-weight: 600;">₹${Number(u.total_paid).toFixed(2)}</span></td>
+          <td>
+            <span class="status-badge ${u.role === 'admin' ? 'badge-admin' : 'badge-user'}">${u.role.toUpperCase()}</span>
+          </td>
+          <td>
+            <span class="status-badge ${u.is_banned ? 'badge-rejected' : 'badge-approved'}">
+              ${u.is_banned ? 'SUSPENDED' : 'ACTIVE'}
+            </span>
+          </td>
+          <td>
+            <div style="display: flex; gap: 6px;">
+              <button onclick="openWalletModal(${u.id}, '${escapeHtml(u.name)}', ${u.wallet_balance})" class="btn-secondary" style="padding: 4px 10px; font-size: 0.78rem;" title="Adjust Wallet">
+                Adjust ₹
+              </button>
+              ${u.role !== 'admin' ? `
+                <button onclick="toggleBanUser(${u.id})" class="btn-danger" style="padding: 4px 8px; font-size: 0.78rem;">
+                  ${u.is_banned ? 'Unban' : 'Ban'}
+                </button>
+              ` : ''}
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function filterUsersTable() {
+      const q = document.getElementById("userSearchInput").value.toLowerCase();
+      const filtered = allUsersData.filter(u => 
+        u.name.toLowerCase().includes(q) || 
+        u.email.toLowerCase().includes(q) || 
+        (u.phone && u.phone.includes(q))
+      );
+      renderUsersTable(filtered);
+    }
+
+    // Load Payments
+    async function loadPayments() {
+      try {
+        const res = await fetch("/api/admin/payments", { headers: getAuthHeaders() });
+        const data = await res.json();
+        const payments = data.payments || [];
+        renderPaymentsTable(payments);
+      } catch (e) {
+        console.error("Error loading payments:", e);
+      }
+    }
+
+    function renderPaymentsTable(pays) {
+      const tbody = document.getElementById("paymentsTableBody");
+      if (!pays.length) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 32px;">No payment transactions recorded yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = pays.map(p => {
+        let badgeClass = "badge-pending";
+        if (p.status === "approved") badgeClass = "badge-approved";
+        if (p.status === "rejected") badgeClass = "badge-rejected";
+
+        return `
+          <tr>
+            <td><span class="mono-tag">#${p.id}</span></td>
+            <td>
+              <div style="font-weight: 700;">${escapeHtml(p.user_name)}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">${escapeHtml(p.user_email)}</div>
+            </td>
+            <td>
+              <span style="font-weight: 800; font-size: 0.95rem; color: #16a34a;">₹${Number(p.amount).toFixed(2)}</span>
+            </td>
+            <td><span class="mono-tag">${escapeHtml(p.razorpay_order_id || 'Direct')}</span></td>
+            <td><span class="mono-tag">${escapeHtml(p.razorpay_payment_id || 'Pending')}</span></td>
+            <td><span class="status-badge" style="background: #f1f5f9; color: #475569;">${(p.approval_type || 'auto').toUpperCase()}</span></td>
+            <td><span class="status-badge ${badgeClass}">${p.status.toUpperCase()}</span></td>
+            <td style="font-size: 0.78rem; color: var(--text-muted);">${p.created_at}</td>
+            <td>
+              ${p.status === 'pending' ? `
+                <div style="display: flex; gap: 6px;">
+                  <button onclick="approvePayment(${p.id})" class="btn-success" title="Approve & Credit Wallet">
+                    Approve
+                  </button>
+                  <button onclick="rejectPayment(${p.id})" class="btn-danger" title="Reject Payment">
+                    Reject
+                  </button>
+                </div>
+              ` : `
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Resolved</span>
+              `}
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    async function approvePayment(id) {
+      if (!confirm(`Are you sure you want to approve Payment #${id}? This will credit the user's wallet balance immediately.`)) return;
+      try {
+        const res = await fetch(`/api/admin/payments/${id}/approve`, {
+          method: "POST",
+          headers: getAuthHeaders()
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast(`Payment #${id} approved! Credited ₹${data.amount}`);
+          loadPayments();
+          initAdmin();
+        } else {
+          alert(data.error || "Approval failed");
+        }
+      } catch (err) {
+        alert("Server error: " + err.message);
+      }
+    }
+
+    async function rejectPayment(id) {
+      if (!confirm(`Reject Payment #${id}?`)) return;
+      try {
+        const res = await fetch(`/api/admin/payments/${id}/reject`, {
+          method: "POST",
+          headers: getAuthHeaders()
+        });
+        if (res.ok) {
+          showToast(`Payment #${id} rejected.`);
+          loadPayments();
+          initAdmin();
+        }
+      } catch (err) {
+        alert("Server error: " + err.message);
+      }
+    }
+
+    // Load Scrapes
+    async function loadScrapes() {
+      try {
+        const res = await fetch("/api/admin/scrapes", { headers: getAuthHeaders() });
+        const data = await res.json();
+        const scrapes = data.scrapes || [];
+        renderScrapesTable(scrapes);
+      } catch (e) {
+        console.error("Error loading scrapes:", e);
+      }
+    }
+
+    function renderScrapesTable(scrapes) {
+      const tbody = document.getElementById("scrapesTableBody");
+      if (!scrapes.length) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 32px;">No scrape operations performed yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = scrapes.map(s => `
+        <tr>
+          <td><span class="mono-tag">#${s.id}</span></td>
+          <td>
+            <div style="font-weight: 700;">${escapeHtml(s.user_name)}</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">${escapeHtml(s.user_email)}</div>
+          </td>
+          <td>
+            <span style="font-weight: 600; color: #1e293b;">${escapeHtml(s.query)}</span>
+          </td>
+          <td><span style="font-weight: 800; color: #2563eb;">${s.lead_count.toLocaleString()}</span> leads</td>
+          <td><span style="font-weight: 700; color: #dc2626;">-₹${Number(s.cost_deducted).toFixed(2)}</span></td>
+          <td><span class="mono-tag">${escapeHtml(s.file_name)}</span></td>
+          <td style="font-size: 0.78rem; color: var(--text-muted);">${s.created_at}</td>
+          <td>
+            ${s.file_name ? `
+              <a href="/api/download/${encodeURIComponent(s.file_name)}" class="btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;">
+                Download CSV
+              </a>
+            ` : '--'}
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    // Load & Save Settings
+    async function loadSettings() {
+      try {
+        const res = await fetch("/api/admin/settings", { headers: getAuthHeaders() });
+        const data = await res.json();
+        document.getElementById("setCostPerLead").value = data.cost_per_lead || "0.25";
+        document.getElementById("setSignupBonus").value = data.signup_bonus || "100.0";
+        document.getElementById("setApprovalMode").value = data.payment_approval_mode || "auto";
+        document.getElementById("setRzpKeyId").value = data.razorpay_key_id || "";
+        document.getElementById("rzpSecretMasked").innerText = data.razorpay_key_secret_masked ? `Current Secret: ${data.razorpay_key_secret_masked}` : "No secret configured yet.";
+      } catch (e) {
+        console.error("Error loading settings:", e);
+      }
+    }
+
+    async function saveSettings(e) {
+      e.preventDefault();
+      const payload = {
+        cost_per_lead: document.getElementById("setCostPerLead").value,
+        signup_bonus: document.getElementById("setSignupBonus").value,
+        payment_approval_mode: document.getElementById("setApprovalMode").value,
+        razorpay_key_id: document.getElementById("setRzpKeyId").value.trim(),
+      };
+      const secret = document.getElementById("setRzpSecret").value.trim();
+      if (secret) {
+        payload.razorpay_key_secret = secret;
+      }
+
+      try {
+        const res = await fetch("/api/admin/settings", {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          showToast("Settings updated successfully!");
+          initAdmin();
+          document.getElementById("setRzpSecret").value = "";
+        } else {
+          alert("Failed to save settings");
+        }
+      } catch (err) {
+        alert("Server error: " + err.message);
+      }
+    }
+
+    // Modals & Adjustments
+    function openWalletModal(id, name, bal) {
+      document.getElementById("adjustUserId").value = id;
+      document.getElementById("modalUserName").innerText = `Adjust Wallet for ${name} (Current: ₹${Number(bal).toFixed(2)})`;
+      document.getElementById("adjustAmount").value = "";
+      document.getElementById("adjustReason").value = "Manual Administrative Credit";
+      document.getElementById("walletModal").classList.add("open");
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("open");
+    }
+
+    async function submitWalletAdjustment(e) {
+      e.preventDefault();
+      const id = document.getElementById("adjustUserId").value;
+      const amount = parseFloat(document.getElementById("adjustAmount").value);
+      const reason = document.getElementById("adjustReason").value.trim();
+
+      try {
+        const res = await fetch(`/api/admin/users/${id}/adjust-wallet`, {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ amount, reason })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          closeModal("walletModal");
+          showToast(`Wallet adjusted. New balance: ₹${data.new_balance.toFixed(2)}`);
+          loadUsers();
+        } else {
+          alert(data.error || "Adjustment failed");
+        }
+      } catch (err) {
+        alert("Server error: " + err.message);
+      }
+    }
+
+    async function toggleBanUser(id) {
+      if (!confirm("Are you sure you want to change this user's suspension status?")) return;
+      try {
+        const res = await fetch(`/api/admin/users/${id}/toggle-ban`, {
+          method: "POST",
+          headers: getAuthHeaders()
+        });
+        if (res.ok) {
+          showToast("User account status updated.");
+          loadUsers();
+        }
+      } catch (err) {
+        alert("Server error: " + err.message);
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Start on page load
+    document.addEventListener("DOMContentLoaded", initAdmin);
+  </script>
+</body>
+</html>
