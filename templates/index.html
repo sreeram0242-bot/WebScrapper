@@ -2,13 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Fast Map Leads — Glassmorphic Google Maps Scraper</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
+    /* CRITICAL MOBILE AUTO-ZOOM PREVENTION:
+       iOS & Android browsers auto-zoom the page if input font-size is < 16px.
+       Enforcing 16px font-size and touch-action manipulation permanently cures the zoom glitch! */
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+    button, a, input, select {
+      touch-action: manipulation;
+    }
     :root {
       /* Pure White Canvas */
       --canvas-bg: #ffffff;
@@ -1263,187 +1273,269 @@
     }
 
     /* ==========================================================================
-       MOBILE & TABLET RESPONSIVE PADDING & LAYOUT FIXES
+       MOBILE & TABLET RESPONSIVE PADDING & LAYOUT FIXES (PRO HIGH-LEGIBILITY & TOUCH TARGETS)
        ========================================================================== */
     @media (max-width: 768px) {
-      body {
+      html, body {
         overflow-x: hidden;
+        width: 100%;
+        max-width: 100vw;
+        -webkit-text-size-adjust: 100%;
       }
       .app-shell {
-        padding: 10px 12px 36px 12px;
+        padding: 12px 14px 44px 14px;
       }
       .glass-header {
-        padding: 10px 14px;
-        margin-bottom: 12px;
+        padding: 14px 16px;
+        margin-bottom: 16px;
         flex-direction: column;
         align-items: stretch;
-        gap: 10px;
+        gap: 12px;
+        border-radius: 18px;
       }
       .brand-section {
         justify-content: flex-start;
       }
       .brand-logo {
-        width: 34px;
-        height: 34px;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
       }
       .brand-title h1 {
-        font-size: 0.95rem;
+        font-size: 1.15rem;
+        font-weight: 800;
+        line-height: 1.2;
       }
       .brand-sub {
-        font-size: 0.68rem;
+        font-size: 0.82rem;
+        color: var(--text-muted);
+      }
+      .brand-badge {
+        font-size: 0.7rem;
+        padding: 3px 8px;
       }
       .header-controls {
         display: flex;
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        padding-top: 8px;
+        padding-top: 10px;
         border-top: 1px dashed rgba(226, 232, 240, 0.85);
+        gap: 8px;
+      }
+      .header-wallet-pill {
+        height: 44px;
+        padding: 0 14px;
+        font-size: 0.95rem;
+        font-weight: 800;
+        border-radius: 12px;
+      }
+      .btn-header-profile {
+        height: 44px;
+        padding: 0 14px;
+        font-size: 0.92rem;
+        font-weight: 700;
+        border-radius: 12px;
+      }
+      .header-controls .btn-compact {
+        height: 44px;
+        padding: 0 14px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        border-radius: 12px;
       }
 
       .main-layout {
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 16px;
       }
 
       .glass-card {
-        padding: 14px 12px;
-        border-radius: var(--radius-md);
+        padding: 18px 16px;
+        border-radius: 18px;
       }
       .section-title {
+        font-size: 1.05rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
+      .section-sub {
         font-size: 0.86rem;
-        margin-bottom: 8px;
+        line-height: 1.4;
+        margin-bottom: 14px;
       }
 
+      /* Search Input on Mobile - Strict 16px prevents mobile auto-zoom */
       .glass-input {
-        height: 42px;
-        font-size: 0.88rem;
-        padding-left: 38px;
+        height: 52px;
+        font-size: 16px !important;
+        padding-left: 46px;
+        border-radius: 14px;
       }
       .search-input-icon {
-        left: 12px;
+        left: 15px;
+        width: 20px;
+        height: 20px;
       }
 
       .quick-chips-row {
-        gap: 5px;
-        margin-bottom: 12px;
+        gap: 8px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
       }
       .quick-chip {
-        padding: 3px 8px;
-        font-size: 0.68rem;
+        padding: 8px 14px;
+        font-size: 0.84rem;
+        font-weight: 600;
+        border-radius: 999px;
+        min-height: 38px;
+        display: inline-flex;
+        align-items: center;
       }
 
       .district-deep-card {
-        padding: 10px 10px;
-        margin-bottom: 12px;
+        padding: 14px 14px;
+        margin-bottom: 14px;
+        border-radius: 14px;
       }
       .district-deep-text strong {
-        font-size: 0.78rem;
+        font-size: 0.92rem;
       }
       .district-deep-text span {
-        font-size: 0.66rem;
+        font-size: 0.82rem;
+        line-height: 1.35;
       }
       .district-chips-wrap {
-        max-height: 72px;
+        max-height: 110px;
+        gap: 6px;
       }
-
-      .limit-selector-grid {
-        gap: 5px;
-        margin-bottom: 12px;
-      }
-      .limit-pill {
-        height: 34px;
-        font-size: 0.72rem;
-        padding: 0 4px;
-      }
-
-      .form-actions-row {
-        margin-top: 10px;
-        gap: 8px;
-      }
-      .form-actions-row button {
-        height: 40px;
+      .district-chip {
+        padding: 6px 12px;
         font-size: 0.82rem;
       }
 
-      /* Stats Trio on Mobile: Clean 3-column compact stack */
+      /* Limit selector pills: Large 48px touch targets */
+      .limit-selector-grid {
+        gap: 8px;
+        margin-bottom: 16px;
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .limit-pill {
+        height: 48px;
+        font-size: 0.92rem;
+        font-weight: 700;
+        border-radius: 12px;
+        padding: 0 4px;
+      }
+
+      /* Action buttons stacked for maximum tap reliability */
+      .form-actions-row {
+        margin-top: 14px;
+        gap: 10px;
+        flex-direction: column;
+      }
+      .form-actions-row button {
+        height: 52px;
+        font-size: 1rem;
+        font-weight: 800;
+        border-radius: 14px;
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* Stats Trio on Mobile: Clean high-contrast cards */
       .stats-trio {
-        gap: 6px;
-        margin-bottom: 12px;
+        gap: 8px;
+        margin-bottom: 16px;
+        grid-template-columns: repeat(3, 1fr);
       }
       .stat-glass-card {
-        padding: 10px 8px;
-        gap: 6px;
+        padding: 14px 10px;
+        gap: 8px;
         flex-direction: column;
         align-items: flex-start;
+        border-radius: 14px;
       }
       .stat-icon-wrap {
-        width: 28px;
-        height: 28px;
-        border-radius: 6px;
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
       }
       .stat-icon-wrap svg {
-        width: 14px;
-        height: 14px;
+        width: 18px;
+        height: 18px;
       }
       .stat-val {
-        font-size: 1.1rem;
+        font-size: 1.4rem;
+        font-weight: 800;
       }
       .stat-lbl {
-        font-size: 0.64rem;
-        line-height: 1.2;
+        font-size: 0.76rem;
+        font-weight: 700;
+        line-height: 1.25;
       }
 
       /* Completion Banner on Mobile */
       .completion-banner {
         flex-direction: column;
         align-items: stretch;
-        padding: 12px 12px;
-        gap: 10px;
+        padding: 16px 14px;
+        gap: 12px;
+        border-radius: 16px;
       }
       .banner-text strong {
-        font-size: 0.82rem;
+        font-size: 0.98rem;
       }
       .banner-text span {
-        font-size: 0.72rem;
+        font-size: 0.84rem;
+        line-height: 1.35;
       }
       .banner-buttons {
         display: flex;
+        flex-direction: column;
         width: 100%;
-        gap: 8px;
+        gap: 10px;
       }
       .banner-buttons .btn-compact {
-        flex: 1;
-        height: 36px;
-        padding: 0 8px;
-        font-size: 0.76rem;
+        width: 100%;
+        height: 48px;
+        padding: 0 14px;
+        font-size: 0.92rem;
+        font-weight: 700;
+        border-radius: 12px;
+        justify-content: center;
       }
 
       /* Table Toolbar on Mobile */
       .table-glass-card {
-        padding: 12px 10px;
-        border-radius: var(--radius-md);
+        padding: 16px 14px;
+        border-radius: 18px;
       }
       .table-toolbar {
         flex-direction: column;
         align-items: stretch;
-        gap: 8px;
-        margin-bottom: 10px;
+        gap: 12px;
+        margin-bottom: 12px;
       }
       .table-tabs {
         width: 100%;
         display: flex;
+        gap: 6px;
       }
       .tab-btn {
         flex: 1;
-        padding: 6px 4px;
-        font-size: 0.7rem;
+        height: 42px;
+        padding: 0 10px;
+        font-size: 0.84rem;
+        font-weight: 700;
         text-align: center;
+        border-radius: 10px;
+        justify-content: center;
       }
       .table-toolbar-actions {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         width: 100%;
       }
       .table-filter-wrap {
@@ -1452,69 +1544,104 @@
       }
       .table-filter-input {
         width: 100% !important;
-        height: 32px;
-        font-size: 0.74rem;
+        height: 44px;
+        font-size: 16px !important; /* Strict 16px prevents mobile auto-zoom */
+        border-radius: 12px;
       }
       .btn-subtle-sm {
-        height: 32px;
-        padding: 0 8px;
-        font-size: 0.72rem;
+        height: 44px;
+        padding: 0 14px;
+        font-size: 0.86rem;
+        font-weight: 700;
+        border-radius: 12px;
         flex-shrink: 0;
       }
 
       /* Leads Table Scroll Container on Mobile */
       .table-scroll-wrap {
-        max-height: 420px;
+        max-height: 440px;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
       }
       table {
-        min-width: 520px;
-        font-size: 0.74rem;
+        min-width: 600px;
+        font-size: 0.86rem;
       }
-      th, td {
-        padding: 8px 8px;
+      th {
+        padding: 12px 10px;
+        font-size: 0.78rem;
+      }
+      td {
+        padding: 12px 10px;
+        font-size: 0.86rem;
       }
 
-      /* Modal Sheet on Mobile */
+      /* Modal Bottom Sheets on Mobile */
       .modal-backdrop {
-        padding: 8px;
+        padding: 10px;
+        align-items: flex-end;
       }
       .modal-glass-sheet {
-        max-height: 94vh;
-        border-radius: var(--radius-md);
+        max-height: 92vh;
+        border-radius: 20px 20px 14px 14px;
+        width: 100%;
       }
       .modal-header {
-        padding: 12px 14px;
+        padding: 16px 18px;
       }
       .modal-title {
-        font-size: 0.88rem;
+        font-size: 1.05rem;
       }
       .modal-body {
-        padding: 10px 12px;
+        padding: 16px 18px 24px 18px;
+      }
+      .form-control {
+        height: 48px;
+        font-size: 16px !important; /* Prevents auto-zoom */
+        border-radius: 12px;
+      }
+      .form-label {
+        font-size: 0.86rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .btn-google {
+        height: 48px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        border-radius: 12px;
+      }
+      .pack-card {
+        padding: 14px 10px;
+        border-radius: 14px;
+      }
+      .pack-val {
+        font-size: 1.35rem;
+      }
+      .pack-leads {
+        font-size: 0.82rem;
       }
       .modal-body table {
-        min-width: 480px;
+        min-width: 520px;
       }
     }
 
     @media (max-width: 440px) {
       .app-shell {
-        padding: 8px 8px 24px 8px;
+        padding: 10px 10px 32px 10px;
       }
       .glass-header {
-        padding: 8px 10px;
-      }
-      .btn-compact {
-        height: 36px;
-        padding: 0 10px;
-        font-size: 0.76rem;
+        padding: 12px 12px;
       }
       .stat-val {
-        font-size: 0.98rem;
+        font-size: 1.25rem;
       }
       .stat-lbl {
-        font-size: 0.6rem;
+        font-size: 0.72rem;
+      }
+      .limit-pill {
+        height: 44px;
+        font-size: 0.84rem;
       }
     }
   </style>
@@ -1979,7 +2106,9 @@
           <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
         </div>
 
-        <button type="button" class="btn-google" onclick="triggerGoogleAuth()">
+        <div id="gsiButtonContainer" style="display: none; width: 100%; margin-top: 10px;"></div>
+
+        <button type="button" id="customGoogleBtn" class="btn-google" onclick="triggerGoogleAuth()">
           <svg width="18" height="18" viewBox="0 0 24 24">
             <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/>
             <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
@@ -1988,6 +2117,47 @@
           </svg>
           <span>Continue with Google</span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GOOGLE FAST AUTH MODAL (Zero-Password / Instant 1-Click Access) -->
+  <div id="googleFastModal" class="modal-backdrop" onclick="closeGoogleFastModal(event)">
+    <div class="modal-glass-sheet" style="max-width: 440px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg width="20" height="20" viewBox="0 0 24 24">
+            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/>
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
+            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2c0 2.8.7 5.5 1.9 7.9l3.7-2.9z"/>
+            <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/>
+          </svg>
+          <span>Continue with Google</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeGoogleFastModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; font-size: 0.82rem; color: #166534; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Instant Google Login • No Password Required!</span>
+        </div>
+
+        <form onsubmit="handleGoogleEmailSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Google Account Email</label>
+            <input type="email" id="googleFastEmail" class="form-control" placeholder="e.g. yourname@gmail.com" required autofocus />
+            <span style="font-size: 0.76rem; color: #64748b; margin-top: 5px; display: block;">
+              Enter your Google address. New accounts instantly receive ₹100 Free Bonus (= 400 Leads) with zero password creation needed.
+            </span>
+          </div>
+
+          <button type="submit" id="btnGoogleSubmit" class="btn-compact btn-primary-glass" style="width: 100%; height: 48px; margin-top: 12px; font-size: 0.95rem; font-weight: 700;">
+            Sign In with Google
+          </button>
+        </form>
       </div>
     </div>
   </div>
@@ -2273,21 +2443,65 @@
       }
     }
 
-    async function triggerGoogleAuth() {
-      const name = prompt("Enter your Name for Google Account:", currentUser ? currentUser.name : "Google User");
-      if (!name) return;
-      const email = prompt("Enter your Google Email Address:", (name.toLowerCase().replace(/[^a-z]/g, '') || 'user') + "@gmail.com");
-      if (!email) return;
+    // GOOGLE IDENTITY SERVICES & FAST GOOGLE AUTH (Zero-Password / Instant Access)
+    let googleClientId = '';
 
+    async function initGoogleAuth() {
       try {
+        const res = await fetch('/api/system');
+        const data = await res.json();
+        if (data && data.google_client_id) {
+          googleClientId = data.google_client_id.trim();
+          window.GOOGLE_CLIENT_ID = googleClientId;
+          setupGoogleGSI();
+        }
+      } catch (e) {
+        console.warn('Could not load Google Client ID config:', e);
+      }
+    }
+
+    function setupGoogleGSI() {
+      if (!googleClientId || !window.google || !window.google.accounts) return;
+      try {
+        google.accounts.id.initialize({
+          client_id: googleClientId,
+          callback: handleGoogleCredentialResponse,
+          auto_select: false,
+          cancel_on_tap_outside: true
+        });
+
+        const container = document.getElementById('gsiButtonContainer');
+        const customBtn = document.getElementById('customGoogleBtn');
+        if (container) {
+          google.accounts.id.renderButton(container, {
+            type: 'standard',
+            theme: 'outline',
+            size: 'large',
+            text: 'continue_with',
+            shape: 'rectangular',
+            width: 340
+          });
+          container.style.display = 'flex';
+          container.style.justifyContent = 'center';
+          if (customBtn) customBtn.style.display = 'none';
+        }
+      } catch (err) {
+        console.warn('GSI render error:', err);
+      }
+    }
+
+    async function handleGoogleCredentialResponse(response) {
+      if (!response || !response.credential) return;
+      try {
+        showToast('Verifying Google authorization token...');
         const res = await fetch('/api/auth/google', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, google_id: 'goog_' + Date.now() })
+          body: JSON.stringify({ credential: response.credential })
         });
         const data = await res.json();
         if (!res.ok) {
-          showToast(data.error || 'Google auth failed.');
+          showToast(data.error || 'Google authentication failed.');
           return;
         }
 
@@ -2296,9 +2510,88 @@
         localStorage.setItem('auth_token', data.token);
         updateUserHeaderUI();
         closeAuthModal();
-        showToast(`Signed in with Google as ${currentUser.name}!`);
+        closeGoogleFastModal();
+        showToast(`Signed in with Google as ${currentUser.name}! ₹${Number(currentUser.wallet_balance || 0).toFixed(2)} active balance.`);
       } catch (err) {
-        showToast('Google auth error: ' + err.message);
+        showToast('Google Sign-In error: ' + err.message);
+      }
+    }
+
+    function triggerGoogleAuth() {
+      if (googleClientId && window.google && window.google.accounts) {
+        try {
+          google.accounts.id.prompt();
+          return;
+        } catch (e) {}
+      }
+      // If Google Client ID not configured or prompt bypassed, open sleek Google 1-Click modal
+      openGoogleFastModal();
+    }
+
+    function openGoogleFastModal() {
+      document.getElementById('googleFastModal').style.display = 'flex';
+      const emailInput = document.getElementById('googleFastEmail');
+      if (emailInput) {
+        setTimeout(() => emailInput.focus(), 150);
+      }
+    }
+
+    function closeGoogleFastModal(e) {
+      if (!e || e.target.id === 'googleFastModal' || (e.target.closest && e.target.closest('.modal-close-btn'))) {
+        document.getElementById('googleFastModal').style.display = 'none';
+      }
+    }
+
+    async function handleGoogleEmailSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('googleFastEmail').value.trim().toLowerCase();
+      if (!email || !email.includes('@')) {
+        showToast('Please enter a valid Google email address.');
+        return;
+      }
+
+      const btn = document.getElementById('btnGoogleSubmit');
+      btn.disabled = true;
+      btn.textContent = 'Verifying Google Account...';
+
+      // Auto-derive readable display name from email (e.g. suresh.kumar -> Suresh Kumar)
+      const prefix = email.split('@')[0];
+      const friendlyName = prefix.replace(/[._-]+/g, ' ')
+        .split(' ')
+        .filter(Boolean)
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ') || 'Google User';
+
+      try {
+        const res = await fetch('/api/auth/google', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: friendlyName,
+            email: email,
+            google_id: 'goog_' + Date.now()
+          })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.error || 'Google Sign-In failed.');
+          btn.disabled = false;
+          btn.textContent = 'Sign In with Google';
+          return;
+        }
+
+        currentUser = data.user;
+        currentUserToken = data.token;
+        localStorage.setItem('auth_token', data.token);
+        updateUserHeaderUI();
+        closeAuthModal();
+        closeGoogleFastModal();
+        showToast(`Signed in as ${currentUser.name}! ₹${Number(currentUser.wallet_balance || 0).toFixed(2)} active balance.`);
+      } catch (err) {
+        showToast('Google Sign-In error: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Sign In with Google';
       }
     }
 
@@ -3006,6 +3299,7 @@
     // Initialize
     window.addEventListener('DOMContentLoaded', () => {
       checkAuthSession();
+      initGoogleAuth();
       connectSSE();
       checkDistrictExpansion(document.getElementById('searchInput').value);
     });

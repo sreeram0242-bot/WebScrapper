@@ -156,6 +156,7 @@ def get_system():
         "output_dir": OUTPUT_DIR,
         "cost_per_lead": float(db.get_setting("cost_per_lead", "0.25")),
         "signup_bonus": float(db.get_setting("signup_bonus", "100.0")),
+        "google_client_id": db.get_setting("google_client_id", ""),
     }
     res.update(mem_info)
     return jsonify(res)
@@ -888,7 +889,8 @@ def admin_get_settings():
         "signup_bonus": db.get_setting("signup_bonus", "100.0"),
         "payment_approval_mode": db.get_setting("payment_approval_mode", "auto"),
         "razorpay_key_id": key_id,
-        "razorpay_key_secret_masked": masked_secret
+        "razorpay_key_secret_masked": masked_secret,
+        "google_client_id": db.get_setting("google_client_id", "")
     })
 
 
@@ -922,6 +924,9 @@ def admin_save_settings():
 
     if "razorpay_key_secret" in data and data["razorpay_key_secret"].strip():
         db.update_setting("razorpay_key_secret", data["razorpay_key_secret"].strip())
+
+    if "google_client_id" in data:
+        db.update_setting("google_client_id", data["google_client_id"].strip())
 
     return jsonify({"success": True, "message": "Settings updated successfully."})
 

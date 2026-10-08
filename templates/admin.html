@@ -9,6 +9,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
+    /* CRITICAL MOBILE AUTO-ZOOM PREVENTION */
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+    button, a, input, select {
+      touch-action: manipulation;
+    }
     :root {
       --bg-base: #f8fafc;
       --surface-glass: rgba(255, 255, 255, 0.85);
@@ -893,6 +900,12 @@
           <span class="setting-hint" id="rzpSecretMasked">Configured secret is securely stored.</span>
         </div>
 
+        <div class="setting-item">
+          <label class="setting-label">Google OAuth Client ID</label>
+          <input type="text" id="setGoogleClientId" class="input-control" placeholder="xxxx.apps.googleusercontent.com">
+          <span class="setting-hint">From Google Cloud Console (APIs & Services > Credentials > OAuth 2.0 Client ID). Enables official 1-tap Google Sign-In with zero password prompts.</span>
+        </div>
+
         <div style="grid-column: 1 / -1; margin-top: 12px; display: flex; justify-content: flex-end;">
           <button type="submit" class="btn-primary" style="padding: 12px 28px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1303,6 +1316,7 @@
         document.getElementById("setSignupBonus").value = data.signup_bonus || "100.0";
         document.getElementById("setApprovalMode").value = data.payment_approval_mode || "auto";
         document.getElementById("setRzpKeyId").value = data.razorpay_key_id || "";
+        document.getElementById("setGoogleClientId").value = data.google_client_id || "";
         document.getElementById("rzpSecretMasked").innerText = data.razorpay_key_secret_masked ? `Current Secret: ${data.razorpay_key_secret_masked}` : "No secret configured yet.";
       } catch (e) {
         console.error("Error loading settings:", e);
@@ -1316,6 +1330,7 @@
         signup_bonus: document.getElementById("setSignupBonus").value,
         payment_approval_mode: document.getElementById("setApprovalMode").value,
         razorpay_key_id: document.getElementById("setRzpKeyId").value.trim(),
+        google_client_id: document.getElementById("setGoogleClientId").value.trim(),
       };
       const secret = document.getElementById("setRzpSecret").value.trim();
       if (secret) {
