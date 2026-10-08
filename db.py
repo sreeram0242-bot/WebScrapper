@@ -107,7 +107,7 @@ def init_db():
             "payment_approval_mode": "auto",      # 'auto' or 'manual'
             "razorpay_key_id": os.environ.get("RAZORPAY_KEY_ID", "rzp_test_placeholder"),
             "razorpay_key_secret": os.environ.get("RAZORPAY_KEY_SECRET", "placeholder_secret"),
-            "google_client_id": os.environ.get("GOOGLE_CLIENT_ID", ""),
+            "google_client_id": os.environ.get("GOOGLE_CLIENT_ID", "536868490079-8n0ms1d6p9turlbr9p6c39rhktpcaern.apps.googleusercontent.com"),
         }
         for k, v in defaults.items():
             conn.execute("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)", (k, v))
