@@ -126,6 +126,9 @@ state = StateManager()
 # =========================================================================
 
 @app.route("/")
+@app.route("/wallet")
+@app.route("/profile")
+@app.route("/files")
 def index():
     return render_template("index.html")
 
@@ -249,6 +252,34 @@ def auth_logout():
     resp = make_response(jsonify({"success": True, "message": "Signed out successfully."}))
     resp.delete_cookie("auth_token")
     return resp
+
+
+@app.route("/api/auth/change-password", methods=["POST"])
+def auth_change_password():
+    user = get_current_user()
+    if not user:
+        return jsonify({"error": "Unauthorized. Please sign in."}), 401
+    data = request.get_json(silent=True) or {}
+    new_password = data.get("new_password") or ""
+    if len(new_password) < 6:
+        return jsonify({"error": "New password must be at least 6 characters long."}), 400
+    db.update_user_password(user["id"], new_password)
+    return jsonify({"success": True, "message": "Password updated successfully!"})
+
+
+@app.route("/api/auth/update-profile", methods=["POST"])
+def auth_update_profile():
+    user = get_current_user()
+    if not user:
+        return jsonify({"error": "Unauthorized. Please sign in."}), 401
+    data = request.get_json(silent=True) or {}
+    name = (data.get("name") or "").strip()
+    phone = (data.get("phone") or "").strip()
+    if not name:
+        return jsonify({"error": "Name cannot be empty."}), 400
+    db.update_user_profile(user["id"], name, phone if phone else None)
+    updated_user = db.get_user_by_id(user["id"])
+    return jsonify({"success": True, "message": "Profile updated successfully!", "user": updated_user})
 
 
 @app.route("/api/system", methods=["GET"])

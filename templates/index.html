@@ -1276,8 +1276,492 @@
     }
 
     /* ==========================================================================
-       FULL MOBILE & TABLET REDESIGN & ERGONOMIC LAYOUT (PURE WHITE EDITION)
+       MULTI-PAGE VIEW SYSTEM & MODERN ELEVATED DESIGN TOKENS
        ========================================================================== */
+    .views-container {
+      width: 100%;
+    }
+    .app-view {
+      display: none;
+      animation: viewFadeSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .app-view.active {
+      display: block;
+    }
+    @keyframes viewFadeSlide {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Desktop Navigation Tabs */
+    .desktop-nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 14px;
+    }
+    .nav-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: #475569;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      text-decoration: none;
+    }
+    .nav-tab:hover {
+      color: #0f172a;
+      background: rgba(255, 255, 255, 0.7);
+    }
+    .nav-tab.active {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+    }
+    .nav-tab.active svg {
+      color: #2563eb;
+    }
+
+    /* View Header & Back Navigation */
+    .view-header-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e2e8f0;
+      flex-wrap: wrap;
+    }
+    .btn-subtle-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 40px;
+      padding: 0 16px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      color: #0f172a;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      transition: all 0.18s;
+    }
+    .btn-subtle-back:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+      transform: translateX(-2px);
+    }
+    .view-title-group {
+      flex: 1;
+    }
+    .view-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .view-subtitle {
+      font-size: 0.84rem;
+      color: #64748b;
+      margin-top: 3px;
+    }
+
+    /* Elevated Card */
+    .card-elevated {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    /* Modern Redesigned High-Impact Buttons */
+    .btn-hero-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 48px;
+      padding: 0 24px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.22);
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      text-decoration: none;
+    }
+    .btn-hero-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.28);
+    }
+    .btn-hero-primary:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn-hero-emerald {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 48px;
+      padding: 0 24px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 8px 24px -4px rgba(16, 185, 129, 0.28);
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      text-decoration: none;
+    }
+    .btn-hero-emerald:hover:not(:disabled) {
+      background: linear-gradient(135deg, #16a34a 0%, #047857 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -4px rgba(16, 185, 129, 0.35);
+    }
+    .btn-hero-emerald:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn-hero-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 46px;
+      padding: 0 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: 12px;
+      background: #ffffff;
+      color: #1e293b;
+      border: 1.5px solid #cbd5e1;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      text-decoration: none;
+    }
+    .btn-hero-outline:hover:not(:disabled) {
+      background: #f8fafc;
+      border-color: #94a3b8;
+      color: #0f172a;
+      transform: translateY(-2px);
+    }
+    .btn-hero-outline:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    /* Fintech Wallet Hero Card */
+    .wallet-hero-card {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+      color: white;
+      border-radius: 24px;
+      padding: 26px 28px;
+      box-shadow: 0 14px 36px rgba(6, 78, 59, 0.25);
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .wallet-hero-card::after {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+    }
+    .card-chip-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .card-chip {
+      width: 40px;
+      height: 28px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #fef08a, #ca8a04);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.25);
+    }
+    .card-brand-label {
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #a7f3d0;
+    }
+    .card-secure-tag {
+      font-size: 0.7rem;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.16);
+      padding: 3px 9px;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+    .card-bal-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #a7f3d0;
+      text-transform: uppercase;
+    }
+    .card-bal-number {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.1;
+      margin: 4px 0 18px 0;
+      letter-spacing: -0.02em;
+    }
+    .card-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+      padding-top: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .card-leads-stat .stat-num {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .card-leads-stat .stat-txt {
+      font-size: 0.8rem;
+      color: #d1fae5;
+      margin-left: 5px;
+      font-weight: 600;
+    }
+    .card-rate-badge {
+      background: #ffffff;
+      color: #065f46;
+      font-weight: 800;
+      font-size: 0.8rem;
+      padding: 5px 14px;
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Calculator Widget */
+    .calc-presets-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 16px 0;
+    }
+    .calc-pill {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .calc-pill:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      color: #1d4ed8;
+    }
+    .calc-pill.active {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16);
+    }
+    .calc-slider-wrap {
+      margin: 16px 0 18px 0;
+    }
+    .calc-range {
+      width: 100%;
+      height: 8px;
+      border-radius: 6px;
+      background: #e2e8f0;
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+    .calc-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #2563eb;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+      cursor: pointer;
+      border: 2px solid #ffffff;
+    }
+    .calc-result-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-top: 12px;
+    }
+    .calc-res-lbl {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #64748b;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .calc-res-val {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .calc-res-cost {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #16a34a;
+    }
+
+    /* Profile Hero & Options Grid */
+    .profile-hero-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      margin-bottom: 22px;
+    }
+    .profile-hero-top {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .profile-large-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      font-size: 1.8rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
+      flex-shrink: 0;
+    }
+    .profile-hero-name {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+    .profile-hero-email {
+      font-size: 0.88rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+    .profile-badges-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .profile-badge-role {
+      font-size: 0.74rem;
+      font-weight: 800;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    .profile-badge-verified {
+      font-size: 0.74rem;
+      font-weight: 800;
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    .profile-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .profile-stat-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 18px 16px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+    }
+    .profile-stat-lbl {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+    .profile-stat-val {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .profile-options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .profile-option-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+    .profile-option-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+      transform: translateY(-2px);
+    }
+
     /* Mobile Lead Cards (Default view on mobile) */
     .mobile-cards-wrap {
       display: none;
@@ -1320,53 +1804,110 @@
         -webkit-text-size-adjust: 100%;
       }
 
+      .desktop-nav-tabs {
+        display: none !important;
+      }
       .app-shell {
-        padding: 8px 10px 48px 10px;
+        padding: 8px 10px 84px 10px !important; /* Bottom clearance for dock */
       }
 
-      /* 1. MOBILE APP HEADER BAR */
+      /* MOBILE BOTTOM NAV DOCK */
+      .mobile-bottom-dock {
+        display: flex !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 62px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-top: 1px solid #e2e8f0;
+        z-index: 9999;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0 8px env(safe-area-inset-bottom, 6px) 8px;
+        box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.06);
+      }
+      .bottom-nav-item {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        border: none;
+        background: transparent;
+        color: #64748b;
+        font-size: 0.72rem;
+        font-weight: 700;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.15s;
+        text-decoration: none;
+      }
+      .bottom-nav-item.active {
+        color: #2563eb;
+      }
+      .bottom-nav-item.active svg {
+        color: #2563eb;
+        transform: scale(1.1);
+      }
+      .dock-badge {
+        position: absolute;
+        top: 6px;
+        right: 18%;
+        background: #16a34a;
+        color: white;
+        font-size: 0.62rem;
+        font-weight: 800;
+        padding: 1px 5px;
+        border-radius: 999px;
+        line-height: 1.1;
+      }
+
+      /* 1. MOBILE APP HEADER BAR (STREAMLINED ROW, ZERO OVERFLOW) */
       .glass-header {
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
-        border-radius: 18px !important;
-        padding: 12px 14px !important;
+        border-radius: 16px !important;
+        padding: 10px 14px !important;
         margin-bottom: 12px !important;
         display: flex !important;
-        flex-direction: column !important;
-        gap: 10px !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
         box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
       }
       .brand-section {
         display: flex !important;
         align-items: center !important;
-        justify-content: space-between !important;
-        width: 100% !important;
+        gap: 8px !important;
+        cursor: pointer !important;
       }
       .brand-title {
         display: flex !important;
         align-items: center !important;
-        gap: 8px !important;
       }
       .brand-logo {
-        width: 36px !important;
-        height: 36px !important;
-        border-radius: 10px !important;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 8px !important;
         flex-shrink: 0 !important;
       }
       .brand-title h1 {
-        font-size: 1.1rem !important;
+        font-size: 1rem !important;
         font-weight: 800 !important;
         color: #0f172a !important;
         line-height: 1.2 !important;
         margin: 0 !important;
       }
-      .brand-sub {
+      .brand-sub, .brand-badge {
         display: none !important;
       }
-      .brand-badge {
-        font-size: 0.65rem !important;
-        padding: 2px 6px !important;
-        font-weight: 800 !important;
+      .status-pill {
+        display: none !important;
       }
 
       /* Header User Controls Row */
@@ -1374,39 +1915,31 @@
         display: flex !important;
         align-items: center !important;
         justify-content: flex-end !important;
-        width: 100% !important;
-        padding-top: 8px !important;
-        border-top: 1px solid #f1f5f9 !important;
+        width: auto !important;
+        padding: 0 !important;
+        border: none !important;
         gap: 6px !important;
       }
-      .status-pill {
-        margin-right: auto !important;
-        height: 38px !important;
-        padding: 0 10px !important;
-        font-size: 0.78rem !important;
-        border-radius: 8px !important;
-        flex-shrink: 0 !important;
-      }
 
-      /* Mobile Wallet Pill */
+      /* Mobile Wallet Pill (Super Compact) */
       .wallet-pill {
-        height: 38px !important;
+        height: 34px !important;
         padding: 0 8px !important;
-        border-radius: 10px !important;
+        border-radius: 8px !important;
         background: #f0fdf4 !important;
         border: 1px solid #bbf7d0 !important;
         display: inline-flex !important;
         align-items: center !important;
-        gap: 6px !important;
+        gap: 4px !important;
         cursor: pointer !important;
         flex-shrink: 0 !important;
         white-space: nowrap !important;
       }
       .wallet-icon-box {
-        width: 22px !important;
-        height: 22px !important;
-        border-radius: 6px !important;
-        background: #dcfce7 !important;
+        width: 18px !important;
+        height: 18px !important;
+        border-radius: 4px !important;
+        background: transparent !important;
         color: #16a34a !important;
         display: flex !important;
         align-items: center !important;
@@ -1418,13 +1951,10 @@
         line-height: 1.1 !important;
       }
       .wallet-lbl {
-        font-size: 0.58rem !important;
-        font-weight: 800 !important;
-        color: #166534 !important;
-        letter-spacing: 0.04em !important;
+        display: none !important;
       }
       .wallet-amount {
-        font-size: 0.88rem !important;
+        font-size: 0.82rem !important;
         font-weight: 800 !important;
         color: #15803d !important;
         line-height: 1 !important;
@@ -1433,53 +1963,53 @@
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        height: 22px !important;
-        padding: 0 7px !important;
-        font-size: 0.72rem !important;
+        height: 18px !important;
+        padding: 0 4px !important;
+        font-size: 0.68rem !important;
         font-weight: 800 !important;
         background: #16a34a !important;
         color: #ffffff !important;
-        border-radius: 6px !important;
+        border-radius: 4px !important;
         line-height: 1 !important;
         white-space: nowrap !important;
         flex-shrink: 0 !important;
       }
 
-      /* Mobile Profile Pill */
+      /* Mobile Profile Pill (Avatar Only) */
       .profile-wrap {
         position: relative !important;
         flex-shrink: 0 !important;
       }
       .profile-pill {
-        height: 42px !important;
-        padding: 0 8px 0 6px !important;
-        border-radius: 12px !important;
+        height: 34px !important;
+        padding: 0 4px !important;
+        border-radius: 8px !important;
         background: #ffffff !important;
         border: 1px solid #cbd5e1 !important;
         display: inline-flex !important;
         align-items: center !important;
-        gap: 6px !important;
-        color: #0f172a !important;
-        font-weight: 700 !important;
-      }
-      .profile-avatar {
-        width: 26px !important;
-        height: 26px !important;
-        border-radius: 8px !important;
-        background: #2563eb !important;
-        color: white !important;
-        font-size: 0.8rem !important;
-        font-weight: 800 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+        gap: 0 !important;
       }
       .profile-name {
-        max-width: 80px !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        white-space: nowrap !important;
-        font-size: 0.85rem !important;
+        display: none !important;
+      }
+      .profile-avatar {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 0.78rem !important;
+        border-radius: 6px !important;
+      }
+      .profile-stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+      .profile-options-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .header-files-btn {
+        display: none !important;
+      }
+      .wallet-page-grid {
+        grid-template-columns: 1fr !important;
       }
 
       /* Robust Mobile Profile Dropdown (Absolute, Immune to Container Trap) */
@@ -2222,7 +2752,7 @@
 
     <!-- Frosted Top Header -->
     <header class="glass-header">
-      <div class="brand-section">
+      <div class="brand-section" onclick="navigateToView('scraper')">
         <div class="brand-logo">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
         </div>
@@ -2232,14 +2762,34 @@
         </div>
       </div>
 
+      <!-- Desktop Nav Tabs -->
+      <nav class="desktop-nav-tabs">
+        <button class="nav-tab active" id="tabScraper" onclick="navigateToView('scraper')" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <span>Extractor</span>
+        </button>
+        <button class="nav-tab" id="tabWallet" onclick="navigateToView('wallet')" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+          <span>Wallet</span>
+        </button>
+        <button class="nav-tab" id="tabFiles" onclick="navigateToView('files')" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+          <span>Saved Files</span>
+        </button>
+        <button class="nav-tab" id="tabProfile" onclick="navigateToView('profile')" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Profile</span>
+        </button>
+      </nav>
+
       <div class="header-controls">
         <div id="statusPill" class="status-pill">
           <span id="statusDot" class="status-dot"></span>
           <span id="statusLabel">Ready</span>
         </div>
 
-        <!-- In-App Live Wallet Balance Pill -->
-        <div id="walletBadge" class="wallet-pill" onclick="openWalletModal()" title="In-App Wallet: Flat ₹0.25 per lead" style="display: none;">
+        <!-- In-App Live Wallet Balance Pill (Navigates directly to Wallet Page) -->
+        <div id="walletBadge" class="wallet-pill" onclick="navigateToView('wallet')" title="In-App Wallet: Flat ₹0.25 per lead" style="display: none;">
           <div class="wallet-icon-box">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
           </div>
@@ -2250,45 +2800,12 @@
           <span class="wallet-add-badge">+ Add</span>
         </div>
 
-        <!-- Logged In User Profile Pill & Dropdown -->
+        <!-- Logged In User Profile Pill (Navigates directly to Profile Page) -->
         <div id="userProfileWrap" class="profile-wrap" style="display: none;">
-          <button class="profile-pill" onclick="toggleProfileDropdown(event)" id="profilePillBtn" type="button">
+          <button class="profile-pill" onclick="navigateToView('profile')" id="profilePillBtn" type="button" title="View Account Profile">
             <div class="profile-avatar" id="avatarInitial">U</div>
             <span class="profile-name" id="navUserName">My Account</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
-
-          <div class="profile-dropdown" id="profileDropdown">
-            <div class="dropdown-header">
-              <div class="dropdown-user-name" id="dropdownUserName">Member</div>
-              <div class="dropdown-user-email" id="dropdownUserEmail">user@example.com</div>
-              <div class="dropdown-user-phone" id="dropdownUserPhone"></div>
-            </div>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-balance-box">
-              <div class="dropdown-bal-label">Live In-App Balance (@ ₹0.25/lead)</div>
-              <div class="dropdown-bal-val" id="dropdownWalletBal">₹100.00</div>
-              <div class="dropdown-bal-leads" id="dropdownLeadsCount">≈ 400 Leads Available</div>
-            </div>
-            <div class="dropdown-divider"></div>
-            <button class="dropdown-item" onclick="openWalletModal()" type="button">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-              <span>Recharge Wallet (Razorpay)</span>
-            </button>
-            <button class="dropdown-item" onclick="openTransactionsModal()" type="button">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-              <span>Transaction & Scrape History</span>
-            </button>
-            <a href="/admin" class="dropdown-item" id="adminPortalLink" style="display: none; text-decoration: none;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              <span>Admin Portal (/admin)</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <button class="dropdown-item danger" onclick="handleUserLogout()" type="button">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-              <span>Sign Out</span>
-            </button>
-          </div>
         </div>
 
         <!-- Logged Out Guest Controls -->
@@ -2302,15 +2819,17 @@
           </button>
         </div>
 
-        <button class="btn-compact btn-outline-glass header-files-btn" onclick="openSavedFilesModal()" title="View and Download Saved CSV Exports">
+        <button class="btn-compact btn-outline-glass header-files-btn" onclick="navigateToView('files')" title="View and Download Saved CSV Exports">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
           <span class="header-files-text">Saved Files</span>
         </button>
       </div>
     </header>
 
-    <!-- Main 2-Column Glass Interface -->
-    <main class="main-layout">
+    <div class="views-container">
+      <!-- VIEW 1: EXTRACTOR / SCRAPER -->
+      <section id="viewScraper" class="app-view active">
+        <main class="main-layout">
 
       <!-- LEFT: Search & Controls Card -->
       <section class="glass-card">
@@ -2403,12 +2922,12 @@
 
         <!-- SLEEK COMPACT ACTION BUTTONS (Clean, not oversized) -->
         <div class="form-actions-row">
-          <button id="btnStart" class="btn-compact btn-primary-glass" onclick="startScraping()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-            <span>Start Extraction</span>
+          <button id="btnStart" class="btn-hero-primary" onclick="startScraping()" style="width: 100%; height: 50px; font-size: 1rem; border-radius: 14px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+            <span>Start Lead Extraction</span>
           </button>
-          <button id="btnStop" class="btn-compact btn-danger-glass" onclick="stopScraping()" style="display: none;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+          <button id="btnStop" class="btn-compact btn-danger-glass" onclick="stopScraping()" style="display: none; height: 50px; font-size: 1rem; border-radius: 14px; font-weight: 800;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
             <span>Stop Search</span>
           </button>
         </div>
@@ -2573,8 +3092,365 @@
       </section>
 
     </main>
+      </section>
 
-  </div>
+      <!-- VIEW 2: DEDICATED WALLET PAGE WITH OPTIONS & CALCULATOR -->
+      <section id="viewWallet" class="app-view">
+        <div class="view-header-bar">
+          <button class="btn-subtle-back" onclick="navigateToView('scraper')" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg>
+            <span>Back to Extractor</span>
+          </button>
+          <div class="view-title-group">
+            <h1 class="view-title">In-App Wallet & Recharge</h1>
+            <p class="view-subtitle">Flat ₹0.25 per extracted verified lead • 100% transparent live billing</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;" class="wallet-page-grid">
+          <!-- LEFT COLUMN: Hero Balance Card & Interactive Calculator -->
+          <div>
+            <!-- Fintech Wallet Hero Card -->
+            <div class="wallet-hero-card">
+              <div class="card-chip-row">
+                <div class="card-chip"></div>
+                <span class="card-brand-label">FAST MAP LEADS PAY</span>
+                <span class="card-secure-tag">256-BIT SSL SECURED</span>
+              </div>
+              <div class="card-bal-label">AVAILABLE WALLET BALANCE</div>
+              <div class="card-bal-number" id="walletPageHeroBal">₹100.00</div>
+              <div class="card-footer-row">
+                <div class="card-leads-stat">
+                  <span class="stat-num" id="walletPageHeroLeads">400</span>
+                  <span class="stat-txt">Leads Ready to Extract</span>
+                </div>
+                <span class="card-rate-badge">₹0.25 / Lead Flat</span>
+              </div>
+            </div>
+
+            <!-- Interactive Lead Cost Calculator Widget -->
+            <div class="card-elevated">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <div style="font-weight: 800; color: #0f172a; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+                  <span>Lead Target & Cost Calculator</span>
+                </div>
+                <span style="font-size: 0.74rem; font-weight: 800; color: #16a34a; background: #f0fdf4; padding: 2px 8px; border-radius: 999px;">@ 25 Paise/Lead</span>
+              </div>
+              <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 12px;">Estimate how much balance you need for your target marketing campaign.</p>
+
+              <!-- 1-Click Fast Presets -->
+              <div class="calc-presets-row">
+                <button class="calc-pill active" onclick="setCalcLeads(400, this)" type="button">400 Leads (₹100)</button>
+                <button class="calc-pill" onclick="setCalcLeads(1000, this)" type="button">1,000 Leads (₹250)</button>
+                <button class="calc-pill" onclick="setCalcLeads(2000, this)" type="button">2,000 Leads (₹500)</button>
+                <button class="calc-pill" onclick="setCalcLeads(4000, this)" type="button">4,000 Leads (₹1,000)</button>
+                <button class="calc-pill" onclick="setCalcLeads(10000, this)" type="button">10,000 Leads (₹2,500)</button>
+              </div>
+
+              <!-- Interactive Slider -->
+              <div class="calc-slider-wrap">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: #64748b; margin-bottom: 6px;">
+                  <span>50 Leads</span>
+                  <span id="sliderValueText" style="color: #2563eb; font-weight: 800;">400 Leads Selected</span>
+                  <span>10,000 Leads</span>
+                </div>
+                <input type="range" min="50" max="10000" step="50" value="400" id="calcSlider" class="calc-range" oninput="syncCalcSlider(this.value)">
+              </div>
+
+              <!-- Result Breakdown -->
+              <div class="calc-result-box">
+                <div>
+                  <span class="calc-res-lbl">Required Wallet Balance</span>
+                  <div class="calc-res-cost" id="calcRequiredCost">₹100.00</div>
+                </div>
+                <button class="btn-compact btn-emerald-glass" onclick="applyCalcToRecharge()" type="button" style="height: 38px; padding: 0 16px;">
+                  <span>Select ₹<span id="calcApplyBtnAmt">100</span> Pack</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN: 1-Click Recharge Packs & Checkout -->
+          <div>
+            <div class="card-elevated">
+              <div style="font-weight: 800; color: #0f172a; font-size: 1.05rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                <span>Instant Wallet Recharge</span>
+              </div>
+              <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 16px;">Select a package below to recharge immediately via Razorpay (UPI, Google Pay, PhonePe, Cards, NetBanking).</p>
+
+              <!-- 4 Recharge Packs Grid -->
+              <div class="pack-grid" style="margin-bottom: 16px;">
+                <div class="pack-card" onclick="selectPageRechargePack(100)" id="pagePack100">
+                  <div class="pack-val">₹100</div>
+                  <div class="pack-leads">400 Leads</div>
+                </div>
+                <div class="pack-card popular active" onclick="selectPageRechargePack(250)" id="pagePack250">
+                  <div class="pack-badge">Best Value</div>
+                  <div class="pack-val">₹250</div>
+                  <div class="pack-leads">1,000 Leads</div>
+                </div>
+                <div class="pack-card" onclick="selectPageRechargePack(500)" id="pagePack500">
+                  <div class="pack-val">₹500</div>
+                  <div class="pack-leads">2,000 Leads</div>
+                </div>
+                <div class="pack-card" onclick="selectPageRechargePack(1000)" id="pagePack1000">
+                  <div class="pack-val">₹1,000</div>
+                  <div class="pack-leads">4,000 Leads</div>
+                </div>
+              </div>
+
+              <!-- Custom Amount Input -->
+              <div class="form-group" style="margin-bottom: 16px;">
+                <label class="form-label" style="font-weight: 700;">Or Custom Top-Up Amount (₹)</label>
+                <div style="position: relative;">
+                  <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-weight: 800; color: #64748b;">₹</span>
+                  <input type="number" id="pageCustomRechargeAmount" class="glass-input" style="padding-left: 32px;" placeholder="Min ₹10" value="250" min="10" oninput="handlePageCustomAmount(this.value)" />
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: #64748b; margin-top: 4px;">
+                  <span>Min recharge: ₹10</span>
+                  <span id="pageCustomLeadsEquiv" style="color: #16a34a; font-weight: 700;">≈ 1,000 leads</span>
+                </div>
+              </div>
+
+              <!-- Main Checkout Button -->
+              <button id="btnPagePayRazorpay" type="button" class="btn-hero-emerald" style="width: 100%; height: 50px; font-size: 1rem;" onclick="executePageRazorpayPayment()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                <span id="pagePayBtnLabel">Proceed to Pay ₹250 via Razorpay</span>
+              </button>
+
+              <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; font-size: 0.74rem; color: #64748b;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Automated instant credit • No hidden platform fees</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FULL-WIDTH TRANSACTIONS STATEMENT -->
+        <div class="card-elevated" style="margin-top: 20px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+            <div style="font-weight: 800; color: #0f172a; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <span>Wallet Transaction Statement & Scrapes Audit</span>
+            </div>
+            <button class="btn-subtle-sm" onclick="loadPageTransactions()" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+              <span>Refresh Statement</span>
+            </button>
+          </div>
+
+          <div class="table-scroll-wrap" style="max-height: 400px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Balance After</th>
+                </tr>
+              </thead>
+              <tbody id="pageWalletTxTableBody">
+                <tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 25px;">Loading transaction statement...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 3: DEDICATED PROFILE PAGE WITH OPTIONS -->
+      <section id="viewProfile" class="app-view">
+        <div class="view-header-bar">
+          <button class="btn-subtle-back" onclick="navigateToView('scraper')" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg>
+            <span>Back to Extractor</span>
+          </button>
+          <div class="view-title-group">
+            <h1 class="view-title">Account & Profile Settings</h1>
+            <p class="view-subtitle">Manage your profile information, password credentials, and active services</p>
+          </div>
+        </div>
+
+        <!-- PROFILE HERO CARD -->
+        <div class="profile-hero-card">
+          <div class="profile-hero-top">
+            <div class="profile-large-avatar" id="profilePageAvatar">U</div>
+            <div style="flex: 1;">
+              <h2 class="profile-hero-name" id="profilePageName">User Name</h2>
+              <div class="profile-hero-email" id="profilePageEmail">user@example.com</div>
+              <div class="profile-hero-email" id="profilePagePhone" style="margin-top: 2px;">+91 9876543210</div>
+              <div class="profile-badges-row">
+                <span class="profile-badge-role" id="profilePageRoleBadge">MEMBER</span>
+                <span class="profile-badge-verified">✓ VERIFIED ACCOUNT</span>
+                <span style="font-size: 0.74rem; color: #64748b; font-weight: 600;" id="profilePageJoined">Joined: Active Member</span>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-hero-emerald" onclick="navigateToView('wallet')" type="button" style="height: 42px; padding: 0 16px; font-size: 0.85rem;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                <span>Recharge Wallet</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 KEY STATS GRID -->
+        <div class="profile-stats-grid">
+          <div class="profile-stat-box">
+            <div class="profile-stat-lbl">In-App Balance</div>
+            <div class="profile-stat-val" id="profileStatBalance" style="color: #16a34a;">₹100.00</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-lbl">Leads Available</div>
+            <div class="profile-stat-val" id="profileStatLeads">400 Leads</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-lbl">Free Bonus Claimed</div>
+            <div class="profile-stat-val" id="profileStatBonus" style="color: #2563eb;">₹100.00</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-lbl">Tariff Plan</div>
+            <div class="profile-stat-val" style="color: #0f172a; font-size: 1.15rem;">₹0.25 / Lead</div>
+          </div>
+        </div>
+
+        <!-- PROFILE OPTIONS GRID (2 COLUMNS) -->
+        <div class="profile-options-grid">
+          <!-- OPTION 1: EDIT PROFILE -->
+          <div class="profile-option-card">
+            <div>
+              <div style="font-weight: 800; color: #0f172a; font-size: 1.05rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Edit Profile Details</span>
+              </div>
+              <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 14px;">Update your display name and contact mobile number.</p>
+              
+              <form id="profileEditForm" onsubmit="handleProfileUpdateSubmit(event)">
+                <div class="form-group">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" id="editProfileName" class="form-control" placeholder="Your name" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Mobile Number</label>
+                  <input type="tel" id="editProfilePhone" class="form-control" placeholder="10-digit mobile number" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email Address (Primary)</label>
+                  <input type="email" id="editProfileEmail" class="form-control" readonly disabled style="background: #f1f5f9; cursor: not-allowed;" />
+                </div>
+                <button type="submit" id="btnSaveProfile" class="btn-hero-primary" style="width: 100%; height: 44px; font-size: 0.9rem; margin-top: 6px;">
+                  Save Profile Details
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- OPTION 2: CHANGE PASSWORD -->
+          <div class="profile-option-card">
+            <div>
+              <div style="font-weight: 800; color: #0f172a; font-size: 1.05rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span>Security & Password</span>
+              </div>
+              <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 14px;">Set or update your login password for email credentials sign-in.</p>
+
+              <form id="changePasswordForm" onsubmit="handlePasswordChangeSubmit(event)">
+                <div class="form-group">
+                  <label class="form-label">New Password</label>
+                  <input type="password" id="changeNewPassword" class="form-control" placeholder="Minimum 6 characters" minlength="6" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Confirm New Password</label>
+                  <input type="password" id="changeConfirmPassword" class="form-control" placeholder="Re-enter new password" minlength="6" required />
+                </div>
+                <button type="submit" id="btnChangePassword" class="btn-hero-primary" style="width: 100%; height: 44px; font-size: 0.9rem; margin-top: 6px;">
+                  Update Password
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- OPTION 3: WALLET & BILLING QUICK ACCESS -->
+          <div class="profile-option-card">
+            <div>
+              <div style="font-weight: 800; color: #0f172a; font-size: 1.05rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                <span>In-App Wallet & Recharge</span>
+              </div>
+              <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 12px;">Top up your wallet balance, calculate costs, and check statements.</p>
+              <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 12px; margin-bottom: 14px;">
+                <div style="font-size: 0.72rem; color: #166534; font-weight: 700; text-transform: uppercase;">Current Live Balance</div>
+                <div style="font-size: 1.4rem; font-weight: 800; color: #15803d;" id="profileWalletQuickBal">₹100.00</div>
+              </div>
+            </div>
+            <button class="btn-hero-emerald" onclick="navigateToView('wallet')" type="button" style="width: 100%; height: 44px; font-size: 0.9rem;">
+              Open Wallet Page
+            </button>
+          </div>
+
+          <!-- OPTION 4: ADMIN ACCESS & LOGOUT -->
+          <div class="profile-option-card">
+            <div>
+              <div style="font-weight: 800; color: #0f172a; font-size: 1.05rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Administrative & Session</span>
+              </div>
+              <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 14px;">Admin dashboard management and secure device logout.</p>
+              
+              <div id="profileAdminBox" style="display: none; margin-bottom: 12px;">
+                <a href="/admin" class="btn-hero-primary" style="width: 100%; height: 44px; font-size: 0.9rem; text-decoration: none; justify-content: center;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span>Launch Admin Portal (/admin)</span>
+                </a>
+              </div>
+            </div>
+            <button class="btn-hero-outline" onclick="handleUserLogout()" type="button" style="width: 100%; height: 44px; color: #dc2626; border-color: #fecaca; background: #fff5f5; font-size: 0.9rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span>Sign Out of Account</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 4: DEDICATED SAVED FILES PAGE -->
+      <section id="viewFiles" class="app-view">
+        <div class="view-header-bar">
+          <button class="btn-subtle-back" onclick="navigateToView('scraper')" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg>
+            <span>Back to Extractor</span>
+          </button>
+          <div class="view-title-group">
+            <h1 class="view-title">Saved CSV Exports Manager</h1>
+            <p class="view-subtitle">All your scraped campaigns saved safely with instant 1-click download</p>
+          </div>
+          <button class="btn-hero-outline" onclick="openOutputFolderOnPC()" type="button" style="height: 40px; padding: 0 16px; font-size: 0.85rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+            <span>Open PC Folder</span>
+          </button>
+        </div>
+
+        <div class="card-elevated">
+          <div class="table-scroll-wrap" style="max-height: 550px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>File Name</th>
+                  <th>Leads / Rows</th>
+                  <th>File Size</th>
+                  <th>Date Created</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="pageFilesTableBody">
+                <tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 25px;">Loading saved files...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
 
   <!-- SAVED FILES HISTORY MODAL (Solves "Where is the CSV file?") -->
   <div id="historyModal" class="modal-backdrop" onclick="closeSavedFilesModal(event)">
@@ -2904,53 +3780,175 @@
       }
     }
 
+    // Current Active View State
+    let currentView = 'scraper';
+
+    function navigateToView(viewName, pushState = true) {
+      if (!['scraper', 'wallet', 'profile', 'files'].includes(viewName)) {
+        viewName = 'scraper';
+      }
+      currentView = viewName;
+
+      // Update URL if pushState is enabled
+      if (pushState && window.history && window.history.pushState) {
+        const targetPath = viewName === 'scraper' ? '/' : `/${viewName}`;
+        if (window.location.pathname !== targetPath) {
+          window.history.pushState({ view: viewName }, '', targetPath);
+        }
+      }
+
+      // Hide all views, display target view
+      const viewMap = {
+        'scraper': 'viewScraper',
+        'wallet': 'viewWallet',
+        'profile': 'viewProfile',
+        'files': 'viewFiles'
+      };
+
+      Object.entries(viewMap).forEach(([v, id]) => {
+        const el = document.getElementById(id);
+        if (el) {
+          if (v === viewName) {
+            el.classList.add('active');
+          } else {
+            el.classList.remove('active');
+          }
+        }
+      });
+
+      // Update Desktop Nav Tabs
+      const tabMap = {
+        'scraper': 'tabScraper',
+        'wallet': 'tabWallet',
+        'profile': 'tabProfile',
+        'files': 'tabFiles'
+      };
+      Object.entries(tabMap).forEach(([v, id]) => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('active', v === viewName);
+      });
+
+      // Update Mobile Bottom Dock items
+      const dockMap = {
+        'scraper': 'dockScraper',
+        'wallet': 'dockWallet',
+        'profile': 'dockProfile',
+        'files': 'dockFiles'
+      };
+      Object.entries(dockMap).forEach(([v, id]) => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('active', v === viewName);
+      });
+
+      // Action hooks per view
+      if (viewName === 'wallet') {
+        loadPageTransactions();
+      } else if (viewName === 'files') {
+        loadPageFiles();
+      } else if (viewName === 'profile') {
+        syncProfileViewInputs();
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Handle browser back & forward buttons
+    window.addEventListener('popstate', () => {
+      const path = window.location.pathname.replace(/^\//, '').toLowerCase();
+      if (path === 'wallet' || path === 'profile' || path === 'files') {
+        navigateToView(path, false);
+      } else {
+        navigateToView('scraper', false);
+      }
+    });
+
     function updateUserHeaderUI() {
       const walletBadge = document.getElementById('walletBadge');
       const userProfileWrap = document.getElementById('userProfileWrap');
       const authGuestWrap = document.getElementById('authGuestWrap');
-      const adminLink = document.getElementById('adminPortalLink');
 
       document.body.classList.toggle('user-logged-in', !!currentUser);
       document.body.classList.toggle('user-guest', !currentUser);
 
       if (currentUser) {
-        walletBadge.style.display = 'inline-flex';
-        userProfileWrap.style.display = 'block';
-        authGuestWrap.style.display = 'none';
+        if (walletBadge) walletBadge.style.display = 'inline-flex';
+        if (userProfileWrap) userProfileWrap.style.display = 'block';
+        if (authGuestWrap) authGuestWrap.style.display = 'none';
 
         const bal = Number(currentUser.wallet_balance || 0);
-        document.getElementById('headerWalletBal').textContent = `₹${bal.toFixed(2)}`;
-        document.getElementById('navUserName').textContent = (currentUser.name || 'Account').split(' ')[0];
-        document.getElementById('avatarInitial').textContent = (currentUser.name ? currentUser.name[0] : 'U').toUpperCase();
-
-        document.getElementById('dropdownUserName').textContent = currentUser.name;
-        document.getElementById('dropdownUserEmail').textContent = currentUser.email;
-        document.getElementById('dropdownUserPhone').textContent = currentUser.phone ? `+91 ${currentUser.phone}` : 'No mobile registered';
-        document.getElementById('dropdownWalletBal').textContent = `₹${bal.toFixed(2)}`;
-        
         const leadsAvailable = Math.floor(bal / 0.25);
-        document.getElementById('dropdownLeadsCount').textContent = `≈ ${leadsAvailable.toLocaleString()} Leads Available`;
-        document.getElementById('modalWalletAmount').textContent = `₹${bal.toFixed(2)}`;
-        document.getElementById('modalAvailableLeads').textContent = `≈ ${leadsAvailable.toLocaleString()} Leads Available`;
 
-        if (currentUser.role === 'admin') {
-          adminLink.style.display = 'flex';
-        } else {
-          adminLink.style.display = 'none';
-        }
+        // Header controls
+        const headerWalletBal = document.getElementById('headerWalletBal');
+        if (headerWalletBal) headerWalletBal.textContent = `₹${bal.toFixed(2)}`;
+        const navUserName = document.getElementById('navUserName');
+        if (navUserName) navUserName.textContent = (currentUser.name || 'Account').split(' ')[0];
+        const avatarInitial = document.getElementById('avatarInitial');
+        if (avatarInitial) avatarInitial.textContent = (currentUser.name ? currentUser.name[0] : 'U').toUpperCase();
+
+        // Dock badge
+        const dockBadge = document.getElementById('dockWalletBadge');
+        if (dockBadge) dockBadge.textContent = `₹${Math.floor(bal)}`;
+
+        // Modal balances
+        const modalBal = document.getElementById('modalWalletAmount');
+        if (modalBal) modalBal.textContent = `₹${bal.toFixed(2)}`;
+        const modalLeads = document.getElementById('modalAvailableLeads');
+        if (modalLeads) modalLeads.textContent = `≈ ${leadsAvailable.toLocaleString()} Leads Available`;
+
+        // Dedicated Wallet View Elements
+        const pageHeroBal = document.getElementById('walletPageHeroBal');
+        if (pageHeroBal) pageHeroBal.textContent = `₹${bal.toFixed(2)}`;
+        const pageHeroLeads = document.getElementById('walletPageHeroLeads');
+        if (pageHeroLeads) pageHeroLeads.textContent = leadsAvailable.toLocaleString();
+
+        // Dedicated Profile View Elements
+        const profAvatar = document.getElementById('profilePageAvatar');
+        if (profAvatar) profAvatar.textContent = (currentUser.name ? currentUser.name[0] : 'U').toUpperCase();
+        const profName = document.getElementById('profilePageName');
+        if (profName) profName.textContent = currentUser.name || 'Member';
+        const profEmail = document.getElementById('profilePageEmail');
+        if (profEmail) profEmail.textContent = currentUser.email || '';
+        const profPhone = document.getElementById('profilePagePhone');
+        if (profPhone) profPhone.textContent = currentUser.phone ? `+91 ${currentUser.phone}` : 'No mobile registered';
+        const profRole = document.getElementById('profilePageRoleBadge');
+        if (profRole) profRole.textContent = (currentUser.role || 'MEMBER').toUpperCase();
+        
+        const statBal = document.getElementById('profileStatBalance');
+        if (statBal) statBal.textContent = `₹${bal.toFixed(2)}`;
+        const statLeads = document.getElementById('profileStatLeads');
+        if (statLeads) statLeads.textContent = `${leadsAvailable.toLocaleString()} Leads`;
+        const statBonus = document.getElementById('profileStatBonus');
+        if (statBonus) statBonus.textContent = `₹100.00 Claimed`;
+        const quickBal = document.getElementById('profileWalletQuickBal');
+        if (quickBal) quickBal.textContent = `₹${bal.toFixed(2)}`;
+
+        const adminBox = document.getElementById('profileAdminBox');
+        if (adminBox) adminBox.style.display = currentUser.role === 'admin' ? 'block' : 'none';
+
+        syncProfileViewInputs();
       } else {
-        walletBadge.style.display = 'none';
-        userProfileWrap.style.display = 'none';
-        authGuestWrap.style.display = 'inline-flex';
-        const drop = document.getElementById('profileDropdown');
-        if (drop) drop.classList.remove('show');
-      }
-    }
+        if (walletBadge) walletBadge.style.display = 'none';
+        if (userProfileWrap) userProfileWrap.style.display = 'none';
+        if (authGuestWrap) authGuestWrap.style.display = 'inline-flex';
 
-    function toggleProfileDropdown(e) {
-      if (e) e.stopPropagation();
-      const drop = document.getElementById('profileDropdown');
-      drop.classList.toggle('show');
+        const dockBadge = document.getElementById('dockWalletBadge');
+        if (dockBadge) dockBadge.textContent = '₹0';
+
+        const pageHeroBal = document.getElementById('walletPageHeroBal');
+        if (pageHeroBal) pageHeroBal.textContent = '₹0.00';
+        const pageHeroLeads = document.getElementById('walletPageHeroLeads');
+        if (pageHeroLeads) pageHeroLeads.textContent = '0';
+
+        const profName = document.getElementById('profilePageName');
+        if (profName) profName.textContent = 'Guest User';
+        const profEmail = document.getElementById('profilePageEmail');
+        if (profEmail) profEmail.textContent = 'Sign in to access your profile';
+        const statBal = document.getElementById('profileStatBalance');
+        if (statBal) statBal.textContent = '₹0.00';
+        const statLeads = document.getElementById('profileStatLeads');
+        if (statLeads) statLeads.textContent = '0 Leads';
+      }
     }
 
     document.addEventListener('click', (e) => {
@@ -3449,6 +4447,380 @@
     function closeTransactionsModal(e) {
       if (!e || e.target.id === 'txHistoryModal' || (e.target.closest && e.target.closest('.modal-close-btn'))) {
         document.getElementById('txHistoryModal').style.display = 'none';
+      }
+    }
+
+    // =========================================================================
+    // DEDICATED WALLET PAGE CONTROLLER
+    // =========================================================================
+    let pageSelectedRecharge = 250;
+
+    function selectPageRechargePack(amount) {
+      pageSelectedRecharge = amount;
+      document.querySelectorAll('#viewWallet .pack-card').forEach(c => c.classList.remove('active'));
+      const activeCard = document.getElementById(`pagePack${amount}`);
+      if (activeCard) activeCard.classList.add('active');
+
+      const customInp = document.getElementById('pageCustomRechargeAmount');
+      if (customInp) customInp.value = amount;
+
+      const leads = Math.floor(amount / 0.25);
+      const equivEl = document.getElementById('pageCustomLeadsEquiv');
+      if (equivEl) equivEl.textContent = `≈ ${leads.toLocaleString()} leads`;
+
+      const btnLabel = document.getElementById('pagePayBtnLabel');
+      if (btnLabel) btnLabel.textContent = `Proceed to Pay ₹${amount} via Razorpay`;
+    }
+
+    function handlePageCustomAmount(val) {
+      const num = parseFloat(val) || 0;
+      pageSelectedRecharge = num;
+      document.querySelectorAll('#viewWallet .pack-card').forEach(c => c.classList.remove('active'));
+      const matching = document.getElementById(`pagePack${num}`);
+      if (matching) matching.classList.add('active');
+
+      const leads = Math.floor(num / 0.25);
+      const equivEl = document.getElementById('pageCustomLeadsEquiv');
+      if (equivEl) equivEl.textContent = `≈ ${leads.toLocaleString()} leads`;
+
+      const btnLabel = document.getElementById('pagePayBtnLabel');
+      if (btnLabel) btnLabel.textContent = `Proceed to Pay ₹${num} via Razorpay`;
+    }
+
+    function setCalcLeads(leads, btnEl) {
+      document.querySelectorAll('.calc-pill').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      const slider = document.getElementById('calcSlider');
+      if (slider) slider.value = leads;
+
+      syncCalcSlider(leads);
+    }
+
+    function syncCalcSlider(leads) {
+      leads = parseInt(leads) || 50;
+      const sliderText = document.getElementById('sliderValueText');
+      if (sliderText) sliderText.textContent = `${leads.toLocaleString()} Leads Selected`;
+
+      const cost = (leads * 0.25).toFixed(2);
+      const costEl = document.getElementById('calcRequiredCost');
+      if (costEl) costEl.textContent = `₹${cost}`;
+
+      const amtEl = document.getElementById('calcApplyBtnAmt');
+      if (amtEl) amtEl.textContent = Math.round(cost);
+    }
+
+    function applyCalcToRecharge() {
+      const slider = document.getElementById('calcSlider');
+      const leads = parseInt(slider ? slider.value : 400) || 400;
+      const cost = Math.max(10, Math.round(leads * 0.25));
+      selectPageRechargePack(cost);
+      showToast(`Selected ₹${cost} recharge pack for ${leads.toLocaleString()} leads!`);
+    }
+
+    async function executePageRazorpayPayment() {
+      if (!currentUser) {
+        showToast('Please sign in or create an account to recharge.');
+        openAuthModal('signup');
+        return;
+      }
+      const customInp = document.getElementById('pageCustomRechargeAmount');
+      const amount = parseFloat(customInp ? customInp.value : 0) || pageSelectedRecharge;
+      if (amount < 10) {
+        showToast('Minimum recharge amount is ₹10.');
+        return;
+      }
+
+      const btn = document.getElementById('btnPagePayRazorpay');
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Initiating Secure Order...';
+      }
+
+      try {
+        const orderRes = await fetch('/api/wallet/create-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentUserToken}`
+          },
+          body: JSON.stringify({ amount })
+        });
+        const orderData = await orderRes.json();
+        if (!orderRes.ok) {
+          showToast(orderData.error || 'Failed to create payment order.');
+          if (btn) {
+            btn.disabled = false;
+            selectPageRechargePack(amount);
+          }
+          return;
+        }
+
+        if (orderData.is_simulation) {
+          const proceed = confirm(`Test Simulation Mode:\nRazorpay keys not yet configured in /admin.\n\nSimulate successful payment of ₹${amount} to top-up wallet?`);
+          if (proceed) {
+            const verifyRes = await fetch('/api/wallet/verify-payment', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${currentUserToken}`
+              },
+              body: JSON.stringify({
+                razorpay_order_id: orderData.order_id,
+                razorpay_payment_id: 'pay_sim_' + Date.now(),
+                razorpay_signature: 'sim_sig',
+                is_simulation: true
+              })
+            });
+            const vData = await verifyRes.json();
+            if (verifyRes.ok) {
+              currentUser.wallet_balance = vData.new_balance;
+              updateUserHeaderUI();
+              loadPageTransactions();
+              showToast(`Wallet recharged! ₹${amount} added. New balance: ₹${vData.new_balance.toFixed(2)}`);
+            } else {
+              showToast(vData.error || 'Payment verification failed.');
+            }
+          }
+          if (btn) {
+            btn.disabled = false;
+            selectPageRechargePack(amount);
+          }
+        } else {
+          const options = {
+            key: orderData.key_id,
+            amount: Math.round(amount * 100),
+            currency: 'INR',
+            name: 'Fast Map Leads',
+            description: `Wallet Recharge (≈ ${(amount / 0.25).toLocaleString()} leads)`,
+            order_id: orderData.order_id,
+            prefill: {
+              name: currentUser.name,
+              email: currentUser.email,
+              contact: currentUser.phone || ''
+            },
+            theme: { color: '#2563eb' },
+            handler: async function (response) {
+              showToast('Verifying payment cryptographically...');
+              const vRes = await fetch('/api/wallet/verify-payment', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${currentUserToken}`
+                },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature
+                })
+              });
+              const vData = await vRes.json();
+              if (vRes.ok) {
+                if (vData.status === 'approved') {
+                  currentUser.wallet_balance = vData.new_balance;
+                  updateUserHeaderUI();
+                  loadPageTransactions();
+                  showToast(`Wallet recharged! ₹${amount} added. New balance: ₹${vData.new_balance.toFixed(2)}`);
+                } else {
+                  showToast('Payment recorded. Awaiting Admin Approval.');
+                }
+              } else {
+                showToast(vData.error || 'Payment signature verification failed.');
+              }
+              if (btn) {
+                btn.disabled = false;
+                selectPageRechargePack(amount);
+              }
+            },
+            modal: {
+              ondismiss: function () {
+                if (btn) {
+                  btn.disabled = false;
+                  selectPageRechargePack(amount);
+                }
+              }
+            }
+          };
+          const rzp = new Razorpay(options);
+          rzp.open();
+        }
+      } catch (err) {
+        showToast('Payment error: ' + err.message);
+        if (btn) {
+          btn.disabled = false;
+          selectPageRechargePack(amount);
+        }
+      }
+    }
+
+    async function loadPageTransactions() {
+      const tbody = document.getElementById('pageWalletTxTableBody');
+      if (!tbody) return;
+      if (!currentUser) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:25px;">Please sign in to view your wallet statement.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:20px;">Fetching wallet statement...</td></tr>`;
+
+      try {
+        const res = await fetch('/api/wallet/transactions', {
+          headers: { 'Authorization': `Bearer ${currentUserToken}` }
+        });
+        const data = await res.json();
+        const txs = data.transactions || [];
+        if (!txs.length) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:25px;">No transactions recorded yet.</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = txs.map(t => `
+          <tr>
+            <td style="color:#64748b; font-size:0.75rem;">${t.created_at}</td>
+            <td>
+              <span class="status-badge ${t.type === 'credit' ? 'badge-approved' : 'badge-rejected'}" style="font-size:0.7rem; padding:2px 7px;">
+                ${t.type.toUpperCase()}
+              </span>
+            </td>
+            <td style="font-weight:600; color:#1e293b;">${escapeHtml(t.description)}</td>
+            <td style="font-weight:800; color:${t.type === 'credit' ? '#16a34a' : '#dc2626'};">
+              ${t.type === 'credit' ? '+' : '-'}₹${Number(t.amount).toFixed(2)}
+            </td>
+            <td style="font-weight:700; color:#0f172a;">₹${Number(t.balance_after).toFixed(2)}</td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444; padding:20px;">Error loading statement: ${escapeHtml(e.message)}</td></tr>`;
+      }
+    }
+
+    // =========================================================================
+    // DEDICATED PROFILE PAGE CONTROLLER
+    // =========================================================================
+    function syncProfileViewInputs() {
+      if (!currentUser) return;
+      const nameInp = document.getElementById('editProfileName');
+      const phoneInp = document.getElementById('editProfilePhone');
+      const emailInp = document.getElementById('editProfileEmail');
+      if (nameInp) nameInp.value = currentUser.name || '';
+      if (phoneInp) phoneInp.value = currentUser.phone || '';
+      if (emailInp) emailInp.value = currentUser.email || '';
+    }
+
+    async function handleProfileUpdateSubmit(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const name = document.getElementById('editProfileName').value.trim();
+      const phone = document.getElementById('editProfilePhone').value.trim();
+      const btn = document.getElementById('btnSaveProfile');
+      btn.disabled = true;
+      btn.textContent = 'Saving Changes...';
+
+      try {
+        const res = await fetch('/api/auth/update-profile', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentUserToken}`
+          },
+          body: JSON.stringify({ name, phone })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          currentUser.name = data.user.name;
+          currentUser.phone = data.user.phone;
+          updateUserHeaderUI();
+          showToast('Profile updated successfully!');
+        } else {
+          showToast(data.error || 'Failed to update profile.');
+        }
+      } catch (err) {
+        showToast('Error updating profile: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save Profile Details';
+      }
+    }
+
+    async function handlePasswordChangeSubmit(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const newPassword = document.getElementById('changeNewPassword').value;
+      const confirmPassword = document.getElementById('changeConfirmPassword').value;
+
+      if (newPassword !== confirmPassword) {
+        showToast('Passwords do not match. Please re-enter.');
+        return;
+      }
+      if (newPassword.length < 6) {
+        showToast('Password must be at least 6 characters.');
+        return;
+      }
+
+      const btn = document.getElementById('btnChangePassword');
+      btn.disabled = true;
+      btn.textContent = 'Updating Password...';
+
+      try {
+        const res = await fetch('/api/auth/change-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentUserToken}`
+          },
+          body: JSON.stringify({ new_password: newPassword })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast('Password updated successfully!');
+          document.getElementById('changePasswordForm').reset();
+        } else {
+          showToast(data.error || 'Failed to update password.');
+        }
+      } catch (err) {
+        showToast('Error changing password: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Update Password';
+      }
+    }
+
+    // =========================================================================
+    // DEDICATED SAVED FILES PAGE CONTROLLER
+    // =========================================================================
+    async function loadPageFiles() {
+      const tbody = document.getElementById('pageFilesTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:20px;">Fetching saved CSV files...</td></tr>';
+
+      try {
+        const res = await fetch('/api/history');
+        const data = await res.json();
+        const files = data.files || [];
+
+        if (files.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:25px;">No saved CSV files found in output directory yet.</td></tr>';
+          return;
+        }
+
+        let html = '';
+        files.forEach(f => {
+          html += `
+            <tr>
+              <td style="font-weight:700; color:#0f172a;">${escapeHtml(f.name)}</td>
+              <td style="color:#15803d; font-weight:700;">${f.rows} leads</td>
+              <td style="color:#64748b;">${f.size_kb} KB</td>
+              <td style="color:#64748b;">${escapeHtml(f.modified)}</td>
+              <td style="text-align:right;">
+                <a href="/api/download/${encodeURIComponent(f.name)}" class="btn-subtle-sm" style="text-decoration:none;" download>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                  <span>Download</span>
+                </a>
+              </td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444; padding:20px;">Error loading saved files: ${escapeHtml(e.message)}</td></tr>`;
       }
     }
 
@@ -4031,7 +5403,40 @@
       initGoogleAuth();
       connectSSE();
       checkDistrictExpansion(document.getElementById('searchInput').value);
+
+      // Route Detection on Page Load
+      const path = window.location.pathname.replace(/^\//, '').toLowerCase();
+      if (['wallet', 'profile', 'files'].includes(path)) {
+        navigateToView(path, false);
+      } else {
+        navigateToView('scraper', false);
+      }
+
+      // Initialize Calculator & Packs
+      syncCalcSlider(400);
+      selectPageRechargePack(250);
     });
   </script>
+
+  <!-- MOBILE BOTTOM NAVIGATION DOCK (Thumb Ergonomics) -->
+  <nav class="mobile-bottom-dock">
+    <button class="bottom-nav-item active" id="dockScraper" onclick="navigateToView('scraper')" type="button">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Extractor</span>
+    </button>
+    <button class="bottom-nav-item" id="dockWallet" onclick="navigateToView('wallet')" type="button">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+      <span>Wallet</span>
+      <span class="dock-badge" id="dockWalletBadge">₹100</span>
+    </button>
+    <button class="bottom-nav-item" id="dockFiles" onclick="navigateToView('files')" type="button">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+      <span>Files</span>
+    </button>
+    <button class="bottom-nav-item" id="dockProfile" onclick="navigateToView('profile')" type="button">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </button>
+  </nav>
 </body>
 </html>

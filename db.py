@@ -470,11 +470,21 @@ def get_user_transactions(user_id: int) -> List[Dict[str, Any]]:
     return [dict(r) for r in rows]
 
 
-def get_user_scrapes(user_id: int) -> List[Dict[str, Any]]:
+def update_user_password(user_id: int, new_password: str) -> bool:
+    pw_hash = generate_password_hash(new_password)
     conn = get_db_connection()
-    rows = conn.execute("SELECT * FROM scrapes WHERE user_id = ? ORDER BY id DESC LIMIT 50", (user_id,)).fetchall()
+    conn.execute("UPDATE users SET password_hash = ? WHERE id = ?", (pw_hash, user_id))
+    conn.commit()
     conn.close()
-    return [dict(r) for r in rows]
+    return True
+
+
+def update_user_profile(user_id: int, name: str, phone: Optional[str] = None) -> bool:
+    conn = get_db_connection()
+    conn.execute("UPDATE users SET name = ?, phone = ? WHERE id = ?", (name.strip(), phone.strip() if phone else None, user_id))
+    conn.commit()
+    conn.close()
+    return True
 
 
 # Auto-initialize database on import
