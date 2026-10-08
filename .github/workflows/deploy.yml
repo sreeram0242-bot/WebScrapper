@@ -1,0 +1,66 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: CI - Syntax & Dependency Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Verify Code Syntax
+        run: |
+          python -m py_compile app.py
+          python -m py_compile scraper_engine.py
+
+  deploy:
+    name: CD - Deploy to Coolify
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Trigger Coolify Deployment
+        run: |
+          if [ -z "${{ secrets.COOLIFY_API_TOKEN }}" ]; then
+            echo "COOLIFY_API_TOKEN secret is not set in GitHub repository secrets."
+            echo "Please add COOLIFY_API_TOKEN in GitHub Settings -> Secrets and variables -> Actions."
+            exit 0
+          fi
+
+          echo "Triggering deployment on Coolify cloud server..."
+          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X POST \
+            "http://129.225.83.15:8000/api/v1/deploy?uuid=qkngbcoplevuwsakxc0wmwhd" \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
+            -H "Accept: application/json")
+
+          BODY=$(echo "$RESPONSE" | sed -e '$d')
+          STATUS=$(echo "$RESPONSE" | tail -n1 | cut -d: -f2)
+
+          echo "Response: $BODY"
+          echo "Status: $STATUS"
+
+          if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 300 ]; then
+            echo "Deployment successfully triggered on Coolify!"
+          else
+            echo "Failed to trigger deployment (HTTP $STATUS)"
+            exit 1
+          fi
