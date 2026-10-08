@@ -41,12 +41,13 @@ COPY . .
 # Ensure output directory exists
 RUN mkdir -p /app/output
 
-# Expose service port
-EXPOSE 5000
+# Expose service ports (both 5000 and 3000 for flexible Coolify routing)
+EXPOSE 5000 3000
 
 # Health check for Coolify
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
-    CMD curl -f http://127.0.0.1:5000/ || exit 1
+    CMD sh -c "curl -f http://127.0.0.1:5000/ || curl -f http://127.0.0.1:3000/ || exit 1"
+
 
 # Start the Web Application
 CMD ["python", "app.py"]

@@ -417,11 +417,23 @@ def shutdown_service():
 
 if __name__ == "__main__":
     host = os.environ.get("HOST", "0.0.0.0")
-    port = int(os.environ.get("PORT", 5000))
+    env_port = int(os.environ.get("PORT", 5000))
+    ports_to_listen = sorted(list({5000, 3000, env_port}))
+
     print(f"============================================================")
     print(f" Fast Map Leads Web Service")
-    print(f" Running at http://{host}:{port}")
+    print(f" Listening on ports: {ports_to_listen} (host {host})")
     print(f" Output directory: {OUTPUT_DIR}")
     print(f"============================================================")
-    app.run(host=host, port=port, debug=False, threaded=True)
+
+    # Start secondary ports in background threads
+    for p in ports_to_listen[:-1]:
+        threading.Thread(
+            target=lambda port=p: app.run(host=host, port=port, debug=False, threaded=True),
+            daemon=True
+        ).start()
+
+    # Run the primary port in the main thread
+    app.run(host=host, port=ports_to_listen[-1], debug=False, threaded=True)
+
 
