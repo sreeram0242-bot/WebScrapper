@@ -415,6 +415,7 @@ def shutdown_service():
     return jsonify({"status": "shutting_down", "message": "Scraper server has been stopped."})
 
 
+if __name__ == "__main__":
     host = os.environ.get("HOST", "0.0.0.0")
     port = int(os.environ.get("PORT", 5000))
     print(f"============================================================")
@@ -423,3 +424,4 @@ def shutdown_service():
     print(f" Output directory: {OUTPUT_DIR}")
     print(f"============================================================")
     app.run(host=host, port=port, debug=False, threaded=True)
+

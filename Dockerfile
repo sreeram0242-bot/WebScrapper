@@ -45,8 +45,8 @@ RUN mkdir -p /app/output
 EXPOSE 5000
 
 # Health check for Coolify
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:5000/ || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD curl -f http://127.0.0.1:5000/ || exit 1
 
 # Start the Web Application
 CMD ["python", "app.py"]
