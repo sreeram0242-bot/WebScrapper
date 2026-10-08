@@ -3,45 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Google Maps Scraper Pro — Glassmorphic Dashboard</title>
+  <title>Fast Map Leads — 1-Click Google Maps Scraper</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-gradient: linear-gradient(135deg, #f8faff 0%, #f0f4fd 50%, #fdfbf7 100%);
-      --glass-bg: rgba(255, 255, 255, 0.72);
-      --glass-bg-hover: rgba(255, 255, 255, 0.9);
-      --glass-border: rgba(255, 255, 255, 0.85);
-      --glass-border-subtle: rgba(226, 232, 240, 0.75);
-      --glass-shadow: 0 16px 36px -10px rgba(15, 23, 42, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.6);
-      --glass-card-shadow: 0 20px 40px -15px rgba(30, 41, 59, 0.07), 0 0 0 1px rgba(255, 255, 255, 0.75);
-      
+      --bg: linear-gradient(135deg, #f0f7ff 0%, #eef2ff 50%, #f5f3ff 100%);
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-card-bg: rgba(255, 255, 255, 0.92);
+      --glass-border: rgba(226, 232, 240, 0.9);
+      --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.8);
+      --shadow-lg: 0 20px 40px -15px rgba(37, 99, 235, 0.12);
+
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
-      --primary-light: #eff6ff;
-      --primary-glow: rgba(37, 99, 235, 0.25);
-      
-      --success: #10b981;
-      --success-hover: #059669;
-      --success-light: #ecfdf5;
-      --success-glow: rgba(16, 185, 129, 0.25);
+      --success: #16a34a;
+      --success-hover: #15803d;
+      --danger: #dc2626;
+      --danger-hover: #b91c1c;
 
-      --warning: #f59e0b;
-      --warning-light: #fffbeb;
-      --danger: #ef4444;
-      --danger-light: #fef2f2;
-      
       --text-main: #0f172a;
       --text-muted: #64748b;
-      --text-soft: #94a3b8;
-      
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 18px;
-      --radius-xl: 24px;
-      
-      --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      --radius: 16px;
     }
 
     * {
@@ -52,1904 +37,824 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg-gradient);
+      background: var(--bg);
       color: var(--text-main);
       min-height: 100vh;
-      overflow-x: hidden;
       line-height: 1.5;
-      position: relative;
+      padding-bottom: 60px;
     }
 
-    /* Ambient dynamic glow blobs for frosted glass */
-    .ambient-blob {
+    /* Ambient glow elements */
+    .glow-blob {
       position: fixed;
       border-radius: 50%;
-      filter: blur(90px);
+      filter: blur(100px);
       z-index: 0;
       pointer-events: none;
-      opacity: 0.65;
-      animation: floatSlow 20s infinite alternate ease-in-out;
+      opacity: 0.5;
     }
-    .blob-1 {
-      width: 480px;
-      height: 480px;
-      background: radial-gradient(circle, #bfdbfe 0%, #dbeafe 70%, transparent 100%);
-      top: -120px;
-      left: -80px;
-    }
-    .blob-2 {
-      width: 520px;
-      height: 520px;
-      background: radial-gradient(circle, #dcfce7 0%, #bbf7d0 60%, transparent 100%);
-      bottom: -150px;
-      right: -100px;
-      opacity: 0.45;
-    }
-    .blob-3 {
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, #fef3c7 0%, #ede9fe 70%, transparent 100%);
-      top: 35%;
-      right: 15%;
-      opacity: 0.35;
-    }
-    @keyframes floatSlow {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(30px, 40px) scale(1.06); }
-    }
+    .blob-1 { width: 500px; height: 500px; background: #bfdbfe; top: -100px; left: -100px; }
+    .blob-2 { width: 500px; height: 500px; background: #bbf7d0; bottom: -100px; right: -100px; }
 
-    /* Main Container */
     .app-shell {
       position: relative;
       z-index: 1;
       max-width: 1400px;
       margin: 0 auto;
-      padding: 24px 24px 60px 24px;
+      padding: 20px 20px 40px 20px;
     }
 
-    /* Top Navigation Bar */
-    .navbar-glass {
+    /* Header */
+    .top-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 16px 24px;
-      background: var(--glass-bg);
+      background: var(--glass-card-bg);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--glass-shadow);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
       margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
-    .brand-group {
+    .brand-title {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
-
-    .brand-logo {
-      width: 44px;
-      height: 44px;
+    .brand-icon {
+      width: 46px;
+      height: 46px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
       border-radius: 14px;
-      background: linear-gradient(135deg, #2563eb, #3b82f6);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      box-shadow: 0 8px 16px var(--primary-glow);
+      font-size: 1.5rem;
+      box-shadow: 0 8px 16px rgba(37, 99, 235, 0.25);
     }
-    .brand-logo svg {
-      width: 24px;
-      height: 24px;
-    }
-
-    .brand-info h1 {
-      font-size: 1.18rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+    .brand-text h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
       color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 8px;
     }
-
-    .brand-info .tagline {
+    .brand-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      background: #dcfce7;
+      color: #15803d;
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid #bbf7d0;
+    }
+    .brand-sub {
       font-size: 0.8rem;
       color: var(--text-muted);
       font-weight: 500;
     }
 
-    .nav-actions {
+    .header-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
-
     .status-pill {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 14px;
+      padding: 7px 14px;
+      background: white;
+      border: 1px solid var(--glass-border);
       border-radius: 30px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border-subtle);
-      transition: var(--transition-smooth);
+      font-size: 0.82rem;
+      font-weight: 700;
     }
     .status-dot {
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      background: #94a3b8;
+      background: #10b981;
     }
-    .status-pill.status-idle .status-dot { background: #94a3b8; }
-    .status-pill.status-running {
-      background: #eff6ff;
-      border-color: #bfdbfe;
-      color: #1d4ed8;
-    }
-    .status-pill.status-running .status-dot {
+    .status-dot.pulsing {
       background: #2563eb;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
-      animation: pulse 1.6s infinite;
+      animation: pulseDot 1.4s infinite;
     }
-    .status-pill.status-completed {
-      background: var(--success-light);
-      border-color: #a7f3d0;
-      color: #047857;
-    }
-    .status-pill.status-completed .status-dot { background: #10b981; }
-
-    @keyframes pulse {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
-      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+    @keyframes pulseDot {
+      0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(37, 99, 235, 0); }
+      100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
     }
 
-    .btn-glass-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: var(--radius-md);
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border-subtle);
+    .btn-header-action {
       display: flex;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--text-muted);
-      transition: var(--transition-smooth);
-    }
-    .btn-glass-icon:hover {
+      gap: 6px;
+      padding: 8px 14px;
       background: white;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
       color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-header-action:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
-    /* Layout Grid */
-    .grid-dashboard {
+    /* Main Grid */
+    .main-grid {
       display: grid;
       grid-template-columns: 460px 1fr;
       gap: 24px;
       align-items: start;
     }
     @media (max-width: 1024px) {
-      .grid-dashboard {
+      .main-grid {
         grid-template-columns: 1fr;
       }
     }
 
     /* Glass Cards */
-    .glass-card {
-      background: var(--glass-bg);
+    .card {
+      background: var(--glass-card-bg);
       backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
       border: 1px solid var(--glass-border);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--glass-card-shadow);
+      border-radius: var(--radius);
       padding: 24px;
-      position: relative;
-      overflow: hidden;
-      transition: var(--transition-smooth);
-    }
-    .glass-card:hover {
-      border-color: rgba(255, 255, 255, 0.95);
+      box-shadow: var(--shadow-md);
     }
 
-    .card-header {
+    /* Step Headers */
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .step-number {
+      width: 28px;
+      height: 28px;
+      background: #2563eb;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+    .step-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    /* Big Search Input */
+    .search-box-wrapper {
+      position: relative;
+      margin-bottom: 12px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.25rem;
+      color: #94a3b8;
+    }
+    .big-search-input {
+      width: 100%;
+      padding: 16px 16px 16px 50px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border: 2px solid #cbd5e1;
+      border-radius: 14px;
+      outline: none;
+      background: white;
+      color: var(--text-main);
+      transition: all 0.2s;
+    }
+    .big-search-input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+    }
+
+    /* 1-Click Suggestions */
+    .suggestion-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .chip {
+      background: white;
+      border: 1.5px solid #e2e8f0;
+      padding: 6px 12px;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .chip:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      color: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    /* Leads Amount Selector */
+    .limit-options {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .limit-btn {
+      padding: 12px 6px;
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .limit-btn.active {
+      border-color: #2563eb;
+      background: #eff6ff;
+      color: #1d4ed8;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    }
+    .limit-btn:hover:not(.active) {
+      border-color: #cbd5e1;
+      background: #f8fafc;
+    }
+
+    /* Phone Filter Toggle */
+    .filter-card {
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
+      cursor: pointer;
     }
-    .card-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--text-main);
+    .filter-info {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-    .card-title svg {
-      width: 19px;
-      height: 19px;
-      color: var(--primary);
+    .filter-icon {
+      font-size: 1.3rem;
     }
-
-    /* Tabs */
-    .tabs-glass {
-      display: flex;
-      background: rgba(241, 245, 249, 0.85);
-      border: 1px solid rgba(226, 232, 240, 0.8);
-      border-radius: var(--radius-lg);
-      padding: 4px;
-      gap: 4px;
-      margin-bottom: 20px;
-    }
-    .tab-btn {
-      flex: 1;
-      border: none;
-      background: transparent;
-      padding: 9px 12px;
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: var(--transition-smooth);
-    }
-    .tab-btn:hover {
-      color: var(--text-main);
-    }
-    .tab-btn.active {
-      background: white;
-      color: var(--primary);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    }
-
-    /* Form Fields */
-    .form-group {
-      margin-bottom: 16px;
-    }
-    .form-label {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text-main);
-      margin-bottom: 6px;
-    }
-    .form-hint {
-      font-size: 0.74rem;
-      color: var(--text-soft);
-      font-weight: 400;
-    }
-    .input-glass {
-      width: 100%;
-      padding: 11px 15px;
-      font-size: 0.9rem;
-      color: var(--text-main);
-      background: rgba(255, 255, 255, 0.85);
-      border: 1px solid var(--glass-border-subtle);
-      border-radius: var(--radius-md);
-      outline: none;
-      transition: var(--transition-smooth);
-      font-family: inherit;
-    }
-    .input-glass:focus {
-      background: white;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-    }
-    .input-glass::placeholder {
-      color: #94a3b8;
-    }
-
-    /* Grid options */
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    /* Quick suggestions pills */
-    .quick-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-    .tag-chip {
-      font-size: 0.72rem;
-      font-weight: 500;
-      padding: 3px 9px;
-      border-radius: 20px;
-      background: rgba(241, 245, 249, 0.9);
-      border: 1px solid rgba(226, 232, 240, 0.8);
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: var(--transition-smooth);
-    }
-    .tag-chip:hover {
-      background: var(--primary-light);
-      border-color: #bfdbfe;
-      color: var(--primary);
-    }
-
-    /* Switch toggle row */
-    .toggle-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      background: rgba(255, 255, 255, 0.55);
-      border: 1px solid var(--glass-border-subtle);
-      border-radius: var(--radius-md);
-      margin-bottom: 10px;
-      transition: var(--transition-smooth);
-    }
-    .toggle-card:hover {
-      background: rgba(255, 255, 255, 0.85);
-    }
-    .toggle-info {
-      display: flex;
-      flex-direction: column;
-    }
-    .toggle-title {
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: var(--text-main);
-    }
-    .toggle-desc {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-    }
-
-    /* iOS style switch */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 44px;
-      height: 24px;
-      flex-shrink: 0;
-    }
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #cbd5e1;
-      transition: 0.3s;
-      border-radius: 30px;
-    }
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: 0.3s;
-      border-radius: 50%;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-    }
-    input:checked + .slider {
-      background-color: var(--primary);
-    }
-    input:checked + .slider:before {
-      transform: translateX(20px);
-    }
-
-    /* Collapsible settings */
-    .collapsible-trigger {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      background: transparent;
-      border: none;
-      padding: 10px 0;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: var(--transition-smooth);
-    }
-    .collapsible-trigger:hover {
-      color: var(--text-main);
-    }
-    .collapsible-content {
-      display: none;
-      padding-top: 10px;
-      margin-bottom: 16px;
-      border-top: 1px dashed var(--glass-border-subtle);
-    }
-    .collapsible-content.open {
+    .filter-text strong {
+      font-size: 0.88rem;
+      color: #15803d;
       display: block;
     }
-
-    /* Action buttons */
-    .actions-bar {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
+    .filter-text span {
+      font-size: 0.74rem;
+      color: #166534;
     }
-    .btn-primary {
-      flex: 1;
+    .filter-checkbox {
+      width: 22px;
+      height: 22px;
+      accent-color: #16a34a;
+      cursor: pointer;
+    }
+
+    /* Start / Stop CTA Buttons */
+    .cta-button-group {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 13px 20px;
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .btn-start {
+      width: 100%;
+      padding: 18px 24px;
+      background: linear-gradient(135deg, #16a34a, #15803d);
       color: white;
       border: none;
-      border-radius: var(--radius-lg);
-      font-size: 0.92rem;
-      font-weight: 600;
+      border-radius: 16px;
+      font-size: 1.15rem;
+      font-weight: 800;
       cursor: pointer;
-      box-shadow: 0 8px 20px var(--primary-glow);
-      transition: var(--transition-smooth);
-    }
-    .btn-primary:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.35);
-    }
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .btn-danger {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 13px 20px;
-      background: rgba(254, 242, 242, 0.9);
-      color: var(--danger);
-      border: 1px solid #fecaca;
-      border-radius: var(--radius-lg);
-      font-size: 0.92rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition-smooth);
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(22, 163, 74, 0.35);
+      transition: all 0.2s;
     }
-    .btn-danger:hover:not(:disabled) {
-      background: #fee2e2;
-      transform: translateY(-1px);
+    .btn-start:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(22, 163, 74, 0.45);
+      background: linear-gradient(135deg, #15803d, #166534);
     }
-    .btn-danger:disabled {
-      opacity: 0.4;
+    .btn-start:disabled {
+      opacity: 0.6;
       cursor: not-allowed;
+      transform: none;
     }
 
-    /* Stat Badges in Right Panel */
-    .stats-row {
+    .btn-stop {
+      width: 100%;
+      padding: 16px 24px;
+      background: #fee2e2;
+      color: #dc2626;
+      border: 2px solid #fecaca;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-stop:hover:not(:disabled) {
+      background: #fecaca;
+    }
+
+    /* Advanced Section Trigger */
+    .advanced-trigger {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      margin-top: 8px;
+      user-select: none;
+    }
+    .advanced-trigger:hover {
+      color: #2563eb;
+    }
+    .advanced-content {
+      display: none;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed #cbd5e1;
+    }
+
+    /* RIGHT: Live Results & Hero Stats */
+    .hero-stats-row {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 14px;
       margin-bottom: 20px;
     }
-    @media (max-width: 768px) {
-      .stats-row {
-        grid-template-columns: repeat(2, 1fr);
+    @media (max-width: 640px) {
+      .hero-stats-row {
+        grid-template-columns: 1fr;
       }
     }
 
-    .stat-pill-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
+    .hero-stat-card {
+      background: white;
       border: 1px solid var(--glass-border);
-      border-radius: var(--radius-lg);
-      padding: 14px 18px;
-      box-shadow: var(--glass-shadow);
+      border-radius: var(--radius);
+      padding: 18px 20px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
+      box-shadow: var(--shadow-sm);
     }
-    .stat-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: var(--radius-md);
+    .hero-stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
+      font-size: 1.5rem;
     }
-    .stat-icon.blue { background: #eff6ff; color: #2563eb; }
-    .stat-icon.green { background: #ecfdf5; color: #10b981; }
-    .stat-icon.amber { background: #fffbeb; color: #f59e0b; }
-    .stat-icon.purple { background: #faf5ff; color: #8b5cf6; }
-
-    .stat-data {
-      display: flex;
-      flex-direction: column;
-    }
-    .stat-value {
-      font-size: 1.28rem;
-      font-weight: 700;
+    .hero-stat-icon.green { background: #dcfce7; color: #16a34a; }
+    .hero-stat-icon.blue { background: #dbeafe; color: #2563eb; }
+    .hero-stat-icon.purple { background: #f3e8ff; color: #9333ea; }
+    .hero-stat-number {
+      font-size: 1.5rem;
+      font-weight: 900;
       color: var(--text-main);
-      line-height: 1.2;
+      line-height: 1.1;
     }
-    .stat-label {
-      font-size: 0.74rem;
-      font-weight: 500;
+    .hero-stat-label {
+      font-size: 0.78rem;
       color: var(--text-muted);
-    }
-
-    /* Live Progress Bar */
-    .progress-section {
-      margin-bottom: 20px;
-    }
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      font-size: 0.84rem;
       font-weight: 600;
     }
-    .progress-track {
-      width: 100%;
-      height: 10px;
-      background: rgba(226, 232, 240, 0.7);
-      border-radius: 20px;
-      overflow: hidden;
-      position: relative;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #3b82f6, #6366f1);
-      border-radius: 20px;
-      transition: width 0.3s ease;
-      box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
-    }
 
-    /* Table Toolbar & Smart Filters */
-    .table-toolbar {
+    /* Big Action Buttons for Results */
+    .export-actions-bar {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
       gap: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
     }
-    
-    .filter-pills-group {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .filter-pill {
-      border: 1px solid var(--glass-border-subtle);
-      background: rgba(255, 255, 255, 0.7);
-      color: var(--text-muted);
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 0.76rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition-smooth);
-    }
-    .filter-pill:hover {
-      background: white;
-      color: var(--text-main);
-    }
-    .filter-pill.active {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-      box-shadow: 0 2px 8px var(--primary-glow);
-    }
-
-    .table-search-box {
-      position: relative;
+    .btn-export-excel {
       flex: 1;
       min-width: 220px;
-      max-width: 300px;
-    }
-    .table-search-box input {
-      padding-left: 36px;
-    }
-    .table-search-box svg {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      color: #94a3b8;
-    }
-
-    .table-actions {
+      padding: 16px 20px;
+      background: #16a34a;
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 20px rgba(22, 163, 74, 0.25);
+      transition: all 0.2s;
     }
-
-    /* Dedicated Download CSV Button (Hero style) */
-    .btn-download-csv {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 18px;
-      font-size: 0.84rem;
-      font-weight: 700;
-      color: white;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      border: none;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      box-shadow: 0 4px 14px var(--success-glow);
-      transition: var(--transition-smooth);
-    }
-    .btn-download-csv:hover:not(:disabled) {
+    .btn-export-excel:hover:not(:disabled) {
+      background: #15803d;
       transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
     }
-    .btn-download-csv:disabled {
+    .btn-export-excel:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
 
-    .btn-outline-glass {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-main);
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid var(--glass-border-subtle);
-      border-radius: var(--radius-md);
+    .btn-copy-phones {
+      flex: 1;
+      min-width: 220px;
+      padding: 16px 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 800;
       cursor: pointer;
-      transition: var(--transition-smooth);
-      text-decoration: none;
-    }
-    .btn-outline-glass:hover {
-      background: white;
-      border-color: #cbd5e1;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-    }
-
-    /* Live Data Table */
-    .table-container {
-      background: rgba(255, 255, 255, 0.65);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
-      max-height: 480px;
-      overflow-y: auto;
-    }
-    table.glass-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.84rem;
-    }
-    table.glass-table th {
-      background: rgba(248, 250, 252, 0.88);
-      backdrop-filter: blur(10px);
-      padding: 12px 16px;
-      font-weight: 600;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--glass-border-subtle);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    table.glass-table td {
-      padding: 13px 16px;
-      border-bottom: 1px solid rgba(241, 245, 249, 0.8);
-      color: var(--text-main);
-      vertical-align: middle;
-    }
-    table.glass-table tr:hover td {
-      background: rgba(241, 245, 249, 0.45);
-    }
-
-    .cell-name {
-      font-weight: 600;
-      color: #1e293b;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+      transition: all 0.2s;
     }
-    .cell-phone {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: #2563eb;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    .btn-copy-phones:hover:not(:disabled) {
+      background: #1d4ed8;
+      transform: translateY(-1px);
     }
-    .btn-copy-small {
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      color: #94a3b8;
-      padding: 2px;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      transition: color 0.2s;
-    }
-    .btn-copy-small:hover {
-      color: var(--primary);
-      background: #eff6ff;
+    .btn-copy-phones:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
-    .cell-link a {
-      color: #3b82f6;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .cell-link a:hover {
-      text-decoration: underline;
-    }
-
-    .empty-state {
-      padding: 48px 24px;
-      text-align: center;
-      color: var(--text-muted);
-    }
-    .empty-state svg {
-      width: 44px;
-      height: 44px;
-      color: #cbd5e1;
-      margin-bottom: 12px;
-    }
-
-    /* Live Terminal / Log Viewer */
-    .console-card {
-      margin-top: 24px;
-      background: #0f172a;
-      border-radius: var(--radius-xl);
-      border: 1px solid #1e293b;
+    /* Live Table Card */
+    .table-container {
+      background: white;
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-sm);
     }
-    .console-header {
+    .table-header-row {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e2e8f0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 18px;
-      background: #1e293b;
-      border-bottom: 1px solid #334155;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-    .console-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: #94a3b8;
+    .table-title {
+      font-size: 0.95rem;
+      font-weight: 800;
       display: flex;
       align-items: center;
       gap: 8px;
     }
-    .console-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .table-search-box {
+      padding: 8px 14px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      outline: none;
+      width: 220px;
     }
-    .console-btn {
-      background: transparent;
-      border: none;
-      color: #64748b;
-      font-size: 0.74rem;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    .console-btn:hover {
-      color: #cbd5e1;
-    }
-    .console-body {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.76rem;
-      line-height: 1.6;
-      color: #e2e8f0;
-      padding: 16px;
-      height: 180px;
-      overflow-y: auto;
-      background: #090d16;
-    }
-    .log-line {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 4px;
-    }
-    .log-time {
-      color: #64748b;
-      user-select: none;
-    }
-    .log-tag {
-      font-weight: 600;
-      padding: 1px 6px;
-      border-radius: 4px;
-      font-size: 0.68rem;
-    }
-    .log-tag.INFO { background: #1e293b; color: #93c5fd; }
-    .log-tag.SUCCESS { background: #064e3b; color: #6ee7b7; }
-    .log-tag.WARN { background: #451a03; color: #fde047; }
-    .log-tag.ERROR { background: #450a0a; color: #fca5a5; }
 
-    /* Past Files Drawer / History Modal */
-    .history-card {
-      margin-top: 24px;
+    .leads-table-scroll {
+      max-height: 480px;
+      overflow-y: auto;
     }
-    .history-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 14px;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
     }
-    .history-item {
-      background: rgba(255, 255, 255, 0.65);
-      border: 1px solid var(--glass-border-subtle);
-      border-radius: var(--radius-md);
-      padding: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: var(--transition-smooth);
+    thead {
+      position: sticky;
+      top: 0;
+      background: #f8fafc;
+      z-index: 2;
     }
-    .history-item:hover {
-      background: white;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    th {
+      padding: 12px 16px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid #e2e8f0;
     }
-    .file-details {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
+    td {
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
     }
-    .file-name {
-      font-size: 0.84rem;
-      font-weight: 600;
+    tr:hover td {
+      background: #f8fafc;
+    }
+
+    .lead-name {
+      font-weight: 700;
       color: var(--text-main);
+      font-size: 0.9rem;
     }
-    .file-meta {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-    }
-    .history-btns {
-      display: flex;
+    .lead-phone {
+      font-weight: 800;
+      color: #15803d;
+      font-size: 0.92rem;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
+      background: #f0fdf4;
+      padding: 4px 10px;
+      border-radius: 8px;
+      border: 1px solid #bbf7d0;
+    }
+    .btn-copy-mini {
+      background: white;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 2px 6px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      color: #475569;
+    }
+    .btn-copy-mini:hover {
+      background: #e2e8f0;
     }
 
-    /* Notifications Toast */
+    /* Live Friendly Status Stream */
+    .status-stream-box {
+      margin-top: 20px;
+      background: #0f172a;
+      border-radius: 14px;
+      padding: 16px 20px;
+      color: #e2e8f0;
+      font-size: 0.82rem;
+      font-family: monospace;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+    .log-entry {
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .log-entry.SUCCESS { color: #4ade80; }
+    .log-entry.WARN { color: #facc15; }
+    .log-entry.ERROR { color: #f87171; }
+
+    /* Toast */
     .toast-container {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      z-index: 1000;
+      z-index: 9999;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
     .toast {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      padding: 12px 18px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      font-size: 0.84rem;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    @keyframes slideIn {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-
-    /* Tamil Nadu 38 Districts Inspector & Explorer */
-    .district-inspector-card {
-      margin-top: 14px;
-      background: rgba(255, 255, 255, 0.84);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(191, 219, 254, 0.85);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      box-shadow: 0 14px 30px -8px rgba(37, 99, 235, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.85);
-      animation: inspectorFadeIn 0.3s ease-out;
-    }
-    @keyframes inspectorFadeIn {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .inspector-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 12px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--glass-border-subtle);
-      gap: 10px;
-    }
-    .inspector-title {
-      font-size: 0.96rem;
-      font-weight: 700;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .inspector-subtitle {
-      font-size: 0.74rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-    .inspector-badges {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .badge-pill {
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 12px;
-    }
-    .badge-pill.blue { background: #dbeafe; color: #1e40af; }
-    .badge-pill.green { background: #dcfce7; color: #166534; }
-    .badge-pill.purple { background: #f3e8ff; color: #6b21a8; }
-    .badge-pill.amber { background: #fef3c7; color: #92400e; }
-
-    .inspector-customizer {
-      background: rgba(248, 250, 252, 0.8);
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      border-radius: var(--radius-md);
-      padding: 10px 12px;
-      margin-bottom: 12px;
-    }
-    .customizer-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .customizer-input {
-      flex: 1;
-      min-width: 130px;
-      padding: 6px 10px;
-      background: white;
-      border: 1px solid var(--glass-border-subtle);
-      border-radius: var(--radius-sm);
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-main);
-      outline: none;
-    }
-    .customizer-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px var(--primary-glow);
-    }
-    .btn-customizer-apply {
-      padding: 6px 14px;
-      background: var(--primary);
+      background: #0f172a;
       color: white;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-size: 0.76rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition-smooth);
-      white-space: nowrap;
-    }
-    .btn-customizer-apply:hover {
-      background: var(--primary-hover);
-    }
-
-    .zone-filters-bar {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
-    }
-    .zone-pill {
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 14px;
-      border: 1px solid var(--glass-border-subtle);
-      background: rgba(255, 255, 255, 0.7);
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: var(--transition-smooth);
-    }
-    .zone-pill:hover {
-      background: white;
-      color: var(--text-main);
-    }
-    .zone-pill.active {
-      background: #eff6ff;
-      border-color: #93c5fd;
-      color: #1d4ed8;
-      font-weight: 700;
-    }
-
-    .district-search-bar {
-      width: 100%;
-      padding: 8px 12px;
-      background: white;
-      border: 1px solid var(--glass-border-subtle);
-      border-radius: var(--radius-md);
-      font-size: 0.8rem;
-      margin-bottom: 10px;
-      outline: none;
-      box-sizing: border-box;
-    }
-    .district-search-bar:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px var(--primary-glow);
-    }
-
-    .inspector-actions-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-    .inspector-stats {
-      font-size: 0.76rem;
-      font-weight: 600;
-      color: var(--text-main);
-    }
-    .inspector-action-btns {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-    .btn-mini-glass {
-      padding: 5px 10px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      border: 1px solid var(--glass-border-subtle);
-      background: white;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      color: var(--text-muted);
-      transition: var(--transition-smooth);
-    }
-    .btn-mini-glass:hover {
-      background: #f8fafc;
-      color: var(--text-main);
-      border-color: #cbd5e1;
-    }
-
-    .districts-scroll-container {
-      max-height: 380px;
-      overflow-y: auto;
-      padding-right: 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .districts-scroll-container::-webkit-scrollbar {
-      width: 6px;
-    }
-    .districts-scroll-container::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
-    }
-
-    .district-card {
-      background: rgba(255, 255, 255, 0.82);
-      border: 1px solid var(--glass-border-subtle);
-      border-radius: var(--radius-md);
-      padding: 10px 12px;
-      transition: var(--transition-smooth);
-    }
-    .district-card:hover {
-      border-color: #93c5fd;
-      background: white;
-    }
-    .district-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      user-select: none;
-    }
-    .district-card-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .district-name {
-      font-size: 0.84rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-    .district-meta-tag {
-      font-size: 0.68rem;
-      font-weight: 600;
-      padding: 2px 6px;
-      border-radius: 10px;
-      background: #f1f5f9;
-      color: #475569;
-    }
-    .district-areas-count {
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 10px;
-      background: #eff6ff;
-      color: #2563eb;
-    }
-    .district-areas-body {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px dashed #e2e8f0;
-    }
-    .area-chip-pill {
-      font-size: 0.72rem;
-      font-weight: 500;
-      background: #f8fafc;
-      color: #334155;
-      border: 1px solid #e2e8f0;
-      padding: 3px 8px;
+      padding: 12px 20px;
       border-radius: 12px;
-      transition: var(--transition-smooth);
-    }
-    .area-chip-pill:hover {
-      background: #eff6ff;
-      border-color: #93c5fd;
-      color: #1d4ed8;
-      transform: translateY(-1px);
-    }
-
-    /* Modal for Fullscreen Directory */
-    .directory-modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.45);
-      backdrop-filter: blur(8px);
-      z-index: 1200;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      animation: modalFadeIn 0.2s ease-out;
-    }
-    @keyframes modalFadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    .directory-modal-content {
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(25px);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-xl);
-      max-width: 980px;
-      width: 100%;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.9);
-      overflow: hidden;
-    }
-    .modal-header-glass {
-      padding: 18px 24px;
-      border-bottom: 1px solid var(--glass-border-subtle);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .modal-body-glass {
-      padding: 20px 24px;
-      overflow-y: auto;
-      flex: 1;
-    }
-    .modal-footer-glass {
-      padding: 14px 24px;
-      border-top: 1px solid var(--glass-border-subtle);
-      background: rgba(248, 250, 252, 0.85);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    /* RAM & Hardware Memory Guard Navbar Pill */
-    .ram-guard-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 6px 13px;
-      border-radius: 30px;
-      font-size: 0.78rem;
+      font-size: 0.88rem;
       font-weight: 600;
-      background: rgba(240, 253, 244, 0.95);
-      border: 1px solid #bbf7d0;
-      color: #15803d;
-      box-shadow: 0 2px 6px rgba(16, 185, 129, 0.08);
-      transition: var(--transition-smooth);
-    }
-    .ram-guard-pill .ram-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #16a34a;
-      box-shadow: 0 0 6px rgba(22, 163, 74, 0.6);
-      animation: pulseRam 2s infinite ease-in-out;
-    }
-    @keyframes pulseRam {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.3); opacity: 0.7; }
-    }
-
-    /* Engine & Speed Mode Selection Styles */
-    .engine-section {
-      margin-bottom: 20px;
-      padding: 14px;
-      background: rgba(248, 250, 252, 0.75);
-      border: 1px solid rgba(226, 232, 240, 0.85);
-      border-radius: var(--radius-lg);
-    }
-    .engine-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
-    @media (max-width: 600px) {
-      .engine-cards-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    .engine-card {
-      background: white;
-      border: 1.5px solid #e2e8f0;
-      border-radius: var(--radius-md);
-      padding: 11px 13px;
-      cursor: pointer;
-      transition: var(--transition-smooth);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .engine-card:hover {
-      border-color: #93c5fd;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.07);
-    }
-    .engine-card.active {
-      border-color: var(--primary);
-      background: #eff6ff;
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-    }
-    .engine-card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 5px;
-    }
-    .engine-card-title {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-    .engine-icon {
-      font-size: 1.05rem;
-    }
-    .engine-badge {
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 6px;
-    }
-    .engine-badge.rec {
-      background: #dbeafe;
-      color: #1d4ed8;
-    }
-    .engine-badge.light {
-      background: #dcfce7;
-      color: #15803d;
-    }
-    .engine-badge.speed {
-      background: #fef3c7;
-      color: #b45309;
-    }
-    .engine-badge.gray {
-      background: #f1f5f9;
-      color: #475569;
-    }
-    .engine-desc {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      line-height: 1.35;
-    }
-    .engine-suboptions {
-      margin-top: 12px;
-      padding-top: 10px;
-      border-top: 1px dashed rgba(203, 213, 225, 0.8);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .suboption-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-    .suboption-label {
-      font-size: 0.77rem;
-      font-weight: 600;
-      color: var(--text-main);
-      cursor: pointer;
-    }
-    .switch-sm {
-      width: 36px;
-      height: 20px;
-    }
-    .switch-sm .slider:before {
-      height: 14px;
-      width: 14px;
-      left: 3px;
-      bottom: 3px;
-    }
-    .switch-sm input:checked + .slider:before {
-      transform: translateX(16px);
-    }
-    .select-glass {
-      padding: 5px 9px;
-      font-size: 0.76rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--glass-border-subtle);
-      background: white;
-      color: var(--text-main);
-      font-family: inherit;
-      outline: none;
-      font-weight: 600;
-      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
   </style>
 </head>
 <body>
 
-  <!-- Ambient frosted glass glow -->
-  <div class="ambient-blob blob-1"></div>
-  <div class="ambient-blob blob-2"></div>
-  <div class="ambient-blob blob-3"></div>
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
 
   <div class="app-shell">
     
-    <!-- Top Glass Navigation -->
-    <header class="navbar-glass">
-      <div class="brand-group">
-        <div class="brand-logo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-            <circle cx="12" cy="10" r="3"></circle>
-          </svg>
-        </div>
-        <div class="brand-info">
-          <h1>Google Maps Scraper Pro <span style="font-size: 0.68rem; font-weight: 700; background: #e0e7ff; color: #3730a3; padding: 2px 7px; border-radius: 12px;">v2.1</span></h1>
-          <span class="tagline">Automated Lead Extraction & Data Mining • Running Invisibly in Background</span>
+    <!-- Top Bar -->
+    <header class="top-header">
+      <div class="brand-title">
+        <div class="brand-icon">📍</div>
+        <div class="brand-text">
+          <h1>Fast Map Leads <span class="brand-badge">⚡ ULTRA-FAST</span></h1>
+          <p class="brand-sub">Simple 1-Click Phone Number & Business Finder</p>
         </div>
       </div>
 
-      <div class="nav-actions">
-        <!-- Live RAM & Anti-Freeze Hardware Protection Pill -->
-        <div id="ramGuardBadge" class="ram-guard-pill" title="Hardware Memory Guard: Windows low priority prevents browser from freezing foreground apps">
-          <span class="ram-dot"></span>
-          <span id="ramText">RAM: Checking...</span>
+      <div class="header-actions">
+        <div id="statusPill" class="status-pill">
+          <span id="statusDot" class="status-dot"></span>
+          <span id="statusLabel">Ready</span>
         </div>
-
-        <div id="statusPill" class="status-pill status-idle">
-          <span class="status-dot"></span>
-          <span id="statusText">Ready</span>
-        </div>
-
-        <button class="btn-glass-icon" title="Open Output Folder in Explorer" onclick="openOutputFolder()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-          </svg>
+        <button class="btn-header-action" onclick="openOutputFolder()" title="Open Folder">
+          📁 Open Saved Files
         </button>
       </div>
     </header>
 
-    <!-- Main Grid: Left Controls, Right Realtime Monitor -->
-    <div class="grid-dashboard">
+    <!-- Main 2-Column Interface -->
+    <main class="main-grid">
 
-      <!-- LEFT: Scraping Configuration Panel -->
-      <section class="glass-card">
-        <div class="card-header">
-          <div class="card-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"></circle>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-            </svg>
-            Search & Parameters
-          </div>
-          <span style="font-size: 0.74rem; color: var(--text-muted);">Background automation</span>
+      <!-- LEFT: Simple Search Card -->
+      <section class="card">
+        
+        <!-- Step 1: Query Input -->
+        <div class="step-header">
+          <div class="step-number">1</div>
+          <h2 class="step-title">What business do you want to find?</h2>
         </div>
 
-        <!-- Mode Selection Tabs -->
-        <div class="tabs-glass">
-          <button class="tab-btn active" id="tabQuery" onclick="switchMode('query')">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            Single Query
+        <div class="search-box-wrapper">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="big-search-input" 
+            placeholder="e.g. Gyms in Chennai, Hotels in Mumbai..." 
+            value="Gyms in Chennai"
+            autofocus
+          />
+        </div>
+
+        <!-- 1-Click Popular Suggestions -->
+        <div class="suggestion-chips">
+          <span class="chip" onclick="setQuery('Gyms in Chennai')">🏋️ Gyms in Chennai</span>
+          <span class="chip" onclick="setQuery('Hospitals in Coimbatore')">🏥 Hospitals in Coimbatore</span>
+          <span class="chip" onclick="setQuery('Hotels in Madurai')">🏨 Hotels in Madurai</span>
+          <span class="chip" onclick="setQuery('Restaurants in Bangalore')">🍽️ Restaurants in Bangalore</span>
+          <span class="chip" onclick="setQuery('Schools in Salem')">🎓 Schools in Salem</span>
+          <span class="chip" onclick="setQuery('Clinics in Trichy')">🦷 Clinics in Trichy</span>
+        </div>
+
+        <!-- Step 2: Amount Selector -->
+        <div class="step-header">
+          <div class="step-number">2</div>
+          <h2 class="step-title">How many leads do you want?</h2>
+        </div>
+
+        <div class="limit-options">
+          <div class="limit-btn" onclick="selectLimit(25, this)">25</div>
+          <div class="limit-btn active" onclick="selectLimit(50, this)">50 (Best)</div>
+          <div class="limit-btn" onclick="selectLimit(100, this)">100</div>
+          <div class="limit-btn" onclick="selectLimit(null, this)">All (Max)</div>
+        </div>
+        <input type="hidden" id="selectedLimit" value="50" />
+
+        <!-- Step 3: Phone Number Filter -->
+        <div class="filter-card" onclick="togglePhoneFilter()">
+          <div class="filter-info">
+            <span class="filter-icon">📞</span>
+            <div class="filter-text">
+              <strong>Only Save Leads With Phone Numbers</strong>
+              <span>Skips listings that don't have a contact number</span>
+            </div>
+          </div>
+          <input type="checkbox" id="requirePhoneCheckbox" class="filter-checkbox" checked onclick="event.stopPropagation()" />
+        </div>
+
+        <!-- BIG ACTION BUTTONS -->
+        <div class="cta-button-group">
+          <button id="btnStart" class="btn-start" onclick="startScraping()">
+            🚀 START SEARCH (1-CLICK)
           </button>
-          <button class="tab-btn" id="tabBatch" onclick="switchMode('batch')">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-            Multi-Area Batch
-          </button>
-          <button class="tab-btn" id="tabUrl" onclick="switchMode('url')">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-            Maps URL
-          </button>
-          <button class="tab-btn" id="tabLinks" onclick="switchMode('from_links')">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-            Resume CSV
-          </button>
-        </div>
-
-        <!-- Input: Mode 1 Query -->
-        <div id="sectionQuery" class="form-group">
-          <label class="form-label" for="searchQuery">
-            Target Search Query (-q)
-            <span class="form-hint">Type any niche & location</span>
-          </label>
-          <input type="text" id="searchQuery" class="input-glass" placeholder="e.g. Dentists in Manhattan, Gyms in London..." value="Gyms in Chennai" />
-          
-          <div class="quick-tags">
-            <span class="tag-chip" onclick="setQuery('Gyms in Chennai')">Gyms Chennai</span>
-            <span class="tag-chip" onclick="setQuery('Gyms in Coimbatore')">Gyms Coimbatore</span>
-            <span class="tag-chip" onclick="setQuery('Gyms in Madurai')">Gyms Madurai</span>
-            <span class="tag-chip" onclick="setQuery('Gyms in Salem')">Gyms Salem</span>
-            <span class="tag-chip" onclick="setQuery('Gyms in Trichy')">Gyms Trichy</span>
-          </div>
-        </div>
-
-        <!-- Input: Mode 4 Multi-Area Batch -->
-        <div id="sectionBatch" class="form-group" style="display: none;">
-          <label class="form-label" for="batchQueries">
-            Target Locations / Queries (One per line)
-            <span class="form-hint">Deduplicated into 1 master CSV</span>
-          </label>
-          <textarea id="batchQueries" class="input-glass" rows="7" style="resize: vertical; font-size: 0.82rem; font-family: inherit; line-height: 1.5;" placeholder="Gyms in Chennai&#10;Gyms in Coimbatore&#10;Gyms in Madurai..."></textarea>
-          
-          <div class="quick-tags" style="margin-top: 8px;">
-            <span class="tag-chip" style="background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; font-weight: 700;" onclick="resumeTamilNadu6836()">⚡ Resume Phase 2 (Use 6,836 Saved Gym Links)</span>
-            <span class="tag-chip" style="background: #eff6ff; color: #2563eb; font-weight: 700;" onclick="loadTamilNaduDistricts()">⚡ Load 38 Tamil Nadu Districts (363 Areas)</span>
-            <span class="tag-chip" id="btnToggleDistrictInspector" style="background: #fdf2f8; color: #db2777; font-weight: 600;" onclick="toggleDistrictInspector()">🗺️ Explore 38 Districts Directory</span>
-            <span class="tag-chip" style="background: #ecfdf5; color: #047857; font-weight: 600;" onclick="loadChennaiLocalities()">📍 Load Chennai Top Localities</span>
-            <span class="tag-chip" onclick="clearBatchBox()">Clear</span>
-          </div>
-
-          <!-- Interactive Tamil Nadu 38-District Coverage & Area Inspector Panel -->
-          <div id="districtInspectorPanel" class="district-inspector-card" style="display: none;">
-            <!-- Header -->
-            <div class="inspector-header">
-              <div>
-                <div class="inspector-title">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
-                    <line x1="8" y1="2" x2="8" y2="18"></line>
-                    <line x1="16" y1="6" x2="16" y2="22"></line>
-                  </svg>
-                  Tamil Nadu 38-District Detailed Directory
-                </div>
-                <div class="inspector-subtitle">
-                  Showing every micro-area & taluk across all 38 districts to guarantee 100% complete state coverage (~5,000+ leads).
-                </div>
-              </div>
-
-              <div class="inspector-badges">
-                <span class="badge-pill blue" id="badgeDistrictCount">38 Districts</span>
-                <span class="badge-pill green" id="badgeAreaCount">363 Micro-Areas</span>
-                <span class="badge-pill purple">100% Coverage</span>
-                <button class="btn-mini-glass" onclick="openDistrictModal()" title="View in Fullscreen Modal">🔍 Fullscreen</button>
-                <button class="btn-mini-glass" onclick="toggleDistrictInspector(false)" title="Hide Directory">✕</button>
-              </div>
-            </div>
-
-            <!-- Niche / Category Customizer -->
-            <div class="inspector-customizer">
-              <div class="customizer-row">
-                <span style="font-size: 0.76rem; font-weight: 600; color: var(--text-main);">Target Niche/Keyword:</span>
-                <input type="text" id="districtNicheInput" class="customizer-input" value="Gyms" placeholder="e.g. Gyms, Dentists, Restaurants..." />
-                <button class="btn-customizer-apply" onclick="applyNicheToDistricts()">Update All 363 Areas</button>
-              </div>
-              <div class="quick-tags" style="margin-top: 6px;">
-                <span style="font-size: 0.7rem; color: var(--text-muted); align-self: center;">Quick Niches:</span>
-                <span class="tag-chip" onclick="setNicheAndApply('Gyms')">Gyms</span>
-                <span class="tag-chip" onclick="setNicheAndApply('Fitness Centers')">Fitness Centers</span>
-                <span class="tag-chip" onclick="setNicheAndApply('Dentists')">Dentists</span>
-                <span class="tag-chip" onclick="setNicheAndApply('Hospitals')">Hospitals</span>
-                <span class="tag-chip" onclick="setNicheAndApply('Restaurants')">Restaurants</span>
-                <span class="tag-chip" onclick="setNicheAndApply('Supermarkets')">Supermarkets</span>
-                <span class="tag-chip" onclick="setNicheAndApply('Salons & Spas')">Salons & Spas</span>
-              </div>
-            </div>
-
-            <!-- Zone Filter Tabs -->
-            <div class="zone-filters-bar">
-              <span class="zone-pill active" onclick="filterDistrictsByZone('all', this)">All (38 Districts)</span>
-              <span class="zone-pill" onclick="filterDistrictsByZone('Chennai Metro', this)">Chennai Metro (35 Areas)</span>
-              <span class="zone-pill" onclick="filterDistrictsByZone('Kongu / West', this)">Kongu / West (6 Districts)</span>
-              <span class="zone-pill" onclick="filterDistrictsByZone('South', this)">South TN (10 Districts)</span>
-              <span class="zone-pill" onclick="filterDistrictsByZone('Central / Delta', this)">Central / Delta (9 Districts)</span>
-              <span class="zone-pill" onclick="filterDistrictsByZone('North', this)">North TN (12 Districts)</span>
-            </div>
-
-            <!-- Instant Search -->
-            <input type="text" id="districtSearchInput" class="district-search-bar" placeholder="🔍 Instant search by district or area name (e.g. OMR, Pollachi, Katpadi, Hosur, Thillai Nagar)..." oninput="searchDistrictsAndAreas(this.value)" />
-
-            <!-- Selection and Action Controls -->
-            <div class="inspector-actions-bar">
-              <span id="inspectorSelectedStats" class="inspector-stats">Selected: 38 Districts (363 Areas)</span>
-              <div class="inspector-action-btns">
-                <button class="btn-mini-glass" onclick="selectAllDistricts(true)">Select All</button>
-                <button class="btn-mini-glass" onclick="selectAllDistricts(false)">Deselect All</button>
-                <button class="btn-mini-glass" onclick="expandAllDistrictCards(true)">Expand All</button>
-                <button class="btn-mini-glass" onclick="expandAllDistrictCards(false)">Collapse All</button>
-                <button class="btn-customizer-apply" style="background: #10b981;" onclick="applySelectedToBatchBox()">✓ Sync to Batch Box</button>
-              </div>
-            </div>
-
-            <!-- 38 Districts Scrollable Cards Container -->
-            <div id="districtsContainer" class="districts-scroll-container">
-              <!-- Dynamically rendered by renderDistrictCards() -->
-            </div>
-          </div>
-        </div>
-
-        <!-- Input: Mode 2 Maps URL -->
-        <div id="sectionUrl" class="form-group" style="display: none;">
-          <label class="form-label" for="searchUrl">
-            Google Maps URL (-u)
-            <span class="form-hint">Paste full maps link</span>
-          </label>
-          <input type="url" id="searchUrl" class="input-glass" placeholder="https://www.google.com/maps/search/dentist+london/..." />
-        </div>
-
-        <!-- Input: Mode 3 From Links CSV -->
-        <div id="sectionLinks" class="form-group" style="display: none;">
-          <label class="form-label" for="fromLinksFile">
-            Links CSV Path (--from-links)
-            <span class="form-hint">Resume Phase 2 directly</span>
-          </label>
-          <input type="text" id="fromLinksFile" class="input-glass" placeholder="output/my_results_links.csv" />
-        </div>
-
-        <!-- ⚡ Engine & Speed Optimization (Zero-Freeze PC Protection) -->
-        <div class="engine-section">
-          <label class="form-label" style="margin-bottom: 4px;">
-            ⚡ Engine Speed & Anti-Freeze Mode
-            <span class="form-hint">Hardware-safe for your PC</span>
-          </label>
-
-          <div class="engine-cards-grid">
-            <!-- Mode 1: Turbo Chrome (Recommended) -->
-            <div class="engine-card active" id="cardEngineTurbo" onclick="selectEngineMode('turbo')">
-              <div class="engine-card-top">
-                <div class="engine-card-title">
-                  <span class="engine-icon">⚡</span>
-                  <strong>Turbo Chrome</strong>
-                </div>
-                <span class="engine-badge rec">Zero-Freeze</span>
-              </div>
-              <div class="engine-desc">Ultra-light background Chrome with blocked media & 1ms JS parser. 3x faster, safe ~180MB RAM.</div>
-            </div>
-
-            <!-- Mode 2: Direct HTTP / Browserless -->
-            <div class="engine-card" id="cardEngineHttp" onclick="selectEngineMode('browserless_http')">
-              <div class="engine-card-top">
-                <div class="engine-card-title">
-                  <span class="engine-icon">🚀</span>
-                  <strong>Direct HTTP</strong>
-                </div>
-                <span class="engine-badge light">~30MB RAM</span>
-              </div>
-              <div class="engine-desc">No Chrome browser opened at all! Fetches metadata & attributes directly via HTTP. Zero PC load.</div>
-            </div>
-
-            <!-- Mode 3: Search-Feed Fast Mode -->
-            <div class="engine-card" id="cardEngineFeed" onclick="selectEngineMode('feed_fast')">
-              <div class="engine-card-top">
-                <div class="engine-card-title">
-                  <span class="engine-icon">📋</span>
-                  <strong>Search-Feed Fast</strong>
-                </div>
-                <span class="engine-badge speed">~10 Mins</span>
-              </div>
-              <div class="engine-desc">Extracts Name, Address, Category, Rating & Hours in Phase 1 directly without opening individual place pages.</div>
-            </div>
-
-            <!-- Mode 4: Standard Chrome -->
-            <div class="engine-card" id="cardEngineChrome" onclick="selectEngineMode('chrome')">
-              <div class="engine-card-top">
-                <div class="engine-card-title">
-                  <span class="engine-icon">🌐</span>
-                  <strong>Standard Chrome</strong>
-                </div>
-                <span class="engine-badge gray">Full Render</span>
-              </div>
-              <div class="engine-desc">Standard browser rendering with full visual stylesheets and regular anti-bot delays (~2.5s per lead).</div>
-            </div>
-          </div>
-
-          <!-- Hidden Input for selected engine mode -->
-          <input type="hidden" id="selectedEngineMode" value="turbo" />
-
-          <!-- Engine Sub-Options -->
-          <div class="engine-suboptions">
-            <div class="suboption-row">
-              <label class="suboption-label" for="toggleBlockImages">
-                <span>🛡️ Block Images & Fonts <small style="color: var(--text-muted); font-weight: normal;">(Saves 70% RAM & 5x faster)</small></span>
-              </label>
-              <label class="switch switch-sm">
-                <input type="checkbox" id="toggleBlockImages" checked />
-                <span class="slider"></span>
-              </label>
-            </div>
-
-            <div class="suboption-row">
-              <label class="suboption-label" for="workerCount">
-                <span>⚡ Parallel Scraper Tabs <small id="workerSafetyNote" style="color: #15803d; font-weight: 600;">(1-2 Safe on this PC)</small></span>
-              </label>
-              <select id="workerCount" class="select-glass" onchange="checkWorkerSafety(this.value)">
-                <option value="1" selected>1 Tab (Recommended • ~180MB RAM)</option>
-                <option value="2">2 Tabs (High Speed • ~360MB RAM)</option>
-                <option value="3">3 Tabs (Aggressive • ~550MB RAM)</option>
-                <option value="4">4 Tabs (Max • High RAM Alert)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- Output Name & Limit -->
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="outputName">
-              Output Filename (-o)
-            </label>
-            <input type="text" id="outputName" class="input-glass" value="my_leads" placeholder="results" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="maxResults">
-              Max Leads Cap
-              <span class="form-hint">Empty = all available</span>
-            </label>
-            <input type="number" id="maxResults" class="input-glass" placeholder="e.g. 25" value="15" min="1" max="2000" />
-          </div>
-        </div>
-
-        <!-- Toggles -->
-        <div class="toggle-card">
-          <div class="toggle-info">
-            <span class="toggle-title">Headless Mode (--headless)</span>
-            <span class="toggle-desc">Runs Chrome invisibly in the background with zero screen popups</span>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="toggleHeadless" checked />
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div class="toggle-card">
-          <div class="toggle-info">
-            <span class="toggle-title">Extract Full Business Info</span>
-            <span class="toggle-desc">Collect Name, Phone, Address, Website, and Hours</span>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="toggleFullDetails" checked onchange="toggleModeDetails()" />
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div class="toggle-card" style="border-left: 3px solid #10b981; background: rgba(236, 253, 245, 0.7);">
-          <div class="toggle-info">
-            <span class="toggle-title" style="color: #047857; font-weight: 700;">📞 Only Save Leads With Phone Numbers</span>
-            <span class="toggle-desc">Automatically discards businesses without phone numbers or 'Send to phone' buttons</span>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="toggleRequirePhone" checked />
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <!-- Collapsible Advanced Settings -->
-        <button class="collapsible-trigger" onclick="toggleAdvancedSettings()">
-          <span>Advanced Engine Tuning (Delays & Stalls)</span>
-          <svg id="arrowIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-
-        <div id="advancedSettings" class="collapsible-content">
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Scroll Pause (sec)</label>
-              <input type="number" id="scrollPause" class="input-glass" value="1.5" step="0.5" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Page Load Timeout</label>
-              <input type="number" id="pageTimeout" class="input-glass" value="15" />
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Min Delay (sec)</label>
-              <input type="number" id="minDelay" class="input-glass" value="2.0" step="0.5" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Max Delay (sec)</label>
-              <input type="number" id="maxDelay" class="input-glass" value="4.0" step="0.5" />
-            </div>
-          </div>
-        </div>
-
-        <!-- Action CTA Buttons -->
-        <div class="actions-bar">
-          <button id="btnStart" class="btn-primary" onclick="startScraping()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-            Start Scraping
-          </button>
-          <button id="btnStop" class="btn-danger" onclick="stopScraping()" disabled>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="6" width="12" height="12"></rect></svg>
-            Stop
+          <button id="btnStop" class="btn-stop" onclick="stopScraping()">
+            ⏹ STOP SEARCH
           </button>
         </div>
+
+        <!-- Advanced Collapsible Trigger -->
+        <div class="advanced-trigger" onclick="toggleAdvanced()">
+          <span id="advancedTriggerText">⚙️ More Options: Batch Multiple Areas (Optional) ▼</span>
+        </div>
+
+        <div id="advancedBox" class="advanced-content">
+          <label style="font-size: 0.78rem; font-weight: 700; display: block; margin-bottom: 6px;">
+            Search Multiple Locations (One per line):
+          </label>
+          <textarea 
+            id="batchQueriesInput" 
+            rows="5" 
+            style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 10px; font-size: 0.8rem; font-family: inherit;"
+            placeholder="Gyms in Anna Nagar, Chennai&#10;Gyms in T. Nagar, Chennai&#10;Gyms in Velachery, Chennai"
+          ></textarea>
+        </div>
+
       </section>
 
-      <!-- RIGHT: Live Realtime Monitor & Results Table -->
+      <!-- RIGHT: Live Results & 1-Click Export -->
       <section>
         
-        <!-- Quick Stats Cards -->
-        <div class="stats-row">
-          <div class="stat-pill-card">
-            <div class="stat-icon blue">🔗</div>
-            <div class="stat-data">
-              <span id="statLinks" class="stat-value">0</span>
-              <span class="stat-label">Links Found</span>
+        <!-- Hero Stats Cards -->
+        <div class="hero-stats-row">
+          <div class="hero-stat-card">
+            <div class="hero-stat-icon green">📞</div>
+            <div>
+              <div id="statPhoneCount" class="hero-stat-number">0</div>
+              <div class="hero-stat-label">Phone Numbers Found</div>
             </div>
           </div>
 
-          <div class="stat-pill-card">
-            <div class="stat-icon green">🏢</div>
-            <div class="stat-data">
-              <span id="statPlaces" class="stat-value">0</span>
-              <span class="stat-label">Scraped Leads</span>
+          <div class="hero-stat-card">
+            <div class="hero-stat-icon blue">📍</div>
+            <div>
+              <div id="statTotalCount" class="hero-stat-number">0</div>
+              <div class="hero-stat-label">Total Places Found</div>
             </div>
           </div>
 
-          <div class="stat-pill-card">
-            <div class="stat-icon amber">⏱️</div>
-            <div class="stat-data">
-              <span id="statTime" class="stat-value">0s</span>
-              <span class="stat-label">Duration</span>
-            </div>
-          </div>
-
-          <div class="stat-pill-card">
-            <div class="stat-icon purple">⚡</div>
-            <div class="stat-data">
-              <span id="statPhase" class="stat-value" style="font-size: 0.94rem;">Idle</span>
-              <span class="stat-label">Current Phase</span>
+          <div class="hero-stat-card">
+            <div class="hero-stat-icon purple">⏱️</div>
+            <div>
+              <div id="statDuration" class="hero-stat-number">0s</div>
+              <div class="hero-stat-label">Search Time</div>
             </div>
           </div>
         </div>
 
-        <!-- Live Progress Indicator -->
-        <div class="glass-card progress-section">
-          <div class="progress-header">
-            <span id="progressPhaseText">Scraper Engine Standing By</span>
-            <span id="progressPercent">0%</span>
-          </div>
-          <div class="progress-track">
-            <div id="progressBar" class="progress-bar-fill"></div>
-          </div>
+        <!-- Prominent Download Buttons -->
+        <div class="export-actions-bar">
+          <button id="btnDownload" class="btn-export-excel" onclick="downloadCSV()" disabled>
+            📥 DOWNLOAD EXCEL FILE (CSV)
+          </button>
+          <button id="btnCopyAll" class="btn-copy-phones" onclick="copyAllPhones()" disabled>
+            📋 COPY ALL PHONE NUMBERS
+          </button>
         </div>
 
-        <!-- Live Data Table Card -->
-        <div class="glass-card">
-          <div class="table-toolbar">
-            <div class="card-title">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-              Extracted Results
-              <span id="tableBadge" style="font-size: 0.72rem; font-weight: 600; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 12px;">0 items</span>
+        <!-- Live Results Table Card -->
+        <div class="table-container">
+          <div class="table-header-row">
+            <div class="table-title">
+              📋 Live Results Preview (<span id="tableCountBadge">0</span>)
             </div>
-
-            <!-- Action Buttons: Download as CSV prominently featured -->
-            <div class="table-actions">
-              <button id="btnDownloadCSV" class="btn-download-csv" onclick="downloadCurrentData('csv')" title="Download Extracted Businesses as CSV file for Excel">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                Download as CSV
-              </button>
-
-              <button class="btn-outline-glass" onclick="copyAllPhones()" title="Copy all phone numbers into clipboard">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                Copy Phones
-              </button>
-
-              <button class="btn-outline-glass" onclick="downloadCurrentData('json')" title="Download JSON">
-                JSON
-              </button>
-
-              <button class="btn-outline-glass" onclick="clearTableData()" title="Clear current table view">
-                Clear
-              </button>
-            </div>
+            <input 
+              type="text" 
+              id="tableFilter" 
+              class="table-search-box" 
+              placeholder="Filter by name or phone..." 
+              oninput="renderTable()"
+            />
           </div>
 
-          <!-- Secondary Toolbar: Quick Filter Pills & Search -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
-            <div class="filter-pills-group">
-              <span class="filter-pill active" id="filterAll" onclick="setQuickFilter('all')">All Leads (<span id="countAll">0</span>)</span>
-              <span class="filter-pill" id="filterPhone" onclick="setQuickFilter('phone')">📞 Has Phone (<span id="countPhone">0</span>)</span>
-              <span class="filter-pill" id="filterWebsite" onclick="setQuickFilter('website')">🌐 Has Website (<span id="countWebsite">0</span>)</span>
-              <span class="filter-pill" id="filterHours" onclick="setQuickFilter('hours')">🕒 Has Hours (<span id="countHours">0</span>)</span>
-            </div>
-
-            <div class="table-search-box">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-              <input type="text" id="tableFilter" class="input-glass" placeholder="Filter by name, phone, city..." oninput="filterTable()" />
-            </div>
-          </div>
-
-          <div class="table-container">
-            <table class="glass-table">
+          <div class="leads-table-scroll">
+            <table>
               <thead>
                 <tr>
                   <th style="width: 40px;">#</th>
                   <th>Business Name</th>
-                  <th>Phone</th>
-                  <th>Address</th>
-                  <th>Website</th>
-                  <th>Opening Hours</th>
-                  <th>Map Link</th>
+                  <th>Phone Number</th>
+                  <th>Area / Address</th>
+                  <th>Rating</th>
+                  <th>Map</th>
                 </tr>
               </thead>
               <tbody id="tableBody">
                 <tr>
-                  <td colspan="7">
-                    <div class="empty-state">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                      <p>No business data yet. Choose a search query and click <strong>Start Scraping</strong>.</p>
-                    </div>
+                  <td colspan="6" style="text-align: center; color: #94a3b8; padding: 40px 10px;">
+                    No results yet. Type what you want to find and click <strong>START SEARCH</strong>.
                   </td>
                 </tr>
               </tbody>
@@ -1957,787 +862,88 @@
           </div>
         </div>
 
-        <!-- Realtime Console Stream -->
-        <div class="console-card">
-          <div class="console-header">
-            <div class="console-title">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-              Background Engine Logs
-            </div>
-            <div class="console-actions">
-              <label style="font-size: 0.74rem; color: #94a3b8; display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                <input type="checkbox" id="chkAutoScroll" checked /> Auto-scroll
-              </label>
-              <button class="console-btn" onclick="clearLogs()">Clear</button>
-            </div>
-          </div>
-          <div id="consoleBody" class="console-body">
-            <div class="log-line">
-              <span class="log-time">[System]</span>
-              <span class="log-tag INFO">INFO</span>
-              <span>Scraper dashboard connected. Ready for job.</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Previous Scrapes History -->
-        <div class="glass-card history-card">
-          <div class="card-header">
-            <div class="card-title">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-              Saved Scrape Files in Output Folder
-            </div>
-            <button class="btn-outline-glass" onclick="loadHistory()">Refresh</button>
-          </div>
-          <div id="historyGrid" class="history-grid">
-            <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.84rem; padding: 12px;">
-              Loading saved files...
-            </div>
-          </div>
+        <!-- Simple Status Log -->
+        <div id="statusStream" class="status-stream-box">
+          <div class="log-entry">🟢 System Ready. Enter a query and click Start Search.</div>
         </div>
 
       </section>
-    </div>
-  <!-- Tamil Nadu 38-District Fullscreen Modal -->
-  <div id="districtModal" class="directory-modal-overlay" onclick="handleModalBackdropClick(event)">
-    <div class="directory-modal-content">
-      <div class="modal-header-glass">
-        <div>
-          <h2 style="font-size: 1.12rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
-            🏛️ Tamil Nadu 38 Revenue Districts & Taluks Directory
-          </h2>
-          <p style="font-size: 0.76rem; color: var(--text-muted); margin-top: 2px;">
-            Comprehensive micro-area breakdown across all 38 districts (363 areas) for exhaustive state-wide lead generation.
-          </p>
-        </div>
-        <button class="btn-mini-glass" style="font-size: 1.1rem; padding: 4px 10px;" onclick="closeDistrictModal()">✕</button>
-      </div>
-      <div class="modal-body-glass" id="modalDistrictsBody">
-        <!-- Rendered with live clone or dynamic cards -->
-      </div>
-      <div class="modal-footer-glass">
-        <span id="modalSelectedStats" style="font-size: 0.82rem; font-weight: 600; color: var(--text-main);">
-          Selected: 38 Districts (363 Areas)
-        </span>
-        <div style="display: flex; gap: 8px;">
-          <button class="btn-mini-glass" onclick="closeDistrictModal()">Close</button>
-          <button class="btn-customizer-apply" style="background: #10b981; padding: 7px 16px;" onclick="applySelectedFromModal()">
-            ✓ Sync & Load into Batch Box
-          </button>
-        </div>
-      </div>
-    </div>
+
+    </main>
+
   </div>
 
-  <!-- Notification Toasts -->
   <div id="toastContainer" class="toast-container"></div>
 
   <script>
-    // State management
-    let activeMode = 'query';
-    let isScraping = false;
     let allItems = [];
-    let quickFilterType = 'all';
+    let isRunning = false;
+    let timer = null;
+    let seconds = 0;
     let eventSource = null;
-    let timerInterval = null;
-    let secondsElapsed = 0;
 
-    // Mode Switching
-    function switchMode(mode) {
-      activeMode = mode;
-      document.getElementById('tabQuery').classList.toggle('active', mode === 'query');
-      document.getElementById('tabBatch').classList.toggle('active', mode === 'batch');
-      document.getElementById('tabUrl').classList.toggle('active', mode === 'url');
-      document.getElementById('tabLinks').classList.toggle('active', mode === 'from_links');
-
-      document.getElementById('sectionQuery').style.display = mode === 'query' ? 'block' : 'none';
-      document.getElementById('sectionBatch').style.display = mode === 'batch' ? 'block' : 'none';
-      document.getElementById('sectionUrl').style.display = mode === 'url' ? 'block' : 'none';
-      document.getElementById('sectionLinks').style.display = mode === 'from_links' ? 'block' : 'none';
+    function setQuery(text) {
+      document.getElementById('searchInput').value = text;
+      document.getElementById('searchInput').focus();
     }
 
-    function setQuery(q) {
-      document.getElementById('searchQuery').value = q;
+    function selectLimit(val, el) {
+      document.querySelectorAll('.limit-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('selectedLimit').value = val === null ? '' : val;
     }
 
-    // Helper escape HTML
-    function escapeHtml(str) {
-      return String(str).replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[s]);
+    function togglePhoneFilter() {
+      const chk = document.getElementById('requirePhoneCheckbox');
+      chk.checked = !chk.checked;
     }
 
-    // Complete Tamil Nadu 38-District Database (363 micro-areas covering all revenue districts & taluks)
-    const TAMIL_NADU_DISTRICTS_DATA = {
-      "Chennai": {
-        zone: "Chennai Metro",
-        areas: [
-          "Anna Nagar", "T. Nagar", "Velachery", "Adyar", "Mylapore",
-          "Nungambakkam", "Kilpauk", "Guindy", "Vadapalani", "Kodambakkam",
-          "Alwarpet", "Thiruvanmiyur", "Besant Nagar", "Sholinganallur", "OMR Navalur",
-          "Porur", "Medavakkam", "Madipakkam", "Ashok Nagar", "Ambattur",
-          "Perambur", "Mogappair", "Kolathur", "Saidapet", "Koyambedu",
-          "Egmore", "Triplicane", "Royapettah", "Royapuram", "Tondiarpet",
-          "Avadi", "Poonamallee", "Red Hills", "Pallikaranai", "Perungudi"
-        ]
-      },
-      "Coimbatore": {
-        zone: "Kongu / West",
-        areas: [
-          "RS Puram", "Gandhipuram", "Peelamedu", "Saravanampatti", "Singanallur",
-          "Saibaba Colony", "Vadavalli", "Ramanathapuram", "Hopes College", "Thudiyalur",
-          "Kovaipudur", "Pollachi", "Mettupalayam", "Sulur", "Annur",
-          "Valparai", "Kinathukadavu", "Madukkarai"
-        ]
-      },
-      "Madurai": {
-        zone: "South",
-        areas: [
-          "KK Nagar", "Anna Nagar", "Goripalayam", "Mattuthavani", "Simmakkal",
-          "Sellur", "Villapuram", "Thirunagar", "Pasumalai", "Othakadai",
-          "Melur", "Usilampatti", "Thirumangalam", "Sholavandan", "Vadipatti"
-        ]
-      },
-      "Tiruchirappalli": {
-        zone: "Central / Delta",
-        areas: [
-          "Thillai Nagar", "Cantonment", "Srirangam", "KK Nagar", "Woraiyur",
-          "BHEL Township", "Thuvakudi", "Golden Rock", "Lalgudi", "Manapparai",
-          "Musiri", "Thuraiyur", "Tiruverumbur", "Manachanallur"
-        ]
-      },
-      "Salem": {
-        zone: "Kongu / West",
-        areas: [
-          "Fairlands", "Alagapuram", "Hasthampatti", "Shevapet", "Suramangalam",
-          "Ammapet", "Gugai", "Omalur", "Attur", "Mettur",
-          "Edappadi", "Sankagiri", "Jalakandapuram", "Vazhapadi"
-        ]
-      },
-      "Tiruppur": {
-        zone: "Kongu / West",
-        areas: [
-          "Avinashi Road", "Kangeyam Road", "Palladam", "Dharapuram", "Udumalaipettai",
-          "Vellakovil", "Avinashi", "Madathukulam", "Uthukuli"
-        ]
-      },
-      "Erode": {
-        zone: "Kongu / West",
-        areas: [
-          "Erode Town", "Perundurai", "Gobichettipalayam", "Bhavani", "Sathyamangalam",
-          "Thindal", "Brough Road", "Anthiyur", "Modakkurichi", "Kodumudi"
-        ]
-      },
-      "Chengalpattu": {
-        zone: "North",
-        areas: [
-          "Tambaram", "Pallavaram", "Chromepet", "Chengalpattu Town", "Maraimalai Nagar",
-          "Guduvanchery", "Kelambakkam", "Mahabalipuram", "Maduranthakam", "Tirukalukundram",
-          "Vandalur", "Singaperumal Koil", "Padur", "Medavakkam South"
-        ]
-      },
-      "Tiruvallur": {
-        zone: "North",
-        areas: [
-          "Tiruvallur Town", "Thiruninravur", "Gummidipoondi", "Ponneri", "Minjur",
-          "Tiruttani", "Uthukkottai", "Pattabiram"
-        ]
-      },
-      "Kanchipuram": {
-        zone: "North",
-        areas: [
-          "Kanchipuram Town", "Sriperumbudur", "Walajabad", "Kundrathur", "Uthiramerur",
-          "Sunguvarchatram", "Oragadam"
-        ]
-      },
-      "Vellore": {
-        zone: "North",
-        areas: [
-          "Katpadi", "Gandhi Nagar", "Sathuvachari", "Bagayam", "Vellore Fort",
-          "Pernambut", "Gudiyatham", "Anaicut"
-        ]
-      },
-      "Ranipet": {
-        zone: "North",
-        areas: [
-          "Ranipet Town", "Arcot", "Arakkonam", "Walajapet", "Nemili",
-          "Sholinghur", "Melvisharam"
-        ]
-      },
-      "Tirupathur": {
-        zone: "North",
-        areas: [
-          "Ambur", "Vaniyambadi", "Tirupathur Town", "Jolarpet", "Natrampalli"
-        ]
-      },
-      "Tiruvannamalai": {
-        zone: "North",
-        areas: [
-          "Tiruvannamalai Town", "Arani", "Cheyyar", "Polur", "Chengam",
-          "Vandavasi", "Kalasapakkam", "Chetpet"
-        ]
-      },
-      "Viluppuram": {
-        zone: "North",
-        areas: [
-          "Viluppuram Town", "Tindivanam", "Gingee", "Vikravandi", "Vanur",
-          "Marakkanam", "Valavanur"
-        ]
-      },
-      "Kallakurichi": {
-        zone: "North",
-        areas: [
-          "Kallakurichi Town", "Ulundurpet", "Sankarapuram", "Tirukkoyilur", "Chinnasalem",
-          "Kalvarayan Hills"
-        ]
-      },
-      "Cuddalore": {
-        zone: "North",
-        areas: [
-          "Cuddalore Town", "Neyveli", "Chidambaram", "Panruti", "Virudhachalam",
-          "Vadalur", "Kattumannarkoil", "Titagudi", "Kurinjipadi", "Bhuvanagiri"
-        ]
-      },
-      "Dharmapuri": {
-        zone: "North",
-        areas: [
-          "Dharmapuri Town", "Harur", "Palacode", "Pennagaram", "Karimangalam",
-          "Pappireddipatti", "Nallampalli", "Marandahalli"
-        ]
-      },
-      "Krishnagiri": {
-        zone: "North",
-        areas: [
-          "Hosur SIPCOT", "Hosur Bagalur Road", "Hosur Rayakottai Road", "Krishnagiri Town", "Pochampalli",
-          "Denkanikottai", "Bargur", "Uthangarai", "Shoolagiri", "Kelamangalam"
-        ]
-      },
-      "Namakkal": {
-        zone: "Kongu / West",
-        areas: [
-          "Namakkal Town", "Tiruchengode", "Rasipuram", "Paramathi Velur", "Komarapalayam",
-          "Kolli Hills", "Mohanur", "Sendamangalam"
-        ]
-      },
-      "Nilgiris": {
-        zone: "Kongu / West",
-        areas: [
-          "Ooty", "Coonoor", "Kotagiri", "Gudalur", "Wellington",
-          "Aruvankadu", "Manjoor"
-        ]
-      },
-      "Karur": {
-        zone: "Central / Delta",
-        areas: [
-          "Karur Town", "Thanthonimalai", "Kulithalai", "Aravakurichi", "Vangal",
-          "Velur", "Krishnarayapuram"
-        ]
-      },
-      "Perambalur": {
-        zone: "Central / Delta",
-        areas: [
-          "Perambalur Town", "Kunnam", "Veppanthattai", "Alathur"
-        ]
-      },
-      "Ariyalur": {
-        zone: "Central / Delta",
-        areas: [
-          "Ariyalur Town", "Jayankondam", "Sendurai", "Andimadam", "Udayarpalayam"
-        ]
-      },
-      "Thanjavur": {
-        zone: "Central / Delta",
-        areas: [
-          "Medical College Road Thanjavur", "New Bus Stand Thanjavur", "Kumbakonam", "Pattukkottai", "Thiruvaiyaru",
-          "Orathanadu", "Peravurani", "Budalur", "Papanasam"
-        ]
-      },
-      "Tiruvarur": {
-        zone: "Central / Delta",
-        areas: [
-          "Tiruvarur Town", "Mannargudi", "Thiruthuraipoondi", "Nannilam", "Kodavasal",
-          "Needamangalam", "Koothanallur"
-        ]
-      },
-      "Nagapattinam": {
-        zone: "Central / Delta",
-        areas: [
-          "Nagapattinam Town", "Velankanni", "Vedaranyam", "Kilvelur", "Nagore",
-          "Thirukuvalai"
-        ]
-      },
-      "Mayiladuthurai": {
-        zone: "Central / Delta",
-        areas: [
-          "Mayiladuthurai Town", "Sirkazhi", "Tharangambadi", "Kuthalam", "Vaitheeswaran Koil",
-          "Poompuhar"
-        ]
-      },
-      "Pudukkottai": {
-        zone: "Central / Delta",
-        areas: [
-          "Pudukkottai Town", "Aranthangi", "Viralimalai", "Alangudi", "Thirumayam",
-          "Gandarvakottai", "Avudaiyarkoil", "Iluppur", "Ponnamaravathi"
-        ]
-      },
-      "Dindigul": {
-        zone: "South",
-        areas: [
-          "Dindigul Town", "Palani", "Kodaikanal", "Oddanchatram", "Vedasandur",
-          "Nilakkottai", "Natham", "Batlagundu", "Chinnalapatti"
-        ]
-      },
-      "Theni": {
-        zone: "South",
-        areas: [
-          "Theni Town", "Periyakulam", "Bodinayakanur", "Cumbum", "Chinnamanur",
-          "Uthamapalayam", "Andipatti", "Thevaram"
-        ]
-      },
-      "Virudhunagar": {
-        zone: "South",
-        areas: [
-          "Sivakasi", "Rajapalayam", "Srivilliputhur", "Aruppukkottai", "Virudhunagar Town",
-          "Sattur", "Watrap", "Kariapatti", "Thiruthangal"
-        ]
-      },
-      "Sivaganga": {
-        zone: "South",
-        areas: [
-          "Karaikudi", "Sivaganga Town", "Devakottai", "Manamadurai", "Tiruppattur",
-          "Kalayar Kovil", "Singampunari", "Ilayangudi"
-        ]
-      },
-      "Ramanathapuram": {
-        zone: "South",
-        areas: [
-          "Ramanathapuram Town", "Rameswaram", "Paramakudi", "Kamuthi", "Mudukulathur",
-          "Mandapam", "Keelakarai", "Sayalgudi"
-        ]
-      },
-      "Thoothukudi": {
-        zone: "South",
-        areas: [
-          "Millerpuram Thoothukudi", "Bryant Nagar Thoothukudi", "Kovilpatti", "Tiruchendur", "Kayalpattinam",
-          "Sathankulam", "Vilathikulam", "Ottapidaram", "Ettayapuram"
-        ]
-      },
-      "Tirunelveli": {
-        zone: "South",
-        areas: [
-          "Palayamkottai", "Vannarpettai", "Melapalayam", "Tirunelveli Town", "Valliyur",
-          "Ambasamudram", "Cheranmahadevi", "Radhapuram", "Nanguneri"
-        ]
-      },
-      "Tenkasi": {
-        zone: "South",
-        areas: [
-          "Tenkasi Town", "Sankarankovil", "Kadayanallur", "Sengottai", "Alangulam",
-          "Puliyangudi", "Surandai", "Courtallam", "Sivagiri"
-        ]
-      },
-      "Kanyakumari": {
-        zone: "South",
-        areas: [
-          "Nagercoil Town", "Vadasery", "Marthandam", "Thuckalay", "Colachel",
-          "Kanyakumari Beach", "Padmanabhapuram", "Karungal", "Kulasekharam", "Eraniel", "Killiyoor"
-        ]
-      }
-    };
-
-    // State for District Explorer
-    let selectedDistricts = new Set(Object.keys(TAMIL_NADU_DISTRICTS_DATA));
-    let activeDistrictZone = 'all';
-    let districtSearchQuery = '';
-    let currentNicheKeyword = 'Gyms';
-    let expandedDistrictCards = new Set();
-
-    function getTotalSelectedAreasCount() {
-      let count = 0;
-      selectedDistricts.forEach(d => {
-        if (TAMIL_NADU_DISTRICTS_DATA[d]) {
-          count += TAMIL_NADU_DISTRICTS_DATA[d].areas.length;
-        }
-      });
-      return count;
+    function toggleAdvanced() {
+      const box = document.getElementById('advancedBox');
+      const isVisible = box.style.display === 'block';
+      box.style.display = isVisible ? 'none' : 'block';
+      document.getElementById('advancedTriggerText').textContent = isVisible 
+        ? '⚙️ More Options: Batch Multiple Areas (Optional) ▼'
+        : '⚙️ Close Batch Options ▲';
     }
 
-    function renderDistrictCards() {
-      const container = document.getElementById('districtsContainer');
-      if (!container) return;
-
-      const filterZone = activeDistrictZone;
-      const search = districtSearchQuery.trim().toLowerCase();
-      const allDistricts = Object.keys(TAMIL_NADU_DISTRICTS_DATA);
-
-      let html = '';
-      allDistricts.forEach((distName, index) => {
-        const data = TAMIL_NADU_DISTRICTS_DATA[distName];
-        
-        // Zone filter check
-        if (filterZone !== 'all' && !data.zone.toLowerCase().includes(filterZone.toLowerCase())) {
-          return;
-        }
-
-        // Search check
-        const matchesDistrict = distName.toLowerCase().includes(search);
-        const matchingAreas = data.areas.filter(a => a.toLowerCase().includes(search));
-        if (search && !matchesDistrict && matchingAreas.length === 0) {
-          return;
-        }
-
-        const isChecked = selectedDistricts.has(distName);
-        const isExpanded = expandedDistrictCards.has(distName) || (search && matchingAreas.length > 0);
-
-        html += `
-          <div class="district-card" id="card_dist_${index}">
-            <div class="district-card-header" onclick="toggleDistrictCardExpand('${distName}')">
-              <div class="district-card-left" onclick="event.stopPropagation()">
-                <input type="checkbox" id="chk_dist_${index}" ${isChecked ? 'checked' : ''} onchange="toggleDistrict('${distName}', this.checked)" style="cursor: pointer; width: 16px; height: 16px;" />
-                <span class="district-name" style="cursor: pointer;" onclick="document.getElementById('chk_dist_${index}').click()">${index + 1}. ${distName}</span>
-                <span class="district-meta-tag">${data.zone}</span>
-                <span class="district-areas-count">${data.areas.length} Areas</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <button type="button" class="btn-mini-glass" style="font-size: 0.68rem; padding: 2px 7px;" onclick="event.stopPropagation(); selectOnlyDistrict('${distName}')" title="Select only this district">Only This</button>
-                <span style="font-size: 0.76rem; color: #94a3b8; transition: transform 0.2s; transform: rotate(${isExpanded ? '180deg' : '0deg'});">▼</span>
-              </div>
-            </div>
-            
-            <div class="district-areas-body" style="display: ${isExpanded ? 'flex' : 'none'};">
-              ${data.areas.map(area => {
-                const isHighlight = search && area.toLowerCase().includes(search);
-                return `<span class="area-chip-pill" style="${isHighlight ? 'background: #eff6ff; border-color: #3b82f6; font-weight: 700;' : ''}">${area}</span>`;
-              }).join('')}
-            </div>
-          </div>
-        `;
-      });
-
-      if (!html) {
-        html = `<div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 18px;">No districts or areas match "${escapeHtml(search)}".</div>`;
-      }
-
-      container.innerHTML = html;
-      updateDistrictStatsUI();
-
-      const modalBody = document.getElementById('modalDistrictsBody');
-      if (modalBody && document.getElementById('districtModal').style.display === 'flex') {
-        modalBody.innerHTML = container.innerHTML;
-      }
-    }
-
-    function updateDistrictStatsUI() {
-      const distCount = selectedDistricts.size;
-      const areaCount = getTotalSelectedAreasCount();
-      const statsText = `Selected: ${distCount} / 38 Districts (${areaCount} Areas)`;
-
-      const elStats = document.getElementById('inspectorSelectedStats');
-      if (elStats) elStats.textContent = statsText;
-
-      const elBadgeDist = document.getElementById('badgeDistrictCount');
-      if (elBadgeDist) elBadgeDist.textContent = `${distCount} Districts`;
-
-      const elBadgeArea = document.getElementById('badgeAreaCount');
-      if (elBadgeArea) elBadgeArea.textContent = `${areaCount} Micro-Areas`;
-
-      const elModalStats = document.getElementById('modalSelectedStats');
-      if (elModalStats) elModalStats.textContent = statsText;
-    }
-
-    function toggleDistrict(name, isChecked) {
-      if (isChecked) {
-        selectedDistricts.add(name);
-      } else {
-        selectedDistricts.delete(name);
-      }
-      updateDistrictStatsUI();
-    }
-
-    function selectOnlyDistrict(name) {
-      selectedDistricts.clear();
-      selectedDistricts.add(name);
-      expandedDistrictCards.add(name);
-      renderDistrictCards();
-      applySelectedToBatchBox();
-      showToast(`Selected only ${name} (${TAMIL_NADU_DISTRICTS_DATA[name].areas.length} areas)!`);
-    }
-
-    function selectAllDistricts(selectAll) {
-      if (selectAll) {
-        Object.keys(TAMIL_NADU_DISTRICTS_DATA).forEach(d => selectedDistricts.add(d));
-      } else {
-        selectedDistricts.clear();
-      }
-      renderDistrictCards();
-    }
-
-    function expandAllDistrictCards(expand) {
-      if (expand) {
-        Object.keys(TAMIL_NADU_DISTRICTS_DATA).forEach(d => expandedDistrictCards.add(d));
-      } else {
-        expandedDistrictCards.clear();
-      }
-      renderDistrictCards();
-    }
-
-    function toggleDistrictCardExpand(name) {
-      if (expandedDistrictCards.has(name)) {
-        expandedDistrictCards.delete(name);
-      } else {
-        expandedDistrictCards.add(name);
-      }
-      renderDistrictCards();
-    }
-
-    function filterDistrictsByZone(zone, el) {
-      activeDistrictZone = zone;
-      document.querySelectorAll('.zone-pill').forEach(p => p.classList.remove('active'));
-      if (el) el.classList.add('active');
-      renderDistrictCards();
-    }
-
-    function searchDistrictsAndAreas(q) {
-      districtSearchQuery = q;
-      renderDistrictCards();
-    }
-
-    function setNicheAndApply(niche) {
-      document.getElementById('districtNicheInput').value = niche;
-      applyNicheToDistricts();
-    }
-
-    function applyNicheToDistricts() {
-      const input = document.getElementById('districtNicheInput');
-      const val = input ? input.value.trim() : 'Gyms';
-      currentNicheKeyword = val || 'Gyms';
-      applySelectedToBatchBox();
-      showToast(`Updated search niche to "${currentNicheKeyword}" across all areas!`);
-    }
-
-    function applySelectedToBatchBox() {
-      const niche = currentNicheKeyword || 'Gyms';
-      const lines = [];
-
-      const totalDist = selectedDistricts.size;
-      const totalAreas = getTotalSelectedAreasCount();
-
-      lines.push(`# ========================================================`);
-      lines.push(`# TAMIL NADU 38 DISTRICTS COMPREHENSIVE COVERAGE`);
-      lines.push(`# Target Niche: ${niche}`);
-      lines.push(`# Total Selected: ${totalDist} Districts • ${totalAreas} Micro-Areas`);
-      lines.push(`# ========================================================`);
-      lines.push(``);
-
-      let dIdx = 1;
-      Object.keys(TAMIL_NADU_DISTRICTS_DATA).forEach(distName => {
-        if (!selectedDistricts.has(distName)) return;
-        const data = TAMIL_NADU_DISTRICTS_DATA[distName];
-        lines.push(`# --- ${dIdx}. ${distName.toUpperCase()} (${data.areas.length} Areas - ${data.zone}) ---`);
-        data.areas.forEach(area => {
-          const queryArea = area.toLowerCase().includes(distName.toLowerCase())
-            ? `${niche} in ${area}`
-            : `${niche} in ${area}, ${distName}`;
-          lines.push(queryArea);
-        });
-        lines.push(``);
-        dIdx++;
-      });
-
-      const batchBox = document.getElementById('batchQueries');
-      if (batchBox) {
-        batchBox.value = lines.join('\n');
-      }
-
-      const outName = document.getElementById('outputName');
-      if (outName) {
-        const cleanNiche = niche.toLowerCase().replace(/[^a-z0-9]/g, '_');
-        outName.value = `tamilnadu_${cleanNiche}_38districts`;
-      }
-
-      const maxRes = document.getElementById('maxResults');
-      if (maxRes) {
-        maxRes.value = ""; // Scrape all leads without artificial limits!
-      }
-
-      showToast(`✓ Loaded ${totalAreas} areas across ${totalDist} districts into batch box!`);
-    }
-
-    // 1-Click Comprehensive Tamil Nadu Areas Loader (All 38 Districts & Detailed Taluks)
-    function loadTamilNaduDistricts() {
-      selectAllDistricts(true);
-      applySelectedToBatchBox();
-      toggleDistrictInspector(true);
-
-      const panel = document.getElementById('districtInspectorPanel');
-      if (panel) {
-        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
-
-      showToast(`✨ Loaded all 38 districts (363 micro-areas)! Detailed breakdown visible below.`);
-    }
-
-    function toggleDistrictInspector(forcedState) {
-      const panel = document.getElementById('districtInspectorPanel');
-      if (!panel) return;
-      const isVisible = panel.style.display !== 'none';
-      const willShow = forcedState !== undefined ? forcedState : !isVisible;
-      panel.style.display = willShow ? 'block' : 'none';
-      if (willShow) {
-        renderDistrictCards();
-      }
-    }
-
-    function openDistrictModal() {
-      const modal = document.getElementById('districtModal');
-      if (!modal) return;
-      modal.style.display = 'flex';
-      const modalBody = document.getElementById('modalDistrictsBody');
-      const container = document.getElementById('districtsContainer');
-      if (modalBody && container) {
-        modalBody.innerHTML = container.innerHTML;
-      }
-      updateDistrictStatsUI();
-    }
-
-    function closeDistrictModal() {
-      const modal = document.getElementById('districtModal');
-      if (modal) modal.style.display = 'none';
-    }
-
-    function handleModalBackdropClick(event) {
-      if (event.target.id === 'districtModal') {
-        closeDistrictModal();
-      }
-    }
-
-    function applySelectedFromModal() {
-      applySelectedToBatchBox();
-      closeDistrictModal();
-    }
-
-    function clearBatchBox() {
-      const box = document.getElementById('batchQueries');
-      if (box) box.value = '';
-      showToast('Batch box cleared.');
-    }
-
-    // 1-Click Chennai Top Localities Preset Loader
-    function loadChennaiLocalities() {
-      const chennaiAreas = [
-        "Gyms in Anna Nagar, Chennai",
-        "Gyms in T. Nagar, Chennai",
-        "Gyms in Velachery, Chennai",
-        "Gyms in Adyar, Chennai",
-        "Gyms in OMR, Chennai",
-        "Gyms in Porur, Chennai",
-        "Gyms in Tambaram, Chennai",
-        "Gyms in Nungambakkam, Chennai",
-        "Gyms in Kilpauk, Chennai",
-        "Gyms in Guindy, Chennai",
-        "Gyms in Vadapalani, Chennai",
-        "Gyms in Alwarpet, Chennai",
-        "Gyms in Mylapore, Chennai",
-        "Gyms in Thiruvanmiyur, Chennai",
-        "Gyms in Sholinganallur, Chennai",
-        "Gyms in Chromepet, Chennai",
-        "Gyms in Ambattur, Chennai",
-        "Gyms in Perambur, Chennai"
-      ];
-      document.getElementById('batchQueries').value = chennaiAreas.join('\n');
-      document.getElementById('outputName').value = "chennai_gyms_master";
-      document.getElementById('maxResults').value = "";
-      showToast(`Loaded ${chennaiAreas.length} Chennai key localities!`);
-    }
-
-    function toggleAdvancedSettings() {
-      const el = document.getElementById('advancedSettings');
-      el.classList.toggle('open');
-      const arrow = document.getElementById('arrowIcon');
-      arrow.style.transform = el.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
-    }
-
-    function toggleModeDetails() {
-      const full = document.getElementById('toggleFullDetails').checked;
-      if (!full) {
-        showToast("Links-only mode enabled. Will only collect Google Maps place URLs.");
-      }
-    }
-
-    // Toast Notifications
-    function showToast(msg, type = "info") {
+    function showToast(msg) {
       const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-      toast.innerHTML = `<span>${msg}</span>`;
-      container.appendChild(toast);
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = msg;
+      container.appendChild(t);
       setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-        toast.style.transition = 'all 0.3s';
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
-    }
-
-    // Quick Filter selection
-    function setQuickFilter(type) {
-      quickFilterType = type;
-      ['all', 'phone', 'website', 'hours'].forEach(t => {
-        const el = document.getElementById('filter' + t.charAt(0).toUpperCase() + t.slice(1));
-        if (el) el.classList.toggle('active', t === type);
-      });
-      renderTable();
-    }
-
-    function updateFilterCounts() {
-      document.getElementById('countAll').textContent = allItems.length;
-      document.getElementById('countPhone').textContent = allItems.filter(i => i.phone && i.phone.trim()).length;
-      document.getElementById('countWebsite').textContent = allItems.filter(i => i.website && i.website.trim()).length;
-      document.getElementById('countHours').textContent = allItems.filter(i => i.schedule && i.schedule.trim()).length;
+        t.style.opacity = '0';
+        t.style.transition = '0.3s';
+        setTimeout(() => t.remove(), 300);
+      }, 3000);
     }
 
     // Start Scraping
     async function startScraping() {
+      const query = document.getElementById('searchInput').value.trim();
+      const batchText = document.getElementById('batchQueriesInput').value.trim();
+      const limitVal = document.getElementById('selectedLimit').value;
+      const requirePhone = document.getElementById('requirePhoneCheckbox').checked;
+
       const payload = {
-        mode: activeMode,
-        engine_mode: selectedEngineMode,
-        block_images: document.getElementById('toggleBlockImages') ? document.getElementById('toggleBlockImages').checked : true,
-        require_phone: document.getElementById('toggleRequirePhone') ? document.getElementById('toggleRequirePhone').checked : true,
-        workers: parseInt(document.getElementById('workerCount') ? document.getElementById('workerCount').value : 1) || 1,
-        query: document.getElementById('searchQuery').value.trim(),
-        queries: activeMode === 'batch' ? document.getElementById('batchQueries').value.trim() : null,
-        url: document.getElementById('searchUrl').value.trim(),
-        from_links: document.getElementById('fromLinksFile').value.trim(),
-        output_name: document.getElementById('outputName').value.trim() || 'results',
-        max_results: document.getElementById('maxResults').value.trim() || null,
-        headless: document.getElementById('toggleHeadless').checked,
-        links_only: !document.getElementById('toggleFullDetails').checked,
-        scroll_pause: parseFloat(document.getElementById('scrollPause').value) || 1.5,
-        min_delay: parseFloat(document.getElementById('minDelay').value) || 2.0,
-        max_delay: parseFloat(document.getElementById('maxDelay').value) || 4.0,
-        page_load_timeout: parseInt(document.getElementById('pageTimeout').value) || 15,
+        mode: batchText ? 'batch' : 'query',
+        query: query,
+        queries: batchText ? batchText.split('\n').filter(l => l.trim()) : null,
+        max_results: limitVal ? parseInt(limitVal) : null,
+        require_phone: requirePhone,
+        output_name: query.toLowerCase().replace(/[^a-z0-9]/g, '_') || 'leads'
       };
 
-      if (activeMode === 'query' && !payload.query) {
-        showToast('Please type a search query first!', 'error');
-        return;
-      }
-      if (activeMode === 'batch' && !payload.queries) {
-        showToast('Please enter or load target locations in the batch box!', 'error');
-        return;
-      }
-      if (activeMode === 'url' && !payload.url) {
-        showToast('Please enter a Google Maps URL first!', 'error');
-        return;
-      }
-      if (activeMode === 'from_links' && !payload.from_links) {
-        showToast('Please enter a links CSV file path!', 'error');
+      if (!payload.query && !payload.queries) {
+        showToast('Please type what business you want to find!');
         return;
       }
 
-      // UI state updates
-      document.getElementById('btnStart').disabled = true;
-      document.getElementById('btnStop').disabled = false;
       allItems = [];
       renderTable();
+      setRunningUI(true);
 
       try {
         const res = await fetch('/api/scrape/start', {
@@ -2747,206 +953,79 @@
         });
         const data = await res.json();
         if (!res.ok) {
-          showToast(data.error || 'Failed to start scraping.', 'error');
-          document.getElementById('btnStart').disabled = false;
-          document.getElementById('btnStop').disabled = true;
-          return;
+          showToast(data.error || 'Failed to start.');
+          setRunningUI(false);
+        } else {
+          showToast('Search started at maximum speed!');
         }
-
-        setRunningState(true);
-        showToast('Scraper started running silently in background!');
-      } catch (err) {
-        showToast('Network error: ' + err.message, 'error');
-        document.getElementById('btnStart').disabled = false;
-        document.getElementById('btnStop').disabled = true;
+      } catch (e) {
+        showToast('Connection error: ' + e.message);
+        setRunningUI(false);
       }
     }
 
     // Stop Scraping
     async function stopScraping() {
-      document.getElementById('btnStop').disabled = true;
       try {
-        const res = await fetch('/api/scrape/stop', { method: 'POST' });
-        const data = await res.json();
-        showToast('Stopping scraper safely...');
+        await fetch('/api/scrape/stop', { method: 'POST' });
+        showToast('Stopping search...');
       } catch (e) {
-        showToast('Failed to stop: ' + e.message, 'error');
+        showToast('Error stopping: ' + e.message);
       }
-      setTimeout(() => setRunningState(false), 500);
+      setTimeout(() => setRunningUI(false), 500);
     }
 
-    // Set UI Running State
-    function setRunningState(running) {
-      isScraping = running;
-      const statusPill = document.getElementById('statusPill');
-      const statusText = document.getElementById('statusText');
+    function setRunningUI(running) {
+      isRunning = running;
       const btnStart = document.getElementById('btnStart');
       const btnStop = document.getElementById('btnStop');
+      const statusDot = document.getElementById('statusDot');
+      const statusLabel = document.getElementById('statusLabel');
 
       if (running) {
-        statusPill.className = 'status-pill status-running';
-        statusText.textContent = 'Scraping...';
-        btnStart.disabled = true;
-        btnStop.disabled = false;
+        btnStart.style.display = 'none';
+        btnStop.style.display = 'flex';
+        statusDot.className = 'status-dot pulsing';
+        statusLabel.textContent = 'Searching...';
 
-        secondsElapsed = 0;
-        clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-          secondsElapsed++;
-          document.getElementById('statTime').textContent = secondsElapsed + 's';
+        seconds = 0;
+        clearInterval(timer);
+        timer = setInterval(() => {
+          seconds++;
+          document.getElementById('statDuration').textContent = seconds + 's';
         }, 1000);
       } else {
-        clearInterval(timerInterval);
-        btnStart.disabled = false;
-        btnStop.disabled = true;
-        loadHistory();
+        clearInterval(timer);
+        btnStart.style.display = 'flex';
+        btnStop.style.display = 'none';
+        statusDot.className = 'status-dot';
+        statusLabel.textContent = 'Finished';
       }
     }
 
-    // Connect SSE for Realtime Live Feed
-    function setupSSE() {
-      if (eventSource) eventSource.close();
-      eventSource = new EventSource('/api/scrape/stream');
-
-      eventSource.addEventListener('init', (e) => {
-        const data = JSON.parse(e.data);
-        if (data.status === 'running') {
-          setRunningState(true);
-        } else {
-          setRunningState(false);
-          const statusPill = document.getElementById('statusPill');
-          const statusText = document.getElementById('statusText');
-          if (data.status === 'completed' || data.status === 'stopped') {
-            statusPill.className = 'status-pill status-completed';
-            statusText.textContent = data.status === 'completed' ? 'Finished' : 'Stopped';
-          } else {
-            statusPill.className = 'status-pill status-idle';
-            statusText.textContent = 'Ready';
-          }
-        }
-        if (data.items) {
-          allItems = data.items;
-          renderTable();
-        }
-        if (data.logs) {
-          const consoleBody = document.getElementById('consoleBody');
-          consoleBody.innerHTML = '';
-          data.logs.forEach(appendLog);
-        }
-      });
-
-      eventSource.addEventListener('log', (e) => {
-        const entry = JSON.parse(e.data);
-        appendLog(entry);
-      });
-
-      eventSource.addEventListener('item', (e) => {
-        const item = JSON.parse(e.data);
-        allItems.unshift(item);
-        renderTable();
-        document.getElementById('statPlaces').textContent = allItems.length;
-      });
-
-      eventSource.addEventListener('progress', (e) => {
-        const p = JSON.parse(e.data);
-        if (p.links_count !== undefined) {
-          document.getElementById('statLinks').textContent = p.links_count;
-        }
-        if (p.scraped_count !== undefined) {
-          document.getElementById('statPlaces').textContent = p.scraped_count;
-        }
-        if (p.percent !== undefined) {
-          document.getElementById('progressBar').style.width = p.percent + '%';
-          document.getElementById('progressPercent').textContent = p.percent + '%';
-        }
-      });
-
-      eventSource.addEventListener('phase', (e) => {
-        const p = JSON.parse(e.data);
-        document.getElementById('statPhase').textContent = p.phase;
-        document.getElementById('progressPhaseText').textContent = p.phase;
-      });
-
-      eventSource.addEventListener('completed', (e) => {
-        const res = JSON.parse(e.data);
-        setRunningState(false);
-        const statusPill = document.getElementById('statusPill');
-        const statusText = document.getElementById('statusText');
-        statusPill.className = 'status-pill status-completed';
-        statusText.textContent = res.status === 'completed' ? 'Finished' : 'Stopped';
-        document.getElementById('statPhase').textContent = res.status === 'completed' ? 'Finished' : 'Stopped';
-        document.getElementById('progressBar').style.width = '100%';
-        document.getElementById('progressPercent').textContent = '100%';
-        showToast(`Scrape job complete! Total businesses saved: ${res.items_count || allItems.length}`);
-      });
-
-      eventSource.addEventListener('error', (e) => {
-        try {
-          const res = JSON.parse(e.data);
-          setRunningState(false);
-          if (res && res.error) {
-            showToast(res.error, 'error');
-            document.getElementById('statPhase').textContent = 'Error: ' + res.error;
-          }
-        } catch (_) {}
-      });
-    }
-
-    function appendLog(entry) {
-      const consoleBody = document.getElementById('consoleBody');
-      const div = document.createElement('div');
-      div.className = 'log-line';
-      div.innerHTML = `
-        <span class="log-time">[${entry.timestamp}]</span>
-        <span class="log-tag ${entry.level}">${entry.level}</span>
-        <span>${escapeHtml(entry.text)}</span>
-      `;
-      consoleBody.appendChild(div);
-
-      if (document.getElementById('chkAutoScroll').checked) {
-        consoleBody.scrollTop = consoleBody.scrollHeight;
-      }
-    }
-
-    function clearLogs() {
-      document.getElementById('consoleBody').innerHTML = '';
-    }
-
-    // Render Table Data with Filters
+    // Render Table
     function renderTable() {
-      updateFilterCounts();
       const tbody = document.getElementById('tableBody');
       const filter = (document.getElementById('tableFilter').value || '').toLowerCase();
 
-      let filtered = allItems.filter(it => {
-        const matchesText = (
-          (it.name || '').toLowerCase().includes(filter) ||
-          (it.phone || '').toLowerCase().includes(filter) ||
-          (it.address || '').toLowerCase().includes(filter) ||
-          (it.website || '').toLowerCase().includes(filter)
-        );
-
-        if (!matchesText) return false;
-
-        if (quickFilterType === 'phone') {
-          return it.phone && it.phone.trim().length > 0;
-        } else if (quickFilterType === 'website') {
-          return it.website && it.website.trim().length > 0;
-        } else if (quickFilterType === 'hours') {
-          return it.schedule && it.schedule.trim().length > 0;
-        }
-        return true;
+      const filtered = allItems.filter(i => {
+        return (i.name || '').toLowerCase().includes(filter) || (i.phone || '').toLowerCase().includes(filter);
       });
 
-      document.getElementById('tableBadge').textContent = `${filtered.length} items`;
+      document.getElementById('tableCountBadge').textContent = filtered.length;
+      document.getElementById('statTotalCount').textContent = allItems.length;
+      const phoneCount = allItems.filter(i => i.phone && i.phone.trim()).length;
+      document.getElementById('statPhoneCount').textContent = phoneCount;
+
+      const hasData = allItems.length > 0;
+      document.getElementById('btnDownload').disabled = !hasData;
+      document.getElementById('btnCopyAll').disabled = phoneCount === 0;
 
       if (filtered.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="7">
-              <div class="empty-state">
-                <p>${allItems.length === 0 ? 'No data scraped yet.' : 'No matching results for current filter.'}</p>
-              </div>
+            <td colspan="6" style="text-align: center; color: #94a3b8; padding: 30px;">
+              ${allItems.length === 0 ? 'No results yet. Click START SEARCH.' : 'No matching results found.'}
             </td>
           </tr>
         `;
@@ -2955,288 +1034,115 @@
 
       let html = '';
       filtered.forEach((it, idx) => {
-        const phoneDisplay = it.phone ? `
-          <span class="cell-phone">
-            ${escapeHtml(it.phone)}
-            <button class="btn-copy-small" onclick="copyText('${escapeHtml(it.phone)}')" title="Copy Phone Number">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            </button>
+        const phone = it.phone ? `
+          <span class="lead-phone">
+            📞 ${escapeHtml(it.phone)}
+            <button class="btn-copy-mini" onclick="copyText('${escapeHtml(it.phone)}')" title="Copy Phone">Copy</button>
           </span>
-        ` : '<span style="color: #cbd5e1;">—</span>';
-
-        const addressDisplay = it.address ? `
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 4px;">
-            <span>${escapeHtml(it.address)}</span>
-            <button class="btn-copy-small" onclick="copyText('${escapeHtml(it.address)}')" title="Copy Address">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            </button>
-          </div>
         ` : '<span style="color: #cbd5e1;">—</span>';
 
         html += `
           <tr>
-            <td style="color: var(--text-soft); font-size: 0.78rem;">${idx + 1}</td>
-            <td class="cell-name">${escapeHtml(it.name || 'Unknown')}</td>
-            <td>${phoneDisplay}</td>
-            <td style="max-width: 250px; font-size: 0.8rem; color: #475569;">${addressDisplay}</td>
-            <td>
-              ${it.website ? `<a href="${escapeHtml(it.website)}" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: underline; font-size: 0.8rem;">Visit Site ↗</a>` : '<span style="color: #cbd5e1;">—</span>'}
-            </td>
-            <td style="font-size: 0.78rem; color: #64748b;">${escapeHtml(it.schedule || '—')}</td>
-            <td class="cell-link">
-              ${it.link ? `<a href="${escapeHtml(it.link)}" target="_blank" rel="noopener">Map ↗</a>` : '—'}
-            </td>
+            <td style="color: #94a3b8; font-weight: 600;">${idx + 1}</td>
+            <td class="lead-name">${escapeHtml(it.name || 'Unknown')}</td>
+            <td>${phone}</td>
+            <td style="color: #475569; max-width: 260px;">${escapeHtml(it.address || it.category || '—')}</td>
+            <td>${it.rating ? `⭐ ${escapeHtml(it.rating)}` : '—'}</td>
+            <td>${it.link ? `<a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="color: #2563eb; font-weight: 700; text-decoration: none;">View ↗</a>` : '—'}</td>
           </tr>
         `;
       });
       tbody.innerHTML = html;
     }
 
-    function filterTable() {
-      renderTable();
-    }
-
-    function clearTableData() {
-      if (confirm('Clear the current table view? (Saved CSV files in output folder remain intact)')) {
-        allItems = [];
-        renderTable();
-        document.getElementById('statPlaces').textContent = '0';
-        document.getElementById('statLinks').textContent = '0';
-        showToast('Table cleared.');
-      }
-    }
-
-    // Copy to clipboard helper
-    function copyText(text) {
-      if (!text) return;
-      navigator.clipboard.writeText(text).then(() => {
-        showToast(`Copied: ${text}`);
-      }).catch(() => {
-        showToast('Failed to copy', 'error');
-      });
-    }
-
-    // Copy All Phone Numbers
-    function copyAllPhones() {
-      const phones = allItems
-        .map(i => i.phone)
-        .filter(p => p && p.trim().length > 0);
-
-      if (phones.length === 0) {
-        showToast('No phone numbers extracted yet!', 'error');
-        return;
-      }
-
-      const text = phones.join('\n');
-      navigator.clipboard.writeText(text).then(() => {
-        showToast(`Copied ${phones.length} phone numbers to clipboard!`);
-      });
-    }
-
-    // Download as CSV with Excel UTF-8 BOM compatibility
-    function downloadCurrentData(format) {
-      if (allItems.length === 0) {
-        showToast('No data to export yet! Start a scrape first.');
-        return;
-      }
-      const outputPrefix = document.getElementById('outputName').value.trim() || 'scraped_leads';
-
-      if (format === 'json') {
-        const blob = new Blob([JSON.stringify(allItems, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${outputPrefix}_${Date.now()}.json`;
-        a.click();
-        URL.revokeObjectURL(url);
-        showToast('Downloaded JSON file.');
-      } else {
-        // Build CSV with UTF-8 BOM (\uFEFF) for 100% Microsoft Excel compatibility
-        const headers = ["name", "phone", "address", "website", "schedule", "link"];
-        const headerNames = ["Business Name", "Phone Number", "Address", "Website", "Opening Hours", "Google Maps URL"];
-        const rows = allItems.map(it => headers.map(h => `"${(it[h] || '').replace(/"/g, '""')}"`).join(","));
-        const csvContent = "\uFEFF" + [headerNames.join(","), ...rows].join("\r\n");
-
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${outputPrefix}_leads_${Date.now()}.csv`;
-        a.click();
-        URL.revokeObjectURL(url);
-        showToast(`Downloaded CSV (${allItems.length} leads) for Excel!`);
-      }
-    }
-
-    // History Loader with Load into Table
-    async function loadHistory() {
-      try {
-        const res = await fetch('/api/history');
-        const data = await res.json();
-        const grid = document.getElementById('historyGrid');
-        if (!data.files || data.files.length === 0) {
-          grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.84rem; padding: 12px;">No CSV files yet. Start your first scrape above!</div>`;
-          return;
-        }
-
-        let html = '';
-        data.files.forEach(f => {
-          const typeLabel = f.is_details ? 'Detailed Data' : (f.is_links ? 'Place Links' : 'CSV File');
-          const badgeColor = f.is_details ? '#ecfdf5; color: #047857' : '#eff6ff; color: #1d4ed8';
-
-          html += `
-            <div class="history-item">
-              <div class="file-details">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  <span class="file-name">${escapeHtml(f.name)}</span>
-                  <span style="font-size: 0.68rem; font-weight: 600; padding: 1px 6px; border-radius: 6px; background: ${badgeColor};">${typeLabel}</span>
-                </div>
-                <div class="file-meta">${f.rows} rows • ${f.size_kb} KB • ${f.modified}</div>
-              </div>
-              <div class="history-btns">
-                <button class="btn-outline-glass" onclick="loadFileIntoTable('${escapeHtml(f.name)}')" title="Load this file into the table">
-                  View
-                </button>
-                <a href="/api/download/${encodeURIComponent(f.name)}" class="btn-outline-glass" download title="Download CSV">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                  CSV
-                </a>
-              </div>
-            </div>
-          `;
-        });
-        grid.innerHTML = html;
-      } catch (err) {
-        console.error('History load error:', err);
-      }
-    }
-
-    async function loadFileIntoTable(filename) {
-      try {
-        const res = await fetch(`/api/preview/${encodeURIComponent(filename)}`);
-        const data = await res.json();
-        if (data.rows && data.rows.length > 0) {
-          allItems = data.rows;
-          renderTable();
-          document.getElementById('statPlaces').textContent = allItems.length;
-          showToast(`Loaded ${data.rows.length} rows from ${filename} into the table!`);
-          window.scrollTo({ top: 200, behavior: 'smooth' });
-        } else {
-          showToast('No rows found in this file.', 'warn');
-        }
-      } catch (err) {
-        showToast('Error reading file: ' + err.message, 'error');
-      }
-    }
-
-    async function openOutputFolder() {
-      try {
-        const res = await fetch('/api/open-folder', { method: 'POST' });
-        const data = await res.json();
-        if (data.status === 'opened') {
-          showToast('Opened output folder in File Explorer.');
-        }
-      } catch (e) {
-        showToast('Error opening folder: ' + e.message, 'error');
-      }
-    }
-
     function escapeHtml(str) {
-      if (!str) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+      return String(str || '').replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[s]);
     }
 
-    // Engine Speed Mode Selection
-    let selectedEngineMode = 'turbo';
-
-    function selectEngineMode(mode) {
-      selectedEngineMode = mode;
-      const hiddenInput = document.getElementById('selectedEngineMode');
-      if (hiddenInput) hiddenInput.value = mode;
-
-      const cards = {
-        'turbo': 'cardEngineTurbo',
-        'browserless_http': 'cardEngineHttp',
-        'feed_fast': 'cardEngineFeed',
-        'chrome': 'cardEngineChrome'
-      };
-
-      for (const [key, id] of Object.entries(cards)) {
-        const el = document.getElementById(id);
-        if (el) el.classList.toggle('active', key === mode);
-      }
-
-      if (mode === 'browserless_http') {
-        showToast('🚀 Direct HTTP Mode: Zero Chrome overhead, ~30MB RAM usage!');
-      } else if (mode === 'feed_fast') {
-        showToast('📋 Search-Feed Fast Mode: Instant extraction in Phase 1 (~10 mins for 5k leads)!');
-      } else if (mode === 'turbo') {
-        showToast('⚡ Turbo Chrome: Images blocked + 1ms JS parser + Zero PC lag!');
-      } else if (mode === 'chrome') {
-        showToast('🌐 Standard Chrome: Full browser rendering.');
-      }
+    function copyText(val) {
+      navigator.clipboard.writeText(val).then(() => showToast(`Copied: ${val}`));
     }
 
-    function checkWorkerSafety(val) {
-      const note = document.getElementById('workerSafetyNote');
-      const count = parseInt(val) || 1;
-      if (count <= 2) {
-        note.style.color = '#15803d';
-        note.textContent = `(${count} Tab${count > 1 ? 's' : ''} Safe on this PC)`;
-      } else {
-        note.style.color = '#b45309';
-        note.textContent = `(⚠️ High RAM Alert: Monitor memory)`;
+    function copyAllPhones() {
+      const phones = allItems.map(i => i.phone).filter(p => p && p.trim());
+      if (phones.length === 0) {
+        showToast('No phone numbers to copy yet!');
+        return;
       }
+      navigator.clipboard.writeText(phones.join('\n')).then(() => {
+        showToast(`Copied all ${phones.length} phone numbers!`);
+      });
     }
 
-    // System Memory & Anti-Freeze Monitor
-    async function fetchSystemMemory() {
-      try {
-        const res = await fetch('/api/system');
-        const data = await res.json();
-        const ramText = document.getElementById('ramText');
-        const ramBadge = document.getElementById('ramGuardBadge');
-        if (ramText && data.free_ram_gb !== undefined) {
-          ramText.textContent = `RAM: ${data.free_ram_gb} GB Free • Zero-Freeze Active`;
-          if (data.free_ram_gb < 0.8) {
-            ramBadge.style.background = '#fef3c7';
-            ramBadge.style.borderColor = '#fde68a';
-            ramBadge.style.color = '#92400e';
-          } else {
-            ramBadge.style.background = 'rgba(240, 253, 244, 0.95)';
-            ramBadge.style.borderColor = '#bbf7d0';
-            ramBadge.style.color = '#15803d';
-          }
+    function downloadCSV() {
+      if (allItems.length === 0) {
+        showToast('No leads to download yet!');
+        return;
+      }
+      const headers = ['Business Name', 'Phone Number', 'Address', 'Category', 'Rating', 'Google Maps Link'];
+      const rows = allItems.map(i => [
+        `"${(i.name || '').replace(/"/g, '""')}"`,
+        `"${(i.phone || '').replace(/"/g, '""')}"`,
+        `"${(i.address || '').replace(/"/g, '""')}"`,
+        `"${(i.category || '').replace(/"/g, '""')}"`,
+        `"${(i.rating || '').replace(/"/g, '""')}"`,
+        `"${(i.link || '').replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `leads_${Date.now()}.csv`;
+      a.click();
+      showToast('Downloaded Excel CSV file!');
+    }
+
+    function openOutputFolder() {
+      fetch('/api/open-folder', { method: 'POST' })
+        .then(() => showToast('Opening folder on your computer...'))
+        .catch(() => showToast('Could not open folder.'));
+    }
+
+    // Connect Server-Sent Events (Live streaming)
+    function connectSSE() {
+      if (eventSource) eventSource.close();
+      eventSource = new EventSource('/api/scrape/stream');
+
+      eventSource.addEventListener('init', e => {
+        const data = JSON.parse(e.data);
+        if (data.status === 'running') setRunningUI(true);
+        if (data.items) {
+          allItems = data.items;
+          renderTable();
         }
-      } catch (err) {
-        console.warn('System stats fetch error:', err);
-      }
+      });
+
+      eventSource.addEventListener('item', e => {
+        const item = JSON.parse(e.data);
+        allItems.unshift(item);
+        renderTable();
+      });
+
+      eventSource.addEventListener('log', e => {
+        const log = JSON.parse(e.data);
+        const box = document.getElementById('statusStream');
+        const entry = document.createElement('div');
+        entry.className = `log-entry ${log.level}`;
+        entry.textContent = `• ${log.text}`;
+        box.appendChild(entry);
+        box.scrollTop = box.scrollHeight;
+      });
+
+      eventSource.addEventListener('completed', e => {
+        setRunningUI(false);
+        showToast('Search finished successfully!');
+      });
     }
 
-    // 1-Click Resume from Saved 6,836 Tamil Nadu Gym Links
-    function resumeTamilNadu6836() {
-      switchMode('from_links');
-      document.getElementById('fromLinksFile').value = 'output/tamilnadu_gym_38districts_links.csv';
-      document.getElementById('outputName').value = 'tamilnadu_gym_38districts';
-      selectEngineMode('turbo');
-      const phoneToggle = document.getElementById('toggleRequirePhone');
-      if (phoneToggle) phoneToggle.checked = true;
-      showToast('✓ Loaded 6,836 Tamil Nadu gym links! Turbo Chrome active with Phone Filter. Click Start Scraping!');
-      window.scrollTo({ top: 100, behavior: 'smooth' });
-    }
-
-    // Init on Page Load
     window.addEventListener('DOMContentLoaded', () => {
-      setupSSE();
-      loadHistory();
-      renderDistrictCards();
-      fetchSystemMemory();
-      setInterval(fetchSystemMemory, 15000);
+      connectSSE();
     });
   </script>
 </body>

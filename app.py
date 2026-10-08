@@ -163,31 +163,17 @@ def start_scrape():
     except (ValueError, TypeError):
         max_results = None
 
-    # Speed & Engine mode parameters
-    engine_mode = str(data.get("engine_mode", "turbo")).strip().lower() or "turbo"
-    block_images = bool(data.get("block_images", True))
     require_phone = bool(data.get("require_phone", True))
-    try:
-        workers = int(data.get("workers", 1))
-    except (ValueError, TypeError):
-        workers = 1
-
-    # Tunable options
-    scroll_pause = float(data.get("scroll_pause", 1.5))
-    min_delay = float(data.get("min_delay", 2.0))
-    max_delay = float(data.get("max_delay", 4.0))
-    page_load_timeout = int(data.get("page_load_timeout", 15))
-    max_scroll_stalls = int(data.get("max_scroll_stalls", 15))
 
     # Validation
     if mode == "query" and not query:
-        return jsonify({"error": "Please specify a search query (e.g. 'Coffee shops Seattle')."}), 400
+        return jsonify({"error": "Please enter what you want to find (e.g. 'Gyms in Chennai')."}), 400
     elif mode == "batch" and not queries:
-        return jsonify({"error": "Please provide one or more search locations for batch scraping."}), 400
+        return jsonify({"error": "Please provide one or more search locations."}), 400
     elif mode == "url" and not url:
         return jsonify({"error": "Please provide a valid Google Maps search URL."}), 400
     elif mode == "from_links" and not from_links:
-        return jsonify({"error": "Please specify or upload a links CSV file."}), 400
+        return jsonify({"error": "Please select a links CSV file."}), 400
 
     # Reset state
     with state.lock:
@@ -208,8 +194,7 @@ def start_scrape():
         state.start_timestamp = time.time()
         state.duration = 0
 
-    state.add_log("Starting new Google Maps Scraping job...", "INFO")
-    state.add_log(f"Mode: {mode.upper()} | Engine: {engine_mode.upper()} | Headless: {headless} | Phone-Only: {require_phone} | Limit: {max_results or 'Unlimited'}", "INFO")
+    state.add_log(f"⚡ Starting Ultra-Fast Search for: '{query or mode.upper()}' (Limit: {max_results or 'Unlimited'})", "INFO")
 
     # Callbacks
     def handle_log(msg: str, lvl: str = "INFO"):
@@ -242,7 +227,7 @@ def start_scrape():
             state.error_message = err
         state.broadcast("error", {"error": err})
 
-    # Initialize Engine
+    # Initialize Engine (Single Ultra-Fast Engine)
     engine = ScraperEngine(
         query=query if mode == "query" else None,
         queries=queries if mode == "batch" else None,
@@ -253,13 +238,6 @@ def start_scrape():
         headless=headless,
         links_only=links_only,
         max_results=max_results,
-        default_delay=(min_delay, max_delay),
-        page_load_timeout=page_load_timeout,
-        scroll_pause=scroll_pause,
-        max_scroll_stalls=max_scroll_stalls,
-        engine_mode=engine_mode,
-        block_images=block_images,
-        workers=workers,
         require_phone=require_phone,
         on_log=handle_log,
         on_phase=handle_phase,
@@ -418,15 +396,30 @@ def open_output_folder():
             subprocess.Popen(["open", OUTPUT_DIR])
         else:
             subprocess.Popen(["xdg-open", OUTPUT_DIR])
-        return jsonify({"status": "opened", "path": OUTPUT_DIR})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 
-if __name__ == "__main__":
+@app.route("/api/shutdown", methods=["POST", "GET"])
+def shutdown_service():
+    """Cleanly stop the scraper engine and shut down Flask server."""
+    if state.engine:
+        try:
+            state.engine.stop()
+        except Exception:
+            pass
+    def _kill():
+        time.sleep(0.5)
+        os._exit(0)
+    threading.Thread(target=_kill, daemon=True).start()
+    return jsonify({"status": "shutting_down", "message": "Scraper server has been stopped."})
+
+
+    host = os.environ.get("HOST", "0.0.0.0")
+    port = int(os.environ.get("PORT", 5000))
     print(f"============================================================")
-    print(f" SoClose Google Maps Scraper Web Service")
-    print(f" Running at http://127.0.0.1:5000")
+    print(f" Fast Map Leads Web Service")
+    print(f" Running at http://{host}:{port}")
     print(f" Output directory: {OUTPUT_DIR}")
     print(f"============================================================")
-    app.run(host="127.0.0.1", port=5000, debug=False, threaded=True)
+    app.run(host=host, port=port, debug=False, threaded=True)

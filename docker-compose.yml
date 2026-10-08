@@ -1,0 +1,17 @@
+services:
+  scraper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fast-map-leads
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=5000
+    volumes:
+      - scraper_output:/app/output
+
+volumes:
+  scraper_output:

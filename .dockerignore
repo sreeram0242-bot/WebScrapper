@@ -1,0 +1,17 @@
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.git/
+.gitignore
+output/*.csv
+!output/example_*.csv
+scraper_server.log
+*.log
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
