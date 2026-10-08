@@ -867,6 +867,262 @@
       gap: 8px;
       transition: opacity 0.3s;
     }
+
+    /* ==========================================================================
+       MOBILE & TABLET RESPONSIVE PADDING & LAYOUT FIXES
+       ========================================================================== */
+    @media (max-width: 768px) {
+      body {
+        overflow-x: hidden;
+      }
+      .app-shell {
+        padding: 10px 12px 36px 12px;
+      }
+      .glass-header {
+        padding: 10px 14px;
+        margin-bottom: 12px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .brand-section {
+        justify-content: flex-start;
+      }
+      .brand-logo {
+        width: 34px;
+        height: 34px;
+      }
+      .brand-title h1 {
+        font-size: 0.95rem;
+      }
+      .brand-sub {
+        font-size: 0.68rem;
+      }
+      .header-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding-top: 8px;
+        border-top: 1px dashed rgba(226, 232, 240, 0.85);
+      }
+
+      .main-layout {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .glass-card {
+        padding: 14px 12px;
+        border-radius: var(--radius-md);
+      }
+      .section-title {
+        font-size: 0.86rem;
+        margin-bottom: 8px;
+      }
+
+      .glass-input {
+        height: 42px;
+        font-size: 0.88rem;
+        padding-left: 38px;
+      }
+      .search-input-icon {
+        left: 12px;
+      }
+
+      .quick-chips-row {
+        gap: 5px;
+        margin-bottom: 12px;
+      }
+      .quick-chip {
+        padding: 3px 8px;
+        font-size: 0.68rem;
+      }
+
+      .district-deep-card {
+        padding: 10px 10px;
+        margin-bottom: 12px;
+      }
+      .district-deep-text strong {
+        font-size: 0.78rem;
+      }
+      .district-deep-text span {
+        font-size: 0.66rem;
+      }
+      .district-chips-wrap {
+        max-height: 72px;
+      }
+
+      .limit-selector-grid {
+        gap: 5px;
+        margin-bottom: 12px;
+      }
+      .limit-pill {
+        height: 34px;
+        font-size: 0.72rem;
+        padding: 0 4px;
+      }
+
+      .form-actions-row {
+        margin-top: 10px;
+        gap: 8px;
+      }
+      .form-actions-row button {
+        height: 40px;
+        font-size: 0.82rem;
+      }
+
+      /* Stats Trio on Mobile: Clean 3-column compact stack */
+      .stats-trio {
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+      .stat-glass-card {
+        padding: 10px 8px;
+        gap: 6px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .stat-icon-wrap {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+      }
+      .stat-icon-wrap svg {
+        width: 14px;
+        height: 14px;
+      }
+      .stat-val {
+        font-size: 1.1rem;
+      }
+      .stat-lbl {
+        font-size: 0.64rem;
+        line-height: 1.2;
+      }
+
+      /* Completion Banner on Mobile */
+      .completion-banner {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px 12px;
+        gap: 10px;
+      }
+      .banner-text strong {
+        font-size: 0.82rem;
+      }
+      .banner-text span {
+        font-size: 0.72rem;
+      }
+      .banner-buttons {
+        display: flex;
+        width: 100%;
+        gap: 8px;
+      }
+      .banner-buttons .btn-compact {
+        flex: 1;
+        height: 36px;
+        padding: 0 8px;
+        font-size: 0.76rem;
+      }
+
+      /* Table Toolbar on Mobile */
+      .table-glass-card {
+        padding: 12px 10px;
+        border-radius: var(--radius-md);
+      }
+      .table-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .table-tabs {
+        width: 100%;
+        display: flex;
+      }
+      .tab-btn {
+        flex: 1;
+        padding: 6px 4px;
+        font-size: 0.7rem;
+        text-align: center;
+      }
+      .table-toolbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+      }
+      .table-filter-wrap {
+        flex: 1;
+        min-width: 0;
+      }
+      .table-filter-input {
+        width: 100% !important;
+        height: 32px;
+        font-size: 0.74rem;
+      }
+      .btn-subtle-sm {
+        height: 32px;
+        padding: 0 8px;
+        font-size: 0.72rem;
+        flex-shrink: 0;
+      }
+
+      /* Leads Table Scroll Container on Mobile */
+      .table-scroll-wrap {
+        max-height: 420px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      table {
+        min-width: 520px;
+        font-size: 0.74rem;
+      }
+      th, td {
+        padding: 8px 8px;
+      }
+
+      /* Modal Sheet on Mobile */
+      .modal-backdrop {
+        padding: 8px;
+      }
+      .modal-glass-sheet {
+        max-height: 94vh;
+        border-radius: var(--radius-md);
+      }
+      .modal-header {
+        padding: 12px 14px;
+      }
+      .modal-title {
+        font-size: 0.88rem;
+      }
+      .modal-body {
+        padding: 10px 12px;
+      }
+      .modal-body table {
+        min-width: 480px;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .app-shell {
+        padding: 8px 8px 24px 8px;
+      }
+      .glass-header {
+        padding: 8px 10px;
+      }
+      .btn-compact {
+        height: 36px;
+        padding: 0 10px;
+        font-size: 0.76rem;
+      }
+      .stat-val {
+        font-size: 0.98rem;
+      }
+      .stat-lbl {
+        font-size: 0.6rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1080,7 +1336,7 @@
               </button>
             </div>
 
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="table-toolbar-actions">
               <div class="table-filter-wrap">
                 <span class="table-filter-icon">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
