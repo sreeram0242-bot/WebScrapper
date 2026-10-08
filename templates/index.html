@@ -500,10 +500,10 @@
       transition: all 0.15s;
     }
     .limit-pill.active {
-      background: #eff6ff;
-      border-color: #2563eb;
-      color: #1d4ed8;
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+      background: #0f172a;
+      border-color: #0f172a;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16);
     }
     .limit-pill:hover:not(.active) {
       background: #f8fafc;
@@ -922,22 +922,25 @@
       font-weight: 800;
       color: #16a34a;
     }
-    .wallet-add-btn {
-      background: #2563eb;
-      color: white;
-      border: none;
-      font-size: 0.7rem;
-      font-weight: 700;
+    .wallet-add-badge {
+      background: #16a34a;
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 800;
       padding: 3px 8px;
-      border-radius: 20px;
-      cursor: pointer;
+      border-radius: 999px;
       display: inline-flex;
       align-items: center;
-      gap: 3px;
-      transition: background 0.15s;
+      justify-content: center;
+      line-height: 1;
+      white-space: nowrap;
+      margin-left: 2px;
+      cursor: pointer;
     }
-    .wallet-add-btn:hover {
-      background: #1d4ed8;
+    .guest-controls-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
     /* Profile Dropdown Wrap */
@@ -1110,28 +1113,33 @@
     /* Auth Modal Tabs & Inputs */
     .auth-tabs {
       display: flex;
-      gap: 6px;
+      gap: 4px;
       background: #f1f5f9;
       padding: 4px;
-      border-radius: 8px;
-      width: 100%;
+      border-radius: 10px;
+      flex: 1;
+      margin-right: 12px;
     }
     .auth-tab-btn {
       flex: 1;
-      padding: 6px 12px;
-      border-radius: 6px;
+      height: 36px;
+      padding: 0 12px;
+      border-radius: 8px;
       border: none;
       background: none;
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 0.85rem;
+      font-weight: 700;
       color: #64748b;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: all 0.15s;
     }
     .auth-tab-btn.active {
       background: white;
       color: var(--text-main);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     }
     .form-group {
       display: flex;
@@ -1278,6 +1286,26 @@
       display: none !important;
     }
 
+    /* ==========================================================================
+       USER PORTAL AUTH VISIBILITY STATE MACHINE
+       ========================================================================== */
+    body.user-logged-in #authGuestWrap {
+      display: none !important;
+    }
+    body.user-logged-in #walletBadge {
+      display: inline-flex !important;
+    }
+    body.user-logged-in #userProfileWrap {
+      display: block !important;
+    }
+    body.user-guest #walletBadge,
+    body.user-guest #userProfileWrap {
+      display: none !important;
+    }
+    body.user-guest #authGuestWrap {
+      display: inline-flex !important;
+    }
+
     @media (max-width: 768px) {
       .mobile-only {
         display: inline-flex !important;
@@ -1285,6 +1313,7 @@
 
       html, body {
         background-color: #ffffff !important;
+        background: #ffffff !important;
         overflow-x: hidden;
         width: 100%;
         max-width: 100vw;
@@ -1292,20 +1321,20 @@
       }
 
       .app-shell {
-        padding: 10px 12px 48px 12px;
+        padding: 8px 10px 48px 10px;
       }
 
       /* 1. MOBILE APP HEADER BAR */
       .glass-header {
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
-        border-radius: 20px !important;
-        padding: 14px 14px !important;
-        margin-bottom: 14px !important;
+        border-radius: 18px !important;
+        padding: 12px 14px !important;
+        margin-bottom: 12px !important;
         display: flex !important;
         flex-direction: column !important;
-        gap: 12px !important;
-        box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04) !important;
+        gap: 10px !important;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
       }
       .brand-section {
         display: flex !important;
@@ -1319,24 +1348,24 @@
         gap: 8px !important;
       }
       .brand-logo {
-        width: 38px !important;
-        height: 38px !important;
-        border-radius: 12px !important;
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 10px !important;
         flex-shrink: 0 !important;
       }
       .brand-title h1 {
-        font-size: 1.15rem !important;
+        font-size: 1.1rem !important;
         font-weight: 800 !important;
         color: #0f172a !important;
         line-height: 1.2 !important;
         margin: 0 !important;
       }
       .brand-sub {
-        display: none !important; /* Conceal long tagline on mobile for clean breathing room */
+        display: none !important;
       }
       .brand-badge {
-        font-size: 0.68rem !important;
-        padding: 2px 7px !important;
+        font-size: 0.65rem !important;
+        padding: 2px 6px !important;
         font-weight: 800 !important;
       }
 
@@ -1344,35 +1373,39 @@
       .header-controls {
         display: flex !important;
         align-items: center !important;
-        justify-content: space-between !important;
+        justify-content: flex-end !important;
         width: 100% !important;
-        padding-top: 10px !important;
+        padding-top: 8px !important;
         border-top: 1px solid #f1f5f9 !important;
-        gap: 8px !important;
+        gap: 6px !important;
       }
       .status-pill {
+        margin-right: auto !important;
         height: 38px !important;
         padding: 0 10px !important;
-        font-size: 0.8rem !important;
-        border-radius: 10px !important;
+        font-size: 0.78rem !important;
+        border-radius: 8px !important;
+        flex-shrink: 0 !important;
       }
 
       /* Mobile Wallet Pill */
       .wallet-pill {
-        height: 44px !important;
-        padding: 0 10px !important;
-        border-radius: 12px !important;
+        height: 38px !important;
+        padding: 0 8px !important;
+        border-radius: 10px !important;
         background: #f0fdf4 !important;
         border: 1px solid #bbf7d0 !important;
         display: inline-flex !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 6px !important;
         cursor: pointer !important;
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
       }
       .wallet-icon-box {
-        width: 28px !important;
-        height: 28px !important;
-        border-radius: 8px !important;
+        width: 22px !important;
+        height: 22px !important;
+        border-radius: 6px !important;
         background: #dcfce7 !important;
         color: #16a34a !important;
         display: flex !important;
@@ -1382,146 +1415,169 @@
       .wallet-text-group {
         display: flex !important;
         flex-direction: column !important;
+        line-height: 1.1 !important;
       }
       .wallet-lbl {
-        font-size: 0.62rem !important;
+        font-size: 0.58rem !important;
         font-weight: 800 !important;
         color: #166534 !important;
-        letter-spacing: 0.05em !important;
+        letter-spacing: 0.04em !important;
       }
       .wallet-amount {
-        font-size: 0.95rem !important;
+        font-size: 0.88rem !important;
         font-weight: 800 !important;
         color: #15803d !important;
         line-height: 1 !important;
       }
-      .wallet-add-btn {
-        height: 28px !important;
-        padding: 0 8px !important;
-        font-size: 0.78rem !important;
+      .wallet-add-badge {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        height: 22px !important;
+        padding: 0 7px !important;
+        font-size: 0.72rem !important;
         font-weight: 800 !important;
         background: #16a34a !important;
-        color: white !important;
-        border-radius: 8px !important;
-        border: none !important;
+        color: #ffffff !important;
+        border-radius: 6px !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
       }
 
       /* Mobile Profile Pill */
+      .profile-wrap {
+        position: relative !important;
+        flex-shrink: 0 !important;
+      }
       .profile-pill {
-        height: 44px !important;
-        padding: 0 10px !important;
+        height: 42px !important;
+        padding: 0 8px 0 6px !important;
         border-radius: 12px !important;
         background: #ffffff !important;
         border: 1px solid #cbd5e1 !important;
         display: inline-flex !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 6px !important;
         color: #0f172a !important;
         font-weight: 700 !important;
       }
       .profile-avatar {
-        width: 28px !important;
-        height: 28px !important;
+        width: 26px !important;
+        height: 26px !important;
         border-radius: 8px !important;
         background: #2563eb !important;
         color: white !important;
-        font-size: 0.85rem !important;
+        font-size: 0.8rem !important;
         font-weight: 800 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
       }
       .profile-name {
-        max-width: 90px !important;
+        max-width: 80px !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         white-space: nowrap !important;
-        font-size: 0.88rem !important;
+        font-size: 0.85rem !important;
       }
 
-      /* Mobile Profile Bottom Sheet */
+      /* Robust Mobile Profile Dropdown (Absolute, Immune to Container Trap) */
       .profile-dropdown {
-        position: fixed !important;
-        top: auto !important;
-        bottom: 0 !important;
-        left: 0 !important;
+        position: absolute !important;
+        top: calc(100% + 8px) !important;
         right: 0 !important;
-        width: 100vw !important;
-        max-width: 100vw !important;
-        border-radius: 24px 24px 0 0 !important;
-        padding: 22px 20px 36px 20px !important;
-        box-shadow: 0 -12px 48px rgba(15, 23, 42, 0.25) !important;
-        z-index: 10000 !important;
+        width: 280px !important;
+        max-width: calc(100vw - 20px) !important;
+        border-radius: 16px !important;
+        padding: 14px 12px !important;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16) !important;
+        z-index: 99999 !important;
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
-        border-bottom: none !important;
-        transform: translateY(100%) !important;
-        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        display: block !important;
-      }
-      .profile-dropdown::before {
-        content: '' !important;
-        display: block !important;
-        width: 44px !important;
-        height: 5px !important;
-        background: #cbd5e1 !important;
-        border-radius: 999px !important;
-        margin: -8px auto 16px auto !important;
+        display: none !important;
+        flex-direction: column !important;
+        gap: 4px !important;
       }
       .profile-dropdown.show {
-        transform: translateY(0) !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
+        display: flex !important;
       }
       .dropdown-item {
-        height: 48px !important;
-        padding: 0 14px !important;
-        font-size: 0.92rem !important;
-        border-radius: 12px !important;
+        height: 44px !important;
+        padding: 0 12px !important;
+        font-size: 0.88rem !important;
+        border-radius: 10px !important;
+        color: #334155 !important;
       }
 
       /* Guest Login Buttons */
-      #authGuestWrap {
-        display: flex !important;
+      .guest-controls-wrap {
+        display: inline-flex !important;
         align-items: center !important;
-        gap: 8px !important;
-        flex: 1 !important;
+        gap: 6px !important;
+        flex-shrink: 0 !important;
       }
-      #authGuestWrap .btn-primary-glass {
-        flex: 1 !important;
-        height: 44px !important;
-        padding: 0 10px !important;
-        font-size: 0.86rem !important;
-        font-weight: 800 !important;
-        border-radius: 12px !important;
-        background: #0f172a !important;
-        color: white !important;
-        justify-content: center !important;
-      }
-      #authGuestWrap .btn-outline-glass {
-        height: 44px !important;
+      .guest-controls-wrap .btn-emerald-glass,
+      .guest-controls-wrap .btn-primary-glass {
+        height: 38px !important;
         padding: 0 12px !important;
-        font-size: 0.86rem !important;
-        font-weight: 700 !important;
-        border-radius: 12px !important;
+        font-size: 0.82rem !important;
+        font-weight: 800 !important;
+        border-radius: 10px !important;
+        background: #16a34a !important;
+        color: white !important;
+        display: inline-flex !important;
+        align-items: center !important;
         justify-content: center !important;
+        gap: 5px !important;
+        white-space: nowrap !important;
+      }
+      .guest-controls-wrap .btn-outline-glass {
+        height: 38px !important;
+        padding: 0 10px !important;
+        font-size: 0.82rem !important;
+        font-weight: 700 !important;
+        border-radius: 10px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        white-space: nowrap !important;
+      }
+      .header-files-btn {
+        height: 38px !important;
+        padding: 0 10px !important;
+        border-radius: 10px !important;
+        font-size: 0.8rem !important;
+        font-weight: 700 !important;
+        flex-shrink: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        white-space: nowrap !important;
+      }
+      @media (max-width: 420px) {
+        .header-files-text {
+          display: none !important;
+        }
+        .header-files-btn {
+          padding: 0 10px !important;
+        }
       }
 
       /* 2. MAIN LAYOUT STACK */
       .main-layout {
         grid-template-columns: 1fr !important;
-        gap: 16px !important;
+        gap: 14px !important;
       }
 
-      /* Solid White Glass Cards */
+      /* Solid White Cards */
       .glass-card {
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
-        border-radius: 20px !important;
-        padding: 18px 16px !important;
-        box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04) !important;
+        border-radius: 18px !important;
+        padding: 16px 14px !important;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
       }
 
       /* Transparent Pricing Banner */
@@ -1530,7 +1586,7 @@
         border: 1px solid #bbf7d0 !important;
         border-radius: 14px !important;
         padding: 10px 12px !important;
-        margin-bottom: 14px !important;
+        margin-bottom: 12px !important;
         display: flex !important;
         flex-direction: column !important;
         gap: 4px !important;
@@ -1554,7 +1610,7 @@
       }
 
       .section-title {
-        font-size: 1.05rem !important;
+        font-size: 1rem !important;
         font-weight: 800 !important;
         color: #0f172a !important;
         margin-bottom: 10px !important;
@@ -1565,9 +1621,9 @@
 
       /* Search Input on Mobile: Strict 16px immune to auto-zoom */
       .glass-input {
-        height: 54px !important;
+        height: 52px !important;
         font-size: 16px !important;
-        padding-left: 48px !important;
+        padding-left: 46px !important;
         border-radius: 14px !important;
         border: 1px solid #cbd5e1 !important;
         background: #ffffff !important;
@@ -1579,7 +1635,7 @@
         box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12) !important;
       }
       .search-input-icon {
-        left: 16px !important;
+        left: 14px !important;
         width: 20px !important;
         height: 20px !important;
         color: #64748b !important;
@@ -1591,7 +1647,7 @@
         overflow-x: auto !important;
         white-space: nowrap !important;
         gap: 8px !important;
-        margin-bottom: 14px !important;
+        margin-bottom: 12px !important;
         padding-bottom: 4px !important;
         -webkit-overflow-scrolling: touch !important;
         scrollbar-width: none !important;
@@ -1601,11 +1657,11 @@
       }
       .quick-chip {
         flex-shrink: 0 !important;
-        padding: 9px 15px !important;
-        font-size: 0.86rem !important;
+        padding: 8px 14px !important;
+        font-size: 0.84rem !important;
         font-weight: 600 !important;
         border-radius: 999px !important;
-        min-height: 40px !important;
+        min-height: 38px !important;
         display: inline-flex !important;
         align-items: center !important;
         background: #ffffff !important;
@@ -1619,17 +1675,17 @@
 
       /* District Deep Search Card */
       .district-deep-card {
-        padding: 14px 14px !important;
-        margin-bottom: 14px !important;
-        border-radius: 16px !important;
+        padding: 12px 14px !important;
+        margin-bottom: 12px !important;
+        border-radius: 14px !important;
         background: #f8fafc !important;
         border: 1px solid #e2e8f0 !important;
       }
       .district-deep-text strong {
-        font-size: 0.92rem !important;
+        font-size: 0.9rem !important;
       }
       .district-deep-text span {
-        font-size: 0.8rem !important;
+        font-size: 0.78rem !important;
         line-height: 1.35 !important;
       }
       .district-chips-wrap {
@@ -1637,20 +1693,20 @@
         gap: 6px !important;
       }
       .district-chip {
-        padding: 6px 12px !important;
-        font-size: 0.82rem !important;
+        padding: 5px 10px !important;
+        font-size: 0.8rem !important;
       }
 
       /* Limit Selector Segmented Grid */
       .limit-selector-grid {
         display: grid !important;
         grid-template-columns: repeat(4, 1fr) !important;
-        gap: 8px !important;
-        margin-bottom: 16px !important;
+        gap: 6px !important;
+        margin-bottom: 14px !important;
       }
       .limit-pill {
-        height: 48px !important;
-        font-size: 0.92rem !important;
+        height: 46px !important;
+        font-size: 0.88rem !important;
         font-weight: 700 !important;
         border-radius: 12px !important;
         border: 1px solid #cbd5e1 !important;
@@ -1664,19 +1720,19 @@
         background: #0f172a !important;
         color: #ffffff !important;
         border-color: #0f172a !important;
-        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18) !important;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16) !important;
       }
 
       /* Large Primary Action Buttons */
       .form-actions-row {
-        margin-top: 14px !important;
+        margin-top: 12px !important;
         gap: 10px !important;
         display: flex !important;
         flex-direction: column !important;
       }
       .form-actions-row button {
-        height: 54px !important;
-        font-size: 1.05rem !important;
+        height: 52px !important;
+        font-size: 1rem !important;
         font-weight: 800 !important;
         border-radius: 14px !important;
         width: 100% !important;
@@ -1687,7 +1743,7 @@
         background: #0f172a !important;
         color: #ffffff !important;
         border: none !important;
-        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.18) !important;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16) !important;
       }
       #btnStart:active {
         transform: scale(0.98) !important;
@@ -1703,99 +1759,99 @@
         display: grid !important;
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 8px !important;
-        margin-bottom: 16px !important;
+        margin-bottom: 14px !important;
       }
       .stat-glass-card {
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
-        border-radius: 16px !important;
-        padding: 14px 8px !important;
+        border-radius: 14px !important;
+        padding: 12px 6px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         text-align: center !important;
-        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
-        gap: 6px !important;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03) !important;
+        gap: 4px !important;
       }
       .stat-icon-wrap {
-        width: 34px !important;
-        height: 34px !important;
-        border-radius: 10px !important;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 8px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
       }
       .stat-val {
-        font-size: 1.45rem !important;
+        font-size: 1.35rem !important;
         font-weight: 800 !important;
         color: #0f172a !important;
         line-height: 1.1 !important;
       }
       .stat-lbl {
-        font-size: 0.72rem !important;
+        font-size: 0.7rem !important;
         font-weight: 700 !important;
         color: #64748b !important;
         text-transform: uppercase !important;
-        letter-spacing: 0.04em !important;
+        letter-spacing: 0.03em !important;
       }
 
       /* 4. COMPLETION DOWNLOAD BANNER */
       .completion-banner {
         background: linear-gradient(135deg, #f0fdf4, #eff6ff) !important;
         border: 1px solid #bbf7d0 !important;
-        border-radius: 18px !important;
-        padding: 18px 16px !important;
+        border-radius: 16px !important;
+        padding: 16px 14px !important;
         display: flex !important;
         flex-direction: column !important;
-        gap: 14px !important;
-        margin-bottom: 16px !important;
+        gap: 12px !important;
+        margin-bottom: 14px !important;
       }
       .banner-text strong {
-        font-size: 1.05rem !important;
+        font-size: 1rem !important;
         font-weight: 800 !important;
         color: #15803d !important;
         display: block !important;
-        margin-bottom: 4px !important;
+        margin-bottom: 3px !important;
       }
       .banner-text span {
-        font-size: 0.86rem !important;
+        font-size: 0.84rem !important;
         color: #334155 !important;
-        line-height: 1.4 !important;
+        line-height: 1.35 !important;
       }
       .banner-buttons {
         display: flex !important;
         flex-direction: column !important;
-        gap: 10px !important;
+        gap: 8px !important;
         width: 100% !important;
       }
       .banner-buttons .btn-compact {
         width: 100% !important;
-        height: 52px !important;
-        font-size: 0.98rem !important;
+        height: 50px !important;
+        font-size: 0.95rem !important;
         font-weight: 800 !important;
-        border-radius: 14px !important;
+        border-radius: 12px !important;
         justify-content: center !important;
       }
       #bannerDownloadBtn {
         background: #16a34a !important;
         color: white !important;
         border: none !important;
-        box-shadow: 0 4px 16px rgba(22, 163, 74, 0.25) !important;
+        box-shadow: 0 4px 14px rgba(22, 163, 74, 0.22) !important;
       }
 
       /* 5. RESULTS SECTION & DUAL VIEW (CARDS + TABLE) */
       .table-glass-card {
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
-        border-radius: 20px !important;
-        padding: 16px 14px !important;
-        box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04) !important;
+        border-radius: 18px !important;
+        padding: 14px 12px !important;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
       }
       .table-toolbar {
         display: flex !important;
         flex-direction: column !important;
-        gap: 12px !important;
-        margin-bottom: 14px !important;
+        gap: 10px !important;
+        margin-bottom: 12px !important;
       }
       .table-tabs {
         display: flex !important;
@@ -1807,10 +1863,10 @@
       }
       .tab-btn {
         flex: 1 !important;
-        height: 42px !important;
+        height: 40px !important;
         font-size: 0.82rem !important;
         font-weight: 700 !important;
-        border-radius: 10px !important;
+        border-radius: 8px !important;
         border: none !important;
         background: transparent !important;
         color: #64748b !important;
@@ -1823,7 +1879,7 @@
       .tab-btn.active {
         background: #ffffff !important;
         color: #0f172a !important;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08) !important;
       }
       .table-toolbar-actions {
         display: flex !important;
@@ -1837,8 +1893,8 @@
       }
       .table-filter-input {
         width: 100% !important;
-        height: 48px !important;
-        font-size: 16px !important; /* Strict 16px prevents zoom */
+        height: 46px !important;
+        font-size: 16px !important;
         border-radius: 12px !important;
         border: 1px solid #cbd5e1 !important;
         padding-left: 38px !important;
@@ -1851,10 +1907,10 @@
       }
       .table-action-buttons-row .btn-subtle-sm {
         flex: 1 !important;
-        height: 44px !important;
-        font-size: 0.88rem !important;
+        height: 42px !important;
+        font-size: 0.84rem !important;
         font-weight: 700 !important;
-        border-radius: 12px !important;
+        border-radius: 10px !important;
         border: 1px solid #cbd5e1 !important;
         background: #f8fafc !important;
         color: #1e293b !important;
@@ -1865,76 +1921,76 @@
       .mobile-cards-wrap {
         display: flex !important;
         flex-direction: column !important;
-        gap: 12px !important;
+        gap: 10px !important;
         margin-bottom: 12px !important;
       }
       .lead-card-mobile {
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
-        border-radius: 16px !important;
-        padding: 16px 14px !important;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03) !important;
+        border-radius: 14px !important;
+        padding: 14px 12px !important;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03) !important;
         display: flex !important;
         flex-direction: column !important;
-        gap: 10px !important;
+        gap: 8px !important;
       }
       .lead-card-header {
         display: flex !important;
         align-items: flex-start !important;
         justify-content: space-between !important;
-        gap: 10px !important;
+        gap: 8px !important;
       }
       .lead-card-title {
-        font-size: 1.05rem !important;
+        font-size: 1rem !important;
         font-weight: 800 !important;
         color: #0f172a !important;
         line-height: 1.3 !important;
       }
       .lead-card-index {
-        font-size: 0.75rem !important;
+        font-size: 0.72rem !important;
         font-weight: 700 !important;
         color: #94a3b8 !important;
         background: #f1f5f9 !important;
-        padding: 2px 8px !important;
+        padding: 2px 6px !important;
         border-radius: 6px !important;
       }
       .lead-card-meta {
-        font-size: 0.86rem !important;
+        font-size: 0.84rem !important;
         color: #475569 !important;
-        line-height: 1.4 !important;
+        line-height: 1.35 !important;
         display: flex !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 6px !important;
         flex-wrap: wrap !important;
       }
       .lead-card-rating {
         display: inline-flex !important;
         align-items: center !important;
-        gap: 4px !important;
-        font-size: 0.82rem !important;
+        gap: 3px !important;
+        font-size: 0.8rem !important;
         font-weight: 700 !important;
         background: #fef3c7 !important;
         color: #b45309 !important;
-        padding: 2px 8px !important;
+        padding: 2px 7px !important;
         border-radius: 999px !important;
       }
       .lead-card-actions {
         display: flex !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 6px !important;
         flex-wrap: wrap !important;
-        padding-top: 10px !important;
+        padding-top: 8px !important;
         border-top: 1px dashed #f1f5f9 !important;
       }
       .lead-card-btn {
-        height: 42px !important;
-        padding: 0 14px !important;
-        border-radius: 12px !important;
-        font-size: 0.88rem !important;
+        height: 40px !important;
+        padding: 0 12px !important;
+        border-radius: 10px !important;
+        font-size: 0.84rem !important;
         font-weight: 700 !important;
         display: inline-flex !important;
         align-items: center !important;
-        gap: 6px !important;
+        gap: 5px !important;
         text-decoration: none !important;
         cursor: pointer !important;
         border: none !important;
@@ -1959,30 +2015,30 @@
       .lead-card-btn.copy {
         background: #f1f5f9 !important;
         color: #475569 !important;
-        padding: 0 10px !important;
+        padding: 0 8px !important;
       }
 
-      /* Desktop table wrapped on mobile (hidden when in cards view or scrollable) */
-      .table-scroll-wrap {
+      /* Desktop table visibility toggle on mobile */
+      #tableScrollWrap {
         display: none;
         max-height: 440px !important;
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch !important;
       }
-      .table-scroll-wrap.visible {
+      #tableScrollWrap.visible {
         display: block !important;
       }
       table {
-        min-width: 600px !important;
-        font-size: 0.88rem !important;
+        min-width: 540px !important;
+        font-size: 0.85rem !important;
       }
       th {
-        padding: 12px 10px !important;
-        font-size: 0.8rem !important;
+        padding: 10px 8px !important;
+        font-size: 0.76rem !important;
       }
       td {
-        padding: 12px 10px !important;
-        font-size: 0.88rem !important;
+        padding: 10px 8px !important;
+        font-size: 0.85rem !important;
       }
 
       /* 6. MODAL BOTTOM SHEETS ON MOBILE */
@@ -1992,6 +2048,7 @@
         background: rgba(15, 23, 42, 0.5) !important;
         backdrop-filter: blur(8px) !important;
         -webkit-backdrop-filter: blur(8px) !important;
+        z-index: 99999 !important;
       }
       .modal-glass-sheet {
         width: 100vw !important;
@@ -2002,8 +2059,10 @@
         border: 1px solid #e2e8f0 !important;
         border-bottom: none !important;
         box-shadow: 0 -12px 48px rgba(15, 23, 42, 0.25) !important;
-        overflow-y: auto !important;
-        padding-bottom: env(safe-area-inset-bottom, 24px) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        padding-bottom: env(safe-area-inset-bottom, 16px) !important;
       }
       .modal-glass-sheet::before {
         content: '' !important;
@@ -2012,50 +2071,108 @@
         height: 5px !important;
         background: #cbd5e1 !important;
         border-radius: 999px !important;
-        margin: 12px auto 0 auto !important;
+        margin: 10px auto 0 auto !important;
+        flex-shrink: 0 !important;
       }
       .modal-header {
-        padding: 14px 20px !important;
+        padding: 14px 18px !important;
         border-bottom: 1px solid #f1f5f9 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 12px !important;
+      }
+      .modal-header .auth-tabs {
+        flex: 1 !important;
+        margin-right: 10px !important;
+        display: flex !important;
+        gap: 4px !important;
+        background: #f1f5f9 !important;
+        padding: 4px !important;
+        border-radius: 10px !important;
+      }
+      .modal-header .auth-tab-btn {
+        flex: 1 !important;
+        height: 38px !important;
+        font-size: 0.86rem !important;
+        font-weight: 700 !important;
+        border-radius: 8px !important;
+        border: none !important;
+        background: none !important;
+        color: #64748b !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: all 0.15s !important;
+      }
+      .modal-header .auth-tab-btn.active {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
       }
       .modal-title {
-        font-size: 1.15rem !important;
+        font-size: 1.05rem !important;
         font-weight: 800 !important;
         color: #0f172a !important;
       }
+      .modal-close-btn {
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 50% !important;
+        background: #f1f5f9 !important;
+        border: 1px solid #e2e8f0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #475569 !important;
+        cursor: pointer !important;
+        flex-shrink: 0 !important;
+      }
       .modal-body {
-        padding: 18px 20px 32px 20px !important;
+        padding: 16px 18px 24px 18px !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        flex: 1 !important;
+      }
+      /* CRITICAL: Ensure modal tables are ALWAYS visible and scrollable */
+      .modal-body .table-scroll-wrap {
+        display: block !important;
+        max-height: 50vh !important;
+        overflow-y: auto !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
       }
       .form-control {
-        height: 50px !important;
+        height: 48px !important;
         font-size: 16px !important; /* Strict 16px prevents zoom */
         border-radius: 12px !important;
         border: 1px solid #cbd5e1 !important;
       }
       .form-label {
-        font-size: 0.88rem !important;
+        font-size: 0.85rem !important;
         font-weight: 700 !important;
         color: #1e293b !important;
-        margin-bottom: 6px !important;
+        margin-bottom: 5px !important;
       }
       .btn-google {
-        height: 52px !important;
-        font-size: 1rem !important;
+        height: 48px !important;
+        font-size: 0.95rem !important;
         font-weight: 700 !important;
-        border-radius: 14px !important;
+        border-radius: 12px !important;
         border: 1px solid #cbd5e1 !important;
         background: #ffffff !important;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
       }
       .pack-grid {
         display: grid !important;
         grid-template-columns: repeat(2, 1fr) !important;
-        gap: 10px !important;
-        margin-bottom: 16px !important;
+        gap: 8px !important;
+        margin-bottom: 14px !important;
       }
       .pack-card {
-        padding: 16px 10px !important;
-        border-radius: 14px !important;
+        padding: 14px 8px !important;
+        border-radius: 12px !important;
         background: #f8fafc !important;
         border: 1px solid #e2e8f0 !important;
       }
@@ -2065,21 +2182,21 @@
         box-shadow: 0 0 0 2px #2563eb !important;
       }
       .pack-val {
-        font-size: 1.45rem !important;
+        font-size: 1.35rem !important;
         font-weight: 800 !important;
       }
       .pack-leads {
-        font-size: 0.84rem !important;
+        font-size: 0.8rem !important;
         font-weight: 700 !important;
       }
       #btnPayRazorpay {
-        height: 52px !important;
-        font-size: 1rem !important;
+        height: 50px !important;
+        font-size: 0.95rem !important;
         font-weight: 800 !important;
-        border-radius: 14px !important;
+        border-radius: 12px !important;
       }
       .modal-body table {
-        min-width: 520px !important;
+        min-width: 480px !important;
       }
     }
 
@@ -2097,7 +2214,7 @@
     }
   </style>
 </head>
-<body>
+<body class="user-guest">
 
   <div class="glass-backdrop"></div>
 
@@ -2130,10 +2247,7 @@
             <span class="wallet-lbl">WALLET</span>
             <span id="headerWalletBal" class="wallet-amount">₹100.00</span>
           </div>
-          <button class="wallet-add-btn" type="button" title="Add funds via Razorpay">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            <span>+ Add</span>
-          </button>
+          <span class="wallet-add-badge">+ Add</span>
         </div>
 
         <!-- Logged In User Profile Pill & Dropdown -->
@@ -2178,19 +2292,19 @@
         </div>
 
         <!-- Logged Out Guest Controls -->
-        <div id="authGuestWrap" style="display: flex; align-items: center; gap: 8px;">
-          <button class="btn-compact btn-primary-glass" onclick="openAuthModal('signup')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-            <span>Get ₹100 Free Bonus</span>
+        <div id="authGuestWrap" class="guest-controls-wrap">
+          <button class="btn-compact btn-emerald-glass" onclick="openAuthModal('signup')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            <span>Claim ₹100</span>
           </button>
           <button class="btn-compact btn-outline-glass" onclick="openAuthModal('login')">
             <span>Sign In</span>
           </button>
         </div>
 
-        <button class="btn-compact btn-outline-glass" onclick="openSavedFilesModal()">
+        <button class="btn-compact btn-outline-glass header-files-btn" onclick="openSavedFilesModal()" title="View and Download Saved CSV Exports">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
-          <span>Saved Files</span>
+          <span class="header-files-text">Saved Files</span>
         </button>
       </div>
     </header>
@@ -2530,15 +2644,15 @@
             <label class="form-label">Password</label>
             <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required />
           </div>
-          <button type="submit" class="btn-compact btn-primary-glass" style="width: 100%; height: 42px; margin-top: 6px;">
+          <button type="submit" class="btn-compact btn-primary-glass" style="width: 100%; height: 48px; font-size: 0.95rem; font-weight: 800; border-radius: 12px; margin-top: 8px;">
             Sign In to Account
           </button>
         </form>
 
         <!-- Sign Up Form -->
         <form id="signupForm" onsubmit="handleUserSignupSubmit(event)" style="display: none;">
-          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; font-size: 0.76rem; color: #166534; font-weight: 700; display: flex; align-items: center; gap: 6px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px; font-size: 0.82rem; color: #166534; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
             <span>Instant ₹100 Free Signup Bonus (= 400 Leads free!)</span>
           </div>
           <div class="form-group">
@@ -2557,7 +2671,7 @@
             <label class="form-label">Create Password</label>
             <input type="password" id="signupPassword" class="form-control" placeholder="Minimum 6 characters" minlength="6" required />
           </div>
-          <button type="submit" class="btn-compact btn-emerald-glass" style="width: 100%; height: 42px; margin-top: 6px;">
+          <button type="submit" class="btn-compact btn-emerald-glass" style="width: 100%; height: 48px; font-size: 0.95rem; font-weight: 800; border-radius: 12px; margin-top: 8px;">
             Claim ₹100 & Register
           </button>
         </form>
@@ -2565,12 +2679,22 @@
         <!-- Divider & Google Auth -->
         <div style="display: flex; align-items: center; gap: 10px; margin: 18px 0 12px 0;">
           <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
-          <span style="font-size: 0.74rem; color: #94a3b8; font-weight: 700;">OR CONTINUE WITH GOOGLE</span>
+          <span style="font-size: 0.74rem; color: #94a3b8; font-weight: 700; letter-spacing: 0.04em;">OR CONTINUE WITH GOOGLE</span>
           <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
         </div>
 
         <!-- Official Genuine Google Identity Services 1-Click Button -->
-        <div id="gsiRealButtonDiv" style="display: flex; justify-content: center; width: 100%; min-height: 48px; margin: 8px 0;"></div>
+        <div id="gsiRealButtonDiv" style="display: flex; justify-content: center; width: 100%; min-height: 46px; margin: 6px 0;">
+          <button type="button" class="btn-google" onclick="triggerGoogleAuth()" style="width: 100%; height: 46px; margin: 0; display: flex; align-items: center; justify-content: center; gap: 10px; border-radius: 12px; font-weight: 700; border: 1px solid #cbd5e1; background: #ffffff; color: #1e293b; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Continue with Google</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -2786,6 +2910,9 @@
       const authGuestWrap = document.getElementById('authGuestWrap');
       const adminLink = document.getElementById('adminPortalLink');
 
+      document.body.classList.toggle('user-logged-in', !!currentUser);
+      document.body.classList.toggle('user-guest', !currentUser);
+
       if (currentUser) {
         walletBadge.style.display = 'inline-flex';
         userProfileWrap.style.display = 'block';
@@ -2814,8 +2941,9 @@
       } else {
         walletBadge.style.display = 'none';
         userProfileWrap.style.display = 'none';
-        authGuestWrap.style.display = 'flex';
-        document.getElementById('profileDropdown').classList.remove('show');
+        authGuestWrap.style.display = 'inline-flex';
+        const drop = document.getElementById('profileDropdown');
+        if (drop) drop.classList.remove('show');
       }
     }
 
