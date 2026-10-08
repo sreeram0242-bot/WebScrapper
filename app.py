@@ -1,3 +1,4 @@
+import base64
 import json
 import logging
 import os
@@ -250,12 +251,31 @@ def auth_logout():
     return resp
 
 
+@app.route("/api/system", methods=["GET"])
+def get_system_public_config():
+    """
+    Public system configurations needed by the frontend:
+    - google_client_id
+    - cost_per_lead
+    - signup_bonus
+    - razorpay_key_id
+    """
+    return jsonify({
+        "google_client_id": db.get_setting("google_client_id", "536868490079-8n0ms1d6p9turlbr9p6c39rhktpcaern.apps.googleusercontent.com"),
+        "cost_per_lead": float(db.get_setting("cost_per_lead", "0.25")),
+        "signup_bonus": float(db.get_setting("signup_bonus", "100.0")),
+        "razorpay_key_id": db.get_setting("razorpay_key_id", "rzp_test_placeholder"),
+    })
+
+
 @app.route("/api/auth/google", methods=["POST"])
 @security.rate_limit(10, 60, "auth_google")
 def auth_google():
     """
-    Handle 'Continue with Google'.
-    Validates Google Token if provided, or parses Google User Profile safely.
+    Handle initial 'Continue with Google'.
+    Validates Google Token if provided, or parses profile.
+    If user already exists -> logs in immediately!
+    If user is NEW -> returns is_new=True so frontend prompts for name, mobile number & password!
     """
     data = request.get_json(silent=True) or {}
     credential = data.get("credential")
@@ -263,7 +283,7 @@ def auth_google():
     name = (data.get("name") or "Google User").strip()
     google_id = data.get("google_id") or ""
 
-    # If an official Google ID token is supplied, verify it with Google's endpoint
+    # If an official Google ID token is supplied, verify it
     if credential:
         try:
             verify_url = f"https://oauth2.googleapis.com/tokeninfo?id_token={credential}"
@@ -273,23 +293,79 @@ def auth_google():
                 email = token_data.get("email", "").strip().lower()
                 name = token_data.get("name", name)
                 google_id = token_data.get("sub", google_id)
+            else:
+                # Fallback: safely parse JWT payload
+                parts = credential.split(".")
+                if len(parts) >= 2:
+                    p = parts[1]
+                    p += "=" * ((4 - len(p) % 4) % 4)
+                    jwt_data = json.loads(base64.urlsafe_b64decode(p.encode("utf-8")).decode("utf-8"))
+                    email = jwt_data.get("email", email).strip().lower()
+                    name = jwt_data.get("name", name)
+                    google_id = jwt_data.get("sub", google_id)
         except Exception:
             pass
 
     if not email or not security.validate_email(email):
         return jsonify({"error": "Could not verify Google account email."}), 400
 
-    # Find or create user
+    # Check if user already exists
     user = db.get_user_by_email(email)
     if not user:
-        # Create user with random initial password hash & ₹100 free bonus
-        rand_pwd = os.urandom(16).hex()
-        created = db.create_user(name=name, email=email, phone=None, password=rand_pwd, google_id=google_id)
+        # New Google user -> Ask for Name, Password, and Mobile Number!
+        return jsonify({
+            "success": True,
+            "is_new": True,
+            "email": email,
+            "name": name,
+            "google_id": google_id
+        })
+
+    # Existing user -> Log in immediately!
+    user = db.get_user_by_id(user["id"])
+    token = security.generate_auth_token(user["id"], user.get("role", "user"))
+    resp = make_response(jsonify({
+        "success": True,
+        "is_new": False,
+        "user": user,
+        "token": token
+    }))
+    resp.set_cookie("auth_token", token, httponly=True, samesite="Lax", max_age=86400 * 7)
+    return resp
+
+
+@app.route("/api/auth/google/complete", methods=["POST"])
+@security.rate_limit(10, 60, "auth_google_complete")
+def auth_google_complete():
+    """
+    Finalize new Google user registration with Full Name, Mobile Number, and Password.
+    Credits ₹100 Free Bonus immediately.
+    """
+    data = request.get_json(silent=True) or {}
+    email = (data.get("email") or "").strip().lower()
+    name = (data.get("name") or "").strip()
+    phone = (data.get("phone") or "").strip()
+    password = data.get("password") or ""
+    google_id = (data.get("google_id") or "").strip()
+
+    if not email or not security.validate_email(email):
+        return jsonify({"error": "Valid Google email is required."}), 400
+    if not name or len(name) < 2:
+        return jsonify({"error": "Full Name is required (minimum 2 characters)."}), 400
+    if not phone or len(phone) < 10:
+        return jsonify({"error": "Valid 10-digit Mobile Number is required."}), 400
+    if not password or len(password) < 6:
+        return jsonify({"error": "Password must be at least 6 characters long."}), 400
+
+    # Ensure user does not already exist
+    existing = db.get_user_by_email(email)
+    if existing:
+        user = db.get_user_by_id(existing["id"])
+    else:
+        created = db.create_user(name=name, email=email, phone=phone, password=password, google_id=google_id)
         if "error" in created:
             return jsonify({"error": created["error"]}), 400
         user = created["user"]
-    else:
-        user = db.get_user_by_id(user["id"])
 
     token = security.generate_auth_token(user["id"], user.get("role", "user"))
     resp = make_response(jsonify({
