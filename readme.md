@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ WebScrapper — Fast Map Leads
+# WebScrapper — Fast Map Leads
 ### Ultra-Fast, 1-Click Google Maps Lead Generation Engine & Dashboard
 
 **Created & Developed by [Sreeram](https://github.com/sreeram0242-bot)**
@@ -15,36 +15,36 @@
 <br/>
 
 <p align="center">
-  <a href="#-about-the-project">About The Project</a> &bull;
-  <a href="#-creator">Creator</a> &bull;
-  <a href="#-current-technologies-used">Technologies Used</a> &bull;
-  <a href="#-how-it-works-architecture">How It Works</a> &bull;
-  <a href="#-key-features">Key Features</a> &bull;
-  <a href="#-quick-start">Quick Start</a> &bull;
-  <a href="#-cloud-deployment-coolify--docker">Coolify / Docker</a> &bull;
-  <a href="#-project-structure">Project Structure</a>
+  <a href="#about-the-project">About The Project</a> &bull;
+  <a href="#creator">Creator</a> &bull;
+  <a href="#current-technologies-used">Technologies Used</a> &bull;
+  <a href="#how-it-works-architecture">How It Works</a> &bull;
+  <a href="#key-features">Key Features</a> &bull;
+  <a href="#quick-start">Quick Start</a> &bull;
+  <a href="#cloud-deployment-coolify--docker">Coolify / Docker</a> &bull;
+  <a href="#project-structure">Project Structure</a>
 </p>
 
 ---
 
 </div>
 
-## 📌 About The Project
+## About The Project
 
 **WebScrapper (Fast Map Leads)** was designed and engineered by **Sreeram** to solve the fundamental problems plaguing traditional web scraping tools: **extreme slowness, memory hogging, complicated terminal setups, and confusing user interfaces**.
 
 Most traditional Google Maps scrapers open a separate browser tab for every single business listing, taking 10 to 15 minutes to extract 100 leads while freezing your CPU and RAM.
 
 **Sreeram's WebScrapper re-engineers this entirely:**
-- ⚡ **Lightning Fast (~10 Seconds for 100 Leads)**: Gathers listings directly from the Google Maps search feed in-memory using optimized JavaScript, with zero slow individual tab navigations.
-- 🤫 **100% Invisible Desktop Launchers**: Double-click to launch with zero black console/CMD windows popping up. Runs quietly in the background.
-- 🎯 **Designed for Everyone**: A clean, modern glassmorphic web dashboard that anyone—even a non-technical user—can use with just 1 click.
-- 📞 **Smart Micro-Enrichment**: A 10-thread parallel background worker pool instantly enriches missing contact numbers without delaying the live feed.
-- 📥 **Instant Export**: Download ready-to-use Excel/CSV files formatted with UTF-8 BOM, or copy all phone numbers to clipboard with a single click.
+- **Lightning Fast (~10 Seconds for 100 Leads)**: Gathers listings directly from the Google Maps search feed in-memory using optimized JavaScript, with zero slow individual tab navigations.
+- **100% Invisible Desktop Launchers**: Double-click to launch with zero black console/CMD windows popping up. Runs quietly in the background.
+- **Designed for Everyone**: A clean, modern glassmorphic web dashboard that anyone—even a non-technical user—can use with just 1 click.
+- **Smart Micro-Enrichment**: A 10-thread parallel background worker pool instantly enriches missing contact numbers without delaying the live feed.
+- **Instant Export**: Download ready-to-use Excel/CSV files formatted with UTF-8 BOM, or copy all phone numbers to clipboard with a single click.
 
 ---
 
-## 👤 Creator
+## Creator
 
 This project was built from scratch and is maintained by:
 
@@ -62,7 +62,7 @@ This project was built from scratch and is maintained by:
 
 ---
 
-## 🛠️ Current Technologies Used
+## Current Technologies Used
 
 The application is built using a modern, multi-tiered technology stack optimized for low memory usage, maximum execution speed, and cross-platform compatibility.
 
@@ -79,11 +79,11 @@ The application is built using a modern, multi-tiered technology stack optimized
 | **Frontend Logic** | **Vanilla JavaScript (ES6+)** | `EventSource` listener for live data streaming, clipboard integration, 1-click suggestion chip autofill, and dynamic table rendering. |
 | **Silent Desktop Launcher** | **Windows Script Host (VBScript)** | `webscarpper.vbs` executes using `wscript.exe` with `SW_HIDE` mode `0` (100% invisible execution with zero console flash), auto-detects Python, self-heals virtual environments, and opens the default browser. |
 | **Containerization** | **Docker & Docker Compose** | Multi-architecture Debian Bookworm container supporting both **x86_64 (AMD64)** and **ARM64** (Oracle Cloud Ampere A1), equipped with Chromium and Chromedriver. |
-| **Cloud Deployment** | **Coolify & Traefik** | Seamless self-hosted cloud deployment with automatic port mapping (port 5000), persistent volume mounts for exported CSVs, and SSL termination. |
+| **Cloud Deployment** | **Coolify & Traefik** | Seamless self-hosted cloud deployment with automatic port mapping (ports 5000 and 3000), persistent volume mounts for exported CSVs, and SSL termination. |
 
 ---
 
-## ⚙️ How It Works (Architecture)
+## How It Works (Architecture)
 
 ### Architectural Flowchart
 
@@ -119,7 +119,7 @@ graph TD
 ### Step-by-Step Execution Pipeline
 
 #### 1. Search Request & Stream Binding
-When the user clicks **🚀 START SEARCH**, the browser issues an asynchronous request to `/api/scrape` with the query and limits. Simultaneously, an `EventSource` connection is established with `/api/stream` to receive real-time updates.
+When the user clicks **START SEARCH (1-CLICK)**, the browser issues an asynchronous request to `/api/scrape` with the query and limits. Simultaneously, an `EventSource` connection is established with `/api/stream` to receive real-time updates.
 
 #### 2. Headless Chromium Initialization
 The engine launches Chromium in headless mode with performance-tuned flags:
@@ -151,7 +151,7 @@ If a business listing has its phone number hidden behind a click action on the c
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
 | Feature | Legacy Scrapers | Sreeram's WebScrapper |
 |---|---|---|
@@ -166,7 +166,7 @@ If a business listing has its phone number hidden behind a click action on the c
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Method 1: 1-Click Invisible Launch (Windows — Recommended)
 *No command prompt, no terminal windows, no technical knowledge needed.*
@@ -177,7 +177,7 @@ If a business listing has its phone number hidden behind a click action on the c
    ```text
    http://127.0.0.1:5000
    ```
-4. Enter what you want to search (e.g., `Gyms in Mumbai`), choose your lead count, and click **🚀 START SEARCH**!
+4. Enter what you want to search (e.g., `Gyms in Mumbai`), choose your lead count, and click **START SEARCH (1-CLICK)**!
 
 > **To Stop the Scraper:** Simply double-click **`stop_app.vbs`** (or `stop_app.bat`). It will silently terminate background processes.
 
@@ -209,7 +209,7 @@ Open your browser and navigate to **`http://localhost:5000`**.
 
 ---
 
-## ☁️ Cloud Deployment (Coolify & Docker)
+## Cloud Deployment (Coolify & Docker)
 
 WebScrapper includes a production-ready, multi-architecture **`Dockerfile`** and **`docker-compose.yml`** designed for **Coolify** on any VPS or Oracle Cloud Free Tier instance (AMD64 or ARM64 Ampere A1).
 
@@ -219,7 +219,7 @@ WebScrapper includes a production-ready, multi-architecture **`Dockerfile`** and
 3. Enter your repository URL: `https://github.com/sreeram0242-bot/WebScrapper.git`.
 4. Coolify will automatically detect the `Dockerfile`.
    - Set **Port Exposes** to `5000`.
-   - Assign your custom domain or Coolify preview URL (e.g., `https://scraper.yourdomain.com`).
+   - Assign your custom domain or Coolify preview URL (e.g., `http://leadscrapper.duckdns.org`).
    - Click **Deploy**!
 
 ### Resource Consumption in Docker:
@@ -229,7 +229,7 @@ WebScrapper includes a production-ready, multi-architecture **`Dockerfile`** and
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 WebScrapper/
@@ -252,7 +252,7 @@ WebScrapper/
 
 ---
 
-## 📄 License & Attribution
+## License & Attribution
 
 Distributed under the **MIT License**. See `LICENSE` for details.
 

@@ -677,9 +677,11 @@
     <!-- Top Bar -->
     <header class="top-header">
       <div class="brand-title">
-        <div class="brand-icon">📍</div>
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
         <div class="brand-text">
-          <h1>Fast Map Leads <span class="brand-badge">⚡ ULTRA-FAST</span></h1>
+          <h1>Fast Map Leads <span class="brand-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -1px; margin-right: 3px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>ULTRA-FAST</span></h1>
           <p class="brand-sub">Simple 1-Click Phone Number & Business Finder</p>
         </div>
       </div>
@@ -690,7 +692,8 @@
           <span id="statusLabel">Ready</span>
         </div>
         <button class="btn-header-action" onclick="openOutputFolder()" title="Open Folder">
-          📁 Open Saved Files
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+          <span>Open Saved Files</span>
         </button>
       </div>
     </header>
@@ -708,7 +711,9 @@
         </div>
 
         <div class="search-box-wrapper">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </span>
           <input 
             type="text" 
             id="searchInput" 
@@ -721,12 +726,30 @@
 
         <!-- 1-Click Popular Suggestions -->
         <div class="suggestion-chips">
-          <span class="chip" onclick="setQuery('Gyms in Chennai')">🏋️ Gyms in Chennai</span>
-          <span class="chip" onclick="setQuery('Hospitals in Coimbatore')">🏥 Hospitals in Coimbatore</span>
-          <span class="chip" onclick="setQuery('Hotels in Madurai')">🏨 Hotels in Madurai</span>
-          <span class="chip" onclick="setQuery('Restaurants in Bangalore')">🍽️ Restaurants in Bangalore</span>
-          <span class="chip" onclick="setQuery('Schools in Salem')">🎓 Schools in Salem</span>
-          <span class="chip" onclick="setQuery('Clinics in Trichy')">🦷 Clinics in Trichy</span>
+          <span class="chip" onclick="setQuery('Gyms in Chennai')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/></svg>
+            Gyms in Chennai
+          </span>
+          <span class="chip" onclick="setQuery('Hospitals in Coimbatore')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12"/><path d="M6 12h12"/><rect width="20" height="20" x="2" y="2" rx="5"/></svg>
+            Hospitals in Coimbatore
+          </span>
+          <span class="chip" onclick="setQuery('Hotels in Madurai')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
+            Hotels in Madurai
+          </span>
+          <span class="chip" onclick="setQuery('Restaurants in Bangalore')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2v6a3 3 0 0 1-3 3 3 3 0 0 1-3-3V2"/><path d="M15 11v11"/><path d="M5 2v20"/><path d="M2 6h6"/></svg>
+            Restaurants in Bangalore
+          </span>
+          <span class="chip" onclick="setQuery('Schools in Salem')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
+            Schools in Salem
+          </span>
+          <span class="chip" onclick="setQuery('Clinics in Trichy')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            Clinics in Trichy
+          </span>
         </div>
 
         <!-- Step 2: Amount Selector -->
@@ -746,7 +769,9 @@
         <!-- Step 3: Phone Number Filter -->
         <div class="filter-card" onclick="togglePhoneFilter()">
           <div class="filter-info">
-            <span class="filter-icon">📞</span>
+            <span class="filter-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
             <div class="filter-text">
               <strong>Only Save Leads With Phone Numbers</strong>
               <span>Skips listings that don't have a contact number</span>
@@ -758,16 +783,21 @@
         <!-- BIG ACTION BUTTONS -->
         <div class="cta-button-group">
           <button id="btnStart" class="btn-start" onclick="startScraping()">
-            🚀 START SEARCH (1-CLICK)
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+            <span>START SEARCH (1-CLICK)</span>
           </button>
           <button id="btnStop" class="btn-stop" onclick="stopScraping()">
-            ⏹ STOP SEARCH
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+            <span>STOP SEARCH</span>
           </button>
         </div>
 
         <!-- Advanced Collapsible Trigger -->
         <div class="advanced-trigger" onclick="toggleAdvanced()">
-          <span id="advancedTriggerText">⚙️ More Options: Batch Multiple Areas (Optional) ▼</span>
+          <span id="advancedTriggerText">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            More Options: Batch Multiple Areas (Optional)
+          </span>
         </div>
 
         <div id="advancedBox" class="advanced-content">
@@ -790,7 +820,9 @@
         <!-- Hero Stats Cards -->
         <div class="hero-stats-row">
           <div class="hero-stat-card">
-            <div class="hero-stat-icon green">📞</div>
+            <div class="hero-stat-icon green">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
             <div>
               <div id="statPhoneCount" class="hero-stat-number">0</div>
               <div class="hero-stat-label">Phone Numbers Found</div>
@@ -798,7 +830,9 @@
           </div>
 
           <div class="hero-stat-card">
-            <div class="hero-stat-icon blue">📍</div>
+            <div class="hero-stat-icon blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
             <div>
               <div id="statTotalCount" class="hero-stat-number">0</div>
               <div class="hero-stat-label">Total Places Found</div>
@@ -806,7 +840,9 @@
           </div>
 
           <div class="hero-stat-card">
-            <div class="hero-stat-icon purple">⏱️</div>
+            <div class="hero-stat-icon purple">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
             <div>
               <div id="statDuration" class="hero-stat-number">0s</div>
               <div class="hero-stat-label">Search Time</div>
@@ -817,10 +853,12 @@
         <!-- Prominent Download Buttons -->
         <div class="export-actions-bar">
           <button id="btnDownload" class="btn-export-excel" onclick="downloadCSV()" disabled>
-            📥 DOWNLOAD EXCEL FILE (CSV)
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            <span>DOWNLOAD EXCEL FILE (CSV)</span>
           </button>
           <button id="btnCopyAll" class="btn-copy-phones" onclick="copyAllPhones()" disabled>
-            📋 COPY ALL PHONE NUMBERS
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+            <span>COPY ALL PHONE NUMBERS</span>
           </button>
         </div>
 
@@ -828,7 +866,8 @@
         <div class="table-container">
           <div class="table-header-row">
             <div class="table-title">
-              📋 Live Results Preview (<span id="tableCountBadge">0</span>)
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>
+              <span>Live Results Preview (<span id="tableCountBadge">0</span>)</span>
             </div>
             <input 
               type="text" 
@@ -864,7 +903,7 @@
 
         <!-- Simple Status Log -->
         <div id="statusStream" class="status-stream-box">
-          <div class="log-entry">🟢 System Ready. Enter a query and click Start Search.</div>
+          <div class="log-entry"><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981;"></span> System Ready. Enter a query and click Start Search.</div>
         </div>
 
       </section>
@@ -902,9 +941,9 @@
       const box = document.getElementById('advancedBox');
       const isVisible = box.style.display === 'block';
       box.style.display = isVisible ? 'none' : 'block';
-      document.getElementById('advancedTriggerText').textContent = isVisible 
-        ? '⚙️ More Options: Batch Multiple Areas (Optional) ▼'
-        : '⚙️ Close Batch Options ▲';
+      document.getElementById('advancedTriggerText').innerHTML = isVisible 
+        ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg> More Options: Batch Multiple Areas (Optional)`
+        : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><path d="m18 15-6-6-6 6"/></svg> Close Batch Options`;
     }
 
     function showToast(msg) {
@@ -1036,10 +1075,27 @@
       filtered.forEach((it, idx) => {
         const phone = it.phone ? `
           <span class="lead-phone">
-            📞 ${escapeHtml(it.phone)}
-            <button class="btn-copy-mini" onclick="copyText('${escapeHtml(it.phone)}')" title="Copy Phone">Copy</button>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>${escapeHtml(it.phone)}</span>
+            <button class="btn-copy-mini" onclick="copyText('${escapeHtml(it.phone)}')" title="Copy Phone">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg> Copy
+            </button>
           </span>
         ` : '<span style="color: #cbd5e1;">—</span>';
+
+        const rating = it.rating ? `
+          <span style="display:inline-flex; align-items:center; gap:4px; font-weight:700; color:#b45309;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>${escapeHtml(it.rating)}</span>
+          </span>
+        ` : '—';
+
+        const link = it.link ? `
+          <a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="color: #2563eb; font-weight: 700; text-decoration: none; display:inline-flex; align-items:center; gap:4px;">
+            <span>View</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+          </a>
+        ` : '—';
 
         html += `
           <tr>
@@ -1047,8 +1103,8 @@
             <td class="lead-name">${escapeHtml(it.name || 'Unknown')}</td>
             <td>${phone}</td>
             <td style="color: #475569; max-width: 260px;">${escapeHtml(it.address || it.category || '—')}</td>
-            <td>${it.rating ? `⭐ ${escapeHtml(it.rating)}` : '—'}</td>
-            <td>${it.link ? `<a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="color: #2563eb; font-weight: 700; text-decoration: none;">View ↗</a>` : '—'}</td>
+            <td>${rating}</td>
+            <td>${link}</td>
           </tr>
         `;
       });

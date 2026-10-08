@@ -194,7 +194,7 @@ def start_scrape():
         state.start_timestamp = time.time()
         state.duration = 0
 
-    state.add_log(f"⚡ Starting Ultra-Fast Search for: '{query or mode.upper()}' (Limit: {max_results or 'Unlimited'})", "INFO")
+    state.add_log(f"Starting Ultra-Fast Search for: '{query or mode.upper()}' (Limit: {max_results or 'Unlimited'})", "INFO")
 
     # Callbacks
     def handle_log(msg: str, lvl: str = "INFO"):

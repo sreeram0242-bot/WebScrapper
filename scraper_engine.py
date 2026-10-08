@@ -349,7 +349,7 @@ class ScraperEngine:
                     has_phone = is_valid_phone(item_data["phone"])
                     if not self.require_phone or has_phone:
                         self.scraped_items.append(item_data)
-                        self.log(f"✓ Found: {item_data['name']} (Phone: {item_data['phone'] or 'N/A'})", "SUCCESS")
+                        self.log(f"+ Found: {item_data['name']} (Phone: {item_data['phone'] or 'N/A'})", "SUCCESS")
                         if self.on_item_scraped:
                             self.on_item_scraped(item_data)
                     else:
@@ -505,7 +505,7 @@ class ScraperEngine:
                             updated = fut.result()
                             if updated:
                                 if is_valid_phone(updated.get("phone")):
-                                    self.log(f"  ✓ Enriched phone: {updated['name']} -> {updated['phone']}", "SUCCESS")
+                                    self.log(f"  + Enriched phone: {updated['name']} -> {updated['phone']}", "SUCCESS")
                                     if self.on_item_scraped:
                                         self.on_item_scraped(updated)
                         except Exception:
