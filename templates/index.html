@@ -125,10 +125,7 @@
     }
 
 
-    /* Hide top header when viewing Profile page */
-    body.view-profile-active .glass-header {
-      display: none !important;
-    }
+    /* Top header remains visible across all views for universal navigation */
 
 .app-shell {
       position: relative;
@@ -5347,6 +5344,12 @@
               <h1 class="view-title">Billing & Wallet Dashboard</h1>
               <p class="view-subtitle">Flat ₹0.25 per extracted verified lead • 100% transparent live billing</p>
             </div>
+            <div class="view-header-actions">
+              <button class="btn-hero-primary" onclick="navigateToView('scraper')" type="button" style="height: 40px; padding: 0 18px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span>Back to Lead Scraper</span>
+              </button>
+            </div>
           </div>
 
           <!-- Top Hero Grid: Holographic Treasury Card & Recharge Cockpit -->
@@ -5619,6 +5622,12 @@
               <h1 class="view-title">Account & Profile Settings</h1>
               <p class="view-subtitle">Manage personal profile details, credentials, billing, and system preferences</p>
             </div>
+            <div class="view-header-actions">
+              <button class="btn-hero-primary" onclick="navigateToView('scraper')" type="button" style="height: 40px; padding: 0 18px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span>Go to Lead Scraper</span>
+              </button>
+            </div>
           </div>
 
           <!-- Profile Hero Identity Card -->
@@ -5645,6 +5654,10 @@
 
             <!-- Quick Action Buttons -->
             <div class="profile-actions-right">
+              <button class="btn-hero-primary" id="profileScraperBtn" onclick="navigateToView('scraper')" type="button" style="height: 40px; padding: 0 16px; font-size: 0.84rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span>Lead Scraper</span>
+              </button>
               <button class="btn-hero-emerald" id="profileRechargeBtn" onclick="navigateToView('wallet')" type="button" style="height: 40px; padding: 0 16px; font-size: 0.84rem;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
                 <span>Recharge</span>
@@ -6198,6 +6211,14 @@
             </svg>
             <span>Continue with Google</span>
           </button>
+        </div>
+
+        <!-- Direct Navigation Link to Scraper -->
+        <div style="text-align: center; margin-top: 14px; padding-top: 12px; border-top: 1px solid #f1f5f9;">
+          <a href="javascript:void(0)" onclick="closeAuthModal(); navigateToView('scraper');" style="font-size: 0.82rem; color: #2563eb; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>Continue directly to Lead Scraper</span> &rarr;
+          </a>
         </div>
       </div>
     </div>
@@ -6958,6 +6979,7 @@
         localStorage.setItem('auth_token', data.token);
         updateUserHeaderUI();
         closeAuthModal();
+        navigateToView('scraper');
         showToast(`Welcome back, ${currentUser.name}!`);
       } catch (err) {
         showToast('Login error: ' + err.message);
@@ -6988,6 +7010,7 @@
         localStorage.setItem('auth_token', data.token);
         updateUserHeaderUI();
         closeAuthModal();
+        navigateToView('scraper');
         showToast(`Welcome ${currentUser.name}! ₹100 Free Bonus credited.`);
       } catch (err) {
         showToast('Registration error: ' + err.message);
@@ -7098,6 +7121,7 @@
           localStorage.setItem('auth_token', data.token);
           updateUserHeaderUI();
           closeAuthModal();
+          navigateToView('scraper');
           showToast(`Welcome back, ${currentUser.name}! Wallet balance: ₹${Number(currentUser.wallet_balance || 0).toFixed(2)}`);
         }
       } catch (err) {
@@ -7175,6 +7199,7 @@
         localStorage.setItem('auth_token', data.token);
         updateUserHeaderUI();
         closeGoogleCompleteModal();
+        navigateToView('scraper');
         showToast(`Registration complete! Welcome ${currentUser.name}! ₹100 Free Bonus credited.`);
       } catch (err) {
         showToast('Registration error: ' + err.message);
@@ -7301,7 +7326,20 @@
           },
           body: JSON.stringify({ amount })
         });
-        const orderData = await orderRes.json();
+        
+        let orderData;
+        const ct = orderRes.headers.get('content-type') || '';
+        if (ct.includes('application/json')) {
+          orderData = await orderRes.json();
+        } else {
+          const rawText = await orderRes.text();
+          console.error('Non-JSON response from /api/wallet/create-order:', rawText);
+          showToast(`Server returned status ${orderRes.status}. Please check your connection and try again.`);
+          setModalPayButtonLoading(false, amount);
+          selectRechargePack(amount);
+          return;
+        }
+
         if (!orderRes.ok) {
           showToast(orderData.error || 'Failed to create payment order.');
           setModalPayButtonLoading(false, amount);
@@ -7325,7 +7363,16 @@
                 is_simulation: true
               })
             });
-            const vData = await verifyRes.json();
+            let vData;
+            const vct = verifyRes.headers.get('content-type') || '';
+            if (vct.includes('application/json')) {
+              vData = await verifyRes.json();
+            } else {
+              showToast(`Payment verification error (${verifyRes.status}).`);
+              setModalPayButtonLoading(false, amount);
+              selectRechargePack(amount);
+              return;
+            }
             if (verifyRes.ok) {
               currentUser.wallet_balance = vData.new_balance;
               updateUserHeaderUI();
@@ -7364,7 +7411,16 @@
                   razorpay_signature: response.razorpay_signature
                 })
               });
-              const vData = await vRes.json();
+              let vData;
+              const vct = vRes.headers.get('content-type') || '';
+              if (vct.includes('application/json')) {
+                vData = await vRes.json();
+              } else {
+                showToast(`Payment verification error (${vRes.status}).`);
+                setModalPayButtonLoading(false, amount);
+                selectRechargePack(amount);
+                return;
+              }
               if (vRes.ok) {
                 if (vData.status === 'approved') {
                   currentUser.wallet_balance = vData.new_balance;
@@ -7582,7 +7638,20 @@
           },
           body: JSON.stringify({ amount })
         });
-        const orderData = await orderRes.json();
+        
+        let orderData;
+        const ct = orderRes.headers.get('content-type') || '';
+        if (ct.includes('application/json')) {
+          orderData = await orderRes.json();
+        } else {
+          const rawText = await orderRes.text();
+          console.error('Non-JSON response from /api/wallet/create-order:', rawText);
+          showToast(`Server returned status ${orderRes.status}. Please check your connection and try again.`);
+          setPagePayButtonLoading(false, amount);
+          selectPageRechargePack(amount);
+          return;
+        }
+
         if (!orderRes.ok) {
           showToast(orderData.error || 'Failed to create payment order.');
           setPagePayButtonLoading(false, amount);
@@ -7606,7 +7675,16 @@
                 is_simulation: true
               })
             });
-            const vData = await verifyRes.json();
+            let vData;
+            const vct = verifyRes.headers.get('content-type') || '';
+            if (vct.includes('application/json')) {
+              vData = await verifyRes.json();
+            } else {
+              showToast(`Payment verification error (${verifyRes.status}).`);
+              setPagePayButtonLoading(false, amount);
+              selectPageRechargePack(amount);
+              return;
+            }
             if (verifyRes.ok) {
               currentUser.wallet_balance = vData.new_balance;
               updateUserHeaderUI();
@@ -7645,7 +7723,16 @@
                   razorpay_signature: response.razorpay_signature
                 })
               });
-              const vData = await vRes.json();
+              let vData;
+              const vct = vRes.headers.get('content-type') || '';
+              if (vct.includes('application/json')) {
+                vData = await vRes.json();
+              } else {
+                showToast(`Payment verification error (${vRes.status}).`);
+                setPagePayButtonLoading(false, amount);
+                selectPageRechargePack(amount);
+                return;
+              }
               if (vRes.ok) {
                 if (vData.status === 'approved') {
                   currentUser.wallet_balance = vData.new_balance;
