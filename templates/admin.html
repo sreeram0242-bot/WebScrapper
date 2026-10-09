@@ -425,6 +425,112 @@
       color: #7c3aed;
     }
 
+    /* Wallet Adjustment Segmented Control */
+    .wallet-action-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 6px;
+    }
+
+    .wallet-action-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      padding: 9px 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .wallet-action-tab:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .wallet-action-tab.active-add {
+      background: white;
+      color: #16a34a;
+      border-color: rgba(22, 163, 74, 0.25);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .wallet-action-tab.active-reduce {
+      background: white;
+      color: #dc2626;
+      border-color: rgba(220, 38, 38, 0.25);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .wallet-action-tab.active-set {
+      background: white;
+      color: #2563eb;
+      border-color: rgba(37, 99, 235, 0.25);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Live Calculation Preview Box */
+    .wallet-preview-box {
+      background: #f8fafc;
+      border: 1px dashed var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .preview-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+    }
+
+    .preview-col .preview-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .preview-col .preview-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 2px;
+    }
+
+    .preview-val.highlight-green {
+      color: #16a34a;
+    }
+    .preview-val.highlight-red {
+      color: #dc2626;
+    }
+    .preview-val.highlight-blue {
+      color: #2563eb;
+    }
+
+    .preview-operator {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
     /* Settings Form */
     .settings-grid {
       display: grid;
@@ -735,6 +841,16 @@
         </svg>
         Pricing & Settings
       </button>
+
+      <button class="tab-btn" onclick="switchTab('support')" id="tabBtnSupport">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        Help & Support Tickets
+        <span class="tab-badge" id="supportPill" style="display: none; background: #fee2e2; color: #dc2626;">0</span>
+      </button>
     </div>
 
     <!-- TAB 1: USERS MANAGEMENT -->
@@ -744,8 +860,17 @@
           <div class="panel-title">User Accounts & Balances</div>
           <div style="font-size: 0.8rem; color: var(--text-muted);">Manage member accounts, wallet balances, and access privileges.</div>
         </div>
-        <div style="display: flex; gap: 8px;">
-          <input type="text" id="userSearchInput" placeholder="Search by name, email, phone..." class="input-control" style="width: 280px;" oninput="filterUsersTable()">
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <input type="text" id="userSearchInput" placeholder="Search by name, email, phone..." class="input-control" style="width: 260px;" oninput="filterUsersTable()">
+          <button onclick="openAddUserModal()" class="btn-primary" style="padding: 9px 14px; font-size: 0.82rem;" title="Create new user account">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <line x1="19" y1="8" x2="19" y2="14"/>
+              <line x1="22" y1="11" x2="16" y2="11"/>
+            </svg>
+            Add User
+          </button>
           <button onclick="loadUsers()" class="btn-secondary" title="Refresh Users">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="23 4 23 10 17 10"/>
@@ -785,8 +910,15 @@
           <div class="panel-title">Razorpay Payments & Approvals</div>
           <div style="font-size: 0.8rem; color: var(--text-muted);">View all transaction records and approve pending manual wallet recharges.</div>
         </div>
-        <div style="display: flex; gap: 8px;">
-          <button onclick="loadPayments()" class="btn-secondary">
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <select id="paymentStatusFilter" class="input-control" style="width: 160px;" onchange="filterPaymentsTable()">
+            <option value="">All Transactions</option>
+            <option value="pending">Pending Approval</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+          <input type="text" id="paymentSearchInput" placeholder="Search user, order, payment ID..." class="input-control" style="width: 250px;" oninput="filterPaymentsTable()">
+          <button onclick="loadPayments()" class="btn-secondary" title="Refresh Payments">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="23 4 23 10 17 10"/>
               <polyline points="1 20 1 14 7 14"/>
@@ -826,14 +958,17 @@
           <div class="panel-title">All Scraped Extractions</div>
           <div style="font-size: 0.8rem; color: var(--text-muted);">Audit log of all queries extracted across the platform with direct downloads.</div>
         </div>
-        <button onclick="loadScrapes()" class="btn-secondary">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="23 4 23 10 17 10"/>
-            <polyline points="1 20 1 14 7 14"/>
-            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-          </svg>
-          Refresh
-        </button>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <input type="text" id="scrapeSearchInput" placeholder="Search query, user, CSV filename..." class="input-control" style="width: 270px;" oninput="filterScrapesTable()">
+          <button onclick="loadScrapes()" class="btn-secondary" title="Refresh Scrapes">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"/>
+              <polyline points="1 20 1 14 7 14"/>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+            Refresh
+          </button>
+        </div>
       </div>
 
       <div class="table-container">
@@ -919,7 +1054,89 @@
       </form>
     </section>
 
+    <!-- TAB 5: SUPPORT TICKETS & PROBLEM REPORTS -->
+    <section id="panelSupport" class="panel-card" style="display: none;">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">User Support Tickets & Problem Reports</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Review problem descriptions, inspect uploaded screenshots/logs, and update resolution status.</div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <select id="supportStatusFilter" class="input-control" style="width: 170px;" onchange="loadSupportTickets()">
+            <option value="">All Statuses</option>
+            <option value="open" selected>Open / Pending</option>
+            <option value="in_progress">In Progress</option>
+            <option value="resolved">Resolved</option>
+          </select>
+          <input type="text" id="supportSearchInput" placeholder="Search ticket, user, message..." class="input-control" style="width: 250px;" oninput="filterSupportTicketsTable()">
+          <button onclick="loadSupportTickets()" class="btn-secondary" title="Refresh Tickets">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"/>
+              <polyline points="1 20 1 14 7 14"/>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 70px;">ID</th>
+              <th style="width: 140px;">Date & Time</th>
+              <th>User Details</th>
+              <th>Category & Subject</th>
+              <th style="min-width: 220px;">Problem Info</th>
+              <th>Attachment</th>
+              <th>Status</th>
+              <th style="text-align: right; min-width: 140px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="supportTableBody">
+            <tr>
+              <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 40px;">
+                Loading support tickets...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
   </main>
+
+  <!-- Support Ticket Resolution Modal -->
+  <div class="modal-backdrop" id="supportModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title" id="supportModalTitle">Update Ticket Status</div>
+        <button class="close-btn" onclick="closeModal('supportModal')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form onsubmit="submitSupportStatusUpdate(event)" style="display: flex; flex-direction: column; gap: 14px;">
+        <input type="hidden" id="supportTicketId">
+        <div class="setting-item">
+          <label class="setting-label">Ticket Status</label>
+          <select id="supportModalStatus" class="input-control" required>
+            <option value="open">Open / Pending Review</option>
+            <option value="in_progress">In Progress</option>
+            <option value="resolved">Resolved / Closed</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <label class="setting-label">Admin Resolution Notes (Visible to User)</label>
+          <textarea id="supportModalNotes" class="input-control" rows="3" placeholder="Explain the resolution or notes for the user..." style="resize: vertical;"></textarea>
+          <span class="setting-hint">This response note will appear in the user's Profile &gt; Help &amp; Support dashboard.</span>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px;">
+          <button type="button" onclick="closeModal('supportModal')" class="btn-secondary">Cancel</button>
+          <button type="submit" class="btn-primary">Save Ticket Status</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Adjust Wallet Modal -->
   <div class="modal-backdrop" id="walletModal">
@@ -1020,6 +1237,10 @@
         document.getElementById("tabBtnSettings").classList.add("active");
         document.getElementById("panelSettings").style.display = "block";
         loadSettings();
+      } else if (tabId === "support") {
+        document.getElementById("tabBtnSupport").classList.add("active");
+        document.getElementById("panelSupport").style.display = "block";
+        loadSupportTickets();
       }
     }
 
@@ -1094,6 +1315,16 @@
         pill.style.display = "inline-block";
       } else {
         pill.style.display = "none";
+      }
+
+      const sPill = document.getElementById("supportPill");
+      if (sPill) {
+        if (s.pending_tickets && s.pending_tickets > 0) {
+          sPill.innerText = s.pending_tickets;
+          sPill.style.display = "inline-block";
+        } else {
+          sPill.style.display = "none";
+        }
       }
     }
 
@@ -1403,6 +1634,147 @@
         if (res.ok) {
           showToast("User account status updated.");
           loadUsers();
+        }
+      } catch (err) {
+        alert("Server error: " + err.message);
+      }
+    }
+
+    // =========================================================================
+    // SUPPORT TICKETS & REPORTS CONTROLLER (ADMIN)
+    // =========================================================================
+    let allSupportTicketsData = [];
+
+    async function loadSupportTickets() {
+      const filterEl = document.getElementById("supportStatusFilter");
+      const statusFilter = filterEl ? filterEl.value : "";
+      const tbody = document.getElementById("supportTableBody");
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 30px;">Loading support tickets...</td></tr>`;
+
+      try {
+        const url = statusFilter ? `/api/admin/support/tickets?status=${encodeURIComponent(statusFilter)}` : `/api/admin/support/tickets`;
+        const res = await fetch(url, { headers: getAuthHeaders() });
+        const data = await res.json();
+        allSupportTicketsData = data.tickets || [];
+        renderSupportTicketsTable(allSupportTicketsData);
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--danger); padding: 30px;">Error loading tickets: ${escapeHtml(e.message)}</td></tr>`;
+      }
+    }
+
+    function renderSupportTicketsTable(tickets) {
+      const tbody = document.getElementById("supportTableBody");
+      if (!tickets.length) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 32px;">No support tickets found matching this filter.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = tickets.map(t => {
+        let statusBadge = `<span class="badge-tag" style="background: #fef3c7; color: #d97706; font-weight: 800; font-size: 0.72rem; padding: 3px 8px; border-radius: 999px;">OPEN / PENDING</span>`;
+        if (t.status === "in_progress") {
+          statusBadge = `<span class="badge-tag" style="background: #eff6ff; color: #2563eb; font-weight: 800; font-size: 0.72rem; padding: 3px 8px; border-radius: 999px;">IN PROGRESS</span>`;
+        } else if (t.status === "resolved") {
+          statusBadge = `<span class="badge-tag" style="background: #dcfce7; color: #16a34a; font-weight: 800; font-size: 0.72rem; padding: 3px 8px; border-radius: 999px;">RESOLVED</span>`;
+        }
+
+        let attachCol = '<span style="color: #94a3b8; font-size: 0.78rem;">None</span>';
+        if (t.attachment_path) {
+          const isImg = /\.(png|jpe?g|webp|gif)$/i.test(t.attachment_path);
+          if (isImg) {
+            attachCol = `
+              <a href="${escapeHtml(t.attachment_path)}" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: #2563eb; font-weight: 700; font-size: 0.78rem; background: #eff6ff; padding: 4px 8px; border-radius: 6px; border: 1px solid #bfdbfe;">
+                <img src="${escapeHtml(t.attachment_path)}" style="width: 22px; height: 22px; object-fit: cover; border-radius: 4px;" alt="thumb" />
+                <span>View Image</span>
+              </a>
+            `;
+          } else {
+            attachCol = `
+              <a href="${escapeHtml(t.attachment_path)}" target="_blank" download style="display: inline-flex; align-items: center; gap: 5px; text-decoration: none; color: #2563eb; font-weight: 700; font-size: 0.78rem; background: #eff6ff; padding: 4px 8px; border-radius: 6px; border: 1px solid #bfdbfe;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Download File</span>
+              </a>
+            `;
+          }
+        }
+
+        const noteSnippet = t.admin_notes ? `<div style="font-size: 0.72rem; color: #166534; background: #f0fdf4; padding: 4px 8px; border-radius: 4px; margin-top: 6px; border-left: 2px solid #16a34a;"><strong>Admin Note:</strong> ${escapeHtml(t.admin_notes)}</div>` : '';
+
+        return `
+          <tr>
+            <td style="font-family: monospace; font-weight: 800; color: #2563eb;">#${t.id}</td>
+            <td style="color: var(--text-muted); font-size: 0.76rem;">${escapeHtml(t.created_at)}</td>
+            <td>
+              <div style="font-weight: 700; color: var(--text-main);">${escapeHtml(t.user_name || 'Member')}</div>
+              <div style="font-size: 0.74rem; color: var(--text-muted);">${escapeHtml(t.user_email || '')}</div>
+              <div style="font-size: 0.72rem; color: var(--primary); font-weight: 600;">${escapeHtml(t.user_phone ? '+91 ' + t.user_phone : '')}</div>
+            </td>
+            <td>
+              <span style="display: inline-block; font-size: 0.7rem; font-weight: 800; color: #4338ca; background: #e0e7ff; padding: 2px 6px; border-radius: 4px; margin-bottom: 2px;">${escapeHtml(t.category)}</span>
+              <div style="font-weight: 700; color: var(--text-main); font-size: 0.85rem;">${escapeHtml(t.subject)}</div>
+            </td>
+            <td style="max-width: 320px;">
+              <div style="font-size: 0.8rem; color: var(--text-main); white-space: pre-wrap; max-height: 85px; overflow-y: auto; background: #f8fafc; padding: 6px 10px; border-radius: 6px; border: 1px solid #e2e8f0;">${escapeHtml(t.message)}</div>
+              ${noteSnippet}
+            </td>
+            <td>${attachCol}</td>
+            <td>${statusBadge}</td>
+            <td style="text-align: right;">
+              <button onclick="openSupportModal(${t.id}, '${escapeHtml(t.status)}', '${escapeHtml(t.admin_notes || '').replace(/'/g, "\\'")}')" class="btn-secondary" style="padding: 5px 10px; font-size: 0.75rem;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                <span>Update Status</span>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterSupportTicketsTable() {
+      const q = (document.getElementById("supportSearchInput").value || "").toLowerCase().trim();
+      if (!q) {
+        renderSupportTicketsTable(allSupportTicketsData);
+        return;
+      }
+      const filtered = allSupportTicketsData.filter(t => 
+        (t.user_name || '').toLowerCase().includes(q) ||
+        (t.user_email || '').toLowerCase().includes(q) ||
+        (t.user_phone || '').toLowerCase().includes(q) ||
+        (t.subject || '').toLowerCase().includes(q) ||
+        (t.message || '').toLowerCase().includes(q) ||
+        (t.category || '').toLowerCase().includes(q) ||
+        String(t.id).includes(q)
+      );
+      renderSupportTicketsTable(filtered);
+    }
+
+    function openSupportModal(id, currentStatus, currentNotes) {
+      document.getElementById("supportTicketId").value = id;
+      document.getElementById("supportModalTitle").innerText = `Update Status for Ticket #${id}`;
+      document.getElementById("supportModalStatus").value = currentStatus || "open";
+      document.getElementById("supportModalNotes").value = currentNotes || "";
+      document.getElementById("supportModal").classList.add("open");
+    }
+
+    async function submitSupportStatusUpdate(e) {
+      e.preventDefault();
+      const ticketId = document.getElementById("supportTicketId").value;
+      const status = document.getElementById("supportModalStatus").value;
+      const notes = document.getElementById("supportModalNotes").value.trim();
+
+      try {
+        const res = await fetch(`/api/admin/support/tickets/${ticketId}/status`, {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ status, admin_notes: notes })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          closeModal("supportModal");
+          showToast(`Ticket #${ticketId} status updated to ${status.toUpperCase()}`);
+          loadSupportTickets();
+          initAdmin(); // Refresh badge counts
+        } else {
+          alert(data.error || "Failed to update ticket status.");
         }
       } catch (err) {
         alert("Server error: " + err.message);

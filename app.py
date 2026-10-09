@@ -17,6 +17,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import razorpay
+import uuid
+from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, jsonify, Response, send_from_directory, make_response, g
 from flask_cors import CORS
 import pandas as pd
@@ -178,7 +180,7 @@ def get_system():
 # =========================================================================
 
 @app.route("/api/auth/signup", methods=["POST"])
-@security.rate_limit(5, 60, "auth_signup")
+@security.rate_limit(20, 60, "auth_signup")
 def auth_signup():
     data = request.get_json(silent=True) or {}
     name = (data.get("name") or "").strip()
@@ -190,12 +192,23 @@ def auth_signup():
         return jsonify({"error": "Full name must be at least 2 characters."}), 400
     if not security.validate_email(email):
         return jsonify({"error": "Please enter a valid email address."}), 400
-    if phone and not security.validate_phone(phone):
-        return jsonify({"error": "Please enter a valid mobile number."}), 400
+    phone_clean = None
+    if phone:
+        digits = re.sub(r'\D', '', phone)
+        if digits:
+            if len(digits) > 10 and digits.startswith('91'):
+                phone_clean = digits[2:]
+            elif len(digits) > 10 and digits.startswith('0'):
+                phone_clean = digits[1:]
+            else:
+                phone_clean = digits[-10:] if len(digits) >= 10 else digits
+            if not security.validate_phone(phone_clean):
+                return jsonify({"error": "Please enter a valid mobile number."}), 400
+
     if len(password) < 6:
         return jsonify({"error": "Password must be at least 6 characters long."}), 400
 
-    res = db.create_user(name=name, email=email, phone=phone if phone else None, password=password)
+    res = db.create_user(name=name, email=email, phone=phone_clean, password=password)
     if "error" in res:
         return jsonify({"error": res["error"]}), 400
 
@@ -214,10 +227,10 @@ def auth_signup():
 
 
 @app.route("/api/auth/login", methods=["POST"])
-@security.rate_limit(10, 60, "auth_login")
+@security.rate_limit(30, 60, "auth_login")
 def auth_login():
     data = request.get_json(silent=True) or {}
-    identifier = (data.get("identifier") or data.get("email") or "").strip()
+    identifier = (data.get("identifier") or data.get("email") or data.get("username") or data.get("phone") or "").strip()
     password = data.get("password") or ""
 
     if not identifier or not password:
@@ -356,27 +369,34 @@ def auth_google():
     if not user and google_id:
         user = db.get_user_by_google_id(google_id)
 
+    is_brand_new = False
     if not user:
-        # New Google user -> returns is_new=True so frontend gathers phone and sets password
-        return jsonify({
-            "success": True,
-            "is_new": True,
-            "email": email,
-            "name": name,
-            "google_id": google_id
-        })
+        # IMMEDIATELY CREATE AND SAVE THE NEW USER TO DATABASE
+        default_pwd = uuid.uuid4().hex[:12]
+        created = db.create_user(name=name, email=email, phone=None, password=default_pwd, google_id=google_id)
+        if "error" not in created:
+            user = created["user"]
+            is_brand_new = True
+        else:
+            user = db.get_user_by_email(email)
+
+    if not user:
+        return jsonify({"error": "Failed to create Google user account."}), 500
 
     # Link google_id if missing
     if google_id and not user.get("google_id"):
         db.link_google_account(user["id"], google_id, name)
 
-    # Existing user -> Log in immediately!
+    # User is saved and verified -> Log in immediately!
     user = db.get_user_by_id(user["id"])
     token = security.generate_auth_token(user["id"], user.get("role", "user"))
     resp = make_response(jsonify({
         "success": True,
-        "is_new": False,
+        "is_new": is_brand_new or not bool(user.get("phone")),
         "user": user,
+        "email": user.get("email"),
+        "name": user.get("name"),
+        "google_id": user.get("google_id") or google_id,
         "token": token
     }))
     resp.set_cookie("auth_token", token, httponly=True, samesite="Lax", max_age=86400 * 7)
@@ -1223,14 +1243,64 @@ def admin_users():
 @security.require_admin
 def admin_adjust_wallet(user_id: int):
     data = request.get_json(silent=True) or {}
+    action = (data.get("action") or "add").strip().lower()
     try:
         amount = float(data.get("amount", 0))
     except (ValueError, TypeError):
         return jsonify({"error": "Invalid amount."}), 400
 
-    reason = (data.get("reason") or "Manual Admin Adjustment").strip()
-    new_bal = db.credit_wallet(user_id, amount, reason)
-    return jsonify({"success": True, "user_id": user_id, "new_balance": new_bal})
+    reason = (data.get("reason") or "").strip()
+    res = db.adjust_wallet_admin(user_id=user_id, action=action, amount=amount, reason=reason)
+    if "error" in res:
+        return jsonify({"error": res["error"]}), 400
+    return jsonify(res)
+
+
+@app.route("/api/admin/users/create", methods=["POST"])
+@security.require_admin
+def admin_create_user():
+    """Admin endpoint to manually create user accounts with custom starting balance and role."""
+    data = request.get_json(silent=True) or {}
+    name = (data.get("name") or "").strip()
+    email = (data.get("email") or "").strip().lower()
+    phone = (data.get("phone") or "").strip()
+    password = data.get("password") or ""
+    role = (data.get("role") or "user").strip().lower()
+    if role not in ["user", "admin"]:
+        role = "user"
+    try:
+        wallet_balance = float(data.get("wallet_balance", 100.0))
+    except (ValueError, TypeError):
+        wallet_balance = 100.0
+
+    if not name or len(name) < 2:
+        return jsonify({"error": "Full name must be at least 2 characters."}), 400
+    if not security.validate_email(email):
+        return jsonify({"error": "Please enter a valid email address."}), 400
+    if len(password) < 6:
+        return jsonify({"error": "Password must be at least 6 characters long."}), 400
+
+    phone_clean = None
+    if phone:
+        digits = re.sub(r'\D', '', phone)
+        if digits:
+            phone_clean = digits[-10:] if len(digits) >= 10 else digits
+
+    res = db.create_user_by_admin(
+        name=name,
+        email=email,
+        phone=phone_clean,
+        password=password,
+        wallet_balance=wallet_balance,
+        role=role
+    )
+    if "error" in res:
+        return jsonify({"error": res["error"]}), 400
+    return jsonify({
+        "success": True,
+        "user": res["user"],
+        "message": f"User account '{name}' created successfully with ₹{wallet_balance:.2f} balance."
+    })
 
 
 @app.route("/api/admin/users/<int:user_id>/toggle-ban", methods=["POST"])
@@ -1334,6 +1404,100 @@ def admin_save_settings():
         db.update_setting("google_client_id", data["google_client_id"].strip())
 
     return jsonify({"success": True, "message": "Settings updated successfully."})
+
+
+# =========================================================================
+# Support & Problem Reports Endpoints (File Uploads & Admin Visibility)
+# =========================================================================
+
+SUPPORT_UPLOAD_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "uploads", "support"))
+os.makedirs(SUPPORT_UPLOAD_DIR, exist_ok=True)
+
+
+@app.route("/uploads/support/<path:filename>")
+def serve_support_attachment(filename):
+    return send_from_directory(SUPPORT_UPLOAD_DIR, filename)
+
+
+@app.route("/api/support/tickets", methods=["POST"])
+def submit_support_ticket():
+    user = security.get_current_user_from_request()
+    if not user:
+        return jsonify({"error": "Unauthorized. Please sign in to submit a ticket."}), 401
+
+    category = "General"
+    subject = ""
+    message = ""
+    attachment_path = None
+    attachment_filename = None
+
+    if request.is_json:
+        data = request.get_json(silent=True) or {}
+        category = (data.get("category") or "General").strip()
+        subject = (data.get("subject") or "").strip()
+        message = (data.get("message") or "").strip()
+    else:
+        category = (request.form.get("category") or "General").strip()
+        subject = (request.form.get("subject") or "").strip()
+        message = (request.form.get("message") or "").strip()
+
+        file = request.files.get("attachment")
+        if file and file.filename:
+            orig_name = secure_filename(file.filename)
+            ext = os.path.splitext(orig_name)[1].lower()
+            allowed_exts = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".pdf", ".txt", ".csv", ".log"}
+            if ext in allowed_exts:
+                unique_name = f"ticket_{user['id']}_{int(time.time())}_{uuid.uuid4().hex[:6]}{ext}"
+                dest_path = os.path.join(SUPPORT_UPLOAD_DIR, unique_name)
+                file.save(dest_path)
+                attachment_path = f"/uploads/support/{unique_name}"
+                attachment_filename = orig_name
+
+    if not subject:
+        return jsonify({"error": "Subject cannot be empty."}), 400
+    if not message or len(message) < 5:
+        return jsonify({"error": "Please provide a detailed description of the problem (at least 5 characters)."}), 400
+
+    res = db.create_support_ticket(
+        user_id=user["id"],
+        category=category,
+        subject=subject,
+        message=message,
+        attachment_path=attachment_path,
+        attachment_filename=attachment_filename
+    )
+    return jsonify({
+        "success": True,
+        "message": "Support ticket submitted successfully! Our technical team will review it shortly.",
+        "ticket": res
+    })
+
+
+@app.route("/api/support/my-tickets", methods=["GET"])
+def get_my_support_tickets():
+    user = security.get_current_user_from_request()
+    if not user:
+        return jsonify({"error": "Unauthorized. Please sign in."}), 401
+    tickets = db.get_user_support_tickets(user["id"])
+    return jsonify({"tickets": tickets})
+
+
+@app.route("/api/admin/support/tickets", methods=["GET"])
+@security.require_admin
+def admin_get_support_tickets():
+    status = request.args.get("status")
+    tickets = db.get_all_support_tickets(status=status)
+    return jsonify({"tickets": tickets})
+
+
+@app.route("/api/admin/support/tickets/<int:ticket_id>/status", methods=["POST"])
+@security.require_admin
+def admin_update_support_ticket_status(ticket_id: int):
+    data = request.get_json(silent=True) or {}
+    status = (data.get("status") or "open").strip()
+    admin_notes = data.get("admin_notes")
+    ok = db.update_support_ticket_status(ticket_id, status, admin_notes)
+    return jsonify({"success": ok, "ticket_id": ticket_id, "status": status})
 
 
 # =========================================================================

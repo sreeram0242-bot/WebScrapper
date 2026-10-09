@@ -1,0 +1,1467 @@
+/* ══════════════════════════════════════════════════════════════════════════════
+   FAST MAP LEADS — CRAFT COMPONENTS & INTERACTIVE UI PATTERNS
+   Command Bar · HUD Telemetry · Lead Dossier · Holographic Card
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. APP SHELL & LAYOUT CONTAINER ── */
+.photon-shell {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px 24px 60px 24px;
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .photon-shell {
+    padding: 12px 14px 100px 14px;
+  }
+}
+
+/* ── 2. FROSTED PHOTON HEADER ── */
+.photon-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm), var(--shadow-inset-top);
+  border-radius: var(--radius-xl);
+  margin-bottom: 24px;
+  transition: all var(--duration-fast) var(--spring-snappy);
+}
+
+.photon-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.brand-gem {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--brand-photon-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px var(--brand-primary-glow), var(--shadow-inset-top);
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-gem::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.4) 50%, transparent 60%);
+  animation: shimmer-slide 4s infinite linear;
+}
+
+.brand-text-col {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.brand-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.brand-tag {
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--brand-primary-glow);
+  color: var(--brand-primary-hover);
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.brand-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Nav & Action Controls */
+.header-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Navigation Tab Switcher */
+.photon-nav-strip {
+  display: flex;
+  align-items: center;
+  background: var(--bg-glass-subtle);
+  border: 1px solid var(--border-subtle);
+  padding: 4px;
+  border-radius: var(--radius-full);
+  gap: 2px;
+}
+
+.nav-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--spring-snappy);
+  font-family: inherit;
+  user-select: none;
+}
+
+.nav-tab-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-glass-highlight);
+}
+
+.nav-tab-btn.active {
+  color: #FFFFFF;
+  background: var(--brand-primary);
+  box-shadow: 0 2px 10px var(--brand-primary-glow);
+}
+
+/* Micro-Buttons (Audio & Theme) */
+.icon-toggle-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--spring-snappy);
+}
+
+.icon-toggle-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+  transform: translateY(-1px);
+}
+
+.icon-toggle-btn:active {
+  transform: scale(0.94);
+}
+
+/* Wallet Balance Pill */
+.photon-balance-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 10px;
+  background: var(--status-emerald-bg);
+  border: 1px solid var(--status-emerald-border);
+  border-radius: var(--radius-full);
+  color: var(--status-emerald);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--spring-snappy);
+  font-family: inherit;
+}
+
+.photon-balance-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px var(--status-emerald-glow);
+}
+
+.balance-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--status-emerald);
+  box-shadow: 0 0 8px var(--status-emerald);
+  animation: pulse-emerald-dot 2s infinite;
+}
+
+.balance-amount {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+}
+
+/* ── 3. COMMAND & OMNI-SEARCH COCKPIT ── */
+.omni-search-card {
+  background: var(--bg-glass);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-2xl);
+  padding: 24px 28px;
+  box-shadow: var(--shadow-lg), var(--shadow-inset-top);
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.omni-search-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brand-primary-hover), transparent);
+}
+
+.omni-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.omni-input-icon {
+  position: absolute;
+  left: 20px;
+  color: var(--brand-primary);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.omni-main-input {
+  width: 100%;
+  height: 60px;
+  padding: 0 120px 0 56px;
+  background: var(--bg-surface-elevated);
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  font-size: 1.05rem;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--text-primary);
+  outline: none;
+  transition: all var(--duration-fast) var(--spring-snappy);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.omni-main-input:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px var(--brand-primary-glow), inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  background: var(--bg-surface);
+}
+
+.omni-shortcut-badge {
+  position: absolute;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-glass-highlight);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* Quick Locality & Query Ribbon Chips */
+.omni-suggestions-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.suggestion-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--spring-snappy);
+  user-select: none;
+}
+
+.suggestion-chip:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-medium);
+  color: var(--brand-primary-hover);
+  transform: translateY(-1px);
+}
+
+.suggestion-chip:active {
+  transform: scale(0.96);
+}
+
+/* ── 4. TACTILE BUTTONS & ACTIONS ── */
+.btn-photon {
+  height: 52px;
+  padding: 0 28px;
+  border-radius: var(--radius-md);
+  background: var(--brand-gradient);
+  color: #FFFFFF;
+  font-size: 0.96rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 20px var(--brand-primary-glow), var(--shadow-inset-top);
+  transition: all var(--duration-fast) var(--spring-snappy);
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-photon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--brand-primary-glow), var(--shadow-inset-top);
+  filter: brightness(1.08);
+}
+
+.btn-photon:active {
+  transform: scale(0.97);
+}
+
+.btn-photon-danger {
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  box-shadow: 0 4px 20px var(--status-rose-glow), var(--shadow-inset-top);
+}
+
+.btn-photon-danger:hover {
+  box-shadow: 0 8px 30px var(--status-rose-glow), var(--shadow-inset-top);
+}
+
+/* ── 5. HUD TELEMETRY METRIC CARDS ── */
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1024px) {
+  .telemetry-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.telemetry-card {
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--duration-fast) var(--spring-snappy);
+}
+
+.telemetry-card:hover {
+  border-color: var(--border-medium);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.telemetry-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.telemetry-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.telemetry-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.telemetry-val {
+  font-family: var(--font-mono);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.telemetry-sub {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ── 6. RADAR OSCILLOSCOPE & PULSE TERMINAL ── */
+.radar-cockpit-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+}
+
+#radarWorkerBadge {
+  display: none !important;
+}
+
+.radar-sweep-disc {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid #2563EB;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: radial-gradient(circle at center, rgba(37, 99, 235, 0.28) 0%, rgba(37, 99, 235, 0.1) 60%, rgba(37, 99, 235, 0.02) 100%);
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.35), inset 0 0 10px rgba(37, 99, 235, 0.2);
+  overflow: hidden;
+}
+
+/* Inner concentric dashed blue range ring */
+.radar-sweep-disc::before {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px dashed rgba(37, 99, 235, 0.6);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Crosshairs in electric blue */
+.radar-crosshair-h {
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  right: 2px;
+  height: 1px;
+  background: rgba(37, 99, 235, 0.45);
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.radar-crosshair-v {
+  position: absolute;
+  left: 50%;
+  top: 2px;
+  bottom: 2px;
+  width: 1px;
+  background: rgba(37, 99, 235, 0.45);
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Blue pulsing blip in idle state */
+.radar-ping-blip {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #2563EB;
+  box-shadow: 0 0 8px #3B82F6, 0 0 14px #60A5FA;
+  top: 11px;
+  right: 11px;
+  animation: radar-blip-pulse 2s infinite ease-in-out;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes radar-blip-pulse {
+  0%, 100% { transform: scale(0.85); opacity: 0.6; }
+  50% { transform: scale(1.3); opacity: 1; }
+}
+
+.radar-sweep-disc::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(from 45deg, transparent 0deg, transparent 270deg, rgba(37, 99, 235, 0.38) 360deg);
+  animation: none;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.radar-sweep-disc.active::after,
+.radar-sweep-disc.extracting::after,
+body.extracting-active .radar-sweep-disc::after {
+  opacity: 1;
+  background: conic-gradient(from 0deg, transparent 0deg, transparent 270deg, rgba(16, 185, 129, 0.9) 360deg);
+  animation: radar-sweep 1.8s infinite linear;
+}
+
+.radar-log-stream {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── 7. DATA GRID & LEAD INSPECTOR TABLE ── */
+.data-grid-wrapper {
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.photon-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.86rem;
+}
+
+.photon-table th {
+  background: var(--bg-surface-elevated);
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.photon-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  transition: background var(--duration-instant);
+}
+
+.photon-table tr:hover td {
+  background: var(--bg-surface-hover);
+  cursor: pointer;
+}
+
+/* Verification Pills */
+.pill-verified-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  background: var(--status-emerald-bg);
+  border: 1px solid var(--status-emerald-border);
+  color: var(--status-emerald);
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+.pill-pending-scan {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+/* ── 8. SLIDE-OVER LEAD DOSSIER (DRAWER) ── */
+.lead-dossier-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 440px;
+  max-width: 90vw;
+  background: var(--bg-surface, #ffffff);
+  border-left: 1px solid var(--border-medium, #cbd5e1);
+  box-shadow: none; /* NO shadow when closed! Prevents dark shadow bleeding into screen */
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  visibility: hidden; /* Completely hidden from view when closed */
+  pointer-events: none;
+  transition: transform var(--duration-normal, 0.28s) var(--spring-snappy, cubic-bezier(0.16, 1, 0.3, 1)),
+              box-shadow var(--duration-normal, 0.28s) ease,
+              visibility var(--duration-normal, 0.28s);
+}
+
+.lead-dossier-drawer.open {
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+  box-shadow: -12px 0 32px rgba(15, 23, 42, 0.25);
+}
+
+.dossier-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dossier-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ── 9. FINTECH DEBIT / CREDIT CARD (WALLET) ── */
+.fintech-debit-card {
+  width: 100%;
+  box-sizing: border-box;
+  aspect-ratio: 1.586 / 1;
+  min-height: 250px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #090e1a 0%, #172554 48%, #0f172a 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 20px 48px -12px rgba(15, 23, 42, 0.45), 0 0 28px rgba(37, 99, 235, 0.22);
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
+}
+
+.fintech-debit-card:hover {
+  transform: translateY(-3px) scale(1.008);
+  box-shadow: 0 26px 56px -12px rgba(15, 23, 42, 0.55), 0 0 36px rgba(37, 99, 235, 0.3);
+}
+
+.card-glow-mesh {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 85% 15%, rgba(59, 130, 246, 0.35) 0%, transparent 55%),
+              radial-gradient(circle at 10% 85%, rgba(99, 102, 241, 0.25) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.debit-card-top {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  position: relative;
+  z-index: 1;
+}
+
+.debit-brand-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 0.9rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  white-space: nowrap !important;
+}
+
+.debit-brand-badge svg {
+  color: #60A5FA !important;
+  flex-shrink: 0 !important;
+}
+
+.debit-card-hardware {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+  flex-shrink: 0 !important;
+}
+
+.debit-gold-chip {
+  width: 42px !important;
+  height: 30px !important;
+  border-radius: 6px !important;
+  background: linear-gradient(135deg, #FDE68A 0%, #D97706 65%, #92400E 100%) !important;
+  border: 1px solid #78350F !important;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+}
+
+.debit-gold-chip::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(120, 53, 15, 0.4);
+}
+
+.debit-gold-chip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(120, 53, 15, 0.4);
+}
+
+.debit-balance-section {
+  margin: 8px 0 !important;
+  position: relative;
+  z-index: 1;
+}
+
+.debit-balance-label {
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+  margin-bottom: 4px !important;
+}
+
+.debit-balance-amount {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 2.75rem !important;
+  font-weight: 800 !important;
+  font-variant-numeric: tabular-nums !important;
+  letter-spacing: -0.03em !important;
+  color: #FFFFFF !important;
+  line-height: 1.1 !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4) !important;
+}
+
+.debit-card-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.debit-meta-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.debit-meta-lbl {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.debit-meta-val {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.debit-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34D399;
+  box-shadow: 0 0 8px #34D399;
+  display: inline-block;
+}
+
+/* ── 13. REDESIGNED HORIZONTALLY SCROLLABLE VIBRANT RECHARGE PACK TIERS ── */
+.recharge-carousel-container {
+  width: 100%;
+  position: relative;
+  margin-top: 12px;
+}
+
+.recharge-scroll-hint-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 6px 4px;
+  font-size: 0.72rem;
+  color: var(--text-muted, #64748B);
+  font-weight: 600;
+}
+
+.scroll-hint-text {
+  letter-spacing: 0.02em;
+}
+
+.scroll-arrows-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #2563EB;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  animation: pulse-horizontal 2.2s infinite ease-in-out;
+}
+
+@keyframes pulse-horizontal {
+  0%, 100% { transform: translateX(0); opacity: 0.85; }
+  50% { transform: translateX(4px); opacity: 1; }
+}
+
+.recharge-packs-scroll-track {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 14px;
+  padding: 12px 6px 14px 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(37, 99, 235, 0.25) transparent;
+}
+
+.recharge-packs-scroll-track::-webkit-scrollbar {
+  height: 5px;
+}
+
+.recharge-packs-scroll-track::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.7);
+  border-radius: 999px;
+}
+
+.recharge-packs-scroll-track::-webkit-scrollbar-thumb {
+  background: rgba(37, 99, 235, 0.25);
+  border-radius: 999px;
+  transition: background 0.2s ease;
+}
+
+.recharge-packs-scroll-track::-webkit-scrollbar-thumb:hover {
+  background: rgba(37, 99, 235, 0.5);
+}
+
+.recharge-pack-tier {
+  flex: 0 0 205px !important;
+  min-width: 205px !important;
+  max-width: 205px !important;
+  scroll-snap-align: start;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 16px 16px 14px 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  box-sizing: border-box;
+}
+
+.recharge-pack-tier:hover {
+  background: #FFFFFF;
+  border-color: #94A3B8;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.08);
+}
+
+.recharge-pack-tier.active {
+  border-color: #2563EB !important;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%) !important;
+  box-shadow: 0 0 0 2px #2563EB, 0 12px 28px -4px rgba(37, 99, 235, 0.22) !important;
+}
+
+/* Individual Tier Personality Themes */
+.recharge-pack-tier.tier-starter:hover { border-color: #38BDF8; }
+.recharge-pack-tier.tier-starter.active { border-color: #0284C7 !important; box-shadow: 0 0 0 2px #0284C7, 0 12px 28px -4px rgba(2, 132, 199, 0.22) !important; }
+
+.recharge-pack-tier.tier-growth:hover { border-color: #60A5FA; }
+.recharge-pack-tier.tier-growth.active { border-color: #2563EB !important; box-shadow: 0 0 0 2px #2563EB, 0 12px 28px -4px rgba(37, 99, 235, 0.28) !important; }
+
+.recharge-pack-tier.tier-scale:hover { border-color: #A78BFA; }
+.recharge-pack-tier.tier-scale.active { border-color: #7C3AED !important; box-shadow: 0 0 0 2px #7C3AED, 0 12px 28px -4px rgba(124, 58, 237, 0.22) !important; }
+
+.recharge-pack-tier.tier-titan:hover { border-color: #FBBF24; }
+.recharge-pack-tier.tier-titan.active { border-color: #D97706 !important; box-shadow: 0 0 0 2px #D97706, 0 12px 28px -4px rgba(217, 119, 6, 0.25) !important; }
+
+/* Tier Header & SVG Icon Badges */
+.tier-header-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tier-icon-wrap {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.recharge-pack-tier:hover .tier-icon-wrap {
+  transform: scale(1.08);
+}
+
+.tier-icon-wrap.icon-starter {
+  background: rgba(2, 132, 199, 0.12);
+  color: #0284C7;
+}
+
+.tier-icon-wrap.icon-growth {
+  background: rgba(37, 99, 235, 0.12);
+  color: #2563EB;
+}
+
+.tier-icon-wrap.icon-scale {
+  background: rgba(124, 58, 237, 0.12);
+  color: #7C3AED;
+}
+
+.tier-icon-wrap.icon-titan {
+  background: rgba(217, 119, 6, 0.14);
+  color: #D97706;
+}
+
+.tier-title {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #1E293B;
+  letter-spacing: -0.01em;
+}
+
+/* Checkmark Selection Radio Ring */
+.tier-select-indicator {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid #CBD5E1;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  transition: all 0.18s ease;
+}
+
+.recharge-pack-tier.active .tier-select-indicator {
+  border-color: #2563EB;
+  background: #2563EB;
+  color: #FFFFFF;
+}
+
+.recharge-pack-tier.tier-titan.active .tier-select-indicator {
+  border-color: #D97706;
+  background: #D97706;
+}
+
+/* Floating Gradient Badges */
+.tier-badge-flag {
+  position: absolute;
+  top: -10px;
+  left: 14px;
+  background: linear-gradient(135deg, #2563EB, #1D4ED8);
+  color: #FFFFFF;
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 2px 9px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 3px 8px rgba(37, 99, 235, 0.35);
+  z-index: 2;
+}
+
+.tier-badge-flag.vip {
+  background: linear-gradient(135deg, #D97706, #92400E);
+  box-shadow: 0 3px 8px rgba(217, 119, 6, 0.35);
+}
+
+/* Price Row */
+.tier-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  margin: 2px 0 0 0;
+}
+
+.tier-price-currency {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.tier-price-val {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: #0F172A;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* Leads Tag Pill */
+.tier-leads-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  color: #1D4ED8;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+.recharge-pack-tier.active .tier-leads-pill {
+  background: #DBEAFE;
+  border-color: #93C5FD;
+  color: #1E40AF;
+}
+
+.tier-sub-title {
+  font-size: 0.7rem;
+  color: #64748B;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+/* Statement Ledger Table Modern */
+.statement-scroll-box {
+  max-height: 440px;
+  overflow-y: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+}
+
+.statement-table-modern {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.84rem;
+}
+
+.statement-table-modern th {
+  padding: 12px 18px;
+  background: var(--bg-surface-elevated);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.statement-table-modern td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.statement-table-modern tr:last-child td {
+  border-bottom: none;
+}
+
+.statement-table-modern tr:hover td {
+  background: var(--bg-surface-hover);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   ORIGINAL RUPEES BALANCE STYLING & MOBILE RESPONSIVE TUNING
+   ══════════════════════════════════════════════════════════════════════════════ */
+.balance-main-amount {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #102A56 !important; /* Original deep navy look */
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-family: var(--font-mono), 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Mobile View Refinements */
+@media (max-width: 768px) {
+  /* 1. Hide Preference Switches shown in Image 1 */
+  .hide-on-mobile,
+  .preference-row:has(#prefAutoDownload),
+  .preference-row:has(#prefDedup),
+  .preference-row:has(#prefHudPulse),
+  .preference-row:has(#prefToastDuration) {
+    display: none !important;
+  }
+
+  /* 2. Fix Header Actions Overflow (Image 3) */
+  .glass-header {
+    padding: 8px 12px !important;
+    gap: 6px !important;
+    flex-wrap: nowrap !important;
+    overflow-x: clip !important;
+  }
+  .brand-section {
+    gap: 8px !important;
+    min-width: 0 !important;
+  }
+  .brand-title h1 {
+    font-size: 0.95rem !important;
+  }
+  .brand-sub {
+    display: none !important;
+  }
+  .header-actions-group {
+    gap: 5px !important;
+    flex-shrink: 0 !important;
+  }
+  .header-files-text {
+    display: none !important;
+  }
+  .header-files-btn {
+    padding: 0 8px !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    justify-content: center !important;
+  }
+  .icon-toggle-btn {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+  }
+  .icon-toggle-btn svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  /* 3. Fix Telemetry HUD Cards Layout (Image 2) */
+  .telemetry-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+  .telemetry-card {
+    padding: 12px 14px !important;
+    gap: 5px !important;
+    border-radius: var(--radius-md) !important;
+  }
+  .telemetry-label {
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
+  }
+  .telemetry-icon-box {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .telemetry-icon-box svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+  .telemetry-val {
+    font-size: 1.55rem !important;
+    line-height: 1.15 !important;
+  }
+  .telemetry-sub {
+    font-size: 0.68rem !important;
+  }
+
+  /* 4. Fix Wallet Top Hero, Fintech Debit Card & Recharge Packs on Mobile */
+  #viewWallet {
+    padding-bottom: 120px !important;
+  }
+
+  .wallet-modern-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-bottom: 120px !important;
+    gap: 16px !important;
+  }
+
+  .wallet-top-hero {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    width: 100% !important;
+  }
+
+  .wallet-hero-left-col {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    gap: 12px !important;
+  }
+
+  .fintech-debit-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    aspect-ratio: auto !important;
+    min-height: auto !important;
+    padding: 20px 18px 18px 18px !important;
+    border-radius: 18px !important;
+    gap: 16px !important;
+  }
+
+  .debit-card-top {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+
+  .debit-brand-badge {
+    font-size: 0.82rem !important;
+  }
+
+  .debit-gold-chip {
+    width: 38px !important;
+    height: 26px !important;
+  }
+
+  .debit-balance-amount {
+    font-size: 2.25rem !important;
+  }
+
+  .debit-card-footer {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    align-items: flex-end !important;
+    width: 100% !important;
+    padding-top: 12px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+  }
+
+  .debit-meta-lbl {
+    font-size: 0.58rem !important;
+  }
+
+  .debit-meta-val {
+    font-size: 0.88rem !important;
+  }
+
+  /* 4 Recharge Packs Carousel on Mobile: Horizontal swipe track */
+  .recharge-packs-scroll-track {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 10px !important;
+    padding: 10px 4px 12px 4px !important;
+    scroll-snap-type: x mandatory !important;
+  }
+
+  .recharge-pack-tier {
+    flex: 0 0 190px !important;
+    min-width: 190px !important;
+    max-width: 190px !important;
+    padding: 14px 14px 12px 14px !important;
+    border-radius: 14px !important;
+    min-height: 0 !important;
+    scroll-snap-align: start !important;
+  }
+
+  .tier-price-val {
+    font-size: 1.55rem !important;
+  }
+
+  .tier-leads-pill {
+    font-size: 0.7rem !important;
+    padding: 2px 7px !important;
+  }
+
+  .tier-sub-title {
+    font-size: 0.65rem !important;
+  }
+
+  /* 5. Mobile Anti-Stretch Rules for Tabs, Filters & Pills */
+  .btn-filters-toggle {
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    padding: 0 14px !important;
+    white-space: nowrap !important;
+    align-items: center !important;
+  }
+
+  .filters-toggle-left {
+    white-space: nowrap !important;
+  }
+
+  .filters-toggle-title {
+    white-space: nowrap !important;
+  }
+
+  #filtersActiveSummary {
+    display: none !important;
+  }
+
+  /* Table filter tabs: prevent vertical stretch on mobile */
+  .table-tabs {
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+
+  .table-tabs .tab-btn {
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    font-size: 0.72rem !important;
+    padding: 0 6px !important;
+    white-space: nowrap !important;
+    line-height: 32px !important;
+  }
+
+  /* Limit Selector Pills: prevent vertical stretch */
+  .limit-selector-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+  }
+
+  .limit-pill {
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    font-size: 0.74rem !important;
+    padding: 0 2px !important;
+    line-height: 34px !important;
+  }
+
+  /* Search Pills Ribbon / Category Chips: single horizontal strip */
+  .search-pills-ribbon {
+    height: 36px !important;
+    min-height: 36px !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+  }
+
+  .ribbon-pill {
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+    padding: 0 10px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Filter Modal Pills */
+  .filter-pills-row .filter-pill-btn {
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    font-size: 0.76rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* Profile Sub-Tabs: horizontal scroll bar without vertical stretch */
+  .profile-subtabs-nav {
+    height: 36px !important;
+    min-height: 36px !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .profile-subtab-btn {
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+
+

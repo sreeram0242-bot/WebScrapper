@@ -117,6 +117,27 @@ def init_db():
             )
         """)
 
+        # 6. Support Tickets Table (Help & Support Tickets with Problem Info & Attachments)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS support_tickets (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                user_name TEXT,
+                user_email TEXT,
+                user_phone TEXT,
+                category TEXT NOT NULL,
+                subject TEXT NOT NULL,
+                message TEXT NOT NULL,
+                attachment_path TEXT,
+                attachment_filename TEXT,
+                status TEXT DEFAULT 'open', -- 'open', 'in_progress', 'resolved', 'closed'
+                admin_notes TEXT,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+            )
+        """)
+
         # Default Settings
         defaults = {
             "cost_per_lead": "0.25",              # 0.25 paise per lead (User requested)
@@ -167,14 +188,19 @@ def update_setting(key: str, value: str):
 
 def create_user(name: str, email: str, phone: Optional[str], password: str, google_id: Optional[str] = None) -> Dict[str, Any]:
     """Register a new user with password hashing and free signup bonus."""
-    email_clean = email.strip().lower()
-    phone_clean = re.sub(r'\D', '', phone)[-10:] if phone else None
-    name_clean = name.strip()
+    email_clean = (email or "").strip().lower()
+    name_clean = (name or "").strip()
+    
+    phone_clean = None
+    if phone:
+        digits = re.sub(r'\D', '', str(phone))
+        if digits:
+            phone_clean = digits[-10:] if len(digits) >= 10 else digits
 
     conn = get_db_connection()
     try:
         # Check duplicate by email
-        existing = conn.execute("SELECT id FROM users WHERE email = ?", (email_clean,)).fetchone()
+        existing = conn.execute("SELECT id FROM users WHERE lower(email) = ?", (email_clean,)).fetchone()
         if existing:
             return {"error": "An account with this email already exists."}
         if phone_clean:
@@ -204,31 +230,47 @@ def create_user(name: str, email: str, phone: Optional[str], password: str, goog
 
         user = get_user_by_id(user_id)
         return {"success": True, "user": user}
+    except sqlite3.IntegrityError as ie:
+        err_msg = str(ie).lower()
+        if "users.email" in err_msg or "unique constraint failed: users.email" in err_msg:
+            return {"error": "An account with this email already exists."}
+        elif "users.phone" in err_msg or "unique constraint failed: users.phone" in err_msg:
+            return {"error": "An account with this phone number already exists."}
+        return {"error": f"Database integrity constraint failed: {ie}"}
+    except Exception as e:
+        return {"error": f"Account creation failed: {str(e)}"}
     finally:
         conn.close()
 
 
 def authenticate_user(identifier: str, password: str) -> Optional[Dict[str, Any]]:
-    """Authenticate user by email or phone and password, supporting flexible formatting."""
+    """Authenticate user by email, phone, name, or username and password, supporting flexible formatting."""
     conn = get_db_connection()
-    id_clean = identifier.strip().lower()
-    digits = re.sub(r'\D', '', identifier)
-    ten_digit = digits[-10:] if len(digits) >= 10 else digits
+    try:
+        id_clean = (identifier or "").strip().lower()
+        id_no_spaces = re.sub(r'\s+', '', id_clean)
+        digits = re.sub(r'\D', '', identifier or '')
+        ten_digit = digits[-10:] if len(digits) >= 10 else digits
 
-    row = conn.execute(
-        """SELECT * FROM users 
-           WHERE (email = ? 
-                  OR phone = ? 
-                  OR phone = ? 
-                  OR (length(phone) >= 10 AND substr(phone, -10) = ?))
-             AND is_banned = 0""",
-        (id_clean, id_clean, digits if digits else None, ten_digit if ten_digit else None)
-    ).fetchone()
-    conn.close()
+        row = conn.execute(
+            """SELECT * FROM users 
+               WHERE (lower(email) = ? 
+                      OR lower(name) = ?
+                      OR lower(replace(name, ' ', '')) = ?
+                      OR lower(email) = ? || '@gmail.com'
+                      OR phone = ? 
+                      OR phone = ? 
+                      OR (length(phone) >= 10 AND substr(phone, -10) = ?))
+                 AND is_banned = 0""",
+            (id_clean, id_clean, id_no_spaces, id_clean, id_clean, digits if digits else None, ten_digit if ten_digit else None)
+        ).fetchone()
 
-    if row and check_password_hash(row["password_hash"], password):
-        return dict(row)
-    return None
+        if row:
+            if check_password_hash(row["password_hash"], password) or check_password_hash(row["password_hash"], (password or "").strip()):
+                return dict(row)
+        return None
+    finally:
+        conn.close()
 
 
 def get_user_by_id(user_id: int) -> Optional[Dict[str, Any]]:
@@ -304,6 +346,94 @@ def credit_wallet(user_id: int, amount: float, description: str) -> float:
         """, (user_id, amount, description, new_bal, now))
     conn.close()
     return new_bal
+
+
+def adjust_wallet_admin(user_id: int, action: str = "add", amount: float = 0.0, reason: str = "") -> Dict[str, Any]:
+    """
+    Atomically adjust user wallet from Admin Panel.
+    Supported actions:
+    - 'add': Credit positive funds
+    - 'reduce': Deduct/reduce funds (prevents negative balance)
+    - 'set': Explicitly set exact wallet balance
+    """
+    conn = get_db_connection()
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    try:
+        with conn:
+            user = conn.execute("SELECT wallet_balance FROM users WHERE id = ?", (user_id,)).fetchone()
+            if not user:
+                return {"error": "User not found."}
+
+            current_bal = float(user["wallet_balance"])
+            amount = float(amount)
+            action = (action or "add").lower().strip()
+
+            if action == "reduce" or amount < 0:
+                deduct_amt = abs(amount)
+                new_bal = round(max(0.0, current_bal - deduct_amt), 2)
+                actual_deducted = round(current_bal - new_bal, 2)
+                desc = reason or f"Admin Wallet Reduction (-₹{actual_deducted:.2f})"
+                conn.execute("UPDATE users SET wallet_balance = ?, updated_at = ? WHERE id = ?", (new_bal, now, user_id))
+                conn.execute("""
+                    INSERT INTO wallet_transactions (user_id, amount, type, description, balance_after, created_at)
+                    VALUES (?, ?, 'debit', ?, ?, ?)
+                """, (user_id, actual_deducted, desc, new_bal, now))
+            elif action == "set":
+                target_bal = round(max(0.0, amount), 2)
+                diff = round(target_bal - current_bal, 2)
+                t_type = "credit" if diff >= 0 else "debit"
+                desc = reason or f"Admin Set Balance to ₹{target_bal:.2f}"
+                conn.execute("UPDATE users SET wallet_balance = ?, updated_at = ? WHERE id = ?", (target_bal, now, user_id))
+                conn.execute("""
+                    INSERT INTO wallet_transactions (user_id, amount, type, description, balance_after, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                """, (user_id, abs(diff), t_type, desc, target_bal, now))
+                new_bal = target_bal
+            else:  # default "add"
+                add_amt = abs(amount)
+                new_bal = round(current_bal + add_amt, 2)
+                desc = reason or f"Admin Wallet Credit (+₹{add_amt:.2f})"
+                conn.execute("UPDATE users SET wallet_balance = ?, updated_at = ? WHERE id = ?", (new_bal, now, user_id))
+                conn.execute("""
+                    INSERT INTO wallet_transactions (user_id, amount, type, description, balance_after, created_at)
+                    VALUES (?, ?, 'credit', ?, ?, ?)
+                """, (user_id, add_amt, desc, new_bal, now))
+
+            return {
+                "success": True,
+                "user_id": user_id,
+                "previous_balance": current_bal,
+                "new_balance": new_bal,
+                "action": action
+            }
+    finally:
+        conn.close()
+
+
+def create_user_by_admin(name: str, email: str, phone: Optional[str], password: str, wallet_balance: float = 100.0, role: str = "user") -> Dict[str, Any]:
+    """Admin function to create user with custom starting balance and role."""
+    res = create_user(name=name, email=email, phone=phone, password=password)
+    if "error" in res:
+        return res
+    user = res["user"]
+    user_id = user["id"]
+
+    conn = get_db_connection()
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with conn:
+        if wallet_balance != 100.0:
+            diff = round(wallet_balance - 100.0, 2)
+            conn.execute("UPDATE users SET wallet_balance = ?, role = ?, updated_at = ? WHERE id = ?", (wallet_balance, role, now, user_id))
+            if diff != 0:
+                t_type = "credit" if diff > 0 else "debit"
+                conn.execute("""
+                    INSERT INTO wallet_transactions (user_id, amount, type, description, balance_after, created_at)
+                    VALUES (?, ?, ?, 'Admin Initial Balance Adjustment', ?, ?)
+                """, (user_id, abs(diff), t_type, wallet_balance, now))
+        else:
+            conn.execute("UPDATE users SET role = ?, updated_at = ? WHERE id = ?", (role, now, user_id))
+    conn.close()
+    return {"success": True, "user": get_user_by_id(user_id)}
 
 
 def debit_wallet_for_scrape(user_id: int, lead_count: int, query: str, file_name: str, file_path: str) -> Dict[str, Any]:
@@ -504,12 +634,14 @@ def get_admin_dashboard_stats() -> Dict[str, Any]:
     users_count = conn.execute("SELECT COUNT(*) as c FROM users WHERE role != 'admin'").fetchone()["c"]
     total_rev = conn.execute("SELECT COALESCE(SUM(amount), 0) as s FROM payments WHERE status = 'approved'").fetchone()["s"]
     pending_count = conn.execute("SELECT COUNT(*) as c FROM payments WHERE status = 'pending'").fetchone()["c"]
+    pending_tickets = conn.execute("SELECT COUNT(*) as c FROM support_tickets WHERE status = 'open'").fetchone()["c"]
     total_leads = conn.execute("SELECT COALESCE(SUM(lead_count), 0) as s FROM scrapes").fetchone()["s"]
     conn.close()
     return {
         "users_count": users_count,
         "total_revenue": round(total_rev, 2),
         "pending_payments": pending_count,
+        "pending_tickets": pending_tickets,
         "total_leads_scraped": total_leads,
         "cost_per_lead": get_setting("cost_per_lead", "0.25"),
         "signup_bonus": get_setting("signup_bonus", "100.0"),
@@ -588,6 +720,87 @@ def update_user_profile(user_id: int, name: str, phone: Optional[str] = None) ->
     conn.commit()
     conn.close()
     return True
+
+
+# =========================================================================
+# Support & Problem Reports Database Helpers
+# =========================================================================
+
+def create_support_ticket(user_id: int, category: str, subject: str, message: str,
+                          attachment_path: Optional[str] = None,
+                          attachment_filename: Optional[str] = None) -> Dict[str, Any]:
+    """Create a new support ticket with problem info and optional attachment."""
+    conn = get_db_connection()
+    try:
+        user = conn.execute("SELECT name, email, phone FROM users WHERE id = ?", (user_id,)).fetchone()
+        user_name = user["name"] if user else ""
+        user_email = user["email"] if user else ""
+        user_phone = user["phone"] if user else ""
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        with conn:
+            cur = conn.execute("""
+                INSERT INTO support_tickets 
+                (user_id, user_name, user_email, user_phone, category, subject, message, attachment_path, attachment_filename, status, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'open', ?, ?)
+            """, (user_id, user_name, user_email, user_phone, category, subject, message, attachment_path, attachment_filename, now, now))
+            ticket_id = cur.lastrowid
+        return {"success": True, "ticket_id": ticket_id, "created_at": now}
+    finally:
+        conn.close()
+
+
+def get_user_support_tickets(user_id: int) -> List[Dict[str, Any]]:
+    """Get all tickets submitted by a specific user."""
+    conn = get_db_connection()
+    try:
+        rows = conn.execute(
+            "SELECT * FROM support_tickets WHERE user_id = ? ORDER BY id DESC LIMIT 50",
+            (user_id,)
+        ).fetchall()
+        return [dict(r) for r in rows]
+    finally:
+        conn.close()
+
+
+def get_all_support_tickets(status: Optional[str] = None, limit: int = 150) -> List[Dict[str, Any]]:
+    """Get all support tickets for admin inspection."""
+    conn = get_db_connection()
+    try:
+        if status:
+            rows = conn.execute(
+                "SELECT * FROM support_tickets WHERE status = ? ORDER BY id DESC LIMIT ?",
+                (status, limit)
+            ).fetchall()
+        else:
+            rows = conn.execute(
+                "SELECT * FROM support_tickets ORDER BY id DESC LIMIT ?",
+                (limit,)
+            ).fetchall()
+        return [dict(r) for r in rows]
+    finally:
+        conn.close()
+
+
+def update_support_ticket_status(ticket_id: int, status: str, admin_notes: Optional[str] = None) -> bool:
+    """Update status of a support ticket (e.g. 'open', 'in_progress', 'resolved')."""
+    conn = get_db_connection()
+    try:
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        with conn:
+            if admin_notes is not None:
+                conn.execute(
+                    "UPDATE support_tickets SET status = ?, admin_notes = ?, updated_at = ? WHERE id = ?",
+                    (status, admin_notes, now, ticket_id)
+                )
+            else:
+                conn.execute(
+                    "UPDATE support_tickets SET status = ?, updated_at = ? WHERE id = ?",
+                    (status, now, ticket_id)
+                )
+        return True
+    finally:
+        conn.close()
 
 
 # Auto-initialize database on import

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
@@ -9,6 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="stylesheet" href="/static/css/tokens.css">
+  <link rel="stylesheet" href="/static/css/components.css">
   <style>
     /* ─────────────────────────────────────────────────────────────────────
        FAST MAP LEADS — PREMIUM SaaS DESIGN SYSTEM v3.0
@@ -94,6 +96,9 @@
       scroll-behavior: smooth;
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
     }
 
     body {
@@ -105,6 +110,9 @@
       padding-bottom: 72px;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
     }
 
     .glass-backdrop { display: none; }
@@ -2226,227 +2234,530 @@
     /* ── Mobile Layout (< 899px) ── */
     
     /* ─────────────────────────────────────────────────────────────────────
-       FAST MAP LEADS — MODERN FINTECH WALLET DESIGN SYSTEM (v3.5)
+       FAST MAP LEADS — MODERN FINTECH WALLET DESIGN SYSTEM (v4.0)
+       Authentic Standard Card Dimensions, Robust PC Grid & Non-Collapsing Mobile
     ───────────────────────────────────────────────────────────────────── */
     .wallet-modern-shell {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 22px;
       width: 100%;
-      max-width: 1100px;
+      max-width: 1260px;
       margin: 0 auto;
+      box-sizing: border-box;
     }
+
+    /* PC Layout: Fixed 420px Left Column (Debit Card) + Expansive Right Column (Top-Up Cockpit) */
     .wallet-top-hero {
       display: grid;
-      grid-template-columns: 1fr 1.3fr;
-      gap: 18px;
+      grid-template-columns: 420px minmax(0, 1fr);
+      gap: 28px;
       width: 100%;
+      align-items: start;
+      box-sizing: border-box;
     }
-    .fintech-balance-card {
-      background: #FFFFFF;
-      border: 1.5px solid var(--border-strong);
-      border-radius: 18px;
-      padding: 24px;
-      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+
+    .wallet-hero-left-col {
+      width: 420px;
+      min-width: 420px;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-sizing: border-box;
+    }
+
+    /* ── 3D HOLOGRAPHIC FINTECH DEBIT CARD ── */
+    .fintech-debit-card {
+      width: 100%;
+      box-sizing: border-box;
+      aspect-ratio: 1.586 / 1;
+      min-height: 250px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #090e1a 0%, #172554 48%, #0f172a 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 20px 48px -12px rgba(15, 23, 42, 0.45), 0 0 28px rgba(37, 99, 235, 0.22);
+      padding: 24px 26px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 16px;
+      color: #FFFFFF;
       position: relative;
       overflow: hidden;
-      box-sizing: border-box;
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
     }
-    .fintech-balance-card::before {
-      content: '';
+
+    .fintech-debit-card:hover {
+      transform: translateY(-3px) scale(1.008);
+      box-shadow: 0 26px 56px -12px rgba(15, 23, 42, 0.55), 0 0 36px rgba(37, 99, 235, 0.3);
+    }
+
+    .card-glow-mesh {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #2563EB, #10B981);
-    }
-    .balance-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #64748B;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .balance-verified-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #166534;
-      background: #F0FDF4;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid #BBF7D0;
-    }
-    .balance-main-amount {
-      font-size: 2.4rem;
-      font-weight: 900;
-      color: var(--navy);
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      font-family: inherit;
-    }
-    .balance-metrics-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      background: #F8FAFC;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      gap: 8px;
-    }
-    .metric-sub-group {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .metric-sub-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: #64748B;
-    }
-    .metric-sub-val {
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--blue);
-    }
-    .rate-fixed-pill {
-      font-size: 0.76rem;
-      font-weight: 700;
-      color: #0F172A;
-      background: #FFFFFF;
-      border: 1px solid var(--border-strong);
-      padding: 4px 10px;
-      border-radius: 8px;
+      bottom: 0;
+      background: radial-gradient(circle at 85% 15%, rgba(59, 130, 246, 0.35) 0%, transparent 55%),
+                  radial-gradient(circle at 10% 85%, rgba(99, 102, 241, 0.25) 0%, transparent 50%);
+      pointer-events: none;
     }
 
-    /* Recharge Controls Card */
+    .debit-card-top {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      width: 100% !important;
+      position: relative;
+      z-index: 1;
+    }
+
+    .debit-brand-badge {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      font-size: 0.9rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase !important;
+      color: rgba(255, 255, 255, 0.95) !important;
+      white-space: nowrap !important;
+    }
+
+    .debit-brand-badge svg {
+      color: #60A5FA !important;
+      flex-shrink: 0 !important;
+    }
+
+    .debit-card-hardware {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      color: rgba(255, 255, 255, 0.65) !important;
+      flex-shrink: 0 !important;
+    }
+
+    .debit-gold-chip {
+      width: 42px !important;
+      height: 30px !important;
+      border-radius: 6px !important;
+      background: linear-gradient(135deg, #FDE68A 0%, #D97706 65%, #92400E 100%) !important;
+      border: 1px solid #78350F !important;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+      position: relative !important;
+      overflow: hidden !important;
+      flex-shrink: 0 !important;
+    }
+
+    .debit-gold-chip::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(120, 53, 15, 0.4);
+    }
+
+    .debit-gold-chip::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(120, 53, 15, 0.4);
+    }
+
+    .debit-balance-section {
+      margin: 8px 0 !important;
+      position: relative;
+      z-index: 1;
+    }
+
+    .debit-balance-label {
+      font-size: 0.68rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase !important;
+      color: rgba(255, 255, 255, 0.65) !important;
+      margin-bottom: 4px !important;
+    }
+
+    .debit-balance-amount {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+      font-size: 2.75rem !important;
+      font-weight: 800 !important;
+      font-variant-numeric: tabular-nums !important;
+      letter-spacing: -0.03em !important;
+      color: #FFFFFF !important;
+      line-height: 1.1 !important;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .debit-card-footer {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: flex-end !important;
+      justify-content: space-between !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+      padding-top: 13px !important;
+      position: relative;
+      z-index: 1;
+      width: 100% !important;
+    }
+
+    .debit-meta-col {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 3px !important;
+      flex-shrink: 0 !important;
+    }
+
+    .debit-meta-lbl {
+      font-size: 0.62rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.07em !important;
+      text-transform: uppercase !important;
+      color: rgba(255, 255, 255, 0.6) !important;
+      white-space: nowrap !important;
+    }
+
+    .debit-meta-val {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+      font-size: 0.95rem !important;
+      font-weight: 800 !important;
+      font-variant-numeric: tabular-nums !important;
+      color: #FFFFFF !important;
+      white-space: nowrap !important;
+    }
+
+    .debit-live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #34D399;
+      box-shadow: 0 0 8px #34D399;
+      display: inline-block;
+    }
+
+    /* Security Strip Below Card */
+    .wallet-security-strip {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: var(--text-muted, #64748B);
+      background: #FFFFFF;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border, #E2E8F0);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .security-badge-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      line-height: 1.35;
+    }
+
+    .security-badge-item svg {
+      flex-shrink: 0;
+    }
+
+    /* ── RIGHT COLUMN: RECHARGE COCKPIT ── */
     .recharge-cockpit-card {
       background: #FFFFFF;
-      border: 1.5px solid var(--border-strong);
-      border-radius: 18px;
+      border: 1.5px solid var(--border-strong, #CBD5E1);
+      border-radius: 20px;
       padding: 24px;
       box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
       box-sizing: border-box;
+      width: 100%;
+      min-width: 0; /* CRITICAL: Prevents right grid column from overflowing / pushing left column */
     }
+
     .recharge-card-header {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 1.05rem;
+      gap: 9px;
+      font-size: 1.1rem;
       font-weight: 800;
-      color: var(--navy);
+      color: var(--navy, #102A56);
     }
-    .recharge-packs-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+
+    .recharge-cockpit-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted, #64748B);
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .recharge-carousel-container {
       width: 100%;
-    }
-    .pack-modern-card {
       position: relative;
+    }
+
+    .recharge-scroll-hint-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2px 6px 2px;
+      font-size: 0.74rem;
+      color: var(--text-muted, #64748B);
+      font-weight: 600;
+    }
+
+    .recharge-packs-scroll-track {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      overflow-y: visible !important;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 12px;
+      padding: 12px 4px 14px 4px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(37, 99, 235, 0.25) transparent;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .recharge-packs-scroll-track::-webkit-scrollbar {
+      height: 5px;
+    }
+
+    .recharge-packs-scroll-track::-webkit-scrollbar-thumb {
+      background: rgba(37, 99, 235, 0.25);
+      border-radius: 999px;
+    }
+
+    .recharge-pack-tier {
+      flex: 0 0 200px !important;
+      min-width: 200px !important;
+      max-width: 200px !important;
+      scroll-snap-align: start;
       background: #FFFFFF;
-      border: 1.5px solid var(--border-strong);
-      border-radius: 12px;
-      padding: 14px 10px;
-      text-align: center;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 16px 14px 14px 14px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      gap: 8px;
+      position: relative;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
       box-sizing: border-box;
     }
-    .pack-modern-card:hover {
-      border-color: var(--blue);
+
+    .recharge-pack-tier:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
-    }
-    .pack-modern-card.active {
-      border-color: var(--blue);
-      background: #EFF6FF;
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2), 0 4px 12px rgba(37, 99, 235, 0.12);
-    }
-    .pack-popular-flag {
-      position: absolute;
-      top: -8px;
-      font-size: 0.65rem;
-      font-weight: 800;
-      color: #FFFFFF;
-      background: #2563EB;
-      padding: 1px 7px;
-      border-radius: 999px;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-    }
-    .pack-price-tag {
-      font-size: 1.15rem;
-      font-weight: 900;
-      color: var(--navy);
-    }
-    .pack-modern-card.active .pack-price-tag {
-      color: var(--blue);
-    }
-    .pack-leads-tag {
-      font-size: 0.74rem;
-      font-weight: 600;
-      color: #64748B;
+      border-color: #94A3B8;
+      box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.08);
     }
 
-    /* Custom input & Checkout */
+    .recharge-pack-tier.active {
+      border-color: #2563EB !important;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%) !important;
+      box-shadow: 0 0 0 2px #2563EB, 0 12px 28px -4px rgba(37, 99, 235, 0.22) !important;
+    }
+
+    .recharge-pack-tier.tier-starter.active { border-color: #0284C7 !important; box-shadow: 0 0 0 2px #0284C7, 0 12px 28px -4px rgba(2, 132, 199, 0.22) !important; }
+    .recharge-pack-tier.tier-growth.active { border-color: #2563EB !important; box-shadow: 0 0 0 2px #2563EB, 0 12px 28px -4px rgba(37, 99, 235, 0.28) !important; }
+    .recharge-pack-tier.tier-scale.active { border-color: #7C3AED !important; box-shadow: 0 0 0 2px #7C3AED, 0 12px 28px -4px rgba(124, 58, 237, 0.22) !important; }
+    .recharge-pack-tier.tier-titan.active { border-color: #D97706 !important; box-shadow: 0 0 0 2px #D97706, 0 12px 28px -4px rgba(217, 119, 6, 0.25) !important; }
+
+    .tier-header-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-icon-wrap {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .recharge-pack-tier:hover .tier-icon-wrap {
+      transform: scale(1.08);
+    }
+
+    .tier-icon-wrap.icon-starter { background: rgba(2, 132, 199, 0.12); color: #0284C7; }
+    .tier-icon-wrap.icon-growth { background: rgba(37, 99, 235, 0.12); color: #2563EB; }
+    .tier-icon-wrap.icon-scale { background: rgba(124, 58, 237, 0.12); color: #7C3AED; }
+    .tier-icon-wrap.icon-titan { background: rgba(217, 119, 6, 0.14); color: #D97706; }
+
+    .tier-title {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: #1E293B;
+      letter-spacing: -0.01em;
+    }
+
+    .tier-select-indicator {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid #CBD5E1;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: transparent;
+      transition: all 0.18s ease;
+    }
+
+    .recharge-pack-tier.active .tier-select-indicator {
+      border-color: #2563EB;
+      background: #2563EB;
+      color: #FFFFFF;
+    }
+
+    .recharge-pack-tier.tier-titan.active .tier-select-indicator {
+      border-color: #D97706;
+      background: #D97706;
+    }
+
+    .tier-badge-flag {
+      position: absolute;
+      top: -10px;
+      left: 14px;
+      background: linear-gradient(135deg, #2563EB, #1D4ED8);
+      color: #FFFFFF;
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 2px 9px;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 3px 8px rgba(37, 99, 235, 0.35);
+      z-index: 2;
+    }
+
+    .tier-badge-flag.vip {
+      background: linear-gradient(135deg, #D97706, #92400E);
+      box-shadow: 0 3px 8px rgba(217, 119, 6, 0.35);
+    }
+
+    .tier-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+      margin: 2px 0 0 0;
+    }
+
+    .tier-price-currency {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    .tier-price-val {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+      font-size: 1.7rem !important;
+      font-weight: 900 !important;
+      font-variant-numeric: tabular-nums !important;
+      color: #0F172A !important;
+      letter-spacing: -0.02em !important;
+      line-height: 1 !important;
+    }
+
+    .tier-leads-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1D4ED8;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      width: fit-content;
+    }
+
+    .recharge-pack-tier.active .tier-leads-pill {
+      background: #DBEAFE;
+      border-color: #93C5FD;
+      color: #1E40AF;
+    }
+
+    .tier-sub-title {
+      font-size: 0.7rem;
+      color: #64748B;
+      font-weight: 500;
+      line-height: 1.25;
+    }
+
+    /* Custom Input Box & Pay Button */
     .custom-input-box {
       display: flex;
       flex-direction: column;
       gap: 6px;
+      width: 100%;
     }
+
     .custom-input-wrap {
       position: relative;
       display: flex;
       align-items: center;
       width: 100%;
     }
+
     .custom-currency-sign {
       position: absolute;
       left: 14px;
-      font-size: 1rem;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1.05rem;
       font-weight: 800;
-      color: var(--navy);
+      color: var(--navy, #102A56);
       pointer-events: none;
     }
+
     .custom-amount-field {
       width: 100%;
       height: 48px;
       padding: 0 14px 0 34px;
       font-size: 1rem;
-      font-family: inherit;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
       font-weight: 700;
-      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+      color: var(--text-primary, #0F172A);
       background: #FFFFFF;
-      border: 1.5px solid var(--border-strong);
+      border: 1.5px solid var(--border-strong, #CBD5E1);
       border-radius: 12px;
       outline: none;
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
       transition: all 0.2s ease;
       box-sizing: border-box;
     }
+
     .custom-amount-field:focus {
-      border-color: var(--blue);
+      border-color: var(--blue, #2563EB);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
+
     .custom-calc-sub {
       display: flex;
       align-items: center;
@@ -2454,36 +2765,11 @@
       font-size: 0.76rem;
       color: #64748B;
     }
-    .btn-pay-modern {
-      width: 100%;
-      height: 52px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #102A56 0%, #1E3A8A 100%);
-      color: #FFFFFF;
-      font-size: 1rem;
-      font-weight: 800;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      box-shadow: 0 4px 16px rgba(16, 42, 86, 0.2);
-      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-      font-family: inherit;
-    }
-    .btn-pay-modern:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(16, 42, 86, 0.28);
-    }
-    .btn-pay-modern:active {
-      transform: scale(0.98);
-    }
 
     /* Transactions Statement Card */
     .transactions-card {
       background: #FFFFFF;
-      border: 1.5px solid var(--border-strong);
+      border: 1.5px solid var(--border-strong, #CBD5E1);
       border-radius: 18px;
       padding: 24px;
       box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
@@ -2491,13 +2777,16 @@
       flex-direction: column;
       gap: 16px;
       box-sizing: border-box;
+      width: 100%;
     }
+
     .statement-table-modern {
       width: 100%;
       border-collapse: separate;
       border-spacing: 0;
       font-size: 0.84rem;
     }
+
     .statement-table-modern th {
       background: #F8FAFC;
       color: #64748B;
@@ -2506,35 +2795,140 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
       padding: 10px 14px;
-      border-bottom: 1.5px solid var(--border);
+      border-bottom: 1.5px solid var(--border, #E2E8F0);
       text-align: left;
     }
+
     .statement-table-modern td {
       padding: 12px 14px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-primary);
+      border-bottom: 1px solid var(--border, #E2E8F0);
+      color: var(--text-primary, #0F172A);
       font-size: 0.82rem;
     }
+
     .statement-table-modern tr:last-child td {
       border-bottom: none;
     }
 
-    @media (max-width: 820px) {
+    /* ── MOBILE VIEW OPTIMIZATIONS (< 900px) ── */
+    @media (max-width: 899px) {
+      #viewWallet,
+      #viewFiles,
+      #viewProfile {
+        padding-bottom: 120px !important;
+      }
+
+      .wallet-modern-shell,
+      .files-modern-shell,
+      .profile-modern-shell {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-bottom: 120px !important;
+        gap: 16px !important;
+      }
+
       .wallet-top-hero {
+        display: flex !important;
+        flex-direction: column !important;
         grid-template-columns: 1fr !important;
+        gap: 16px !important;
+        width: 100% !important;
+      }
+
+      .wallet-hero-left-col {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        gap: 12px !important;
+      }
+
+      .fintech-debit-card {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        aspect-ratio: auto !important;
+        min-height: auto !important;
+        padding: 20px 18px 18px 18px !important;
+        border-radius: 18px !important;
+        gap: 16px !important;
+      }
+
+      .debit-card-top {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+      }
+
+      .debit-brand-badge {
+        font-size: 0.82rem !important;
+      }
+
+      .debit-gold-chip {
+        width: 38px !important;
+        height: 26px !important;
+      }
+
+      .debit-balance-amount {
+        font-size: 2.25rem !important;
+      }
+
+      .debit-card-footer {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        justify-content: space-between !important;
+        align-items: flex-end !important;
+        width: 100% !important;
+        padding-top: 12px !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+      }
+
+      .debit-meta-lbl {
+        font-size: 0.58rem !important;
+      }
+
+      .debit-meta-val {
+        font-size: 0.88rem !important;
+      }
+
+      .recharge-cockpit-card {
+        padding: 18px 16px !important;
+        border-radius: 16px !important;
         gap: 14px !important;
       }
-      .recharge-packs-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 8px !important;
+
+      .recharge-pack-tier {
+        flex: 0 0 175px !important;
+        min-width: 175px !important;
+        max-width: 175px !important;
+        padding: 14px 12px 12px 12px !important;
       }
-      .fintech-balance-card, .recharge-cockpit-card, .transactions-card {
-        padding: 16px !important;
-        border-radius: 14px !important;
+
+      .custom-amount-field {
+        height: 46px !important;
+        font-size: 0.95rem !important;
       }
-      .balance-main-amount {
-        font-size: 2rem !important;
+
+      #btnPagePayRazorpay {
+        height: 48px !important;
+        font-size: 0.92rem !important;
       }
+
+      .transactions-card {
+        padding: 16px 14px !important;
+        border-radius: 16px !important;
+        margin-bottom: 24px !important;
+      }
+    }
+
+    /* Slide-Over Lead Dossier Drawer — Zero shadow when closed to eliminate right edge shadow bleed */
+    .lead-dossier-drawer:not(.open) {
+      box-shadow: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: translateX(100%) !important;
     }
 
 
@@ -2730,6 +3124,9 @@
       .files-stats-strip {
         padding: 10px 12px !important;
       }
+      .files-modern-shell {
+        padding-bottom: 120px !important;
+      }
     }
 
 
@@ -2779,17 +3176,11 @@
     .filters-toggle-title {
       font-weight: 800;
       color: inherit;
-    }
-    .badge-filters-summary {
-      font-size: 0.7rem;
-      font-weight: 800;
-      color: #2563EB;
-      background: #DBEAFE;
-      border: 1px solid #BFDBFE;
-      padding: 2px 7px;
-      border-radius: 6px;
       white-space: nowrap;
-      margin-left: auto;
+    }
+    .badge-filters-summary,
+    #filtersActiveSummary {
+      display: none !important;
     }
     .filters-chevron {
       transition: transform 0.2s ease;
@@ -4284,7 +4675,7 @@
       /* ── Profile Page Mobile Sizing (Compact Tabs, Texts, and Fields) ── */
       .profile-modern-shell {
         gap: 12px !important;
-        padding: 0 !important;
+        padding: 0 0 120px 0 !important;
       }
       .profile-hero-card-modern {
         padding: 14px !important;
@@ -4611,6 +5002,16 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
           <span class="header-files-text">Saved Files</span>
         </button>
+
+        <!-- UI Micro-Haptic Audio Toggle -->
+        <button id="btnAudioToggle" class="icon-toggle-btn" onclick="toggleAudioFeedback()" title="Toggle Interface Sound FX" type="button">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        </button>
+
+        <!-- Obsidian Noir / Titanium Frost Theme Switcher -->
+        <button id="btnThemeToggle" class="icon-toggle-btn" onclick="toggleTheme()" title="Switch Light/Dark Theme" type="button">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
       </div>
     </header>
 
@@ -4731,16 +5132,16 @@
               </div>
             </div>
 
-                        <!-- ADVANCED EXTRACTION FILTERS TOGGLE BUTTON (User Requested Option) -->
+            <!-- EXTRACTION FILTERS BUTTON -->
             <button id="btnToggleExtractionFilters" class="btn-filters-toggle" onclick="openFiltersModal()" type="button">
               <div class="filters-toggle-left">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
                 </svg>
-                <span class="filters-toggle-title">Extraction Filters & Options</span>
-                <span id="filtersActiveSummary" class="badge-filters-summary">All Leads • All Websites</span>
+                <span class="filters-toggle-title">Filters</span>
+                <span id="filtersActiveSummary" style="display: none;"></span>
               </div>
-              <span style="font-size: 0.74rem; font-weight: 700; color: var(--blue); display: inline-flex; align-items: center; gap: 4px;">
+              <span class="filters-toggle-action" style="font-size: 0.74rem; font-weight: 700; color: var(--blue); display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">
                 <span>Set Options</span>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </span>
@@ -4749,11 +5150,11 @@
             <!-- EXPANDABLE EXTRACTION FILTERS PANEL -->
             <!-- PRIMARY ACTION CTA LAUNCH BUTTON -->
             <div class="cta-launch-row">
-              <button id="btnStart" class="btn-launch-primary" onclick="startScraping()" type="button">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <button id="btnStart" class="btn-photon" onclick="startScraping()" type="button" style="width: 100%;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 <span>Start Lead Extraction</span>
               </button>
-              <button id="btnStop" class="btn-launch-danger" onclick="stopScraping()" type="button" style="display: none;">
+              <button id="btnStop" class="btn-photon btn-photon-danger" onclick="stopScraping()" type="button" style="display: none; width: 100%;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect width="14" height="14" x="5" y="5" rx="2"/></svg>
                 <span>Stop Extraction</span>
               </button>
@@ -4764,44 +5165,77 @@
           <!-- LIVE EXTRACTION RESULTS & METRICS SECTION -->
           <div class="results-cockpit-card">
             
-            <!-- Live Metrics Trio HUD -->
-            <div class="stats-trio">
-              <div class="stat-glass-card">
-                <div class="stat-icon-wrap emerald">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <!-- 4-Column Live Telemetry HUD Grid -->
+            <div class="telemetry-grid">
+              <div class="telemetry-card">
+                <div class="telemetry-header">
+                  <span class="telemetry-label">Phone Numbers</span>
+                  <div class="telemetry-icon-box" style="background: var(--status-emerald-bg); color: var(--status-emerald);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </div>
                 </div>
-                <div class="stat-content">
-                  <div id="metricPhoneCount" class="stat-val">0</div>
-                  <div class="stat-lbl">Phone Numbers</div>
-                </div>
-              </div>
-
-              <div class="stat-glass-card">
-                <div class="stat-icon-wrap blue">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                </div>
-                <div class="stat-content">
-                  <div id="metricTotalCount" class="stat-val">0</div>
-                  <div class="stat-lbl">Places Found</div>
+                <div id="metricPhoneCount" class="telemetry-val" style="color: var(--status-emerald);">0</div>
+                <div class="telemetry-sub">
+                  <span class="balance-pulse-dot" style="width: 6px; height: 6px;"></span>
+                  <span>Direct Dial Contacts</span>
                 </div>
               </div>
 
-              <div class="stat-glass-card">
-                <div class="stat-icon-wrap purple">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <div class="telemetry-card">
+                <div class="telemetry-header">
+                  <span class="telemetry-label">Places Found</span>
+                  <div class="telemetry-icon-box" style="background: rgba(59, 130, 246, 0.12); color: var(--brand-primary);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  </div>
                 </div>
-                <div class="stat-content">
-                  <div id="metricDuration" class="stat-val">0s</div>
-                  <div class="stat-lbl">Elapsed Time</div>
+                <div id="metricTotalCount" class="telemetry-val">0</div>
+                <div class="telemetry-sub">Discovered Listings</div>
+              </div>
+
+              <div class="telemetry-card">
+                <div class="telemetry-header">
+                  <span class="telemetry-label">Elapsed Time</span>
+                  <div class="telemetry-icon-box" style="background: rgba(139, 92, 246, 0.12); color: var(--accent-purple);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  </div>
                 </div>
+                <div id="metricDuration" class="telemetry-val">0s</div>
+                <div class="telemetry-sub">Real-Time Duration</div>
+              </div>
+
+              <div class="telemetry-card">
+                <div class="telemetry-header">
+                  <span class="telemetry-label">Match Rate</span>
+                  <div class="telemetry-icon-box" style="background: rgba(245, 158, 11, 0.12); color: #D97706;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+                  </div>
+                </div>
+                <div id="metricMatchRate" class="telemetry-val" style="color: #D97706;">0%</div>
+                <div class="telemetry-sub">Verified Phone Ratio</div>
               </div>
             </div>
 
-            <!-- Terminal Status Pulse Stream Bar -->
-            <div id="statusLogBox" class="stream-log-box">
-              <div class="log-line">
-                <span class="stream-pulse-dot"></span>
-                <span>Scraper engine ready. Enter target query to begin.</span>
+            <!-- Live Radar Cockpit & Oscilloscope Terminal -->
+            <div class="radar-cockpit-wrap">
+              <div id="radarSweepDisc" class="radar-sweep-disc" title="Scraper Sensor Radar">
+                <div class="radar-crosshair-h"></div>
+                <div class="radar-crosshair-v"></div>
+                <div class="radar-ping-blip"></div>
+              </div>
+              <div style="display: flex; flex-direction: column; flex: 1; min-width: 0; gap: 4px;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span id="streamStatusDot" class="balance-pulse-dot" style="width: 7px; height: 7px;"></span>
+                    <span id="radarStatusTitle" style="font-size: 0.76rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--brand-primary);">Engine Standby</span>
+                  </div>
+                  <!-- Hidden for clean UI (10 workers idle badge removed as requested) -->
+                  <span id="radarWorkerBadge" style="display: none;"></span>
+                </div>
+                <div id="statusLogBox" class="radar-log-stream">
+                  <div class="log-line">
+                    <span>Engine ready. Enter target query to stream leads in real-time.</span>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -4915,78 +5349,187 @@
             </div>
           </div>
 
-          <!-- Top Hero Grid: Balance Card & Recharge Cockpit -->
+          <!-- Top Hero Grid: Holographic Treasury Card & Recharge Cockpit -->
           <div class="wallet-top-hero">
             
-            <!-- LEFT: Modern Balance & Account Health Card -->
-            <div class="fintech-balance-card">
-              <div>
-                <div class="balance-card-header">
-                  <span>Available Balance</span>
-                  <span class="balance-verified-badge">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    <span>Instant Credit Active</span>
-                  </span>
+            <!-- LEFT COLUMN: 3D Holographic Fintech Card & Security Assurances -->
+            <div class="wallet-hero-left-col">
+              
+              <!-- Premium Fintech Card (Card Design Layout) -->
+              <div class="fintech-debit-card">
+                <div class="card-glow-mesh"></div>
+                <div class="debit-card-top">
+                  <div class="debit-brand-badge">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    <span>Fast Map Pass</span>
+                  </div>
+                  <div class="debit-card-hardware">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8.5 16.5a5 5 0 0 1 0-7"/><path d="M12 19a8.5 8.5 0 0 0 0-14"/><path d="M5 14a2 2 0 0 1 0-4"/></svg>
+                    <div class="debit-gold-chip"></div>
+                  </div>
                 </div>
-                <div class="balance-main-amount" id="walletPageHeroBal">₹100.00</div>
+
+                <div class="debit-balance-section">
+                  <div class="debit-balance-label">AVAILABLE CREDIT BALANCE</div>
+                  <div class="debit-balance-amount" id="walletPageHeroBal">₹0.00</div>
+                </div>
+
+                <div class="debit-card-footer">
+                  <div class="debit-meta-col">
+                    <span class="debit-meta-lbl">EXTRACT CAPACITY</span>
+                    <span class="debit-meta-val" id="walletPageHeroLeads">0 Leads</span>
+                  </div>
+                  <div class="debit-meta-col">
+                    <span class="debit-meta-lbl">TARIFF</span>
+                    <span class="debit-meta-val" style="color: #60A5FA;">₹0.25 / Lead</span>
+                  </div>
+                  <div class="debit-meta-col">
+                    <span class="debit-meta-lbl">STATUS</span>
+                    <span class="debit-meta-val" style="color: #34D399; display: flex; align-items: center; gap: 5px;">
+                      <span class="debit-live-dot"></span> ACTIVE
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              <!-- Available Leads & Tariff Strip -->
-              <div class="balance-metrics-bar">
-                <div class="metric-sub-group">
-                  <span class="metric-sub-label">Extract Capacity</span>
-                  <span class="metric-sub-val" id="walletPageHeroLeads">400 Leads</span>
+              <!-- Security Badges Strip -->
+              <div class="wallet-security-strip">
+                <div class="security-badge-item">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span>256-bit SSL encrypted checkout powered by Razorpay</span>
                 </div>
-                <div class="rate-fixed-pill">
-                  ₹0.25 / Lead Flat
+                <div class="security-badge-item">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                  <span>Pay only for verified leads • Failed/unverified records are never billed</span>
                 </div>
               </div>
 
-              <!-- Security & Guarantee Badges -->
-              <div style="display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--border); padding-top: 12px; font-size: 0.76rem; color: #64748B;">
-                <div style="display: flex; align-items: center; gap: 7px;">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                  <span>256-bit SSL encrypted transactions via Razorpay</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 7px;">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
-                  <span>Only pay for successfully extracted verified leads</span>
-                </div>
-              </div>
             </div>
 
-            <!-- RIGHT: Modern Recharge Cockpit Card -->
+            <!-- RIGHT COLUMN: Modern Recharge Cockpit Card -->
             <div class="recharge-cockpit-card">
               <div class="recharge-card-header">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-                <span>Instant Wallet Top-Up</span>
+                <span>Instant Wallet Top-Up Cockpit</span>
               </div>
-              <p style="font-size: 0.8rem; color: #64748B; margin: 0; line-height: 1.4;">
-                Select a pack or enter a custom amount to recharge via UPI, Google Pay, PhonePe, Cards, or NetBanking.
+              <p class="recharge-cockpit-desc">
+                Select a high-speed extraction pack or enter a custom amount. Instant automated credit via UPI (GPay, PhonePe, Paytm), Cards, or NetBanking.
               </p>
 
-              <!-- 4 Modern Segmented Packs Grid -->
-              <div class="recharge-packs-grid">
-                <div class="pack-modern-card pack-card" onclick="selectPageRechargePack(100)" id="pagePack100">
-                  <span class="pack-price-tag">₹100</span>
-                  <span class="pack-leads-tag">400 Leads</span>
+              <!-- 4 Redesigned Vibrant Recharge Packs (Horizontally Scrollable with Crisp SVG Icons) -->
+              <div class="recharge-carousel-container">
+                <div class="recharge-scroll-hint-bar">
+                  <span class="scroll-hint-text">Select extraction tier (scroll sideways)</span>
+                  <div class="scroll-arrows-indicator" title="Scroll right for more tiers">
+                    <span>Swipe</span>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                  </div>
                 </div>
-                <div class="pack-modern-card pack-card active" onclick="selectPageRechargePack(250)" id="pagePack250">
-                  <span class="pack-popular-flag">Popular</span>
-                  <span class="pack-price-tag">₹250</span>
-                  <span class="pack-leads-tag">1,000 Leads</span>
-                </div>
-                <div class="pack-modern-card pack-card" onclick="selectPageRechargePack(500)" id="pagePack500">
-                  <span class="pack-price-tag">₹500</span>
-                  <span class="pack-leads-tag">2,000 Leads</span>
-                </div>
-                <div class="pack-modern-card pack-card" onclick="selectPageRechargePack(1000)" id="pagePack1000">
-                  <span class="pack-price-tag">₹1,000</span>
-                  <span class="pack-leads-tag">4,000 Leads</span>
+                <div class="recharge-packs-grid-modern recharge-packs-scroll-track" id="rechargePacksTrack">
+                  <!-- Tier 1: Starter (₹100) -->
+                  <div class="recharge-pack-tier pack-card tier-starter" onclick="selectPageRechargePack(100)" id="pagePack100">
+                    <div class="tier-select-indicator">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div class="tier-header-info">
+                      <div class="tier-icon-wrap icon-starter">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                      </div>
+                      <span class="tier-title">Starter</span>
+                    </div>
+                    <div class="tier-price-row">
+                      <span class="tier-price-currency">₹</span>
+                      <span class="tier-price-val">100</span>
+                    </div>
+                    <div class="tier-leads-pill">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                      <span>400 Leads</span>
+                    </div>
+                    <span class="tier-sub-title">Quick Target Blast</span>
+                  </div>
+
+                  <!-- Tier 2: Growth Pro (₹250 - Popular) -->
+                  <div class="recharge-pack-tier pack-card tier-growth active" onclick="selectPageRechargePack(250)" id="pagePack250">
+                    <span class="tier-badge-flag">Most Popular</span>
+                    <div class="tier-select-indicator">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div class="tier-header-info">
+                      <div class="tier-icon-wrap icon-growth">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                        </svg>
+                      </div>
+                      <span class="tier-title">Growth Pro</span>
+                    </div>
+                    <div class="tier-price-row">
+                      <span class="tier-price-currency">₹</span>
+                      <span class="tier-price-val">250</span>
+                    </div>
+                    <div class="tier-leads-pill">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                      <span>1,000 Leads</span>
+                    </div>
+                    <span class="tier-sub-title">Full City Campaign</span>
+                  </div>
+
+                  <!-- Tier 3: Scale Pro (₹500) -->
+                  <div class="recharge-pack-tier pack-card tier-scale" onclick="selectPageRechargePack(500)" id="pagePack500">
+                    <div class="tier-select-indicator">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div class="tier-header-info">
+                      <div class="tier-icon-wrap icon-scale">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                          <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                          <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                          <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+                        </svg>
+                      </div>
+                      <span class="tier-title">Scale Pro</span>
+                    </div>
+                    <div class="tier-price-row">
+                      <span class="tier-price-currency">₹</span>
+                      <span class="tier-price-val">500</span>
+                    </div>
+                    <div class="tier-leads-pill">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                      <span>2,000 Leads</span>
+                    </div>
+                    <span class="tier-sub-title">Multi-District Outbound</span>
+                  </div>
+
+                  <!-- Tier 4: Agency Titan (₹1,000 - VIP) -->
+                  <div class="recharge-pack-tier pack-card tier-titan" onclick="selectPageRechargePack(1000)" id="pagePack1000">
+                    <span class="tier-badge-flag vip">VIP Scale</span>
+                    <div class="tier-select-indicator">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div class="tier-header-info">
+                      <div class="tier-icon-wrap icon-titan">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>
+                        </svg>
+                      </div>
+                      <span class="tier-title">Agency Titan</span>
+                    </div>
+                    <div class="tier-price-row">
+                      <span class="tier-price-currency">₹</span>
+                      <span class="tier-price-val">1,000</span>
+                    </div>
+                    <div class="tier-leads-pill">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                      <span>4,000 Leads</span>
+                    </div>
+                    <span class="tier-sub-title">High-Volume Pipeline</span>
+                  </div>
                 </div>
               </div>
 
-              <!-- Custom Amount Top-Up -->
+              <!-- Custom Amount Top-Up Box -->
               <div class="custom-input-box">
                 <div class="custom-input-wrap">
                   <span class="custom-currency-sign">₹</span>
@@ -5007,19 +5550,19 @@
               </div>
 
               <!-- Main Checkout Button -->
-              <button id="btnPagePayRazorpay" type="button" class="btn-pay-modern" onclick="executePageRazorpayPayment()">
+              <button id="btnPagePayRazorpay" type="button" class="btn-photon" style="width: 100%; height: 50px; font-size: 0.95rem;" onclick="executePageRazorpayPayment()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
                 <span id="pagePayBtnLabel">Proceed to Pay ₹250 via Razorpay</span>
               </button>
 
               <!-- Direct Standard Checkout Test Button -->
-              <button id="btnPageTestRazorpay" type="button" class="btn-compact" style="width: 100%; height: 38px; margin-top: 6px; font-size: 0.8rem; background: rgba(37,99,235,0.08); color: #2563eb; border: 1px dashed rgba(37,99,235,0.35); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="openRazorpayStandardCheckout(100)">
+              <button id="btnPageTestRazorpay" type="button" class="btn-compact" style="width: 100%; height: 38px; font-size: 0.8rem; background: rgba(37,99,235,0.06); color: #2563eb; border: 1px dashed rgba(37,99,235,0.35); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="openRazorpayStandardCheckout(100)">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
                 <span>Test Standard Web Checkout (100 paise / ₹1)</span>
               </button>
 
-              <div style="display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.72rem; color: #94A3B8;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <div style="display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.74rem; color: var(--text-muted);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 <span>Automated instant credit • Official Razorpay verified partner</span>
               </div>
             </div>
@@ -5028,18 +5571,23 @@
 
           <!-- Bottom: Clean Transactions Statement & Scrapes Audit Card -->
           <div class="transactions-card">
-            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-              <div style="display: flex; align-items: center; gap: 8px; font-size: 1.05rem; font-weight: 800; color: var(--navy);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                <span>Transaction Statement & Audit Log</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 32px; height: 32px; border-radius: var(--radius-sm); background: rgba(37, 99, 235, 0.08); display: flex; align-items: center; justify-content: center; color: var(--brand-primary);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                </div>
+                <div>
+                  <div style="font-size: 1.05rem; font-weight: 800; color: var(--text-primary);">Transaction Statement & Audit Ledger</div>
+                  <div style="font-size: 0.74rem; color: var(--text-muted);">Real-time cryptographic audit trail of recharges & extraction deductions</div>
+                </div>
               </div>
-              <button class="btn-subtle-sm" onclick="loadPageTransactions()" type="button">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+              <button class="btn-subtle-sm" onclick="playHaptic('click'); loadPageTransactions();" type="button" style="height: 36px; padding: 0 14px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 600;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
                 <span>Refresh Statement</span>
               </button>
             </div>
 
-            <div class="table-scroll-wrap" style="max-height: 420px; overflow-x: auto; border: 1px solid var(--border); border-radius: 12px;">
+            <div class="statement-scroll-box">
               <table class="statement-table-modern">
                 <thead>
                   <tr>
@@ -5051,7 +5599,7 @@
                   </tr>
                 </thead>
                 <tbody id="pageWalletTxTableBody">
-                  <tr><td colspan="5" style="text-align: center; color: #94A3B8; padding: 28px;">Loading transaction statement...</td></tr>
+                  <tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 36px;">Loading transaction statement...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -5105,7 +5653,7 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
                 <span>Sign In</span>
               </button>
-              <button class="btn-hero-outline" onclick="handleUserLogout()" type="button" style="height: 40px; padding: 0 14px; color: #DC2626; border-color: #FECACA; background: #FFF5F5; font-size: 0.84rem;">
+              <button class="btn-hero-outline" id="profileSignOutBtn" onclick="handleUserLogout()" type="button" style="height: 40px; padding: 0 14px; color: #DC2626; border-color: #FECACA; background: #FFF5F5; font-size: 0.84rem;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                 <span>Sign Out</span>
               </button>
@@ -5149,6 +5697,10 @@
             <button class="profile-subtab-btn" data-tab="preferences" onclick="switchProfileTab('preferences')" type="button">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
               <span>Settings</span>
+            </button>
+            <button class="profile-subtab-btn" data-tab="support" onclick="switchProfileTab('support')" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>Help & Support</span>
             </button>
           </div>
 
@@ -5300,7 +5852,7 @@
                 </select>
               </div>
 
-              <div class="preference-row">
+              <div class="preference-row hide-on-mobile">
                 <div class="pref-text-group">
                   <div class="pref-title">Automatic Download on Completion</div>
                   <div class="pref-desc">Instantly download exported leads file upon scraper batch finish</div>
@@ -5311,7 +5863,7 @@
                 </label>
               </div>
 
-              <div class="preference-row">
+              <div class="preference-row hide-on-mobile">
                 <div class="pref-text-group">
                   <div class="pref-title">Filter Duplicate Phone Numbers</div>
                   <div class="pref-desc">Skip identical telephone numbers across consecutive extraction queries</div>
@@ -5322,7 +5874,7 @@
                 </label>
               </div>
 
-              <div class="preference-row">
+              <div class="preference-row hide-on-mobile">
                 <div class="pref-text-group">
                   <div class="pref-title">Live Telemetry HUD Pulse</div>
                   <div class="pref-desc">Enable dynamic visual pulse indicators when leads stream into counter</div>
@@ -5333,7 +5885,7 @@
                 </label>
               </div>
 
-              <div class="preference-row">
+              <div class="preference-row hide-on-mobile">
                 <div class="pref-text-group">
                   <div class="pref-title">Notification Toast Alert Timing</div>
                   <div class="pref-desc">Duration toast feedback banners remain visible on screen</div>
@@ -5353,6 +5905,100 @@
             </form>
           </div>
 
+          <!-- TAB PANEL 5: Help & Support -->
+          <div class="profile-panel-card" id="profilePanel_support">
+            <div class="panel-header-row">
+              <div class="panel-title-group">
+                <div class="panel-main-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  <span>Help & Technical Support</span>
+                </div>
+                <div class="panel-sub-title">Submit a problem report, attach screenshots or error logs, and track ticket status</div>
+              </div>
+              <button type="button" class="btn-compact btn-secondary" onclick="loadUserSupportTickets()" style="font-size: 0.78rem; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: #ffffff; border-radius: 8px; cursor: pointer; color: var(--navy); font-weight: 700;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+                <span>Refresh Tickets</span>
+              </button>
+            </div>
+
+            <form id="supportTicketForm" onsubmit="handleSupportSubmit(event)" style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;">
+                <div class="form-group">
+                  <label class="form-label" style="font-weight: 700; color: var(--navy);">Issue Category</label>
+                  <select id="supportCategory" class="form-control" required style="font-weight: 600;">
+                    <option value="Payment / Wallet Recharge">💳 Payment / Wallet Recharge Issue</option>
+                    <option value="Lead Extraction Issue">🎯 Lead Extraction / Scraper Issue</option>
+                    <option value="Account & Sign-in">🔐 Account & Sign-in Assistance</option>
+                    <option value="Data Export / Download">📥 CSV / Excel Data Download Issue</option>
+                    <option value="Billing & Pricing">💰 Billing & Tariff Inquiry</option>
+                    <option value="Bug / Error Report">🐛 Bug / Technical Error Report</option>
+                    <option value="Other Inquiry">💬 Other General Inquiry</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" style="font-weight: 700; color: var(--navy);">Subject / Headline</label>
+                  <input type="text" id="supportSubject" class="form-control" placeholder="Brief summary (e.g. ₹250 deducted but wallet pending)" required />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" style="font-weight: 700; color: var(--navy);">Problem Details & Information</label>
+                <textarea id="supportMessage" class="form-control" rows="4" placeholder="Describe in detail what happened, any error messages displayed, and transaction IDs if applicable..." required style="resize: vertical; min-height: 95px;"></textarea>
+              </div>
+
+              <!-- Attachment Upload Area -->
+              <div class="form-group">
+                <label class="form-label" style="font-weight: 700; color: var(--navy); display: flex; align-items: center; justify-content: space-between;">
+                  <span>Attachment (Screenshot, Log, PDF or Image)</span>
+                  <span style="font-size: 0.72rem; color: #64748B; font-weight: 500;">Optional • Max 10MB</span>
+                </label>
+                <div id="supportDropZone" class="support-drop-zone" onclick="document.getElementById('supportAttachment').click()" ondragover="handleSupportDragOver(event)" ondragleave="handleSupportDragLeave(event)" ondrop="handleSupportDrop(event)" style="border: 2px dashed #CBD5E1; background: #F8FAFC; border-radius: 12px; padding: 18px; text-align: center; cursor: pointer; transition: all 0.2s ease;">
+                  <input type="file" id="supportAttachment" accept="image/*,.pdf,.txt,.log,.csv" style="display: none;" onchange="handleSupportFileSelect(this)" />
+                  <div id="supportDropPrompt" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(37,99,235,0.08); color: #2563EB; display: flex; align-items: center; justify-content: center;">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    </div>
+                    <div style="font-size: 0.88rem; font-weight: 700; color: var(--navy);">Click to upload screenshot or file</div>
+                    <div style="font-size: 0.75rem; color: #64748B;">Supports PNG, JPG, WebP, PDF, TXT, LOG</div>
+                  </div>
+                  <div id="supportFilePreview" style="display: none; align-items: center; justify-content: space-between; background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px; padding: 10px 14px;">
+                    <div style="display: flex; align-items: center; gap: 10px; text-align: left;">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                      <div>
+                        <div id="supportFileName" style="font-size: 0.85rem; font-weight: 700; color: #1E3A8A;">filename.png</div>
+                        <div id="supportFileSize" style="font-size: 0.72rem; color: #3B82F6;">0 KB</div>
+                      </div>
+                    </div>
+                    <button type="button" onclick="clearSupportFile(event)" style="background: none; border: none; color: #DC2626; font-weight: 700; font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                      <span>Remove</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; margin-top: 6px;">
+                <button type="submit" id="btnSubmitSupport" class="btn-hero-primary" style="height: 46px; padding: 0 28px; font-size: 0.92rem; display: inline-flex; align-items: center; gap: 8px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  <span>Send Problem Report</span>
+                </button>
+              </div>
+            </form>
+
+            <!-- User's Previous Support Tickets -->
+            <div style="border-top: 1px solid var(--border); padding-top: 18px; margin-top: 10px;">
+              <div style="font-size: 0.95rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+                <span>Your Submitted Support Tickets</span>
+                <span id="userTicketCountBadge" style="font-size: 0.74rem; background: #E2E8F0; color: #334155; padding: 2px 8px; border-radius: 999px; font-weight: 700;">0 Tickets</span>
+              </div>
+              <div id="userTicketsList" style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="text-align: center; padding: 24px; color: #94A3B8; font-size: 0.85rem;">
+                  No support tickets filed yet.
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -5367,10 +6013,16 @@
               <h1 class="view-title">Saved CSV Exports Manager</h1>
               <p class="view-subtitle">All your scraped campaigns saved safely with instant 1-click download</p>
             </div>
-            <button class="btn-hero-outline" onclick="openOutputFolderOnPC()" type="button" style="height: 40px; padding: 0 16px; font-size: 0.85rem;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
-              <span>Open PC Folder</span>
-            </button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="btn-hero-outline" onclick="loadPageFiles()" type="button" style="height: 40px; padding: 0 14px; font-size: 0.85rem;" title="Refresh Files List">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+                <span>Refresh</span>
+              </button>
+              <button class="btn-hero-outline" onclick="openOutputFolderOnPC()" type="button" style="height: 40px; padding: 0 16px; font-size: 0.85rem;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                <span>Open PC Folder</span>
+              </button>
+            </div>
           </div>
 
           <!-- Quick Search & File Metrics Strip -->
@@ -5483,8 +6135,8 @@
         <!-- Sign In Form -->
         <form id="loginForm" onsubmit="handleUserLoginSubmit(event)">
           <div class="form-group">
-            <label class="form-label">Email or Mobile Number</label>
-            <input type="text" id="loginIdentifier" class="form-control" placeholder="e.g. name@company.com or 9876543210" required />
+            <label class="form-label">Email, Mobile Number or Name</label>
+            <input type="text" id="loginIdentifier" class="form-control" placeholder="e.g. email, mobile (9876543210), or name" required />
           </div>
           <div class="form-group">
             <label class="form-label">Password</label>
@@ -5854,6 +6506,232 @@
       document.querySelectorAll('.profile-panel-card').forEach(panel => {
         panel.classList.toggle('active', panel.id === `profilePanel_${tabName}`);
       });
+      if (tabName === 'support') {
+        loadUserSupportTickets();
+      }
+    }
+
+    // =========================================================================
+    // PROFILE HELP & SUPPORT TICKETS CONTROLLER
+    // =========================================================================
+    function handleSupportFileSelect(input) {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+      if (file.size > 10 * 1024 * 1024) {
+        showToast('File size exceeds 10MB limit. Please select a smaller file.');
+        input.value = '';
+        return;
+      }
+      document.getElementById('supportDropPrompt').style.display = 'none';
+      const preview = document.getElementById('supportFilePreview');
+      preview.style.display = 'flex';
+      document.getElementById('supportFileName').textContent = file.name;
+      const sizeKb = Math.round(file.size / 1024);
+      document.getElementById('supportFileSize').textContent = sizeKb > 1024 ? `${(sizeKb / 1024).toFixed(1)} MB` : `${sizeKb} KB`;
+    }
+
+    function clearSupportFile(event) {
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+      const inp = document.getElementById('supportAttachment');
+      if (inp) inp.value = '';
+      const prompt = document.getElementById('supportDropPrompt');
+      const preview = document.getElementById('supportFilePreview');
+      if (prompt) prompt.style.display = 'flex';
+      if (preview) preview.style.display = 'none';
+    }
+
+    function handleSupportDragOver(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const zone = document.getElementById('supportDropZone');
+      if (zone) {
+        zone.style.borderColor = '#2563EB';
+        zone.style.background = '#EFF6FF';
+      }
+    }
+
+    function handleSupportDragLeave(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const zone = document.getElementById('supportDropZone');
+      if (zone) {
+        zone.style.borderColor = '#CBD5E1';
+        zone.style.background = '#F8FAFC';
+      }
+    }
+
+    function handleSupportDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      handleSupportDragLeave(e);
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        const fileInput = document.getElementById('supportAttachment');
+        fileInput.files = e.dataTransfer.files;
+        handleSupportFileSelect(fileInput);
+      }
+    }
+
+    async function handleSupportSubmit(event) {
+      event.preventDefault();
+      if (!currentUser) {
+        showToast('Please sign in or create an account to file a support ticket.');
+        openAuthModal('login');
+        return;
+      }
+
+      const subject = document.getElementById('supportSubject').value.trim();
+      const message = document.getElementById('supportMessage').value.trim();
+      const category = document.getElementById('supportCategory').value;
+      const fileInp = document.getElementById('supportAttachment');
+      const submitBtn = document.getElementById('btnSubmitSupport');
+
+      if (!subject || !message) {
+        showToast('Please fill in both the subject and problem details.');
+        return;
+      }
+
+      const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.7';
+        submitBtn.innerHTML = `
+          <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor"></path></svg>
+          <span>Uploading & Sending...</span>
+        `;
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('category', category);
+        formData.append('subject', subject);
+        formData.append('message', message);
+        if (fileInp && fileInp.files && fileInp.files[0]) {
+          formData.append('attachment', fileInp.files[0]);
+        }
+
+        const res = await fetch('/api/support/tickets', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${currentUserToken}`
+          },
+          body: formData
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.error || 'Failed to submit support ticket.');
+          return;
+        }
+
+        showToast('Support ticket sent! Admin panel has been notified.');
+        document.getElementById('supportSubject').value = '';
+        document.getElementById('supportMessage').value = '';
+        clearSupportFile();
+        loadUserSupportTickets();
+      } catch (err) {
+        showToast('Ticket submission error: ' + err.message);
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '1';
+          submitBtn.innerHTML = originalBtnHtml;
+        }
+      }
+    }
+
+    async function loadUserSupportTickets() {
+      const container = document.getElementById('userTicketsList');
+      const badge = document.getElementById('userTicketCountBadge');
+      if (!container) return;
+
+      if (!currentUser) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 24px; color: #94A3B8; font-size: 0.85rem;">
+            Please sign in to view your previous support tickets.
+          </div>
+        `;
+        if (badge) badge.textContent = '0 Tickets';
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/support/my-tickets', {
+          headers: { 'Authorization': `Bearer ${currentUserToken}` }
+        });
+        const data = await res.json();
+        const tickets = data.tickets || [];
+        if (badge) badge.textContent = `${tickets.length} Ticket${tickets.length === 1 ? '' : 's'}`;
+
+        if (!tickets.length) {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 24px; color: #94A3B8; font-size: 0.85rem;">
+              No support tickets filed yet. All systems operating normally.
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = tickets.map(t => {
+          let statusBadge = '<span style="background: #FEF3C7; color: #D97706; padding: 3px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 800;">PENDING REVIEW</span>';
+          if (t.status === 'in_progress') {
+            statusBadge = '<span style="background: #EFF6FF; color: #2563EB; padding: 3px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 800;">IN PROGRESS</span>';
+          } else if (t.status === 'resolved') {
+            statusBadge = '<span style="background: #DCFCE7; color: #16A34A; padding: 3px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 800;">RESOLVED</span>';
+          }
+
+          let attachmentHtml = '';
+          if (t.attachment_path) {
+            attachmentHtml = `
+              <div style="margin-top: 8px;">
+                <a href="${escapeHtml(t.attachment_path)}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.76rem; color: #2563eb; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 4px 10px; border-radius: 6px; text-decoration: none; font-weight: 700;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                  <span>${escapeHtml(t.attachment_filename || 'View Attached Screenshot / Log')}</span>
+                </a>
+              </div>
+            `;
+          }
+
+          let adminNoteHtml = '';
+          if (t.admin_notes) {
+            adminNoteHtml = `
+              <div style="margin-top: 10px; padding: 10px 12px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; font-size: 0.79rem; color: #166534;">
+                <div style="font-weight: 800; margin-bottom: 2px; display: flex; align-items: center; gap: 6px;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Admin Resolution Note:</span>
+                </div>
+                <div style="white-space: pre-wrap; font-weight: 500;">${escapeHtml(t.admin_notes)}</div>
+              </div>
+            `;
+          }
+
+          return `
+            <div style="background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 0.75rem; font-weight: 800; color: #2563EB; background: #EFF6FF; padding: 2px 7px; border-radius: 6px;">${escapeHtml(t.category)}</span>
+                  <span style="font-size: 0.88rem; font-weight: 800; color: var(--navy);">${escapeHtml(t.subject)}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 0.72rem; color: #94A3B8;">${escapeHtml(t.created_at)}</span>
+                  ${statusBadge}
+                </div>
+              </div>
+              <div style="font-size: 0.82rem; color: #475569; line-height: 1.5; white-space: pre-wrap;">${escapeHtml(t.message)}</div>
+              ${attachmentHtml}
+              ${adminNoteHtml}
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 20px; color: #EF4444; font-size: 0.82rem;">
+            Error loading tickets: ${escapeHtml(err.message)}
+          </div>
+        `;
+      }
     }
 
     function loadUserPreferences() {
@@ -5943,7 +6821,7 @@
         const pageHeroBal = document.getElementById('walletPageHeroBal');
         if (pageHeroBal) pageHeroBal.textContent = `₹${bal.toFixed(2)}`;
         const pageHeroLeads = document.getElementById('walletPageHeroLeads');
-        if (pageHeroLeads) pageHeroLeads.textContent = leadsAvailable.toLocaleString();
+        if (pageHeroLeads) pageHeroLeads.textContent = `${leadsAvailable.toLocaleString()} Leads`;
 
         // Dedicated Profile View Elements
         const profAvatar = document.getElementById('profilePageAvatar');
@@ -5971,8 +6849,10 @@
 
         const profileSignInBtn = document.getElementById('profileSignInBtn');
         const profileRechargeBtn = document.getElementById('profileRechargeBtn');
+        const profileSignOutBtn = document.getElementById('profileSignOutBtn');
         if (profileSignInBtn) profileSignInBtn.style.display = 'none';
         if (profileRechargeBtn) profileRechargeBtn.style.display = 'inline-flex';
+        if (profileSignOutBtn) profileSignOutBtn.style.display = 'inline-flex';
 
         syncProfileViewInputs();
       } else {
@@ -5982,8 +6862,10 @@
 
         const profileSignInBtn = document.getElementById('profileSignInBtn');
         const profileRechargeBtn = document.getElementById('profileRechargeBtn');
+        const profileSignOutBtn = document.getElementById('profileSignOutBtn');
         if (profileSignInBtn) profileSignInBtn.style.display = 'inline-flex';
         if (profileRechargeBtn) profileRechargeBtn.style.display = 'none';
+        if (profileSignOutBtn) profileSignOutBtn.style.display = 'none';
 
         const dockBadge = document.getElementById('dockWalletBadge');
         if (dockBadge) dockBadge.textContent = '₹0';
@@ -5991,8 +6873,14 @@
         const pageHeroBal = document.getElementById('walletPageHeroBal');
         if (pageHeroBal) pageHeroBal.textContent = '₹0.00';
         const pageHeroLeads = document.getElementById('walletPageHeroLeads');
-        if (pageHeroLeads) pageHeroLeads.textContent = '0';
+        if (pageHeroLeads) pageHeroLeads.textContent = '0 Leads';
 
+        const profAvatar = document.getElementById('profilePageAvatar');
+        if (profAvatar) profAvatar.textContent = 'G';
+        const profRole = document.getElementById('profilePageRoleBadge');
+        if (profRole) profRole.textContent = 'GUEST';
+        const profPhone = document.getElementById('profilePagePhone');
+        if (profPhone) profPhone.textContent = 'Sign in to access features';
         const profName = document.getElementById('profilePageName');
         if (profName) profName.textContent = 'Guest User';
         const profEmail = document.getElementById('profilePageEmail');
@@ -6001,6 +6889,10 @@
         if (statBal) statBal.textContent = '₹0.00';
         const statLeads = document.getElementById('profileStatLeads');
         if (statLeads) statLeads.textContent = '0 Leads';
+        const statBonus = document.getElementById('profileStatBonus');
+        if (statBonus) statBonus.textContent = '₹100.00 Available';
+        const quickBal = document.getElementById('profileWalletQuickBal');
+        if (quickBal) quickBal.textContent = '₹0.00';
       }
     }
 
@@ -6194,7 +7086,10 @@
         if (data.is_new) {
           // NEW Google Account -> Ask for Full Name, Password, and Mobile Number!
           closeAuthModal();
-          openGoogleCompleteModal(data.email, data.name, data.google_id);
+          const gEmail = data.email || (data.user && data.user.email) || '';
+          const gName = data.name || (data.user && data.user.name) || '';
+          const gId = data.google_id || (data.user && data.user.google_id) || '';
+          openGoogleCompleteModal(gEmail, gName, gId);
           showToast('Google verified! Please enter your name, mobile number & password to claim ₹100.');
         } else {
           // Existing Google Account -> Direct sign in
@@ -6318,24 +7213,70 @@
       }
     }
 
+    // =========================================================================
+    // MODAL RECHARGE CONTROLLER & BUTTON STATE
+    // =========================================================================
+    function setModalPayButtonLoading(isLoading, amount) {
+      const btn = document.getElementById('btnPayRazorpay');
+      if (!btn) return;
+      const amt = amount || selectedRecharge || 250;
+      if (isLoading) {
+        btn.disabled = true;
+        btn.style.opacity = '0.75';
+        btn.style.cursor = 'wait';
+        btn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor"></path></svg>
+          <span id="payBtnLabel">Opening Secure Checkout...</span>
+        `;
+      } else {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+        btn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span id="payBtnLabel">Pay ₹${amt} via Razorpay (UPI, GPay, Cards)</span>
+        `;
+      }
+    }
+
     function selectRechargePack(amount) {
       selectedRecharge = amount;
-      document.querySelectorAll('.pack-card').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('#walletModal .pack-card').forEach(c => c.classList.remove('active'));
       const activeCard = document.getElementById(`pack${amount}`);
       if (activeCard) activeCard.classList.add('active');
 
-      document.getElementById('customRechargeAmount').value = amount;
-      document.getElementById('payBtnLabel').textContent = `Pay ₹${amount} via Razorpay (UPI, GPay, Cards)`;
+      const customInp = document.getElementById('customRechargeAmount');
+      if (customInp) customInp.value = amount;
+
+      const btn = document.getElementById('btnPayRazorpay');
+      const btnLabel = document.getElementById('payBtnLabel');
+      if (btnLabel) {
+        btnLabel.textContent = `Pay ₹${amount} via Razorpay (UPI, GPay, Cards)`;
+      } else if (btn) {
+        btn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span id="payBtnLabel">Pay ₹${amount} via Razorpay (UPI, GPay, Cards)</span>
+        `;
+      }
     }
 
     function handleCustomAmount(val) {
       const num = parseFloat(val) || 0;
       selectedRecharge = num;
-      document.querySelectorAll('.pack-card').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('#walletModal .pack-card').forEach(c => c.classList.remove('active'));
       const matchingPack = document.getElementById(`pack${num}`);
       if (matchingPack) matchingPack.classList.add('active');
 
-      document.getElementById('payBtnLabel').textContent = `Pay ₹${num} via Razorpay (UPI, GPay, Cards)`;
+      const btn = document.getElementById('btnPayRazorpay');
+      const btnLabel = document.getElementById('payBtnLabel');
+      if (btnLabel) {
+        btnLabel.textContent = `Pay ₹${num} via Razorpay (UPI, GPay, Cards)`;
+      } else if (btn) {
+        btn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span id="payBtnLabel">Pay ₹${num} via Razorpay (UPI, GPay, Cards)</span>
+        `;
+      }
     }
 
     async function executeRazorpayPayment() {
@@ -6349,9 +7290,7 @@
         return;
       }
 
-      const btn = document.getElementById('btnPayRazorpay');
-      btn.disabled = true;
-      btn.textContent = 'Initiating Secure Order...';
+      setModalPayButtonLoading(true, amount);
 
       try {
         const orderRes = await fetch('/api/wallet/create-order', {
@@ -6365,7 +7304,7 @@
         const orderData = await orderRes.json();
         if (!orderRes.ok) {
           showToast(orderData.error || 'Failed to create payment order.');
-          btn.disabled = false;
+          setModalPayButtonLoading(false, amount);
           selectRechargePack(amount);
           return;
         }
@@ -6396,7 +7335,7 @@
               showToast(vData.error || 'Payment verification failed.');
             }
           }
-          btn.disabled = false;
+          setModalPayButtonLoading(false, amount);
           selectRechargePack(amount);
         } else {
           const options = {
@@ -6431,7 +7370,7 @@
                   currentUser.wallet_balance = vData.new_balance;
                   updateUserHeaderUI();
                   closeWalletModal();
-                  showToast('Payment Successful');
+                  showToast(`Payment Successful! ₹${amount} added to wallet.`);
                 } else {
                   closeWalletModal();
                   showToast('Payment recorded. Awaiting Admin Approval.');
@@ -6439,12 +7378,14 @@
               } else {
                 showToast(vData.error || 'Payment signature verification failed.');
               }
+              setModalPayButtonLoading(false, amount);
+              selectRechargePack(amount);
             },
             modal: {
               ondismiss: function () {
-                btn.disabled = false;
+                setModalPayButtonLoading(false, amount);
                 selectRechargePack(amount);
-                showToast('Payment cancelled by user.');
+                showToast('Payment cancelled or checkout window closed.');
               }
             }
           };
@@ -6452,15 +7393,15 @@
           const rzp = new Razorpay(options);
           rzp.on('payment.failed', function (failResp) {
             console.error('Razorpay payment failed:', failResp.error);
-            showToast(`❌ Payment failed: ${failResp.error.description || failResp.error.reason || 'Payment could not be processed'}`);
-            btn.disabled = false;
+            showToast(`Payment failed: ${failResp.error.description || failResp.error.reason || 'Payment could not be processed'}`);
+            setModalPayButtonLoading(false, amount);
             selectRechargePack(amount);
           });
           rzp.open();
         }
       } catch (err) {
         showToast('Payment error: ' + err.message);
-        btn.disabled = false;
+        setModalPayButtonLoading(false, amount);
         selectRechargePack(amount);
       }
     }
@@ -6510,11 +7451,35 @@
     }
 
     // =========================================================================
-    // DEDICATED WALLET PAGE CONTROLLER
+    // DEDICATED WALLET PAGE CONTROLLER & SAFE BUTTON STATE
     // =========================================================================
     let pageSelectedRecharge = 250;
 
+    function setPagePayButtonLoading(isLoading, amount) {
+      const btn = document.getElementById('btnPagePayRazorpay');
+      if (!btn) return;
+      const amt = amount || pageSelectedRecharge || 250;
+      if (isLoading) {
+        btn.disabled = true;
+        btn.style.opacity = '0.75';
+        btn.style.cursor = 'wait';
+        btn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor"></path></svg>
+          <span id="pagePayBtnLabel">Opening Secure Checkout...</span>
+        `;
+      } else {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+        btn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+          <span id="pagePayBtnLabel">Proceed to Pay ₹${amt} via Razorpay</span>
+        `;
+      }
+    }
+
     function selectPageRechargePack(amount) {
+      if (window.playHaptic) window.playHaptic('click');
       pageSelectedRecharge = amount;
       document.querySelectorAll('#viewWallet .pack-card').forEach(c => c.classList.remove('active'));
       const activeCard = document.getElementById(`pagePack${amount}`);
@@ -6527,8 +7492,16 @@
       const equivEl = document.getElementById('pageCustomLeadsEquiv');
       if (equivEl) equivEl.textContent = `≈ ${leads.toLocaleString()} leads`;
 
+      const btn = document.getElementById('btnPagePayRazorpay');
       const btnLabel = document.getElementById('pagePayBtnLabel');
-      if (btnLabel) btnLabel.textContent = `Proceed to Pay ₹${amount} via Razorpay`;
+      if (btnLabel) {
+        btnLabel.textContent = `Proceed to Pay ₹${amount} via Razorpay`;
+      } else if (btn) {
+        btn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+          <span id="pagePayBtnLabel">Proceed to Pay ₹${amount} via Razorpay</span>
+        `;
+      }
     }
 
     function handlePageCustomAmount(val) {
@@ -6542,8 +7515,16 @@
       const equivEl = document.getElementById('pageCustomLeadsEquiv');
       if (equivEl) equivEl.textContent = `≈ ${leads.toLocaleString()} leads`;
 
+      const btn = document.getElementById('btnPagePayRazorpay');
       const btnLabel = document.getElementById('pagePayBtnLabel');
-      if (btnLabel) btnLabel.textContent = `Proceed to Pay ₹${num} via Razorpay`;
+      if (btnLabel) {
+        btnLabel.textContent = `Proceed to Pay ₹${num} via Razorpay`;
+      } else if (btn) {
+        btn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+          <span id="pagePayBtnLabel">Proceed to Pay ₹${num} via Razorpay</span>
+        `;
+      }
     }
 
     function setCalcLeads(leads, btnEl) {
@@ -6590,11 +7571,7 @@
         return;
       }
 
-      const btn = document.getElementById('btnPagePayRazorpay');
-      if (btn) {
-        btn.disabled = true;
-        btn.textContent = 'Initiating Secure Order...';
-      }
+      setPagePayButtonLoading(true, amount);
 
       try {
         const orderRes = await fetch('/api/wallet/create-order', {
@@ -6608,10 +7585,8 @@
         const orderData = await orderRes.json();
         if (!orderRes.ok) {
           showToast(orderData.error || 'Failed to create payment order.');
-          if (btn) {
-            btn.disabled = false;
-            selectPageRechargePack(amount);
-          }
+          setPagePayButtonLoading(false, amount);
+          selectPageRechargePack(amount);
           return;
         }
 
@@ -6641,10 +7616,8 @@
               showToast(vData.error || 'Payment verification failed.');
             }
           }
-          if (btn) {
-            btn.disabled = false;
-            selectPageRechargePack(amount);
-          }
+          setPagePayButtonLoading(false, amount);
+          selectPageRechargePack(amount);
         } else {
           const options = {
             key: orderData.key_id,
@@ -6678,25 +7651,21 @@
                   currentUser.wallet_balance = vData.new_balance;
                   updateUserHeaderUI();
                   loadPageTransactions();
-                  showToast('Payment Successful');
+                  showToast(`Payment Successful! ₹${amount} added to wallet.`);
                 } else {
                   showToast('Payment recorded. Awaiting Admin Approval.');
                 }
               } else {
                 showToast(vData.error || 'Payment signature verification failed.');
               }
-              if (btn) {
-                btn.disabled = false;
-                selectPageRechargePack(amount);
-              }
+              setPagePayButtonLoading(false, amount);
+              selectPageRechargePack(amount);
             },
             modal: {
               ondismiss: function () {
-                showToast('Payment cancelled by user.');
-                if (btn) {
-                  btn.disabled = false;
-                  selectPageRechargePack(amount);
-                }
+                setPagePayButtonLoading(false, amount);
+                selectPageRechargePack(amount);
+                showToast('Payment cancelled or checkout closed.');
               }
             }
           };
@@ -6704,19 +7673,15 @@
           rzp.on('payment.failed', function (failResp) {
             console.error('Razorpay payment failed:', failResp.error);
             showToast(`❌ Payment failed: ${failResp.error.description || failResp.error.reason || 'Payment could not be processed'}`);
-            if (btn) {
-              btn.disabled = false;
-              selectPageRechargePack(amount);
-            }
+            setPagePayButtonLoading(false, amount);
+            selectPageRechargePack(amount);
           });
           rzp.open();
         }
       } catch (err) {
         showToast('Payment error: ' + err.message);
-        if (btn) {
-          btn.disabled = false;
-          selectPageRechargePack(amount);
-        }
+        setPagePayButtonLoading(false, amount);
+        selectPageRechargePack(amount);
       }
     }
 
@@ -6990,16 +7955,19 @@
 
       if (totalCount === 0) {
         const emptyMsg = `
-          <div style="text-align:center; padding:54px 20px; color:#64748B;">
-            <div style="width:58px; height:58px; border-radius:16px; background:#F1F5F9; display:inline-flex; align-items:center; justify-content:center; margin-bottom:14px; box-shadow:0 2px 8px rgba(15,23,42,0.04);">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <div style="text-align:center; padding:48px 20px; color:#64748B;">
+            <div style="width:64px; height:64px; border-radius:18px; background:#EFF6FF; border:1px solid #BFDBFE; display:inline-flex; align-items:center; justify-content:center; margin-bottom:14px; box-shadow:0 4px 12px rgba(37,99,235,0.08);">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             </div>
-            <div style="font-size:1.1rem; font-weight:800; color:var(--navy); margin-bottom:5px;">No Saved Exports Yet</div>
-            <p style="font-size:0.84rem; color:#64748B; max-width:360px; margin:0 auto 18px; line-height:1.4;">New account detected. Your exported CSV and Excel files will appear here as soon as you run an extraction.</p>
-            <button class="btn-hero-primary" onclick="navigateToView('scraper')" type="button" style="height:42px; padding:0 22px; font-size:0.86rem; display:inline-flex; align-items:center; gap:7px; margin:0 auto;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              <span>Start Lead Extraction</span>
-            </button>
+            <div style="font-size:1.15rem; font-weight:800; color:var(--navy); margin-bottom:6px;">No Saved Exports Yet</div>
+            <p style="font-size:0.84rem; color:#64748B; max-width:380px; margin:0 auto 20px; line-height:1.5;">${currentUser ? 'Your exported CSV campaign files will appear here automatically with 1-click download as soon as you run an extraction.' : 'Sign in or launch an extraction campaign to export high-conversion B2B lead datasets.'}</p>
+            <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+              <button class="btn-hero-primary" onclick="navigateToView('scraper')" type="button" style="height:42px; padding:0 22px; font-size:0.86rem; display:inline-flex; align-items:center; gap:7px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span>Start Lead Extraction</span>
+              </button>
+              ${!currentUser ? `<button class="btn-hero-outline" onclick="openAuthModal('login')" type="button" style="height:42px; padding:0 18px; font-size:0.86rem;">Sign In</button>` : ''}
+            </div>
           </div>
         `;
         if (tbody) tbody.innerHTML = `<tr><td colspan="5">${emptyMsg}</td></tr>`;
@@ -7012,17 +7980,27 @@
         tbody.innerHTML = files.map(f => `
           <tr>
             <td style="font-weight:700; color:#0f172a;">
-              <div style="display:flex; align-items:center; gap:8px;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                <span>${escapeHtml(f.name)}</span>
+              <div style="display:flex; align-items:center; gap:9px;">
+                <div style="width:28px; height:28px; border-radius:6px; background:#F0FDF4; border:1px solid #BBF7D0; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:2px; min-width:0;">
+                  <span style="font-size:0.88rem; font-weight:800; color:var(--navy);">${escapeHtml(f.name)}</span>
+                  <span style="font-size:0.7rem; color:#64748B;">CSV • Universal UTF-8 BOM</span>
+                </div>
               </div>
             </td>
-            <td><span style="color:#15803d; font-weight:700; background:#f0fdf4; padding:2px 8px; border-radius:4px;">${f.rows} leads</span></td>
-            <td style="color:#64748b; font-size:0.8rem;">${f.size_kb} KB</td>
+            <td>
+              <span style="color:#15803d; font-weight:700; background:#f0fdf4; border:1px solid #bbf7d0; padding:3px 9px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; font-size:0.82rem;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                <span>${f.rows} leads</span>
+              </span>
+            </td>
+            <td style="color:#475569; font-size:0.82rem; font-weight:600; font-family:'Plus Jakarta Sans',sans-serif;">${f.size_kb} KB</td>
             <td style="color:#64748b; font-size:0.8rem;">${escapeHtml(f.modified)}</td>
             <td style="text-align:right;">
-              <a href="/api/download/${encodeURIComponent(f.name)}" class="btn-subtle-sm" style="text-decoration:none;" download>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              <a href="/api/download/${encodeURIComponent(f.name)}" class="file-download-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:6px 14px; font-size:0.8rem; font-weight:700;" download title="Download CSV File">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                 <span>Download</span>
               </a>
             </td>
@@ -7036,22 +8014,25 @@
           <div class="file-card-mobile">
             <div class="file-card-left">
               <div class="file-icon-badge">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                <span style="font-size:0.6rem; margin-top:-2px;">CSV</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span style="font-size:0.58rem; font-weight:800; margin-top:-1px;">CSV</span>
               </div>
               <div class="file-info-group">
                 <div class="file-name-title" title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</div>
                 <div class="file-sub-details">
-                  <span class="file-leads-highlight">${f.rows} leads</span>
+                  <span class="file-leads-highlight" style="display:inline-flex; align-items:center; gap:3px;">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                    <span>${f.rows} leads</span>
+                  </span>
                   <span>•</span>
-                  <span>${f.size_kb} KB</span>
+                  <span style="font-weight:600; color:#475569;">${f.size_kb} KB</span>
                   <span>•</span>
                   <span>${escapeHtml(f.modified)}</span>
                 </div>
               </div>
             </div>
             <a href="/api/download/${encodeURIComponent(f.name)}" class="file-download-btn" download title="Download CSV file">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
               <span>Get</span>
             </a>
           </div>
@@ -7680,12 +8661,21 @@
       const btnStop = document.getElementById('btnStop');
       const statusDot = document.getElementById('statusDot');
       const statusLabel = document.getElementById('statusLabel');
+      const radar = document.getElementById('radarSweepDisc');
+      const radarTitle = document.getElementById('radarStatusTitle');
+      const radarBadge = document.getElementById('radarWorkerBadge');
+      const streamDot = document.getElementById('streamStatusDot');
 
       if (running) {
-        btnStart.style.display = 'none';
-        btnStop.style.display = 'inline-flex';
-        statusDot.className = 'status-dot pulsing';
-        statusLabel.textContent = 'Scanning...';
+        if (btnStart) btnStart.style.display = 'none';
+        if (btnStop) btnStop.style.display = 'inline-flex';
+        if (statusDot) statusDot.className = 'status-dot pulsing';
+        if (statusLabel) statusLabel.textContent = 'Scanning...';
+        if (radar) radar.classList.add('active');
+        document.body.classList.add('extracting-active');
+        if (radarTitle) radarTitle.textContent = 'Scanning Google Maps Feed...';
+        if (radarBadge) radarBadge.textContent = '10 Workers Live';
+        if (streamDot) streamDot.style.background = 'var(--status-emerald)';
 
         seconds = 0;
         clearInterval(timer);
@@ -7695,10 +8685,15 @@
         }, 1000);
       } else {
         clearInterval(timer);
-        btnStart.style.display = 'inline-flex';
-        btnStop.style.display = 'none';
-        statusDot.className = 'status-dot';
-        statusLabel.textContent = 'Completed';
+        if (btnStart) btnStart.style.display = 'inline-flex';
+        if (btnStop) btnStop.style.display = 'none';
+        if (statusDot) statusDot.className = 'status-dot';
+        if (statusLabel) statusLabel.textContent = 'Completed';
+        if (radar) radar.classList.remove('active');
+        document.body.classList.remove('extracting-active');
+        if (radarTitle) radarTitle.textContent = 'Engine Standby';
+        if (radarBadge) radarBadge.textContent = 'Ready';
+        if (streamDot) streamDot.style.background = 'var(--status-emerald)';
       }
     }
 
@@ -7721,9 +8716,12 @@
       const totalCount = allItems.length;
       const phoneCount = allItems.filter(i => i.phone && i.phone.trim()).length;
       const webCount = allItems.filter(i => i.website && i.website.trim()).length;
+      const matchRate = totalCount > 0 ? Math.round((phoneCount / totalCount) * 100) : 0;
 
       document.getElementById('metricTotalCount').textContent = totalCount;
       document.getElementById('metricPhoneCount').textContent = phoneCount;
+      const matchRateEl = document.getElementById('metricMatchRate');
+      if (matchRateEl) matchRateEl.textContent = `${matchRate}%`;
       document.getElementById('tabCountAll').textContent = totalCount;
       document.getElementById('tabCountPhone').textContent = phoneCount;
       document.getElementById('tabCountWeb').textContent = webCount;
@@ -7770,7 +8768,7 @@
           <span class="lead-phone-pill">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             <span>${escapeHtml(it.phone)}</span>
-            <button class="btn-subtle-sm" style="height: 20px; padding: 0 4px; font-size: 0.65rem;" onclick="copyText('${escapeHtml(it.phone)}')" title="Copy Phone">
+            <button class="btn-subtle-sm" style="height: 20px; padding: 0 4px; font-size: 0.65rem;" onclick="event.stopPropagation(); copyText('${escapeHtml(it.phone)}')" title="Copy Phone">
               Copy
             </button>
           </span>
@@ -7784,19 +8782,19 @@
         ` : '<span style="color: #cbd5e1;">—</span>';
 
         const link = it.link ? `
-          <a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" class="map-link-btn">
+          <a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" class="map-link-btn" onclick="event.stopPropagation()">
             <span>Map</span>
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
           </a>
         ` : '—';
 
-        // Table Row (Desktop)
+        // Table Row (Desktop) - Clickable to open dossier drawer
         rowsHtml += `
-          <tr>
-            <td style="color: #94a3b8; font-weight: 600;">${idx + 1}</td>
-            <td class="lead-title">${escapeHtml(it.name || 'Unknown')}</td>
+          <tr onclick="openLeadDossier(${idx})" style="cursor: pointer;" title="Click row to open detailed Lead Dossier">
+            <td style="color: var(--text-muted); font-weight: 600; font-family: var(--font-mono);">${idx + 1}</td>
+            <td class="lead-title" style="font-weight: 700; color: var(--text-primary);">${escapeHtml(it.name || 'Unknown')}</td>
             <td>${phone}</td>
-            <td style="max-width: 260px; color: #475569;">${escapeHtml(it.address || it.category || '—')}</td>
+            <td style="max-width: 260px; color: var(--text-secondary);">${escapeHtml(it.address || it.category || '—')}</td>
             <td>${rating}</td>
             <td>${link}</td>
           </tr>
@@ -8011,6 +9009,7 @@
         if (!exists) {
           allItems.unshift(item);
           renderTable();
+          if (typeof window.playHaptic === 'function') window.playHaptic('radar_ping');
         }
       });
 
@@ -8018,17 +9017,21 @@
         const p = JSON.parse(e.data);
         if (p.phase) {
           document.getElementById('statusLabel').textContent = p.phase;
+          const rTitle = document.getElementById('radarStatusTitle');
+          if (rTitle) rTitle.textContent = p.phase;
         }
       });
 
       eventSource.addEventListener('log', e => {
         const log = JSON.parse(e.data);
         const box = document.getElementById('statusLogBox');
-        const line = document.createElement('div');
-        line.className = `log-line ${log.level}`;
-        line.textContent = `• ${log.text}`;
-        box.appendChild(line);
-        box.scrollTop = box.scrollHeight;
+        if (box) {
+          const line = document.createElement('div');
+          line.className = `log-line ${log.level}`;
+          line.textContent = `• ${log.text}`;
+          box.appendChild(line);
+          box.scrollTop = box.scrollHeight;
+        }
       });
 
       eventSource.addEventListener('completed', e => {
@@ -8039,14 +9042,19 @@
           lastDownloadUrl = snap.files.download_url;
         }
 
+        if (typeof window.playHaptic === 'function') window.playHaptic('success');
+        if (typeof window.showPhotonToast === 'function') {
+          window.showPhotonToast('Extraction Complete', `${allItems.length} verified leads extracted.`, 'success', 'Download CSV', downloadCurrentCSV);
+        }
+
         // Show prominent glass completion banner
         const banner = document.getElementById('completionBanner');
         const title = document.getElementById('bannerSuccessTitle');
         const sub = document.getElementById('bannerSuccessSub');
         
-        title.textContent = `Extraction Complete! ${allItems.length} Verified Leads Ready`;
-        sub.textContent = `Saved to ${snap.files?.details || 'CSV'}. Click below to download.`;
-        banner.style.display = 'flex';
+        if (title) title.textContent = `Extraction Complete! ${allItems.length} Verified Leads Ready`;
+        if (sub) sub.textContent = `Saved to ${snap.files?.details || 'CSV'}. Click below to download.`;
+        if (banner) banner.style.display = 'flex';
 
         showToast(`Extraction complete! ${allItems.length} leads found.`);
 
@@ -8233,5 +9241,84 @@
     </div>
   </div>
 
+  <!-- SLIDE-OVER LEAD DOSSIER (INSPECTOR DRAWER) -->
+  <div id="leadDossierDrawer" class="lead-dossier-drawer" aria-hidden="true">
+    <div class="dossier-header">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(59, 130, 246, 0.15); color: var(--brand-primary); display: flex; align-items: center; justify-content: center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Lead Dossier</div>
+          <div id="dossierCategory" style="font-size: 0.82rem; font-weight: 700; color: var(--brand-primary);">Category</div>
+        </div>
+      </div>
+      <button onclick="closeLeadDossier()" class="icon-toggle-btn" style="width: 32px; height: 32px;" title="Close Dossier (Esc)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="dossier-body">
+      <!-- Title & Ratings -->
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <h2 id="dossierTitle" style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); line-height: 1.25;">Business Name</h2>
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <div id="dossierRatingBadge" style="display: inline-flex; align-items: center; gap: 4px; font-weight: 700; font-size: 0.8rem; background: var(--status-amber-bg); color: var(--status-amber); padding: 3px 8px; border-radius: 999px;">
+            ★ <span id="dossierRatingVal">4.8</span> (<span id="dossierReviewsVal">0 reviews</span>)
+          </div>
+          <div id="dossierVerifiedBadge" class="pill-verified-phone">
+            <span class="balance-pulse-dot" style="width: 6px; height: 6px;"></span>
+            <span>Verified Phone</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <a id="dossierWhatsAppBtn" href="#" target="_blank" class="btn-photon" style="height: 42px; font-size: 0.84rem; background: linear-gradient(135deg, #10B981, #059669); text-decoration: none; justify-content: center;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a id="dossierCallBtn" href="#" class="btn-photon" style="height: 42px; font-size: 0.84rem; text-decoration: none; justify-content: center;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>Direct Call</span>
+        </a>
+      </div>
+
+      <!-- Contact & Details Grid -->
+      <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;">
+          <div>
+            <div style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Phone Number</div>
+            <div id="dossierPhone" style="font-family: var(--font-mono); font-size: 1.05rem; font-weight: 700; color: var(--status-emerald); margin-top: 2px;">—</div>
+          </div>
+          <button id="dossierCopyPhoneBtn" class="icon-toggle-btn" style="height: 28px; padding: 0 8px; font-size: 0.72rem; width: auto;" title="Copy Phone">Copy</button>
+        </div>
+
+        <div>
+          <div style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Street Address</div>
+          <div id="dossierAddress" style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 2px; line-height: 1.4;">—</div>
+        </div>
+
+        <div>
+          <div style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Opening Schedule</div>
+          <div id="dossierSchedule" style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px;">—</div>
+        </div>
+
+        <div>
+          <div style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Website</div>
+          <div id="dossierWebsite" style="font-size: 0.82rem; margin-top: 2px;">—</div>
+        </div>
+      </div>
+
+      <!-- External Google Maps Link -->
+      <a id="dossierMapBtn" href="#" target="_blank" rel="noopener" class="btn-photon" style="background: var(--bg-surface-elevated); color: var(--text-primary); border: 1px solid var(--border-medium); text-decoration: none; justify-content: center; height: 44px; font-size: 0.84rem;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+        <span>Open in Google Maps</span>
+      </a>
+    </div>
+  </div>
+
+  <script src="/static/js/ui-core.js"></script>
 </body>
 </html>
