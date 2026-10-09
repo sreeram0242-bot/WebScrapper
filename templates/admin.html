@@ -1138,29 +1138,131 @@
     </div>
   </div>
 
-  <!-- Adjust Wallet Modal -->
+  <!-- Adjust Wallet Modal (Add / Deduct / Set Exact Balance) -->
   <div class="modal-backdrop" id="walletModal">
-    <div class="modal-box">
+    <div class="modal-box" style="max-width: 480px;">
       <div class="modal-header">
-        <div class="modal-title" id="modalUserName">Adjust User Wallet</div>
+        <div>
+          <div class="modal-title" id="modalUserName">Adjust User Wallet</div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;" id="modalUserSub">Manage balance with atomic audit logging</div>
+        </div>
         <button class="close-btn" onclick="closeModal('walletModal')">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
+
       <form onsubmit="submitWalletAdjustment(event)" style="display: flex; flex-direction: column; gap: 14px;">
         <input type="hidden" id="adjustUserId">
-        <div class="setting-item">
-          <label class="setting-label">Amount (₹)</label>
-          <input type="number" step="0.5" id="adjustAmount" class="input-control" placeholder="e.g. 100 or -50" required>
-          <span class="setting-hint">Use positive value to credit funds, negative to deduct.</span>
+        <input type="hidden" id="adjustCurrentBalance" value="0">
+
+        <!-- 3-Way Action Segmented Selector -->
+        <div>
+          <label class="setting-label" style="margin-bottom: 6px; display: block;">Adjustment Action</label>
+          <div class="wallet-action-group">
+            <button type="button" class="wallet-action-tab active-add" id="actionTabAdd" onclick="setWalletAdjustAction('add')">
+              <span>➕ Add Funds</span>
+            </button>
+            <button type="button" class="wallet-action-tab" id="actionTabReduce" onclick="setWalletAdjustAction('reduce')">
+              <span>➖ Deduct / Reduce</span>
+            </button>
+            <button type="button" class="wallet-action-tab" id="actionTabSet" onclick="setWalletAdjustAction('set')">
+              <span>🎯 Set Exact</span>
+            </button>
+          </div>
         </div>
-        <div class="setting-item">
-          <label class="setting-label">Reason / Reference</label>
-          <input type="text" id="adjustReason" class="input-control" placeholder="e.g. Loyalty Bonus or Refund" required>
+
+        <!-- Live Calculation Preview -->
+        <div class="wallet-preview-box" id="walletPreviewBox">
+          <div class="preview-col">
+            <span class="preview-label">CURRENT</span>
+            <span class="preview-val" id="prevCurrentBal">₹0.00</span>
+          </div>
+          <div class="preview-operator" id="prevOperator">➕</div>
+          <div class="preview-col">
+            <span class="preview-label" id="prevAdjustLabel">ADD AMOUNT</span>
+            <span class="preview-val" id="prevAdjustAmt">₹0.00</span>
+          </div>
+          <div class="preview-operator">➔</div>
+          <div class="preview-col">
+            <span class="preview-label">NEW BALANCE</span>
+            <span class="preview-val highlight-green" id="prevNewBal">₹0.00</span>
+          </div>
         </div>
+
+        <!-- Amount Input -->
+        <div class="setting-item">
+          <label class="setting-label" id="adjustAmountLabel">Amount to Add (₹)</label>
+          <input type="number" step="0.25" min="0" id="adjustAmount" class="input-control" placeholder="Enter amount, e.g. 50" required oninput="updateWalletAdjustPreview()">
+          <span class="setting-hint" id="adjustAmountHint">Specify the amount to credit to this user's balance.</span>
+        </div>
+
+        <!-- Reason / Audit Trail -->
+        <div class="setting-item">
+          <label class="setting-label">Reason / Reference Note</label>
+          <input type="text" id="adjustReason" class="input-control" placeholder="e.g. Compensation, Promo bonus, or Refund deduction" required>
+          <span class="setting-hint">Recorded permanently into wallet transactions audit ledger.</span>
+        </div>
+
         <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px;">
           <button type="button" onclick="closeModal('walletModal')" class="btn-secondary">Cancel</button>
-          <button type="submit" class="btn-primary">Update Balance</button>
+          <button type="submit" id="adjustSubmitBtn" class="btn-primary">Update Balance</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Create User Modal -->
+  <div class="modal-backdrop" id="addUserModal">
+    <div class="modal-box" style="max-width: 500px;">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Create New User Account</div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Manually register a member account with starting balance</div>
+        </div>
+        <button class="close-btn" onclick="closeModal('addUserModal')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <form onsubmit="submitCreateUser(event)" style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="setting-item">
+            <label class="setting-label">Full Name *</label>
+            <input type="text" id="newUserName" class="input-control" placeholder="e.g. Rajesh Kannan" required>
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Role</label>
+            <select id="newUserRole" class="input-control">
+              <option value="user" selected>Standard User</option>
+              <option value="admin">Administrator</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <label class="setting-label">Email Address *</label>
+          <input type="email" id="newUserEmail" class="input-control" placeholder="e.g. user@example.com" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="setting-item">
+            <label class="setting-label">Mobile Number</label>
+            <input type="tel" id="newUserPhone" class="input-control" placeholder="e.g. 9876543210 (Optional)">
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Starting Balance (₹)</label>
+            <input type="number" step="1" min="0" id="newUserBalance" class="input-control" value="100.0" required>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <label class="setting-label">Password *</label>
+          <input type="password" id="newUserPassword" class="input-control" placeholder="Minimum 6 characters" required>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px;">
+          <button type="button" onclick="closeModal('addUserModal')" class="btn-secondary">Cancel</button>
+          <button type="submit" class="btn-primary" id="btnSubmitNewUser">Create Account</button>
         </div>
       </form>
     </div>
@@ -1199,6 +1301,9 @@
 
   <script>
     let allUsersData = [];
+    let allPaymentsData = [];
+    let allScrapesData = [];
+    let currentAdjustAction = 'add';
     let currentAdminToken = localStorage.getItem("auth_token") || "";
 
     function showToast(msg) {
@@ -1399,22 +1504,104 @@
       renderUsersTable(filtered);
     }
 
-    // Load Payments
+    // User Creation Modal & Handler
+    function openAddUserModal() {
+      document.getElementById("newUserName").value = "";
+      document.getElementById("newUserEmail").value = "";
+      document.getElementById("newUserPhone").value = "";
+      document.getElementById("newUserPassword").value = "";
+      document.getElementById("newUserBalance").value = "100.0";
+      document.getElementById("newUserRole").value = "user";
+      document.getElementById("addUserModal").classList.add("open");
+      setTimeout(() => document.getElementById("newUserName").focus(), 120);
+    }
+
+    async function submitCreateUser(e) {
+      e.preventDefault();
+      const name = document.getElementById("newUserName").value.trim();
+      const email = document.getElementById("newUserEmail").value.trim().toLowerCase();
+      const phone = document.getElementById("newUserPhone").value.trim();
+      const password = document.getElementById("newUserPassword").value;
+      const wallet_balance = parseFloat(document.getElementById("newUserBalance").value) || 0;
+      const role = document.getElementById("newUserRole").value;
+
+      if (!name || name.length < 2) {
+        alert("Full name must be at least 2 characters.");
+        return;
+      }
+      if (!email) {
+        alert("Email address is required.");
+        return;
+      }
+      if (!password || password.length < 6) {
+        alert("Password must be at least 6 characters.");
+        return;
+      }
+
+      const btn = document.getElementById("btnSubmitNewUser");
+      btn.disabled = true;
+      btn.innerText = "Creating Account...";
+
+      try {
+        const res = await fetch("/api/admin/users/create", {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ name, email, phone, password, wallet_balance, role })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          closeModal("addUserModal");
+          showToast(`Account created for ${name} with ₹${wallet_balance.toFixed(2)} balance.`);
+          loadUsers();
+          initAdmin();
+        } else {
+          alert(data.error || "Failed to create user account.");
+        }
+      } catch (err) {
+        alert("Server error: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Create Account";
+      }
+    }
+
+    // Load Payments with Filter & Search
     async function loadPayments() {
       try {
         const res = await fetch("/api/admin/payments", { headers: getAuthHeaders() });
         const data = await res.json();
-        const payments = data.payments || [];
-        renderPaymentsTable(payments);
+        allPaymentsData = data.payments || [];
+        filterPaymentsTable();
       } catch (e) {
         console.error("Error loading payments:", e);
       }
     }
 
+    function filterPaymentsTable() {
+      const statusFilter = (document.getElementById("paymentStatusFilter")?.value || "").toLowerCase().trim();
+      const query = (document.getElementById("paymentSearchInput")?.value || "").toLowerCase().trim();
+
+      let filtered = allPaymentsData;
+      if (statusFilter) {
+        filtered = filtered.filter(p => (p.status || '').toLowerCase() === statusFilter);
+      }
+      if (query) {
+        filtered = filtered.filter(p =>
+          (p.user_name || '').toLowerCase().includes(query) ||
+          (p.user_email || '').toLowerCase().includes(query) ||
+          (p.razorpay_order_id || '').toLowerCase().includes(query) ||
+          (p.razorpay_payment_id || '').toLowerCase().includes(query) ||
+          String(p.id).includes(query) ||
+          String(p.amount).includes(query)
+        );
+      }
+      renderPaymentsTable(filtered);
+    }
+
     function renderPaymentsTable(pays) {
       const tbody = document.getElementById("paymentsTableBody");
       if (!pays.length) {
-        tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 32px;">No payment transactions recorded yet.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 32px;">No payment transactions recorded matching filters.</td></tr>`;
         return;
       }
 
@@ -1494,22 +1681,38 @@
       }
     }
 
-    // Load Scrapes
+    // Load Scrapes with Live Search
     async function loadScrapes() {
       try {
         const res = await fetch("/api/admin/scrapes", { headers: getAuthHeaders() });
         const data = await res.json();
-        const scrapes = data.scrapes || [];
-        renderScrapesTable(scrapes);
+        allScrapesData = data.scrapes || [];
+        filterScrapesTable();
       } catch (e) {
         console.error("Error loading scrapes:", e);
       }
     }
 
+    function filterScrapesTable() {
+      const query = (document.getElementById("scrapeSearchInput")?.value || "").toLowerCase().trim();
+      if (!query) {
+        renderScrapesTable(allScrapesData);
+        return;
+      }
+      const filtered = allScrapesData.filter(s =>
+        (s.user_name || '').toLowerCase().includes(query) ||
+        (s.user_email || '').toLowerCase().includes(query) ||
+        (s.query || '').toLowerCase().includes(query) ||
+        (s.file_name || '').toLowerCase().includes(query) ||
+        String(s.id).includes(query)
+      );
+      renderScrapesTable(filtered);
+    }
+
     function renderScrapesTable(scrapes) {
       const tbody = document.getElementById("scrapesTableBody");
       if (!scrapes.length) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 32px;">No scrape operations performed yet.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 32px;">No scrape operations matching search query.</td></tr>`;
         return;
       }
 
@@ -1586,13 +1789,98 @@
       }
     }
 
-    // Modals & Adjustments
+    // Advanced Wallet Modal (Add / Deduct / Set Exact)
     function openWalletModal(id, name, bal) {
       document.getElementById("adjustUserId").value = id;
-      document.getElementById("modalUserName").innerText = `Adjust Wallet for ${name} (Current: ₹${Number(bal).toFixed(2)})`;
+      document.getElementById("adjustCurrentBalance").value = Number(bal);
+      document.getElementById("modalUserName").innerText = `Adjust Wallet: ${name}`;
+      document.getElementById("modalUserSub").innerText = `Current Wallet Balance: ₹${Number(bal).toFixed(2)}`;
       document.getElementById("adjustAmount").value = "";
-      document.getElementById("adjustReason").value = "Manual Administrative Credit";
+      setWalletAdjustAction("add");
       document.getElementById("walletModal").classList.add("open");
+      setTimeout(() => document.getElementById("adjustAmount").focus(), 120);
+    }
+
+    function setWalletAdjustAction(action) {
+      currentAdjustAction = action;
+      const tabAdd = document.getElementById("actionTabAdd");
+      const tabReduce = document.getElementById("actionTabReduce");
+      const tabSet = document.getElementById("actionTabSet");
+      const op = document.getElementById("prevOperator");
+      const label = document.getElementById("prevAdjustLabel");
+      const amtLabel = document.getElementById("adjustAmountLabel");
+      const hint = document.getElementById("adjustAmountHint");
+      const reasonInput = document.getElementById("adjustReason");
+      const submitBtn = document.getElementById("adjustSubmitBtn");
+
+      tabAdd.className = "wallet-action-tab";
+      tabReduce.className = "wallet-action-tab";
+      tabSet.className = "wallet-action-tab";
+
+      if (action === "reduce") {
+        tabReduce.classList.add("active-reduce");
+        op.innerText = "➖";
+        label.innerText = "DEDUCT";
+        amtLabel.innerText = "Amount to Deduct / Reduce (₹)";
+        hint.innerText = "Specify amount to deduct. Balance will be clamped at ₹0.00 (cannot go negative).";
+        if (!reasonInput.value || reasonInput.value.startsWith("Manual") || reasonInput.value.startsWith("Admin")) {
+          reasonInput.value = "Manual Administrative Deduction";
+        }
+        submitBtn.innerText = "Deduct Funds";
+        submitBtn.style.background = "var(--danger)";
+      } else if (action === "set") {
+        tabSet.classList.add("active-set");
+        op.innerText = "🎯";
+        label.innerText = "SET TO";
+        amtLabel.innerText = "Target Exact Balance (₹)";
+        hint.innerText = "Directly set the user's wallet to this exact figure.";
+        if (!reasonInput.value || reasonInput.value.startsWith("Manual") || reasonInput.value.startsWith("Admin")) {
+          reasonInput.value = "Administrative Balance Override";
+        }
+        submitBtn.innerText = "Set Exact Balance";
+        submitBtn.style.background = "var(--primary)";
+      } else {
+        // add
+        tabAdd.classList.add("active-add");
+        op.innerText = "➕";
+        label.innerText = "ADD AMOUNT";
+        amtLabel.innerText = "Amount to Add / Credit (₹)";
+        hint.innerText = "Specify the amount to credit to this user's balance.";
+        if (!reasonInput.value || reasonInput.value.startsWith("Manual") || reasonInput.value.startsWith("Admin")) {
+          reasonInput.value = "Manual Administrative Credit";
+        }
+        submitBtn.innerText = "Add Funds";
+        submitBtn.style.background = "var(--primary)";
+      }
+
+      updateWalletAdjustPreview();
+    }
+
+    function updateWalletAdjustPreview() {
+      const currentBal = parseFloat(document.getElementById("adjustCurrentBalance").value) || 0;
+      const amtVal = parseFloat(document.getElementById("adjustAmount").value) || 0;
+      const curEl = document.getElementById("prevCurrentBal");
+      const adjEl = document.getElementById("prevAdjustAmt");
+      const newEl = document.getElementById("prevNewBal");
+
+      curEl.innerText = `₹${currentBal.toFixed(2)}`;
+      adjEl.innerText = `₹${amtVal.toFixed(2)}`;
+
+      let newBal = currentBal;
+      newEl.className = "preview-val";
+
+      if (currentAdjustAction === "reduce") {
+        newBal = Math.max(0, currentBal - amtVal);
+        newEl.classList.add("highlight-red");
+      } else if (currentAdjustAction === "set") {
+        newBal = Math.max(0, amtVal);
+        newEl.classList.add("highlight-blue");
+      } else {
+        newBal = currentBal + amtVal;
+        newEl.classList.add("highlight-green");
+      }
+
+      newEl.innerText = `₹${newBal.toFixed(2)}`;
     }
 
     function closeModal(id) {
@@ -1605,17 +1893,23 @@
       const amount = parseFloat(document.getElementById("adjustAmount").value);
       const reason = document.getElementById("adjustReason").value.trim();
 
+      if (isNaN(amount) || amount < 0) {
+        alert("Please enter a valid positive amount.");
+        return;
+      }
+
       try {
         const res = await fetch(`/api/admin/users/${id}/adjust-wallet`, {
           method: "POST",
           headers: getAuthHeaders(),
-          body: JSON.stringify({ amount, reason })
+          body: JSON.stringify({ action: currentAdjustAction, amount, reason })
         });
         const data = await res.json();
         if (res.ok) {
           closeModal("walletModal");
-          showToast(`Wallet adjusted. New balance: ₹${data.new_balance.toFixed(2)}`);
+          showToast(`Wallet adjusted: New balance is ₹${data.new_balance.toFixed(2)}`);
           loadUsers();
+          initAdmin();
         } else {
           alert(data.error || "Adjustment failed");
         }
