@@ -400,11 +400,34 @@ def verify_and_process_razorpay_payment(
 
     try:
         with conn:
+            # High-Level Cyber Security Check 1: Anti-Replay Duplicate Payment ID Prevention
+            if not is_sim and not payment_id.startswith("pay_sim_"):
+                dup = conn.execute(
+                    "SELECT id, razorpay_order_id, user_id FROM payments WHERE razorpay_payment_id = ? AND status = 'approved'",
+                    (payment_id,)
+                ).fetchone()
+                if dup:
+                    return {"error": "Security Alert: This payment transaction has already been processed and credited.", "already_processed": True}
+
+            # High-Level Cyber Security Check 2: Order Lookup & Status Validation
             pay = conn.execute("SELECT * FROM payments WHERE razorpay_order_id = ?", (order_id,)).fetchone()
-            amount = pay["amount"] if pay else 0.0
+            if not pay:
+                return {"error": "Payment order record not found in system."}
+
+            # If order is already approved, return current state without double-crediting
+            if pay["status"] == "approved":
+                user = conn.execute("SELECT wallet_balance FROM users WHERE id = ?", (user_id,)).fetchone()
+                bal = user["wallet_balance"] if user else 0.0
+                return {"success": True, "status": "approved", "already_processed": True, "new_balance": bal, "amount": pay["amount"]}
+
+            # High-Level Cyber Security Check 3: User Ownership Binding
+            if int(pay["user_id"]) != int(user_id):
+                return {"error": "Security Alert: Access denied. Order does not belong to this account."}
+
+            amount = float(pay["amount"])
 
             if mode == "auto":
-                # Instant wallet credit
+                # Instant atomic wallet credit
                 conn.execute("""
                     UPDATE payments 
                     SET razorpay_payment_id = ?, razorpay_signature = ?, status = 'approved', approved_at = ?

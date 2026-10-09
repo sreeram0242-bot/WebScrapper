@@ -6413,7 +6413,6 @@
             },
             theme: { color: '#2563eb' },
             handler: async function (response) {
-              showToast('Verifying payment cryptographically...');
               const vRes = await fetch('/api/wallet/verify-payment', {
                 method: 'POST',
                 headers: {
@@ -6432,7 +6431,7 @@
                   currentUser.wallet_balance = vData.new_balance;
                   updateUserHeaderUI();
                   closeWalletModal();
-                  showToast(`Wallet recharged! ₹${amount} added. New balance: ₹${vData.new_balance.toFixed(2)}`);
+                  showToast('Payment Successful');
                 } else {
                   closeWalletModal();
                   showToast('Payment recorded. Awaiting Admin Approval.');
@@ -6661,7 +6660,6 @@
             },
             theme: { color: '#2563eb' },
             handler: async function (response) {
-              showToast('Verifying payment cryptographically...');
               const vRes = await fetch('/api/wallet/verify-payment', {
                 method: 'POST',
                 headers: {
@@ -6680,7 +6678,7 @@
                   currentUser.wallet_balance = vData.new_balance;
                   updateUserHeaderUI();
                   loadPageTransactions();
-                  showToast(`Wallet recharged! ₹${amount} added. New balance: ₹${vData.new_balance.toFixed(2)}`);
+                  showToast('Payment Successful');
                 } else {
                   showToast('Payment recorded. Awaiting Admin Approval.');
                 }
@@ -6772,7 +6770,6 @@
           },
           // Step 3: Success Handler -> Call Backend to Verify Payment Signature (POST /api/verify-payment)
           handler: async function (response) {
-            showToast('Payment successful! Verifying signature...');
             try {
               const verifyRes = await fetch('/api/verify-payment', {
                 method: 'POST',
@@ -6789,13 +6786,13 @@
 
               const verifyData = await verifyRes.json();
               if (verifyRes.ok && verifyData.success) {
-                showToast(`✅ Payment Verified Successfully! ID: ${response.razorpay_payment_id}`);
+                showToast('Payment Successful');
                 if (currentUser) {
                   checkAuthStatus();
                   if (typeof loadPageTransactions === 'function') loadPageTransactions();
                 }
               } else {
-                showToast('❌ Verification Failed: ' + (verifyData.error || 'Invalid signature mismatch'));
+                showToast(verifyData.error || 'Payment signature verification failed.');
               }
             } catch (vErr) {
               showToast('❌ Error verifying signature: ' + vErr.message);

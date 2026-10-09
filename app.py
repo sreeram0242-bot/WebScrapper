@@ -536,13 +536,14 @@ def create_order():
 
 
 @app.route("/api/verify-payment", methods=["POST"])
+@security.rate_limit(10, 60, "verify_payment")
 def verify_payment():
     """
-    Razorpay Standard Web Checkout - Step 3: Verify Payment Signature
-    Endpoint: POST /api/verify-payment
-    Algorithm: HMAC-SHA256(order_id + "|" + payment_id, KEY_SECRET)
-    Compares generated signature with received razorpay_signature.
-    Returns 200 on match, 400 on signature mismatch or missing fields.
+    Razorpay Standard Web Checkout - Step 3: High-Security Payment Verification
+    Dual-layer verification:
+    1. Cryptographic HMAC-SHA256 signature verification (Constant Time)
+    2. Zero-Trust Live Razorpay Gateway Verification (Server-to-Server status & order binding)
+    3. Database Anti-Replay Idempotency Protection
     """
     data = request.get_json(silent=True) or {}
 
@@ -557,21 +558,52 @@ def verify_payment():
             "error": "Missing required fields: order_id, payment_id, and signature are required."
         }), 400
 
-    _, key_secret = get_razorpay_credentials()
+    key_id, key_secret = get_razorpay_credentials()
     if not key_secret:
         return jsonify({"success": False, "error": "Razorpay key secret not configured on server."}), 500
 
-    # 2. Cryptographic HMAC-SHA256 verification
+    # 2. Cryptographic HMAC-SHA256 verification (Constant Time)
     message = f"{order_id}|{payment_id}".encode("utf-8")
     generated_signature = hmac.new(key_secret.encode("utf-8"), message, hashlib.sha256).hexdigest()
 
     if not hmac.compare_digest(generated_signature, signature):
         return jsonify({
             "success": False,
-            "error": "Payment signature verification failed: signature mismatch."
+            "error": "Security Alert: Payment signature verification failed (mismatch)."
         }), 400
 
-    # 3. Mark payment in database if tracked
+    # 3. Server-Side Direct Gateway Verification (Zero-Trust Live API Check)
+    if not order_id.startswith("order_sim_") and not payment_id.startswith("pay_sim_"):
+        try:
+            client = razorpay.Client(auth=(key_id, key_secret))
+            rzp_pay = client.payment.fetch(payment_id)
+            if not rzp_pay or rzp_pay.get("status") not in ["captured", "authorized"]:
+                return jsonify({
+                    "success": False,
+                    "error": f"Security Alert: Payment state is '{rzp_pay.get('status') if rzp_pay else 'unknown'}'. Transaction not captured."
+                }), 400
+
+            if rzp_pay.get("order_id") and rzp_pay.get("order_id") != order_id:
+                return jsonify({
+                    "success": False,
+                    "error": "Security Alert: Payment does not belong to the claimed order."
+                }), 400
+
+            # If authorized, auto-capture to ensure settlement
+            if rzp_pay.get("status") == "authorized":
+                try:
+                    client.payment.capture(payment_id, rzp_pay.get("amount"))
+                except Exception as ce:
+                    logging.warning(f"Razorpay auto-capture note: {ce}")
+        except Exception as rzp_e:
+            err_text = str(rzp_e)
+            logging.error(f"Razorpay gateway verification error: {err_text}")
+            return jsonify({
+                "success": False,
+                "error": f"Gateway verification failure: {err_text}"
+            }), 400
+
+    # 4. Mark payment in database if tracked (Anti-replay protected)
     db_updated = False
     try:
         conn = db.get_db_connection()
@@ -579,13 +611,15 @@ def verify_payment():
         conn.close()
         if pay:
             user_id = pay["user_id"]
-            db.verify_and_process_razorpay_payment(
+            db_res = db.verify_and_process_razorpay_payment(
                 user_id=user_id,
                 order_id=order_id,
                 payment_id=payment_id,
                 signature=signature,
                 secret=key_secret
             )
+            if "error" in db_res and not db_res.get("already_processed"):
+                return jsonify({"success": False, "error": db_res["error"]}), 400
             db_updated = True
     except Exception as e:
         logging.warning(f"Database payment processing error: {e}")
@@ -601,11 +635,11 @@ def verify_payment():
 
 @app.route("/api/wallet/create-order", methods=["POST"])
 @security.require_auth
-@security.rate_limit(15, 60, "wallet_order")
+@security.rate_limit(10, 60, "wallet_order")
 def wallet_create_order():
     """
     Initiates a Razorpay recharge order for the logged-in user.
-    Uses official Razorpay Python SDK with live test credentials.
+    Uses official Razorpay Python SDK with live credentials.
     """
     data = request.get_json(silent=True) or {}
     try:
@@ -666,11 +700,15 @@ def wallet_create_order():
 
 @app.route("/api/wallet/verify-payment", methods=["POST"])
 @security.require_auth
-@security.rate_limit(15, 60, "wallet_verify")
+@security.rate_limit(10, 60, "wallet_verify")
 def wallet_verify_payment():
     """
-    Verifies Razorpay payment signature cryptographically for the logged-in user.
-    Credits wallet (auto mode) or holds for admin review (manual mode).
+    High-Security Payment Verification & Instant Wallet Top-Up
+    1. Cryptographic HMAC-SHA256 signature verification
+    2. Zero-Trust Live Gateway State Check
+    3. Anti-Replay Duplicate ID check
+    4. User Ownership Matching
+    5. Atomic wallet balance increment
     """
     data = request.get_json(silent=True) or {}
     order_id = (data.get("razorpay_order_id") or data.get("order_id") or "").strip()
@@ -678,11 +716,39 @@ def wallet_verify_payment():
     signature = (data.get("razorpay_signature") or data.get("signature") or "").strip()
 
     if not order_id or not payment_id or not signature:
-        return jsonify({"error": "Missing required payment verification parameters."}), 400
+        return jsonify({"error": "Missing required payment verification parameters.", "success": False}), 400
 
     user_id = g.user["id"]
-    _, key_secret = get_razorpay_credentials()
+    key_id, key_secret = get_razorpay_credentials()
 
+    # 1. Cryptographic HMAC-SHA256 Signature Check
+    message = f"{order_id}|{payment_id}".encode("utf-8")
+    generated_sig = hmac.new(key_secret.encode("utf-8"), message, hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(generated_sig, signature):
+        return jsonify({"error": "Security Alert: Signature verification mismatch.", "success": False}), 400
+
+    # 2. Server-to-Server Zero-Trust Gateway Validation
+    if not order_id.startswith("order_sim_") and not payment_id.startswith("pay_sim_"):
+        try:
+            client = razorpay.Client(auth=(key_id, key_secret))
+            rzp_pay = client.payment.fetch(payment_id)
+            if not rzp_pay or rzp_pay.get("status") not in ["captured", "authorized"]:
+                return jsonify({"error": f"Security Alert: Gateway reported status '{rzp_pay.get('status') if rzp_pay else 'unknown'}'.", "success": False}), 400
+
+            if rzp_pay.get("order_id") and rzp_pay.get("order_id") != order_id:
+                return jsonify({"error": "Security Alert: Payment does not match order record.", "success": False}), 400
+
+            if rzp_pay.get("status") == "authorized":
+                try:
+                    client.payment.capture(payment_id, rzp_pay.get("amount"))
+                except Exception as ce:
+                    logging.warning(f"Razorpay auto-capture note: {ce}")
+        except Exception as rzp_e:
+            err_text = str(rzp_e)
+            logging.error(f"Razorpay live check failure: {err_text}")
+            return jsonify({"error": f"Gateway verification failure: {err_text}", "success": False}), 400
+
+    # 3. Database Processing (Anti-replay, user ownership, atomic credit)
     result = db.verify_and_process_razorpay_payment(
         user_id=user_id,
         order_id=order_id,
