@@ -7,6 +7,9 @@ import time
 from datetime import datetime
 from typing import Optional, Dict, Any, List
 from werkzeug.security import generate_password_hash, check_password_hash
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Store database in the persistent output directory
 OUTPUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "output"))
@@ -146,6 +149,9 @@ def init_db():
 # =========================================================================
 
 def get_setting(key: str, default: str = "") -> str:
+    env_val = os.environ.get(key.upper()) or os.environ.get(key)
+    if env_val:
+        return env_val
     conn = get_db_connection()
     row = conn.execute("SELECT value FROM settings WHERE key = ?", (key,)).fetchone()
     conn.close()
@@ -530,6 +536,18 @@ def get_user_transactions(user_id: int) -> List[Dict[str, Any]]:
     rows = conn.execute("SELECT * FROM wallet_transactions WHERE user_id = ? ORDER BY id DESC LIMIT 50", (user_id,)).fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+
+def get_user_scrapes(user_id: int) -> List[Dict[str, Any]]:
+    """Get all scrape audit records for a specific user."""
+    conn = get_db_connection()
+    try:
+        rows = conn.execute("SELECT * FROM scrapes WHERE user_id = ? ORDER BY id DESC LIMIT 100", (user_id,)).fetchall()
+        return [dict(r) for r in rows]
+    except Exception:
+        return []
+    finally:
+        conn.close()
 
 
 def update_user_password(user_id: int, new_password: str) -> bool:

@@ -76,6 +76,9 @@ class ScraperEngine:
         links_only: bool = False,
         max_results: Optional[int] = 50,
         require_phone: bool = False,
+        phone_filter: str = "all",
+        website_filter: str = "all",
+        min_rating: float = 0.0,
         district_deep: bool = True,
         on_log: Optional[Callable[[str, str], None]] = None,
         on_phase: Optional[Callable[[str], None]] = None,
@@ -95,6 +98,12 @@ class ScraperEngine:
         self.links_only = links_only
         self.max_results = max_results if (max_results and max_results > 0) else None
         self.require_phone = require_phone
+        self.phone_filter = (phone_filter or ("with_phone" if require_phone else "all")).lower()
+        self.website_filter = (website_filter or "all").lower()
+        try:
+            self.min_rating = float(min_rating or 0.0)
+        except (ValueError, TypeError):
+            self.min_rating = 0.0
         self.district_deep = district_deep
 
         # Callbacks
@@ -563,21 +572,43 @@ class ScraperEngine:
                         except Exception:
                             pass
 
-            # Finalize items - NEVER discard discovered leads!
+            # Finalize items and apply user filter criteria
             final_items = []
             for it in self.scraped_items:
                 it.pop("_needs_enrich", None)
                 if it.get("name"):
                     it["has_phone"] = "Yes" if is_valid_phone(it.get("phone")) else "No"
+                    has_site = bool(it.get("website") and str(it.get("website")).strip() and str(it.get("website")).strip().lower() not in ["none", "null", ""])
+                    it["has_website"] = "Yes" if has_site else "No"
                     final_items.append(it)
 
-            # If user explicitly selected require_phone AND we have items with phone, sort or prioritize them
-            if self.require_phone:
-                with_phones = [x for x in final_items if x.get("has_phone") == "Yes"]
-                if with_phones:
-                    # Keep phone leads first, followed by others
-                    without_phones = [x for x in final_items if x.get("has_phone") != "Yes"]
-                    final_items = with_phones + without_phones
+            # 1. Filter by Phone Number Requirement
+            if self.phone_filter == "with_phone" or self.require_phone:
+                final_items = [x for x in final_items if x.get("has_phone") == "Yes"]
+            elif self.phone_filter == "without_phone":
+                final_items = [x for x in final_items if x.get("has_phone") != "Yes"]
+
+            # 2. Filter by Website Requirement
+            if self.website_filter == "with_website":
+                final_items = [x for x in final_items if x.get("has_website") == "Yes"]
+            elif self.website_filter == "without_website":
+                final_items = [x for x in final_items if x.get("has_website") != "Yes"]
+
+            # 3. Filter by Minimum Google Rating
+            if self.min_rating > 0:
+                rated_items = []
+                for x in final_items:
+                    try:
+                        r = float(str(x.get("rating") or "0").replace(",", ".").split()[0])
+                        if r >= self.min_rating:
+                            rated_items.append(x)
+                    except Exception:
+                        pass
+                final_items = rated_items
+
+            # 4. Limit to max_results if specified
+            if self.max_results and self.max_results > 0:
+                final_items = final_items[:self.max_results]
 
             self.scraped_items = final_items
 

@@ -1,4 +1,6 @@
 import base64
+import hashlib
+import hmac
 import json
 import logging
 import os
@@ -11,6 +13,10 @@ import time
 from datetime import datetime
 from typing import Dict, Any, List, Optional
 
+from dotenv import load_dotenv
+load_dotenv()
+
+import razorpay
 from flask import Flask, render_template, request, jsonify, Response, send_from_directory, make_response, g
 from flask_cors import CORS
 import pandas as pd
@@ -441,16 +447,165 @@ def auth_google_complete():
 
 
 # =========================================================================
-# In-App Wallet & Razorpay API (HMAC Verified & Rate Limited)
+# Razorpay Standard Web Checkout API (Order Creation & Cryptographic Verification)
 # =========================================================================
+
+def get_razorpay_credentials():
+    """Retrieve Razorpay credentials from environment or persistent settings."""
+    key_id = os.environ.get("RAZORPAY_KEY_ID") or db.get_setting("razorpay_key_id")
+    key_secret = os.environ.get("RAZORPAY_KEY_SECRET") or db.get_setting("razorpay_key_secret")
+    return key_id, key_secret
+
+
+@app.route("/api/create-order", methods=["POST"])
+def create_order():
+    """
+    Razorpay Standard Web Checkout - Step 1: Create Order
+    Endpoint: POST /api/create-order
+    Request body: { amount (paise), currency (optional), receipt (optional), notes (optional) }
+    Minimum amount: 100 paise
+    Return: { order_id, amount, currency, key_id }
+    """
+    data = request.get_json(silent=True) or {}
+
+    # 1. Validate Amount (in paise, >= 100)
+    try:
+        raw_amount = data.get("amount")
+        if raw_amount is None:
+            return jsonify({"error": "Missing required field: amount (in paise)."}), 400
+        amount = int(float(raw_amount))
+    except (ValueError, TypeError):
+        return jsonify({"error": "Invalid amount format. Must be an integer or numeric value in paise."}), 400
+
+    if amount < 100:
+        return jsonify({"error": "Minimum order amount is 100 paise (₹1.00)."}), 400
+
+    currency = (data.get("currency") or "INR").strip().upper()
+    receipt = (data.get("receipt") or f"rcpt_{int(time.time())}_{os.urandom(3).hex()}").strip()
+    notes = data.get("notes") or {}
+    if not isinstance(notes, dict):
+        notes = {"info": str(notes)}
+
+    key_id, key_secret = get_razorpay_credentials()
+    if not key_id or not key_secret:
+        return jsonify({"error": "Razorpay credentials not configured on server."}), 500
+
+    try:
+        client = razorpay.Client(auth=(key_id, key_secret))
+        client.set_app_details({"title": "LeadScrapper", "version": "1.0.0"})
+
+        payload = {
+            "amount": amount,
+            "currency": currency,
+            "receipt": receipt,
+            "notes": notes
+        }
+        order = client.order.create(data=payload)
+
+        # Associate with logged-in user if available
+        current_user = security.get_current_user_from_request()
+        user_id = current_user["id"] if current_user else notes.get("user_id")
+        if user_id:
+            try:
+                db.record_payment_order(int(user_id), amount / 100.0, order["id"])
+            except Exception as e:
+                logging.warning(f"Could not link order to user {user_id}: {e}")
+
+        return jsonify({
+            "order_id": order["id"],
+            "amount": order["amount"],
+            "currency": order["currency"],
+            "key_id": key_id
+        }), 200
+
+    except razorpay.errors.AuthenticationError as e:
+        logging.error(f"Razorpay authentication failure: {e}")
+        return jsonify({"error": "Razorpay authentication failed. Invalid API credentials."}), 401
+    except razorpay.errors.BadRequestError as e:
+        logging.error(f"Razorpay bad request: {e}")
+        return jsonify({"error": f"Razorpay API error: {str(e)}"}), 400
+    except razorpay.errors.ServerError as e:
+        logging.error(f"Razorpay server error: {e}")
+        return jsonify({"error": f"Razorpay server error: {str(e)}"}), 500
+    except Exception as e:
+        err_msg = str(e)
+        logging.error(f"Failed to create Razorpay order: {err_msg}")
+        if "401" in err_msg or "auth" in err_msg.lower() or "unauthorized" in err_msg.lower():
+            return jsonify({"error": "Razorpay authentication failed."}), 401
+        return jsonify({"error": f"Razorpay order creation failed: {err_msg}"}), 500
+
+
+@app.route("/api/verify-payment", methods=["POST"])
+def verify_payment():
+    """
+    Razorpay Standard Web Checkout - Step 3: Verify Payment Signature
+    Endpoint: POST /api/verify-payment
+    Algorithm: HMAC-SHA256(order_id + "|" + payment_id, KEY_SECRET)
+    Compares generated signature with received razorpay_signature.
+    Returns 200 on match, 400 on signature mismatch or missing fields.
+    """
+    data = request.get_json(silent=True) or {}
+
+    order_id = (data.get("razorpay_order_id") or data.get("order_id") or "").strip()
+    payment_id = (data.get("razorpay_payment_id") or data.get("payment_id") or "").strip()
+    signature = (data.get("razorpay_signature") or data.get("signature") or "").strip()
+
+    # 1. Missing fields validation
+    if not order_id or not payment_id or not signature:
+        return jsonify({
+            "success": False,
+            "error": "Missing required fields: order_id, payment_id, and signature are required."
+        }), 400
+
+    _, key_secret = get_razorpay_credentials()
+    if not key_secret:
+        return jsonify({"success": False, "error": "Razorpay key secret not configured on server."}), 500
+
+    # 2. Cryptographic HMAC-SHA256 verification
+    message = f"{order_id}|{payment_id}".encode("utf-8")
+    generated_signature = hmac.new(key_secret.encode("utf-8"), message, hashlib.sha256).hexdigest()
+
+    if not hmac.compare_digest(generated_signature, signature):
+        return jsonify({
+            "success": False,
+            "error": "Payment signature verification failed: signature mismatch."
+        }), 400
+
+    # 3. Mark payment in database if tracked
+    db_updated = False
+    try:
+        conn = db.get_db_connection()
+        pay = conn.execute("SELECT * FROM payments WHERE razorpay_order_id = ?", (order_id,)).fetchone()
+        conn.close()
+        if pay:
+            user_id = pay["user_id"]
+            db.verify_and_process_razorpay_payment(
+                user_id=user_id,
+                order_id=order_id,
+                payment_id=payment_id,
+                signature=signature,
+                secret=key_secret
+            )
+            db_updated = True
+    except Exception as e:
+        logging.warning(f"Database payment processing error: {e}")
+
+    return jsonify({
+        "success": True,
+        "message": "Payment verified successfully.",
+        "order_id": order_id,
+        "payment_id": payment_id,
+        "db_updated": db_updated
+    }), 200
+
 
 @app.route("/api/wallet/create-order", methods=["POST"])
 @security.require_auth
 @security.rate_limit(15, 60, "wallet_order")
 def wallet_create_order():
     """
-    Initiates a Razorpay recharge order.
-    Generates official Razorpay Order ID or secure simulation order ID.
+    Initiates a Razorpay recharge order for the logged-in user.
+    Uses official Razorpay Python SDK with live test credentials.
     """
     data = request.get_json(silent=True) or {}
     try:
@@ -458,61 +613,55 @@ def wallet_create_order():
     except (ValueError, TypeError):
         return jsonify({"error": "Invalid recharge amount."}), 400
 
-    if amount < 10.0:
-        return jsonify({"error": "Minimum recharge amount is ₹10."}), 400
+    if amount < 1.0:
+        return jsonify({"error": "Minimum recharge amount is ₹1.00 (100 paise)."}), 400
     if amount > 50000.0:
         return jsonify({"error": "Maximum recharge amount is ₹50,000."}), 400
 
     user_id = g.user["id"]
-    key_id = db.get_setting("razorpay_key_id", "rzp_test_placeholder")
-    key_secret = db.get_setting("razorpay_key_secret", "placeholder_secret")
+    key_id, key_secret = get_razorpay_credentials()
 
-    # If real Razorpay credentials configured, call Razorpay API
-    is_simulation = False
-    order_id = ""
+    amount_paise = int(round(amount * 100))
+    if amount_paise < 100:
+        return jsonify({"error": "Minimum recharge amount is 100 paise."}), 400
 
-    if key_id and not key_id.startswith("rzp_test_placeholder") and len(key_id) > 10 and len(key_secret) > 10:
-        try:
-            rzp_url = "https://api.razorpay.com/v1/orders"
-            amount_paise = int(round(amount * 100))
-            payload = {
-                "amount": amount_paise,
-                "currency": "INR",
-                "receipt": f"rcpt_{user_id}_{int(time.time())}",
-                "notes": {"user_id": str(user_id)}
+    try:
+        client = razorpay.Client(auth=(key_id, key_secret))
+        receipt = f"rcpt_{user_id}_{int(time.time())}"
+        order = client.order.create(data={
+            "amount": amount_paise,
+            "currency": "INR",
+            "receipt": receipt,
+            "notes": {
+                "user_id": str(user_id),
+                "user_email": g.user.get("email", ""),
+                "purpose": "wallet_recharge"
             }
-            resp = requests.post(rzp_url, json=payload, auth=(key_id, key_secret), timeout=8)
-            if resp.status_code in [200, 201]:
-                order_data = resp.json()
-                order_id = order_data.get("id")
-            else:
-                logging.warning(f"Razorpay API error: {resp.text}")
-                is_simulation = True
-                order_id = f"order_sim_{int(time.time())}_{os.urandom(4).hex()}"
-        except Exception as e:
-            logging.error(f"Razorpay connection failed: {e}")
-            is_simulation = True
-            order_id = f"order_sim_{int(time.time())}_{os.urandom(4).hex()}"
-    else:
-        is_simulation = True
-        order_id = f"order_sim_{int(time.time())}_{os.urandom(4).hex()}"
+        })
+        order_id = order["id"]
 
-    # Record order in pending payments table
-    db.record_payment_order(user_id, amount, order_id)
+        # Record order in pending payments table
+        db.record_payment_order(user_id, amount, order_id)
 
-    return jsonify({
-        "success": True,
-        "order_id": order_id,
-        "amount": amount,
-        "currency": "INR",
-        "key_id": key_id if not is_simulation else "rzp_test_simulated",
-        "is_simulation": is_simulation,
-        "user": {
-            "name": g.user.get("name"),
-            "email": g.user.get("email"),
-            "phone": g.user.get("phone") or "9999999999"
-        }
-    })
+        return jsonify({
+            "success": True,
+            "order_id": order_id,
+            "amount": amount,
+            "amount_paise": amount_paise,
+            "currency": "INR",
+            "key_id": key_id,
+            "is_simulation": False,
+            "user": {
+                "name": g.user.get("name"),
+                "email": g.user.get("email"),
+                "phone": g.user.get("phone") or "9999999999"
+            }
+        })
+    except razorpay.errors.AuthenticationError:
+        return jsonify({"error": "Razorpay authentication failed. Please check API keys."}), 401
+    except Exception as e:
+        logging.error(f"Razorpay order creation error: {e}")
+        return jsonify({"error": f"Failed to create payment order: {str(e)}"}), 500
 
 
 @app.route("/api/wallet/verify-payment", methods=["POST"])
@@ -520,51 +669,30 @@ def wallet_create_order():
 @security.rate_limit(15, 60, "wallet_verify")
 def wallet_verify_payment():
     """
-    Verifies Razorpay payment signature cryptographically.
+    Verifies Razorpay payment signature cryptographically for the logged-in user.
     Credits wallet (auto mode) or holds for admin review (manual mode).
     """
     data = request.get_json(silent=True) or {}
-    order_id = (data.get("razorpay_order_id") or "").strip()
-    payment_id = (data.get("razorpay_payment_id") or "").strip()
-    signature = (data.get("razorpay_signature") or "").strip()
-    is_sim = bool(data.get("is_simulation", False))
+    order_id = (data.get("razorpay_order_id") or data.get("order_id") or "").strip()
+    payment_id = (data.get("razorpay_payment_id") or data.get("payment_id") or "").strip()
+    signature = (data.get("razorpay_signature") or data.get("signature") or "").strip()
 
-    if not order_id or not payment_id:
-        return jsonify({"error": "Missing payment confirmation parameters."}), 400
+    if not order_id or not payment_id or not signature:
+        return jsonify({"error": "Missing required payment verification parameters."}), 400
 
     user_id = g.user["id"]
-    key_secret = db.get_setting("razorpay_key_secret", "placeholder_secret")
+    _, key_secret = get_razorpay_credentials()
 
-    # If simulation mode
-    if is_sim or order_id.startswith("order_sim_"):
-        sim_sig = "simulated_signature_" + os.urandom(8).hex()
-        # Verify via DB
-        conn = db.get_db_connection()
-        pay = conn.execute("SELECT * FROM payments WHERE razorpay_order_id = ? AND user_id = ?", (order_id, user_id)).fetchone()
-        conn.close()
-        if not pay:
-            return jsonify({"error": "Order record not found."}), 404
-
-        result = db.verify_and_process_razorpay_payment(
-            user_id=user_id,
-            order_id=order_id,
-            payment_id=payment_id,
-            signature=sim_sig,
-            secret="",
-            is_sim=True
-        )
-    else:
-        # Strict HMAC-SHA256 signature verification
-        result = db.verify_and_process_razorpay_payment(
-            user_id=user_id,
-            order_id=order_id,
-            payment_id=payment_id,
-            signature=signature,
-            secret=key_secret
-        )
+    result = db.verify_and_process_razorpay_payment(
+        user_id=user_id,
+        order_id=order_id,
+        payment_id=payment_id,
+        signature=signature,
+        secret=key_secret
+    )
 
     if "error" in result:
-        return jsonify({"error": result["error"]}), 400
+        return jsonify({"error": result["error"], "success": False}), 400
 
     return jsonify(result)
 
@@ -635,6 +763,15 @@ def start_scrape():
         max_results = None
 
     require_phone = bool(data.get("require_phone", False))
+    phone_filter = (data.get("phone_filter") or "").strip().lower()
+    if not phone_filter:
+        phone_filter = "with_phone" if require_phone else "all"
+
+    website_filter = (data.get("website_filter") or "all").strip().lower()
+    try:
+        min_rating = float(data.get("min_rating", 0.0) or 0.0)
+    except (ValueError, TypeError):
+        min_rating = 0.0
     district_deep = bool(data.get("district_deep", True))
 
     # Validation
@@ -742,6 +879,9 @@ def start_scrape():
         links_only=links_only,
         max_results=max_results,
         require_phone=require_phone,
+        phone_filter=phone_filter,
+        website_filter=website_filter,
+        min_rating=min_rating,
         district_deep=district_deep,
         on_log=handle_log,
         on_phase=handle_phase,
@@ -837,28 +977,68 @@ def stream_events():
 
 @app.route("/api/history", methods=["GET"])
 def get_history():
-    """List all CSV files in the output directory."""
+    """List CSV files belonging to the authenticated user. New users and guests receive empty list."""
+    user = security.get_current_user_from_request()
+    if not user:
+        # Unauthenticated guests see no files
+        return jsonify({"files": []})
+
+    is_admin = user.get("role") == "admin"
+    show_all = request.args.get("all") == "1" and is_admin
+
     files = []
-    if os.path.exists(OUTPUT_DIR):
-        for f in sorted(os.listdir(OUTPUT_DIR), reverse=True):
-            if f.endswith(".csv"):
-                path = os.path.join(OUTPUT_DIR, f)
-                stats = os.stat(path)
-                row_count = 0
+    seen_files = set()
+
+    if show_all:
+        if os.path.exists(OUTPUT_DIR):
+            for f in sorted(os.listdir(OUTPUT_DIR), reverse=True):
+                if f.endswith(".csv") and not f.startswith("."):
+                    path = os.path.join(OUTPUT_DIR, f)
+                    if os.path.isfile(path):
+                        stats = os.stat(path)
+                        row_count = 0
+                        try:
+                            with open(path, "r", encoding="utf-8", errors="ignore") as fl:
+                                row_count = max(0, sum(1 for _ in fl) - 1)
+                        except Exception:
+                            row_count = "?"
+                        files.append({
+                            "name": f,
+                            "size_kb": round(stats.st_size / 1024, 1),
+                            "modified": datetime.fromtimestamp(stats.st_mtime).strftime("%Y-%m-%d %H:%M:%S"),
+                            "rows": row_count,
+                            "is_details": "_details.csv" in f,
+                            "is_links": "_links.csv" in f,
+                        })
+        return jsonify({"files": files})
+
+    # For regular users and new users: return strictly their own generated scrape files
+    user_scrapes = db.get_user_scrapes(user["id"])
+    for s in user_scrapes:
+        fname = s.get("file_name")
+        if not fname or fname in seen_files:
+            continue
+        path = os.path.join(OUTPUT_DIR, fname)
+        if os.path.exists(path) and os.path.isfile(path):
+            seen_files.add(fname)
+            stats = os.stat(path)
+            row_count = s.get("lead_count") or 0
+            if row_count == 0:
                 try:
                     with open(path, "r", encoding="utf-8", errors="ignore") as fl:
                         row_count = max(0, sum(1 for _ in fl) - 1)
                 except Exception:
-                    row_count = "?"
+                    row_count = 0
+            files.append({
+                "name": fname,
+                "size_kb": round(stats.st_size / 1024, 1),
+                "modified": s.get("created_at") or datetime.fromtimestamp(stats.st_mtime).strftime("%Y-%m-%d %H:%M:%S"),
+                "rows": row_count,
+                "is_details": "_details.csv" in fname,
+                "is_links": "_links.csv" in fname,
+                "query": s.get("query", ""),
+            })
 
-                files.append({
-                    "name": f,
-                    "size_kb": round(stats.st_size / 1024, 1),
-                    "modified": datetime.fromtimestamp(stats.st_mtime).strftime("%Y-%m-%d %H:%M:%S"),
-                    "rows": row_count,
-                    "is_details": "_details.csv" in f,
-                    "is_links": "_links.csv" in f,
-                })
     return jsonify({"files": files})
 
 
@@ -898,6 +1078,17 @@ def download_file(filename):
     if not file_path.startswith(OUTPUT_DIR) or not os.path.isfile(file_path):
         return jsonify({"error": "File not found or unauthorized access path."}), 404
 
+    # Verify user ownership (or admin privileges)
+    user = security.get_current_user_from_request()
+    if not user:
+        return jsonify({"error": "Please sign in to download files."}), 401
+
+    if user.get("role") != "admin":
+        user_scrapes = db.get_user_scrapes(user["id"])
+        allowed_names = {s.get("file_name") for s in user_scrapes}
+        if safe_name not in allowed_names:
+            return jsonify({"error": "Unauthorized. You may only download files created by your account."}), 403
+
     return send_from_directory(OUTPUT_DIR, safe_name, as_attachment=True)
 
 
@@ -910,6 +1101,15 @@ def preview_file(filename):
 
     if not file_path.startswith(OUTPUT_DIR) or not os.path.isfile(file_path):
         return jsonify({"error": "File not found or unauthorized access path."}), 404
+
+    user = security.get_current_user_from_request()
+    if not user:
+        return jsonify({"error": "Please sign in to preview files."}), 401
+    if user.get("role") != "admin":
+        user_scrapes = db.get_user_scrapes(user["id"])
+        allowed_names = {s.get("file_name") for s in user_scrapes}
+        if safe_name not in allowed_names:
+            return jsonify({"error": "Unauthorized. You may only preview files created by your account."}), 403
 
     try:
         df = pd.read_csv(file_path, nrows=50)

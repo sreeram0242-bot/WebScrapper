@@ -110,7 +110,19 @@
     .glass-backdrop { display: none; }
 
     /* ── App Shell ── */
-    .app-shell {
+    
+    /* Hide Mobile Bottom Dock on PC / Desktop */
+    .mobile-bottom-dock {
+      display: none !important;
+    }
+
+
+    /* Hide top header when viewing Profile page */
+    body.view-profile-active .glass-header {
+      display: none !important;
+    }
+
+.app-shell {
       position: relative;
       z-index: 1;
       max-width: 1440px;
@@ -421,23 +433,7 @@
     .btn-hero-outline:active:not(:disabled) { transform: scale(0.98); }
 
     /* Back button */
-    .btn-subtle-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      height: 38px;
-      padding: 0 14px;
-      background: #ffffff;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--r-md);
-      color: var(--text-primary);
-      font-size: 0.83rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: var(--shadow-xs);
-      transition: all 0.18s var(--ease-spring);
-      font-family: inherit;
-    }
+    .btn-subtle-back { display: none !important; }
     .btn-subtle-back:hover {
       background: var(--surface-2);
       border-color: var(--text-muted);
@@ -1715,63 +1711,203 @@
     }
 
     /* Command Search Bar */
-    .search-command-bar {
+    
+    
+        /* Multi-Category and Multi-Places Tag Engine */
+    .multi-search-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+    .multi-tag-box {
       position: relative;
-      display: flex;
-      align-items: center;
-      width: 100%;
-    }
-    .search-bar-icon {
-      position: absolute;
-      left: 14px;
-      color: var(--blue);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-    }
-    .search-command-input {
-      width: 100%;
-      height: 52px;
-      padding: 0 42px 0 46px;
-      font-size: 16px;
-      font-family: inherit;
-      font-weight: 600;
-      color: var(--text-primary);
       background: #FFFFFF;
       border: 1.5px solid var(--border-strong);
-      border-radius: 12px;
-      outline: none;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border-radius: 14px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+      transition: border-color 0.18s, box-shadow 0.18s;
+      box-sizing: border-box;
+      min-width: 0;
     }
-    .search-command-input:focus {
+    .multi-tag-box:focus-within {
       border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14), 0 4px 12px rgba(37, 99, 235, 0.08);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
-    .search-bar-clear {
-      position: absolute;
-      right: 12px;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      border: none;
-      background: #F1F5F9;
-      color: #64748B;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
+    .multi-tag-header {
       display: flex;
       align-items: center;
-      justify-content: center;
-      transition: background 0.15s;
-    }
-    .search-bar-clear:hover {
-      background: #E2E8F0;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 800;
       color: var(--navy);
     }
+    .multi-tag-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .multi-tag-title svg {
+      color: var(--blue);
+    }
+    .tag-count-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--blue);
+      background: #EFF6FF;
+      padding: 1px 7px;
+      border-radius: 999px;
+    }
+    .multi-chips-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      align-items: center;
+      min-height: 38px;
+      padding: 4px 6px;
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: text;
+    }
+    .chips-list {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      align-items: center;
+    }
+    .tag-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px 3px 10px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1D4ED8;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border-radius: 999px;
+      animation: chipPop 0.15s ease-out;
+    }
+    @keyframes chipPop {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .tag-chip-remove {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(29, 78, 216, 0.15);
+      color: #1D4ED8;
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1;
+      border: none;
+      padding: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+    .tag-chip-remove:hover {
+      background: #EF4444;
+      color: #FFFFFF;
+    }
+    .tag-input-field {
+      border: none;
+      outline: none;
+      flex: 1;
+      min-width: 120px;
+      font-size: 0.84rem;
+      font-family: inherit;
+      color: var(--text-primary);
+      padding: 4px 6px;
+      background: transparent;
+    }
+    .tag-input-field::placeholder {
+      color: #94A3B8;
+      font-weight: 500;
+    }
+    .suggestions-dropdown {
+      display: none;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 8px 10px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.08);
+      margin-top: 4px;
+      animation: suggestSlideDown 0.15s ease-out;
+      width: 100%;
+      box-sizing: border-box;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+    @keyframes suggestSlideDown {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .suggestion-item {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--navy);
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 9px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .suggestion-item:hover {
+      background: #EFF6FF;
+      color: var(--blue);
+      border-color: #93C5FD;
+      transform: translateY(-1px);
+    }
+    .suggestion-item-highlight {
+      color: var(--blue);
+      font-weight: 800;
+      background: rgba(37, 99, 235, 0.1);
+      padding: 0 2px;
+      border-radius: 3px;
+    }
+    .combo-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      color: #166534;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .combo-count-highlight {
+      font-weight: 800;
+      color: #064E3B;
+    }
 
-    /* Swipeable Category Ribbon */
+    @media (max-width: 768px) {
+      .multi-search-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+      .multi-tag-box {
+        padding: 9px 10px !important;
+      }
+    }
     .search-pills-ribbon {
       display: flex;
       gap: 7px;
@@ -1782,7 +1918,25 @@
       scrollbar-width: none;
     }
     .search-pills-ribbon::-webkit-scrollbar { display: none; }
-    .ribbon-pill {
+    
+    .pill-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+      color: var(--blue);
+      transition: all 0.15s ease;
+    }
+    .ribbon-pill:hover .pill-icon {
+      color: var(--blue);
+    }
+    .ribbon-pill.active .pill-icon {
+      color: var(--blue);
+    }
+
+.ribbon-pill {
       display: inline-flex;
       align-items: center;
       gap: 5px;
@@ -2070,7 +2224,1016 @@
     }
 
     /* ── Mobile Layout (< 899px) ── */
-    @media (max-width: 899px) {
+    
+    /* ─────────────────────────────────────────────────────────────────────
+       FAST MAP LEADS — MODERN FINTECH WALLET DESIGN SYSTEM (v3.5)
+    ───────────────────────────────────────────────────────────────────── */
+    .wallet-modern-shell {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .wallet-top-hero {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 18px;
+      width: 100%;
+    }
+    .fintech-balance-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .fintech-balance-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #2563EB, #10B981);
+    }
+    .balance-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .balance-verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #166534;
+      background: #F0FDF4;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #BBF7D0;
+    }
+    .balance-main-amount {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      font-family: inherit;
+    }
+    .balance-metrics-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      gap: 8px;
+    }
+    .metric-sub-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .metric-sub-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #64748B;
+    }
+    .metric-sub-val {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--blue);
+    }
+    .rate-fixed-pill {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #0F172A;
+      background: #FFFFFF;
+      border: 1px solid var(--border-strong);
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    /* Recharge Controls Card */
+    .recharge-cockpit-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-sizing: border-box;
+    }
+    .recharge-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .recharge-packs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      width: 100%;
+    }
+    .pack-modern-card {
+      position: relative;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 14px 10px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      box-sizing: border-box;
+    }
+    .pack-modern-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+    }
+    .pack-modern-card.active {
+      border-color: var(--blue);
+      background: #EFF6FF;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2), 0 4px 12px rgba(37, 99, 235, 0.12);
+    }
+    .pack-popular-flag {
+      position: absolute;
+      top: -8px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      background: #2563EB;
+      padding: 1px 7px;
+      border-radius: 999px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .pack-price-tag {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--navy);
+    }
+    .pack-modern-card.active .pack-price-tag {
+      color: var(--blue);
+    }
+    .pack-leads-tag {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: #64748B;
+    }
+
+    /* Custom input & Checkout */
+    .custom-input-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .custom-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .custom-currency-sign {
+      position: absolute;
+      left: 14px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--navy);
+      pointer-events: none;
+    }
+    .custom-amount-field {
+      width: 100%;
+      height: 48px;
+      padding: 0 14px 0 34px;
+      font-size: 1rem;
+      font-family: inherit;
+      font-weight: 700;
+      color: var(--text-primary);
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 12px;
+      outline: none;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+    .custom-amount-field:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+    .custom-calc-sub {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.76rem;
+      color: #64748B;
+    }
+    .btn-pay-modern {
+      width: 100%;
+      height: 52px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #102A56 0%, #1E3A8A 100%);
+      color: #FFFFFF;
+      font-size: 1rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(16, 42, 86, 0.2);
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: inherit;
+    }
+    .btn-pay-modern:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(16, 42, 86, 0.28);
+    }
+    .btn-pay-modern:active {
+      transform: scale(0.98);
+    }
+
+    /* Transactions Statement Card */
+    .transactions-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-sizing: border-box;
+    }
+    .statement-table-modern {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.84rem;
+    }
+    .statement-table-modern th {
+      background: #F8FAFC;
+      color: #64748B;
+      font-weight: 700;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 14px;
+      border-bottom: 1.5px solid var(--border);
+      text-align: left;
+    }
+    .statement-table-modern td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-primary);
+      font-size: 0.82rem;
+    }
+    .statement-table-modern tr:last-child td {
+      border-bottom: none;
+    }
+
+    @media (max-width: 820px) {
+      .wallet-top-hero {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+      }
+      .recharge-packs-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+      }
+      .fintech-balance-card, .recharge-cockpit-card, .transactions-card {
+        padding: 16px !important;
+        border-radius: 14px !important;
+      }
+      .balance-main-amount {
+        font-size: 2rem !important;
+      }
+    }
+
+
+    /* ─────────────────────────────────────────────────────────────────────
+       FAST MAP LEADS — MODERN FILES & EXPORTS DESIGN SYSTEM (v3.5)
+    ───────────────────────────────────────────────────────────────────── */
+    .files-modern-shell {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .files-stats-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 12px 18px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+    }
+    .files-search-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-width: 200px;
+      max-width: 380px;
+    }
+    .files-search-icon {
+      position: absolute;
+      left: 12px;
+      color: #94A3B8;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+    }
+    .files-search-input {
+      width: 100%;
+      height: 38px;
+      padding: 0 12px 0 36px;
+      font-size: 0.84rem;
+      font-family: inherit;
+      color: var(--text-primary);
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      outline: none;
+      transition: all 0.15s ease;
+      box-sizing: border-box;
+    }
+    .files-search-input:focus {
+      background: #FFFFFF;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .files-meta-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .file-meta-pill {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--navy);
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    /* Mobile Cards Feed (< 768px) */
+    .files-mobile-feed {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .file-card-mobile {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+      transition: all 0.15s ease;
+      box-sizing: border-box;
+    }
+    .file-card-mobile:hover {
+      border-color: var(--blue);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+    }
+    .file-card-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      flex: 1;
+    }
+    .file-icon-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      color: #16A34A;
+      font-size: 0.75rem;
+      font-weight: 900;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .file-info-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+    .file-name-title {
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: var(--navy);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
+    }
+    .file-sub-details {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      color: #64748B;
+      flex-wrap: wrap;
+    }
+    .file-leads-highlight {
+      color: #16A34A;
+      font-weight: 800;
+      background: #F0FDF4;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    .file-download-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 14px;
+      background: #EFF6FF;
+      color: var(--blue);
+      border: 1px solid #BFDBFE;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+    .file-download-btn:hover {
+      background: var(--blue);
+      color: #FFFFFF;
+      border-color: var(--blue);
+      transform: translateY(-1px);
+    }
+
+    /* Desktop Table Container (>= 768px) */
+    .files-desktop-table-wrap {
+      display: block;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);
+    }
+
+    @media (max-width: 767px) {
+      .files-desktop-table-wrap {
+        display: none !important;
+      }
+      .files-mobile-feed {
+        display: flex !important;
+      }
+      .files-stats-strip {
+        padding: 10px 12px !important;
+      }
+    }
+
+
+    /* ─────────────────────────────────────────────────────────────────────
+       FAST MAP LEADS — MODERN PROFILE DESIGN SYSTEM (v3.5)
+    ───────────────────────────────────────────────────────────────────── */
+    
+    /* ─────────────────────────────────────────────────────────────────────
+       EXTRACTION FILTERS & ADVANCED OPTIONS DRAWER
+    ───────────────────────────────────────────────────────────────────── */
+    .btn-filters-toggle {
+      width: 100%;
+      height: 44px;
+      background: #F8FAFC;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 0.86rem;
+      transition: all 0.16s ease;
+      box-sizing: border-box;
+      margin-bottom: 8px;
+    }
+    .btn-filters-toggle:hover {
+      background: #F1F5F9;
+      border-color: #94A3B8;
+    }
+    .btn-filters-toggle.open {
+      background: #EFF6FF;
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+    .filters-toggle-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1;
+    }
+    .filters-toggle-title {
+      font-weight: 800;
+      color: inherit;
+    }
+    .badge-filters-summary {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #2563EB;
+      background: #DBEAFE;
+      border: 1px solid #BFDBFE;
+      padding: 2px 7px;
+      border-radius: 6px;
+      white-space: nowrap;
+      margin-left: auto;
+    }
+    .filters-chevron {
+      transition: transform 0.2s ease;
+      color: #64748B;
+      flex-shrink: 0;
+    }
+    .btn-filters-toggle.open .filters-chevron {
+      transform: rotate(180deg);
+      color: var(--blue);
+    }
+    .extraction-filters-panel {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);
+      box-sizing: border-box;
+      animation: panelFadeIn 0.16s ease-out;
+    }
+    .filter-row-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .filter-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .filter-section-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      letter-spacing: 0.02em;
+    }
+    .filter-section-sub {
+      font-size: 0.7rem;
+      color: #64748B;
+    }
+    .filter-pills-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .filter-pill-btn {
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-family: inherit;
+      color: #64748B;
+      background: #F8FAFC;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.14s ease;
+    }
+    .filter-pill-btn:hover {
+      background: #F1F5F9;
+      color: var(--navy);
+    }
+    .filter-pill-btn.active {
+      background: #EFF6FF;
+      border-color: #2563EB;
+      color: #1D4ED8;
+      box-shadow: 0 1px 4px rgba(37, 99, 235, 0.14);
+    }
+    .filter-grid-dual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .filter-field-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .filter-mini-label {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .filter-select-input {
+      width: 100%;
+      height: 36px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: #F8FAFC;
+      padding: 0 8px;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--navy);
+      outline: none;
+    }
+    .filter-toggle-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      gap: 10px;
+    }
+    .toggle-text-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .toggle-label-text {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .toggle-sub-text {
+      font-size: 0.7rem;
+      color: #64748B;
+    }
+
+.profile-modern-shell {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .profile-hero-card-modern {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .profile-hero-card-modern::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #102A56, #2563EB);
+    }
+    .profile-user-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+    .profile-modern-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #102A56 0%, #2563EB 100%);
+      color: #FFFFFF;
+      font-size: 1.6rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+      flex-shrink: 0;
+    }
+    .profile-user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+    .profile-user-name {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.2;
+    }
+    .profile-contact-line {
+      font-size: 0.82rem;
+      color: #64748B;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .profile-badges-strip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+    .badge-member-tag {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--blue);
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      padding: 2px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+    }
+    .badge-verified-tag {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #166534;
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      padding: 2px 8px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .profile-actions-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Stats Grid */
+    .profile-stats-grid-modern {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      width: 100%;
+    }
+    .profile-stat-box-modern {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+      box-sizing: border-box;
+    }
+    .stat-label-modern {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .stat-val-modern {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    /* Modern Sub-Tabs Navigation */
+    .profile-subtabs-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #F8FAFC;
+      border: 1.5px solid var(--border);
+      padding: 6px;
+      border-radius: 14px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      box-sizing: border-box;
+    }
+    .profile-subtabs-nav::-webkit-scrollbar { display: none; }
+    .profile-subtab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      font-family: inherit;
+      color: #64748B;
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.16s ease;
+    }
+    .profile-subtab-btn:hover {
+      color: var(--navy);
+      background: rgba(15, 23, 42, 0.04);
+    }
+    .profile-subtab-btn.active {
+      color: var(--navy);
+      background: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+    }
+
+    /* Sub-Tab Panels */
+    .profile-panel-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      animation: panelFadeIn 0.18s ease-out;
+      box-sizing: border-box;
+    }
+    .profile-panel-card.active {
+      display: flex;
+    }
+    @keyframes panelFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .panel-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+    }
+    .panel-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .panel-main-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-sub-title {
+      font-size: 0.8rem;
+      color: #64748B;
+    }
+
+    /* Preference Switch and Options */
+    .preference-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      gap: 16px;
+    }
+    .pref-text-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .pref-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .pref-desc {
+      font-size: 0.76rem;
+      color: #64748B;
+    }
+    .pref-switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+    .pref-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .pref-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #CBD5E1;
+      transition: .2s;
+      border-radius: 24px;
+    }
+    .pref-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .2s;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .pref-switch input:checked + .pref-slider {
+      background-color: var(--blue, #2563EB);
+    }
+    .pref-switch input:checked + .pref-slider:before {
+      transform: translateX(20px);
+    }
+
+    @media (max-width: 768px) {
+      .profile-stats-grid-modern {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+      }
+      .profile-hero-card-modern {
+        padding: 18px !important;
+      }
+      .profile-panel-card {
+        padding: 18px !important;
+      }
+      .profile-actions-right {
+        width: 100% !important;
+      }
+      .profile-actions-right button {
+        flex: 1 !important;
+      }
+      .preference-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+
+@media (max-width: 899px) {
       .extractor-cockpit {
         display: flex !important;
         flex-direction: column !important;
@@ -2947,7 +4110,427 @@
       .stat-val { font-size: 1.05rem !important; }
       .bottom-nav-item span { font-size: 0.62rem !important; }
     }
-  </style>
+  
+    /* ─────────────────────────────────────────────────────────────────────
+       FLOATING GLASSMORPHIC MOBILE BOTTOM DOCK (High Corner Radius)
+    ───────────────────────────────────────────────────────────────────── */
+    @media (max-width: 899px) {
+      .app-shell {
+        padding-bottom: 96px !important; /* Leave generous room for floating dock */
+      }
+
+      /* Floating Dock with Glassmorphism and High Corner Radius */
+      .mobile-bottom-dock {
+        display: flex !important;
+        position: fixed !important;
+        bottom: 16px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 32px) !important;
+        max-width: 400px !important;
+        height: 60px !important;
+        background: rgba(255, 255, 255, 0.86) !important;
+        backdrop-filter: blur(24px) saturate(190%) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.9) !important;
+        border-radius: 9999px !important; /* High Corner Radius Floating Pill */
+        box-shadow: 0 12px 36px -4px rgba(16, 42, 86, 0.22), 0 4px 12px rgba(0, 0, 0, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.95) !important;
+        z-index: 99999 !important;
+        align-items: center !important;
+        justify-content: space-evenly !important;
+        padding: 4px 6px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+      }
+
+      .bottom-nav-item {
+        flex: 1 1 0 !important;
+        height: 48px !important;
+        border-radius: 9999px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 2px !important;
+        border: none !important;
+        background: transparent !important;
+        color: #64748B !important;
+        font-size: 0.68rem !important;
+        font-weight: 700 !important;
+        cursor: pointer !important;
+        transition: all 0.16s ease !important;
+        position: relative !important;
+        padding: 0 !important;
+      }
+      .bottom-nav-item svg {
+        width: 19px !important;
+        height: 19px !important;
+        stroke: currentColor !important;
+        transition: transform 0.16s ease !important;
+      }
+      .bottom-nav-item.active {
+        color: var(--blue, #2563EB) !important;
+        background: rgba(37, 99, 235, 0.1) !important;
+        font-weight: 800 !important;
+      }
+      .bottom-nav-item.active svg {
+        transform: translateY(-1px) scale(1.08) !important;
+        stroke: var(--blue, #2563EB) !important;
+      }
+      .dock-badge {
+        position: absolute !important;
+        top: 3px !important;
+        right: 12% !important;
+        font-size: 0.58rem !important;
+        font-weight: 800 !important;
+        background: #16A34A !important;
+        color: #FFFFFF !important;
+        border-radius: 6px !important;
+        padding: 1px 4px !important;
+        line-height: 1 !important;
+      }
+
+      /* ── Top Bar on Mobile (Clean, visible, zero overflow clipping) ── */
+      .glass-header {
+        padding: 8px 12px !important;
+        margin-bottom: 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 8px !important;
+        overflow: visible !important;
+        height: 52px !important;
+      }
+      .brand-section {
+        flex: 0 0 auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+      }
+      .brand-logo {
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 8px !important;
+      }
+      .brand-logo svg {
+        width: 18px !important;
+        height: 18px !important;
+      }
+      .brand-title h1 {
+        font-size: 0.9rem !important;
+        white-space: nowrap !important;
+      }
+      .brand-badge {
+        font-size: 0.58rem !important;
+        padding: 1px 4px !important;
+      }
+      .brand-sub {
+        display: none !important; /* Hide long subtitle so top bar buttons fit */
+      }
+      .header-controls {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        flex: 0 0 auto !important;
+      }
+      .header-files-btn {
+        display: none !important; /* Managed by bottom dock on mobile */
+      }
+      #statusPill {
+        display: none !important;
+      }
+      .guest-controls-wrap {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+      }
+      .guest-controls-wrap .btn-emerald-glass,
+      .guest-controls-wrap .btn-outline-glass {
+        height: 32px !important;
+        padding: 0 10px !important;
+        font-size: 0.74rem !important;
+        font-weight: 700 !important;
+        border-radius: 8px !important;
+      }
+      #walletBadge {
+        height: 32px !important;
+        padding: 0 8px !important;
+        gap: 5px !important;
+      }
+      #walletBadge .wallet-icon-box {
+        width: 20px !important;
+        height: 20px !important;
+      }
+      #walletBadge .wallet-lbl,
+      #walletBadge .wallet-add-badge {
+        display: none !important;
+      }
+      #walletBadge .wallet-amount {
+        font-size: 0.76rem !important;
+      }
+      .profile-pill {
+        height: 32px !important;
+        padding: 0 6px !important;
+      }
+      .profile-avatar {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 0.7rem !important;
+      }
+      .profile-name {
+        display: none !important;
+      }
+
+      /* ── Profile Page Mobile Sizing (Compact Tabs, Texts, and Fields) ── */
+      .profile-modern-shell {
+        gap: 12px !important;
+        padding: 0 !important;
+      }
+      .profile-hero-card-modern {
+        padding: 14px !important;
+        border-radius: 14px !important;
+        gap: 12px !important;
+      }
+      .profile-modern-avatar {
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 1.15rem !important;
+        border-radius: 12px !important;
+      }
+      .profile-user-name {
+        font-size: 1.05rem !important;
+      }
+      .profile-contact-line {
+        font-size: 0.72rem !important;
+        gap: 4px !important;
+      }
+      .badge-member-tag, .badge-verified-tag {
+        font-size: 0.64rem !important;
+        padding: 2px 6px !important;
+      }
+      .profile-stats-grid-modern {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+      }
+      .profile-stat-box-modern {
+        padding: 10px 12px !important;
+        border-radius: 10px !important;
+        gap: 2px !important;
+      }
+      .stat-label-modern {
+        font-size: 0.65rem !important;
+      }
+      .stat-val-modern {
+        font-size: 1.05rem !important;
+      }
+      .view-title-group .view-title {
+        font-size: 1.1rem !important;
+      }
+      .view-title-group .view-subtitle {
+        font-size: 0.74rem !important;
+      }
+
+      /* Compact Profile Sub-Tabs */
+      .profile-subtabs-nav {
+        padding: 4px !important;
+        gap: 4px !important;
+        border-radius: 12px !important;
+      }
+      .profile-subtab-btn {
+        padding: 6px 10px !important;
+        font-size: 0.74rem !important;
+        gap: 5px !important;
+        border-radius: 8px !important;
+      }
+      .profile-subtab-btn svg {
+        width: 13px !important;
+        height: 13px !important;
+      }
+
+      /* Compact Profile Forms & Fields */
+      .profile-panel-card {
+        padding: 14px !important;
+        border-radius: 14px !important;
+        gap: 12px !important;
+      }
+      .panel-header-row {
+        padding-bottom: 8px !important;
+      }
+      .panel-main-title {
+        font-size: 0.92rem !important;
+      }
+      .panel-sub-title {
+        font-size: 0.7rem !important;
+      }
+      .form-group {
+        margin-bottom: 8px !important;
+      }
+      .form-label {
+        font-size: 0.74rem !important;
+        margin-bottom: 3px !important;
+      }
+      .form-control {
+        height: 38px !important;
+        font-size: 0.82rem !important;
+        padding: 0 10px !important;
+        border-radius: 8px !important;
+      }
+      #btnSaveProfile, #btnChangePassword {
+        height: 40px !important;
+        font-size: 0.84rem !important;
+        padding: 0 18px !important;
+        width: 100% !important;
+      }
+      .preference-row {
+        padding: 10px 12px !important;
+        border-radius: 10px !important;
+        gap: 8px !important;
+      }
+      .pref-title {
+        font-size: 0.8rem !important;
+      }
+      .pref-desc {
+        font-size: 0.7rem !important;
+      }
+    }
+
+
+    /* ─────────────────────────────────────────────────────────────────────
+       PROFILE BILLING & TARIFF DESIGN (Responsive)
+    ───────────────────────────────────────────────────────────────────── */
+    .wallet-quick-spotlight {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      background: #F0FDF4;
+      border: 1.5px solid #BBF7D0;
+      border-radius: 14px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .wallet-quick-lbl {
+      font-size: 0.74rem;
+      color: #166534;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .wallet-quick-val {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #15803D;
+      line-height: 1.1;
+      margin: 3px 0;
+    }
+    .wallet-quick-tariff {
+      font-size: 0.78rem;
+      color: #166534;
+      font-weight: 600;
+    }
+    .wallet-quick-btn {
+      height: 44px;
+      padding: 0 22px;
+      font-size: 0.88rem;
+    }
+
+    .tariff-cards-trio {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .tariff-mini-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .tariff-mini-lbl {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .tariff-mini-val {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--navy);
+      margin: 2px 0;
+    }
+    .tariff-mini-sub {
+      font-size: 0.68rem;
+      color: #64748B;
+    }
+
+    /* Mobile Overrides for Profile & Billing */
+    @media (max-width: 899px) {
+      .profile-subtabs-nav {
+        padding: 3px !important;
+        gap: 3px !important;
+        border-radius: 10px !important;
+      }
+      .profile-subtab-btn {
+        padding: 6px 9px !important;
+        font-size: 0.72rem !important;
+        gap: 4px !important;
+        border-radius: 8px !important;
+      }
+      .profile-subtab-btn svg {
+        width: 12px !important;
+        height: 12px !important;
+      }
+
+      .wallet-quick-spotlight {
+        padding: 12px 14px !important;
+        border-radius: 12px !important;
+        gap: 10px !important;
+      }
+      .wallet-quick-lbl {
+        font-size: 0.64rem !important;
+      }
+      .wallet-quick-val {
+        font-size: 1.35rem !important; /* Scaled down from 2.2rem! */
+        margin: 2px 0 !important;
+      }
+      .wallet-quick-tariff {
+        font-size: 0.7rem !important;
+      }
+      .wallet-quick-btn {
+        height: 36px !important;
+        font-size: 0.78rem !important;
+        padding: 0 14px !important;
+        width: 100% !important;
+        margin-top: 4px !important;
+      }
+
+      .tariff-cards-trio {
+        gap: 6px !important;
+      }
+      .tariff-mini-card {
+        padding: 8px 6px !important;
+        border-radius: 10px !important;
+        gap: 1px !important;
+      }
+      .tariff-mini-lbl {
+        font-size: 0.58rem !important;
+        line-height: 1.1 !important;
+      }
+      .tariff-mini-val {
+        font-size: 0.82rem !important;
+        line-height: 1.1 !important;
+        margin: 1px 0 !important;
+      }
+      .tariff-mini-sub {
+        font-size: 0.58rem !important;
+        line-height: 1.1 !important;
+      }
+    }
+
+</style>
 </head>
 <body class="user-guest">
 
@@ -3032,139 +4615,138 @@
     </header>
 
     <div class="views-container">
-      <!-- VIEW 1: EXTRACTOR / SCRAPER -->
-      <!-- VIEW 1: EXTRACTOR / SCRAPER -->
+            <!-- VIEW 1: EXTRACTOR / SCRAPER -->
       <section id="viewScraper" class="app-view active">
         <main class="extractor-cockpit">
-
-          <!-- TOP HERO STRIP: Clean rate & bonus highlight -->
-          <div class="engine-rate-strip">
-            <div class="rate-badge-pill">
-              <span class="rate-dot-pulse"></span>
-              <span class="rate-bold">₹0.25</span>
-              <span class="rate-sub">per verified lead</span>
-            </div>
-            <div class="bonus-badge-pill">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>₹100 Free Welcome Bonus Active</span>
-            </div>
-          </div>
 
           <!-- PRIMARY SEARCH HERO CARD -->
           <div class="search-hero-card">
             
             <!-- Target Query Input Bar -->
-            <div class="search-command-bar">
-              <span class="search-bar-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-              </span>
-              <input 
-                type="text" 
-                id="searchInput" 
-                class="search-command-input" 
-                placeholder="Type business & city (e.g. Gyms in Karur)..." 
-                value="Gyms in Karur"
-                oninput="handleQueryInput(this.value)"
-                autofocus
-              />
-              <button type="button" id="searchClearBtn" onclick="clearSearchInput()" title="Clear search query" class="search-bar-clear">✕</button>
+            <!-- Multi-Category & Multi-Place Input Grid with Dynamic Typing Suggestions -->
+            <div class="multi-search-grid">
+              
+              <!-- BOX 1: Business Categories -->
+              <div class="multi-tag-box" id="categoryTagBox" onclick="focusCategoryInput()">
+                <div class="multi-tag-header">
+                  <span class="multi-tag-title">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    <span>Business Categories</span>
+                  </span>
+                  <span class="tag-count-badge" id="catCountBadge" style="display: none;">0 selected</span>
+                </div>
+                
+                <div class="multi-chips-container" id="categoryChipsWrap">
+                  <div class="chips-list" id="categoryChipsList"></div>
+                  <input 
+                    type="text" 
+                    id="categoryInput" 
+                    class="tag-input-field" 
+                    placeholder="Type category (e.g. Gyms, Hospitals)..." 
+                    autocomplete="off"
+                    oninput="handleCategoryInput(this.value); updateCombinedQuery();"
+                    onfocus="if (this.value.trim()) handleCategoryInput(this.value);"
+                    onkeydown="handleCategoryKey(event)"
+                  />
+                </div>
+
+                <!-- Suggestions appear ONLY when typing related words -->
+                <div class="suggestions-dropdown" id="categorySuggestionsBox"></div>
+              </div>
+
+              <!-- BOX 2: Locations & Cities -->
+              <div class="multi-tag-box" id="placeTagBox" onclick="focusPlaceInput()">
+                <div class="multi-tag-header">
+                  <span class="multi-tag-title">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span>Target Cities / Places</span>
+                  </span>
+                  <span class="tag-count-badge" id="placeCountBadge" style="display: none;">0 selected</span>
+                </div>
+
+                <div class="multi-chips-container" id="placeChipsWrap">
+                  <div class="chips-list" id="placeChipsList"></div>
+                  <input 
+                    type="text" 
+                    id="locationInput" 
+                    class="tag-input-field" 
+                    placeholder="Type city (e.g. Karur, Coimbatore)..." 
+                    autocomplete="off"
+                    oninput="handlePlaceInput(this.value); updateCombinedQuery();"
+                    onfocus="if (this.value.trim()) handlePlaceInput(this.value);"
+                    onkeydown="handlePlaceKey(event)"
+                  />
+                </div>
+
+                <!-- Suggestions appear ONLY when typing related words -->
+                <div class="suggestions-dropdown" id="placeSuggestionsBox"></div>
+              </div>
+
             </div>
 
-            <!-- Quick Suggestion Categories (Smooth Swipeable Ribbon) -->
+
+
+            <!-- Synchronized Query Input (Maintains JS Compatibility) -->
+            <input type="hidden" id="searchInput" value="" />
+
+            <!-- Quick Suggestion Categories (Smooth Swipeable Ribbon with SVG Icons) -->
             <div class="search-pills-ribbon">
-              <span class="ribbon-pill active" onclick="setQuery('Gyms in Karur')">
-                <span class="pill-emoji">🏋️</span>
+              <span class="ribbon-pill" onclick="setQuery('Gyms in Karur')">
+                <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1a5 5 0 0 0-7.07 0l-.93.93"/><path d="m3 3 1 1a5 5 0 0 0 7.07 0l.93-.93"/><path d="m18 15 3 3"/><path d="m3 9 3 3"/></svg>
                 <span>Gyms in Karur</span>
               </span>
               <span class="ribbon-pill" onclick="setQuery('Hospitals in Coimbatore')">
-                <span class="pill-emoji">🏥</span>
+                <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12"/><path d="M6 12h12"/><rect width="18" height="18" x="3" y="3" rx="4"/></svg>
                 <span>Hospitals in Coimbatore</span>
               </span>
               <span class="ribbon-pill" onclick="setQuery('Hotels in Madurai')">
-                <span class="pill-emoji">🏨</span>
+                <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
                 <span>Hotels in Madurai</span>
               </span>
               <span class="ribbon-pill" onclick="setQuery('Schools in Salem')">
-                <span class="pill-emoji">🎓</span>
+                <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
                 <span>Schools in Salem</span>
               </span>
               <span class="ribbon-pill" onclick="setQuery('Gyms in Chennai')">
-                <span class="pill-emoji">⚡</span>
+                <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                 <span>Gyms in Chennai</span>
               </span>
               <span class="ribbon-pill" onclick="setQuery('Clinics in Trichy')">
-                <span class="pill-emoji">🩺</span>
+                <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
                 <span>Clinics in Trichy</span>
               </span>
             </div>
 
-            <!-- UNIFIED SCANNER CONFIG PANEL -->
-            <div class="scanner-config-panel">
-              
-              <!-- District Deep Scanner Toggle Row -->
-              <div class="config-row district-toggle-row">
-                <div class="config-label-group">
-                  <div class="config-icon-box">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                  </div>
-                  <div>
-                    <div class="config-title">District Deep Scanner</div>
-                    <div class="config-subtitle">Auto-expands search to all sub-areas in district</div>
-                  </div>
-                </div>
-                <label class="switch-toggle" title="Toggle District Deep Search">
-                  <input type="checkbox" id="districtDeepCheckbox" onchange="toggleDistrictDeep()" checked />
-                  <span class="slider-toggle"></span>
-                </label>
+            <!-- Hidden Compatibility Stubs (Zero Layout Footprint, 100% JS Safe) -->
+            <div style="display: none;" aria-hidden="true">
+              <input type="checkbox" id="districtDeepCheckbox" />
+              <div id="districtPreviewBox">
+                <span id="previewCountText"></span>
+                <div id="districtChipsWrap"></div>
               </div>
-
-              <!-- District Sub-Areas Dropdown / Chips Tray -->
-              <div id="districtPreviewBox" class="district-tray">
-                <div class="district-tray-header">
-                  <span class="tray-title" id="previewCountText">15 Sub-Areas in KARUR:</span>
-                  <span class="tray-badge">Auto-Covering All</span>
-                </div>
-                <div class="district-chips-wrap" id="districtChipsWrap">
-                  <!-- Auto populated by JS -->
-                </div>
+              <input type="hidden" id="selectedLimit" value="50" />
+              <span id="advancedToggleLabel"></span>
+              <div id="advancedBody">
+                <textarea id="batchQueriesInput"></textarea>
               </div>
-
-              <!-- Leads Target Row -->
-              <div class="config-row limit-select-row">
-                <div class="config-section-title">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                  <span>Leads Target</span>
-                </div>
-                <div class="limit-selector-grid">
-                  <input type="hidden" id="selectedLimit" value="50" />
-                  <button type="button" class="limit-pill" onclick="selectLimit(25, this)">25</button>
-                  <button type="button" class="limit-pill active" onclick="selectLimit(50, this)">50 (Fast)</button>
-                  <button type="button" class="limit-pill" onclick="selectLimit(100, this)">100</button>
-                  <button type="button" class="limit-pill" onclick="selectLimit(null, this)">All (Max)</button>
-                </div>
-              </div>
-
-              <!-- Batch Queries Collapsible Accordion -->
-              <div class="batch-accordion-wrap">
-                <div class="batch-accordion-header" onclick="toggleAdvanced()">
-                  <div class="batch-header-title">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                    <span id="advancedToggleLabel">Batch Multiple Queries (Optional)</span>
-                  </div>
-                  <span class="accordion-arrow">▼</span>
-                </div>
-                <div id="advancedBody" class="advanced-body" style="display: none;">
-                  <textarea 
-                    id="batchQueriesInput" 
-                    rows="3" 
-                    class="batch-textarea" 
-                    placeholder="Gyms in Anna Nagar, Chennai&#10;Gyms in T. Nagar, Chennai&#10;Gyms in Velachery, Chennai"
-                  ></textarea>
-                </div>
-              </div>
-
             </div>
 
+                        <!-- ADVANCED EXTRACTION FILTERS TOGGLE BUTTON (User Requested Option) -->
+            <button id="btnToggleExtractionFilters" class="btn-filters-toggle" onclick="openFiltersModal()" type="button">
+              <div class="filters-toggle-left">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="filters-toggle-title">Extraction Filters & Options</span>
+                <span id="filtersActiveSummary" class="badge-filters-summary">All Leads • All Websites</span>
+              </div>
+              <span style="font-size: 0.74rem; font-weight: 700; color: var(--blue); display: inline-flex; align-items: center; gap: 4px;">
+                <span>Set Options</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </span>
+            </button>
+
+            <!-- EXPANDABLE EXTRACTION FILTERS PANEL -->
             <!-- PRIMARY ACTION CTA LAUNCH BUTTON -->
             <div class="cta-launch-row">
               <button id="btnStart" class="btn-launch-primary" onclick="startScraping()" type="button">
@@ -3226,7 +4808,7 @@
             <!-- COMPLETION INSTANT DOWNLOAD BANNER -->
             <div id="completionBanner" class="completion-banner" style="display: none;">
               <div class="banner-text">
-                <strong id="bannerSuccessTitle">🎉 Extraction Completed Successfully!</strong>
+                <strong id="bannerSuccessTitle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:5px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Extraction Completed Successfully!</strong>
                 <span id="bannerSuccessSub">CSV File ready for instant download on your device.</span>
               </div>
               <div class="banner-buttons">
@@ -3281,7 +4863,7 @@
                   </button>
 
                   <button id="btnToggleView" class="btn-subtle-sm mobile-only" onclick="toggleMobileViewMode()" title="Switch between Card View and Table View">
-                    <span id="viewToggleIcon">📊</span>
+                    <span id="viewToggleIcon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg></span>
                     <span id="viewToggleText">Table</span>
                   </button>
                 </div>
@@ -3320,319 +4902,522 @@
       </section>
 
       <!-- VIEW 2: DEDICATED WALLET PAGE WITH OPTIONS & CALCULATOR -->
+            <!-- VIEW 2: DEDICATED IN-APP FINTECH WALLET PAGE -->
       <section id="viewWallet" class="app-view">
-        <div class="view-header-bar">
-          <button class="btn-subtle-back" onclick="navigateToView('scraper')" type="button">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg>
-            <span>Back to Extractor</span>
-          </button>
-          <div class="view-title-group">
-            <h1 class="view-title">In-App Wallet & Recharge</h1>
-            <p class="view-subtitle">Flat ₹0.25 per extracted verified lead • 100% transparent live billing</p>
+        <div class="wallet-modern-shell">
+          
+          <!-- Top Header Navigation Bar -->
+          <div class="view-header-bar">
+            
+            <div class="view-title-group">
+              <h1 class="view-title">Billing & Wallet Dashboard</h1>
+              <p class="view-subtitle">Flat ₹0.25 per extracted verified lead • 100% transparent live billing</p>
+            </div>
           </div>
-        </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;" class="wallet-page-grid">
-          <!-- LEFT COLUMN: Hero Balance Card & Interactive Calculator -->
-          <div>
-            <!-- Fintech Wallet Hero Card -->
-            <div class="wallet-hero-card">
-              <div class="card-chip-row">
-                <div class="card-chip"></div>
-                <span class="card-brand-label">FAST MAP LEADS PAY</span>
-                <span class="card-secure-tag">256-BIT SSL SECURED</span>
-              </div>
-              <div class="card-bal-label">AVAILABLE WALLET BALANCE</div>
-              <div class="card-bal-number" id="walletPageHeroBal">₹100.00</div>
-              <div class="card-footer-row">
-                <div class="card-leads-stat">
-                  <span class="stat-num" id="walletPageHeroLeads">400</span>
-                  <span class="stat-txt">Leads Ready to Extract</span>
+          <!-- Top Hero Grid: Balance Card & Recharge Cockpit -->
+          <div class="wallet-top-hero">
+            
+            <!-- LEFT: Modern Balance & Account Health Card -->
+            <div class="fintech-balance-card">
+              <div>
+                <div class="balance-card-header">
+                  <span>Available Balance</span>
+                  <span class="balance-verified-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Instant Credit Active</span>
+                  </span>
                 </div>
-                <span class="card-rate-badge">₹0.25 / Lead Flat</span>
+                <div class="balance-main-amount" id="walletPageHeroBal">₹100.00</div>
+              </div>
+
+              <!-- Available Leads & Tariff Strip -->
+              <div class="balance-metrics-bar">
+                <div class="metric-sub-group">
+                  <span class="metric-sub-label">Extract Capacity</span>
+                  <span class="metric-sub-val" id="walletPageHeroLeads">400 Leads</span>
+                </div>
+                <div class="rate-fixed-pill">
+                  ₹0.25 / Lead Flat
+                </div>
+              </div>
+
+              <!-- Security & Guarantee Badges -->
+              <div style="display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--border); padding-top: 12px; font-size: 0.76rem; color: #64748B;">
+                <div style="display: flex; align-items: center; gap: 7px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span>256-bit SSL encrypted transactions via Razorpay</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 7px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                  <span>Only pay for successfully extracted verified leads</span>
+                </div>
               </div>
             </div>
-            <!-- RIGHT COLUMN: 1-Click Recharge Packs & Checkout -->
-          <div>
-            <div class="card-elevated">
-              <div style="font-weight: 800; color: #0f172a; font-size: 1.05rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-                <span>Instant Wallet Recharge</span>
-              </div>
-              <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 16px;">Select a package below to recharge immediately via Razorpay (UPI, Google Pay, PhonePe, Cards, NetBanking).</p>
 
-              <!-- 4 Recharge Packs Grid -->
-              <div class="pack-grid" style="margin-bottom: 16px;">
-                <div class="pack-card" onclick="selectPageRechargePack(100)" id="pagePack100">
-                  <div class="pack-val">₹100</div>
-                  <div class="pack-leads">400 Leads</div>
+            <!-- RIGHT: Modern Recharge Cockpit Card -->
+            <div class="recharge-cockpit-card">
+              <div class="recharge-card-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                <span>Instant Wallet Top-Up</span>
+              </div>
+              <p style="font-size: 0.8rem; color: #64748B; margin: 0; line-height: 1.4;">
+                Select a pack or enter a custom amount to recharge via UPI, Google Pay, PhonePe, Cards, or NetBanking.
+              </p>
+
+              <!-- 4 Modern Segmented Packs Grid -->
+              <div class="recharge-packs-grid">
+                <div class="pack-modern-card pack-card" onclick="selectPageRechargePack(100)" id="pagePack100">
+                  <span class="pack-price-tag">₹100</span>
+                  <span class="pack-leads-tag">400 Leads</span>
                 </div>
-                <div class="pack-card popular active" onclick="selectPageRechargePack(250)" id="pagePack250">
-                  <div class="pack-badge">Best Value</div>
-                  <div class="pack-val">₹250</div>
-                  <div class="pack-leads">1,000 Leads</div>
+                <div class="pack-modern-card pack-card active" onclick="selectPageRechargePack(250)" id="pagePack250">
+                  <span class="pack-popular-flag">Popular</span>
+                  <span class="pack-price-tag">₹250</span>
+                  <span class="pack-leads-tag">1,000 Leads</span>
                 </div>
-                <div class="pack-card" onclick="selectPageRechargePack(500)" id="pagePack500">
-                  <div class="pack-val">₹500</div>
-                  <div class="pack-leads">2,000 Leads</div>
+                <div class="pack-modern-card pack-card" onclick="selectPageRechargePack(500)" id="pagePack500">
+                  <span class="pack-price-tag">₹500</span>
+                  <span class="pack-leads-tag">2,000 Leads</span>
                 </div>
-                <div class="pack-card" onclick="selectPageRechargePack(1000)" id="pagePack1000">
-                  <div class="pack-val">₹1,000</div>
-                  <div class="pack-leads">4,000 Leads</div>
+                <div class="pack-modern-card pack-card" onclick="selectPageRechargePack(1000)" id="pagePack1000">
+                  <span class="pack-price-tag">₹1,000</span>
+                  <span class="pack-leads-tag">4,000 Leads</span>
                 </div>
               </div>
 
-              <!-- Custom Amount Input -->
-              <div class="form-group" style="margin-bottom: 16px;">
-                <label class="form-label" style="font-weight: 700;">Or Custom Top-Up Amount (₹)</label>
-                <div style="position: relative;">
-                  <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-weight: 800; color: #64748b;">₹</span>
-                  <input type="number" id="pageCustomRechargeAmount" class="glass-input" style="padding-left: 32px;" placeholder="Min ₹10" value="250" min="10" oninput="handlePageCustomAmount(this.value)" />
+              <!-- Custom Amount Top-Up -->
+              <div class="custom-input-box">
+                <div class="custom-input-wrap">
+                  <span class="custom-currency-sign">₹</span>
+                  <input 
+                    type="number" 
+                    id="pageCustomRechargeAmount" 
+                    class="custom-amount-field" 
+                    placeholder="Custom amount (Min ₹10)" 
+                    value="250" 
+                    min="10" 
+                    oninput="handlePageCustomAmount(this.value)" 
+                  />
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: #64748b; margin-top: 4px;">
-                  <span>Min recharge: ₹10</span>
-                  <span id="pageCustomLeadsEquiv" style="color: #16a34a; font-weight: 700;">≈ 1,000 leads</span>
+                <div class="custom-calc-sub">
+                  <span>Minimum top-up: ₹10</span>
+                  <span id="pageCustomLeadsEquiv" style="color: #16A34A; font-weight: 800;">≈ 1,000 leads</span>
                 </div>
               </div>
 
               <!-- Main Checkout Button -->
-              <button id="btnPagePayRazorpay" type="button" class="btn-hero-emerald" style="width: 100%; height: 50px; font-size: 1rem;" onclick="executePageRazorpayPayment()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              <button id="btnPagePayRazorpay" type="button" class="btn-pay-modern" onclick="executePageRazorpayPayment()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
                 <span id="pagePayBtnLabel">Proceed to Pay ₹250 via Razorpay</span>
               </button>
 
-              <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; font-size: 0.74rem; color: #64748b;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                <span>Automated instant credit • No hidden platform fees</span>
+              <!-- Direct Standard Checkout Test Button -->
+              <button id="btnPageTestRazorpay" type="button" class="btn-compact" style="width: 100%; height: 38px; margin-top: 6px; font-size: 0.8rem; background: rgba(37,99,235,0.08); color: #2563eb; border: 1px dashed rgba(37,99,235,0.35); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="openRazorpayStandardCheckout(100)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <span>Test Standard Web Checkout (100 paise / ₹1)</span>
+              </button>
+
+              <div style="display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.72rem; color: #94A3B8;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Automated instant credit • Official Razorpay verified partner</span>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- FULL-WIDTH TRANSACTIONS STATEMENT -->
-        <div class="card-elevated" style="margin-top: 20px;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
-            <div style="font-weight: 800; color: #0f172a; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-              <span>Wallet Transaction Statement & Scrapes Audit</span>
+          </div>
+
+          <!-- Bottom: Clean Transactions Statement & Scrapes Audit Card -->
+          <div class="transactions-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 1.05rem; font-weight: 800; color: var(--navy);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <span>Transaction Statement & Audit Log</span>
+              </div>
+              <button class="btn-subtle-sm" onclick="loadPageTransactions()" type="button">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+                <span>Refresh Statement</span>
+              </button>
             </div>
-            <button class="btn-subtle-sm" onclick="loadPageTransactions()" type="button">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
-              <span>Refresh Statement</span>
-            </button>
+
+            <div class="table-scroll-wrap" style="max-height: 420px; overflow-x: auto; border: 1px solid var(--border); border-radius: 12px;">
+              <table class="statement-table-modern">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Balance After</th>
+                  </tr>
+                </thead>
+                <tbody id="pageWalletTxTableBody">
+                  <tr><td colspan="5" style="text-align: center; color: #94A3B8; padding: 28px;">Loading transaction statement...</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div class="table-scroll-wrap" style="max-height: 400px;">
-            <table>
-              <thead>
-                <tr>
-                  <th>Timestamp</th>
-                  <th>Type</th>
-                  <th>Description</th>
-                  <th>Amount</th>
-                  <th>Balance After</th>
-                </tr>
-              </thead>
-              <tbody id="pageWalletTxTableBody">
-                <tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 25px;">Loading transaction statement...</td></tr>
-              </tbody>
-            </table>
-          </div>
         </div>
       </section>
 
-      <!-- VIEW 3: DEDICATED PROFILE PAGE WITH OPTIONS -->
+            <!-- VIEW 3: DEDICATED PROFILE PAGE WITH MODERN SUB-TABS -->
       <section id="viewProfile" class="app-view">
-        <div class="view-header-bar">
-          <button class="btn-subtle-back" onclick="navigateToView('scraper')" type="button">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg>
-            <span>Back to Extractor</span>
-          </button>
-          <div class="view-title-group">
-            <h1 class="view-title">Account & Profile Settings</h1>
-            <p class="view-subtitle">Manage your profile information, password credentials, and active services</p>
-          </div>
-        </div>
-
-        <!-- PROFILE HERO CARD -->
-        <div class="profile-hero-card">
-          <div class="profile-hero-top">
-            <div class="profile-large-avatar" id="profilePageAvatar">U</div>
-            <div style="flex: 1;">
-              <h2 class="profile-hero-name" id="profilePageName">User Name</h2>
-              <div class="profile-hero-email" id="profilePageEmail">user@example.com</div>
-              <div class="profile-hero-email" id="profilePagePhone" style="margin-top: 2px;">+91 9876543210</div>
-              <div class="profile-badges-row">
-                <span class="profile-badge-role" id="profilePageRoleBadge">MEMBER</span>
-                <span class="profile-badge-verified">✓ VERIFIED ACCOUNT</span>
-                <span style="font-size: 0.74rem; color: #64748b; font-weight: 600;" id="profilePageJoined">Joined: Active Member</span>
-              </div>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn-hero-emerald" id="profileRechargeBtn" onclick="navigateToView('wallet')" type="button" style="height: 42px; padding: 0 16px; font-size: 0.85rem;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-                <span>Recharge Wallet</span>
-              </button>
-              <button class="btn-hero-primary" id="profileSignInBtn" onclick="openAuthModal('login')" type="button" style="height: 42px; padding: 0 16px; font-size: 0.85rem; display: none;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-                <span>Sign In to Account</span>
-              </button>
+        <div class="profile-modern-shell">
+          
+          <!-- Top Header Navigation Bar -->
+          <div class="view-header-bar">
+            
+            <div class="view-title-group">
+              <h1 class="view-title">Account & Profile Settings</h1>
+              <p class="view-subtitle">Manage personal profile details, credentials, billing, and system preferences</p>
             </div>
           </div>
-        </div>
 
-        <!-- 4 KEY STATS GRID -->
-        <div class="profile-stats-grid">
-          <div class="profile-stat-box">
-            <div class="profile-stat-lbl">In-App Balance</div>
-            <div class="profile-stat-val" id="profileStatBalance" style="color: #16a34a;">₹100.00</div>
-          </div>
-          <div class="profile-stat-box">
-            <div class="profile-stat-lbl">Leads Available</div>
-            <div class="profile-stat-val" id="profileStatLeads">400 Leads</div>
-          </div>
-          <div class="profile-stat-box">
-            <div class="profile-stat-lbl">Free Bonus Claimed</div>
-            <div class="profile-stat-val" id="profileStatBonus" style="color: #2563eb;">₹100.00</div>
-          </div>
-          <div class="profile-stat-box">
-            <div class="profile-stat-lbl">Tariff Plan</div>
-            <div class="profile-stat-val" style="color: #0f172a; font-size: 1.15rem;">₹0.25 / Lead</div>
-          </div>
-        </div>
-
-        <!-- PROFILE OPTIONS GRID (2 COLUMNS) -->
-        <div class="profile-options-grid">
-          <!-- OPTION 1: EDIT PROFILE -->
-          <div class="profile-option-card">
-            <div>
-              <div style="font-weight: 800; color: #0f172a; font-size: 1.05rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <span>Edit Profile Details</span>
+          <!-- Profile Hero Identity Card -->
+          <div class="profile-hero-card-modern">
+            <div class="profile-user-left">
+              <div class="profile-modern-avatar" id="profilePageAvatar">U</div>
+              <div class="profile-user-info">
+                <div class="profile-user-name" id="profilePageName">User Name</div>
+                <div class="profile-contact-line">
+                  <span id="profilePageEmail">user@example.com</span>
+                  <span>•</span>
+                  <span id="profilePagePhone">+91 9876543210</span>
+                </div>
+                <div class="profile-badges-strip">
+                  <span class="badge-member-tag" id="profilePageRoleBadge">MEMBER</span>
+                  <span class="badge-verified-tag">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>VERIFIED ACCOUNT</span>
+                  </span>
+                  <span style="font-size: 0.72rem; color: #64748B; font-weight: 600;" id="profilePageJoined">Joined: Active Member</span>
+                </div>
               </div>
-              <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 14px;">Update your display name and contact mobile number.</p>
-              
-              <form id="profileEditForm" onsubmit="handleProfileUpdateSubmit(event)">
-                <div class="form-group">
-                  <label class="form-label">Full Name</label>
-                  <input type="text" id="editProfileName" class="form-control" placeholder="Your name" required />
+            </div>
+
+            <!-- Quick Action Buttons -->
+            <div class="profile-actions-right">
+              <button class="btn-hero-emerald" id="profileRechargeBtn" onclick="navigateToView('wallet')" type="button" style="height: 40px; padding: 0 16px; font-size: 0.84rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                <span>Recharge</span>
+              </button>
+              <button class="btn-hero-primary" id="profileSignInBtn" onclick="openAuthModal('login')" type="button" style="height: 40px; padding: 0 16px; font-size: 0.84rem; display: none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                <span>Sign In</span>
+              </button>
+              <button class="btn-hero-outline" onclick="handleUserLogout()" type="button" style="height: 40px; padding: 0 14px; color: #DC2626; border-color: #FECACA; background: #FFF5F5; font-size: 0.84rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Key Stats HUD -->
+          <div class="profile-stats-grid-modern">
+            <div class="profile-stat-box-modern">
+              <div class="stat-label-modern">In-App Balance</div>
+              <div class="stat-val-modern" id="profileStatBalance" style="color: #16A34A;">₹100.00</div>
+            </div>
+            <div class="profile-stat-box-modern">
+              <div class="stat-label-modern">Leads Capacity</div>
+              <div class="stat-val-modern" id="profileStatLeads" style="color: var(--blue);">400 Leads</div>
+            </div>
+            <div class="profile-stat-box-modern">
+              <div class="stat-label-modern">Free Bonus</div>
+              <div class="stat-val-modern" id="profileStatBonus" style="color: #2563EB;">₹100.00</div>
+            </div>
+            <div class="profile-stat-box-modern">
+              <div class="stat-label-modern">Tariff Plan</div>
+              <div class="stat-val-modern" style="color: var(--navy); font-size: 1.15rem;">₹0.25 / Lead</div>
+            </div>
+          </div>
+
+          <!-- Modern Sub-Tabs Navigation Bar -->
+          <div class="profile-subtabs-nav">
+            <button class="profile-subtab-btn active" data-tab="details" onclick="switchProfileTab('details')" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Profile</span>
+            </button>
+            <button class="profile-subtab-btn" data-tab="security" onclick="switchProfileTab('security')" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>Security</span>
+            </button>
+            <button class="profile-subtab-btn" data-tab="billing" onclick="switchProfileTab('billing')" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+              <span>Wallet</span>
+            </button>
+            <button class="profile-subtab-btn" data-tab="preferences" onclick="switchProfileTab('preferences')" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              <span>Settings</span>
+            </button>
+          </div>
+
+          <!-- TAB PANEL 1: Profile Details -->
+          <div class="profile-panel-card active" id="profilePanel_details">
+            <div class="panel-header-row">
+              <div class="panel-title-group">
+                <div class="panel-main-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <span>Edit Personal Details</span>
                 </div>
-                <div class="form-group">
-                  <label class="form-label">Mobile Number</label>
-                  <input type="tel" id="editProfilePhone" class="form-control" placeholder="10-digit mobile number" />
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Email Address (Primary)</label>
-                  <input type="email" id="editProfileEmail" class="form-control" readonly disabled style="background: #f1f5f9; cursor: not-allowed;" />
-                </div>
-                <button type="submit" id="btnSaveProfile" class="btn-hero-primary" style="width: 100%; height: 44px; font-size: 0.9rem; margin-top: 6px;">
+                <div class="panel-sub-title">Update display name, contact phone number, and verified profile credentials</div>
+              </div>
+            </div>
+
+            <form id="profileEditForm" onsubmit="handleProfileUpdateSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
+              <div class="form-group">
+                <label class="form-label" style="font-weight: 700; color: var(--navy);">Full Name</label>
+                <input type="text" id="editProfileName" class="form-control" placeholder="Your full name" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="font-weight: 700; color: var(--navy);">Mobile Phone Number</label>
+                <input type="tel" id="editProfilePhone" class="form-control" placeholder="10-digit mobile phone number" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="font-weight: 700; color: var(--navy);">Email Address (Primary Account ID)</label>
+                <input type="email" id="editProfileEmail" class="form-control" readonly disabled style="background: #F1F5F9; cursor: not-allowed;" />
+              </div>
+              <div style="display: flex; justify-content: flex-end; margin-top: 6px;">
+                <button type="submit" id="btnSaveProfile" class="btn-hero-primary" style="height: 46px; padding: 0 26px; font-size: 0.9rem;">
                   Save Profile Details
                 </button>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
 
-          <!-- OPTION 2: CHANGE PASSWORD -->
-          <div class="profile-option-card">
-            <div>
-              <div style="font-weight: 800; color: #0f172a; font-size: 1.05rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span>Security & Password</span>
+          <!-- TAB PANEL 2: Security & Password -->
+          <div class="profile-panel-card" id="profilePanel_security">
+            <div class="panel-header-row">
+              <div class="panel-title-group">
+                <div class="panel-main-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <span>Security & Password Credentials</span>
+                </div>
+                <div class="panel-sub-title">Update account access password and manage administrative authorizations</div>
               </div>
-              <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 14px;">Set or update your login password for email credentials sign-in.</p>
+            </div>
 
-              <form id="changePasswordForm" onsubmit="handlePasswordChangeSubmit(event)">
-                <div class="form-group">
-                  <label class="form-label">New Password</label>
-                  <input type="password" id="changeNewPassword" class="form-control" placeholder="Minimum 6 characters" minlength="6" required />
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Confirm New Password</label>
-                  <input type="password" id="changeConfirmPassword" class="form-control" placeholder="Re-enter new password" minlength="6" required />
-                </div>
-                <button type="submit" id="btnChangePassword" class="btn-hero-primary" style="width: 100%; height: 44px; font-size: 0.9rem; margin-top: 6px;">
+            <form id="changePasswordForm" onsubmit="handlePasswordChangeSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
+              <div class="form-group">
+                <label class="form-label" style="font-weight: 700; color: var(--navy);">New Account Password</label>
+                <input type="password" id="changeNewPassword" class="form-control" placeholder="Minimum 6 characters" minlength="6" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="font-weight: 700; color: var(--navy);">Confirm New Password</label>
+                <input type="password" id="changeConfirmPassword" class="form-control" placeholder="Re-enter password to confirm" minlength="6" required />
+              </div>
+              <div style="display: flex; justify-content: flex-end; margin-top: 6px;">
+                <button type="submit" id="btnChangePassword" class="btn-hero-primary" style="height: 46px; padding: 0 26px; font-size: 0.9rem;">
                   Update Password
                 </button>
-              </form>
+              </div>
+            </form>
+
+            <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <div>
+                  <div style="font-size: 0.84rem; font-weight: 700; color: var(--navy);">Active Session Security</div>
+                  <div style="font-size: 0.74rem; color: #64748B;">Protected by 256-bit encryption & bcrypt salted hashing</div>
+                </div>
+              </div>
+              <span class="badge-verified-tag">SECURE</span>
+            </div>
+
+            <div id="profileAdminBox" style="display: none; border-top: 1px solid var(--border); padding-top: 16px;">
+              <div style="font-size: 0.88rem; font-weight: 800; color: var(--navy); margin-bottom: 8px;">Administrative Management</div>
+              <a href="/admin" class="btn-hero-primary" style="height: 44px; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Launch Admin Portal (/admin)</span>
+              </a>
             </div>
           </div>
 
-          <!-- OPTION 3: WALLET & BILLING QUICK ACCESS -->
-          <div class="profile-option-card">
-            <div>
-              <div style="font-weight: 800; color: #0f172a; font-size: 1.05rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-                <span>In-App Wallet & Recharge</span>
-              </div>
-              <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 12px;">Top up your wallet balance, calculate costs, and check statements.</p>
-              <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 12px; margin-bottom: 14px;">
-                <div style="font-size: 0.72rem; color: #166534; font-weight: 700; text-transform: uppercase;">Current Live Balance</div>
-                <div style="font-size: 1.4rem; font-weight: 800; color: #15803d;" id="profileWalletQuickBal">₹100.00</div>
+          <!-- TAB PANEL 3: Wallet & Billing Shortcut -->
+          <div class="profile-panel-card" id="profilePanel_billing">
+            <div class="panel-header-row">
+              <div class="panel-title-group">
+                <div class="panel-main-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                  <span>In-App Wallet & Service Tariff</span>
+                </div>
+                <div class="panel-sub-title">Instant balance overview, rate breakdown, and quick recharge access</div>
               </div>
             </div>
-            <button class="btn-hero-emerald" onclick="navigateToView('wallet')" type="button" style="width: 100%; height: 44px; font-size: 0.9rem;">
-              Open Wallet Page
-            </button>
+
+            <div class="wallet-quick-spotlight">
+              <div>
+                <div class="wallet-quick-lbl">Available Wallet Balance</div>
+                <div class="wallet-quick-val" id="profileWalletQuickBal">₹100.00</div>
+                <div class="wallet-quick-tariff">Transparent pay-per-lead tariff: Flat ₹0.25 / lead</div>
+              </div>
+              <button class="btn-hero-emerald wallet-quick-btn" onclick="navigateToView('wallet')" type="button">
+                Open Full Wallet & Statements
+              </button>
+            </div>
+
+            <div class="tariff-cards-trio">
+              <div class="tariff-mini-card">
+                <div class="tariff-mini-lbl">VERIFIED PHONE</div>
+                <div class="tariff-mini-val">₹0.25 / lead</div>
+                <div class="tariff-mini-sub">Extracted & cleaned</div>
+              </div>
+              <div class="tariff-mini-card">
+                <div class="tariff-mini-lbl">MISSING PHONE</div>
+                <div class="tariff-mini-val" style="color: #16A34A;">₹0.00 (FREE)</div>
+                <div class="tariff-mini-sub">Zero charge on misses</div>
+              </div>
+              <div class="tariff-mini-card">
+                <div class="tariff-mini-lbl">VALIDITY</div>
+                <div class="tariff-mini-val" style="color: var(--blue);">Lifetime</div>
+                <div class="tariff-mini-sub">Never expires</div>
+              </div>
+            </div>
           </div>
 
-          <!-- OPTION 4: ADMIN ACCESS & LOGOUT -->
-          <div class="profile-option-card">
-            <div>
-              <div style="font-weight: 800; color: #0f172a; font-size: 1.05rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                <span>Administrative & Session</span>
-              </div>
-              <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 14px;">Admin dashboard management and secure device logout.</p>
-              
-              <div id="profileAdminBox" style="display: none; margin-bottom: 12px;">
-                <a href="/admin" class="btn-hero-primary" style="width: 100%; height: 44px; font-size: 0.9rem; text-decoration: none; justify-content: center;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                  <span>Launch Admin Portal (/admin)</span>
-                </a>
+          <!-- TAB PANEL 4: Preferences & Scraper Options -->
+          <div class="profile-panel-card" id="profilePanel_preferences">
+            <div class="panel-header-row">
+              <div class="panel-title-group">
+                <div class="panel-main-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  <span>Scraper & Application Preferences</span>
+                </div>
+                <div class="panel-sub-title">Customize default extraction behaviors, auto-export rules, and visual alerts</div>
               </div>
             </div>
-            <button class="btn-hero-outline" onclick="handleUserLogout()" type="button" style="width: 100%; height: 44px; color: #dc2626; border-color: #fecaca; background: #fff5f5; font-size: 0.9rem;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-              <span>Sign Out of Account</span>
-            </button>
+
+            <form id="preferencesForm" onsubmit="saveUserPreferences(event)" style="display: flex; flex-direction: column; gap: 12px;">
+              <div class="preference-row">
+                <div class="pref-text-group">
+                  <div class="pref-title">Default Lead Export Format</div>
+                  <div class="pref-desc">Choose file standard for automatic and manual lead exports</div>
+                </div>
+                <select id="prefExportFormat" class="form-control" style="width: auto; min-width: 150px; font-weight: 700;">
+                  <option value="csv">CSV (Universal UTF-8)</option>
+                  <option value="xlsx">Excel Workbook (.xlsx)</option>
+                  <option value="json">Raw JSON Array</option>
+                </select>
+              </div>
+
+              <div class="preference-row">
+                <div class="pref-text-group">
+                  <div class="pref-title">Automatic Download on Completion</div>
+                  <div class="pref-desc">Instantly download exported leads file upon scraper batch finish</div>
+                </div>
+                <label class="pref-switch">
+                  <input type="checkbox" id="prefAutoDownload" checked />
+                  <span class="pref-slider"></span>
+                </label>
+              </div>
+
+              <div class="preference-row">
+                <div class="pref-text-group">
+                  <div class="pref-title">Filter Duplicate Phone Numbers</div>
+                  <div class="pref-desc">Skip identical telephone numbers across consecutive extraction queries</div>
+                </div>
+                <label class="pref-switch">
+                  <input type="checkbox" id="prefDedup" checked />
+                  <span class="pref-slider"></span>
+                </label>
+              </div>
+
+              <div class="preference-row">
+                <div class="pref-text-group">
+                  <div class="pref-title">Live Telemetry HUD Pulse</div>
+                  <div class="pref-desc">Enable dynamic visual pulse indicators when leads stream into counter</div>
+                </div>
+                <label class="pref-switch">
+                  <input type="checkbox" id="prefHudPulse" checked />
+                  <span class="pref-slider"></span>
+                </label>
+              </div>
+
+              <div class="preference-row">
+                <div class="pref-text-group">
+                  <div class="pref-title">Notification Toast Alert Timing</div>
+                  <div class="pref-desc">Duration toast feedback banners remain visible on screen</div>
+                </div>
+                <select id="prefToastDuration" class="form-control" style="width: auto; min-width: 150px; font-weight: 700;">
+                  <option value="2000">Fast (2 Seconds)</option>
+                  <option value="4000" selected>Standard (4 Seconds)</option>
+                  <option value="6000">Extended (6 Seconds)</option>
+                </select>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; margin-top: 6px;">
+                <button type="submit" class="btn-hero-primary" style="height: 46px; padding: 0 26px; font-size: 0.9rem;">
+                  Save System Preferences
+                </button>
+              </div>
+            </form>
           </div>
+
         </div>
       </section>
 
       <!-- VIEW 4: DEDICATED SAVED FILES PAGE -->
       <section id="viewFiles" class="app-view">
-        <div class="view-header-bar">
-          <button class="btn-subtle-back" onclick="navigateToView('scraper')" type="button">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg>
-            <span>Back to Extractor</span>
-          </button>
-          <div class="view-title-group">
-            <h1 class="view-title">Saved CSV Exports Manager</h1>
-            <p class="view-subtitle">All your scraped campaigns saved safely with instant 1-click download</p>
+        <div class="files-modern-shell">
+          
+          <!-- Top Header Navigation Bar -->
+          <div class="view-header-bar">
+            
+            <div class="view-title-group">
+              <h1 class="view-title">Saved CSV Exports Manager</h1>
+              <p class="view-subtitle">All your scraped campaigns saved safely with instant 1-click download</p>
+            </div>
+            <button class="btn-hero-outline" onclick="openOutputFolderOnPC()" type="button" style="height: 40px; padding: 0 16px; font-size: 0.85rem;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+              <span>Open PC Folder</span>
+            </button>
           </div>
-          <button class="btn-hero-outline" onclick="openOutputFolderOnPC()" type="button" style="height: 40px; padding: 0 16px; font-size: 0.85rem;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
-            <span>Open PC Folder</span>
-          </button>
-        </div>
 
-        <div class="card-elevated">
-          <div class="table-scroll-wrap" style="max-height: 550px;">
-            <table>
-              <thead>
-                <tr>
-                  <th>File Name</th>
-                  <th>Leads / Rows</th>
-                  <th>File Size</th>
-                  <th>Date Created</th>
-                  <th style="text-align: right;">Action</th>
-                </tr>
-              </thead>
-              <tbody id="pageFilesTableBody">
-                <tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 25px;">Loading saved files...</td></tr>
-              </tbody>
-            </table>
+          <!-- Quick Search & File Metrics Strip -->
+          <div class="files-stats-strip">
+            <div class="files-search-wrap">
+              <span class="files-search-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              </span>
+              <input 
+                type="text" 
+                id="fileFilterInput" 
+                class="files-search-input" 
+                placeholder="Search CSV files by name..." 
+                oninput="filterFilesList(this.value)"
+              />
+            </div>
+            <div class="files-meta-pills">
+              <span class="file-meta-pill" id="filesTotalCount">0 Files</span>
+              <span class="file-meta-pill" id="filesTotalLeads" style="background: #F0FDF4; border-color: #BBF7D0; color: #166534;">0 Total Leads</span>
+            </div>
           </div>
+
+          <!-- Mobile Cards Feed (Active on Mobile Phones < 768px) -->
+          <div class="files-mobile-feed" id="pageFilesCardsContainer">
+            <div style="text-align: center; color: #94A3B8; padding: 25px;">Loading saved files...</div>
+          </div>
+
+          <!-- Desktop Table View (Active on Desktop & Tablets >= 768px) -->
+          <div class="files-desktop-table-wrap">
+            <div class="table-scroll-wrap" style="max-height: 550px;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>File Name</th>
+                    <th>Leads / Rows</th>
+                    <th>File Size</th>
+                    <th>Date Created</th>
+                    <th style="text-align: right;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="pageFilesTableBody">
+                  <tr><td colspan="5" style="text-align: center; color: #94A3B8; padding: 25px;">Loading saved files...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
         </div>
       </section>
     </div>
@@ -3891,6 +5676,12 @@
           <span id="payBtnLabel">Pay ₹250 via Razorpay (UPI, GPay, Cards)</span>
         </button>
 
+        <!-- Direct Standard Checkout Test Button -->
+        <button id="btnTestRazorpayModal" type="button" class="btn-compact" style="width: 100%; height: 34px; margin-top: 8px; font-size: 0.78rem; background: rgba(37,99,235,0.08); color: #2563eb; border: 1px dashed rgba(37,99,235,0.35); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="openRazorpayStandardCheckout(100)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>Test Standard Checkout (100 paise / ₹1)</span>
+        </button>
+
         <div style="font-size: 0.72rem; color: #64748b; text-align: center; margin-top: 10px;">
           Instant 256-bit encrypted checkout. Leads are billed automatically at flat ₹0.25 per extracted result.
         </div>
@@ -3979,6 +5770,7 @@
         viewName = 'scraper';
       }
       currentView = viewName;
+      document.body.classList.toggle('view-profile-active', viewName === 'profile');
 
       // Update URL if pushState is enabled
       if (pushState && window.history && window.history.pushState) {
@@ -4038,6 +5830,7 @@
         loadPageFiles();
       } else if (viewName === 'profile') {
         syncProfileViewInputs();
+        loadUserPreferences();
       }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -4052,6 +5845,65 @@
         navigateToView('scraper', false);
       }
     });
+
+    
+    function switchProfileTab(tabName) {
+      document.querySelectorAll('.profile-subtab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
+      });
+      document.querySelectorAll('.profile-panel-card').forEach(panel => {
+        panel.classList.toggle('active', panel.id === `profilePanel_${tabName}`);
+      });
+    }
+
+    function loadUserPreferences() {
+      try {
+        const fmt = localStorage.getItem('fml_pref_format') || 'csv';
+        const autoDl = localStorage.getItem('fml_pref_autodl') !== 'false';
+        const dedup = localStorage.getItem('fml_pref_dedup') !== 'false';
+        const pulse = localStorage.getItem('fml_pref_pulse') !== 'false';
+        const duration = localStorage.getItem('fml_pref_toast') || '4000';
+
+        const elFmt = document.getElementById('prefExportFormat');
+        const elDl = document.getElementById('prefAutoDownload');
+        const elDedup = document.getElementById('prefDedup');
+        const elPulse = document.getElementById('prefHudPulse');
+        const elDur = document.getElementById('prefToastDuration');
+
+        if (elFmt) elFmt.value = fmt;
+        if (elDl) elDl.checked = autoDl;
+        if (elDedup) elDedup.checked = dedup;
+        if (elPulse) elPulse.checked = pulse;
+        if (elDur) elDur.value = duration;
+      } catch (e) {
+        console.warn('Could not load preferences:', e);
+      }
+    }
+
+    function saveUserPreferences(e) {
+      if (e) e.preventDefault();
+      try {
+        const elFmt = document.getElementById('prefExportFormat');
+        const elDl = document.getElementById('prefAutoDownload');
+        const elDedup = document.getElementById('prefDedup');
+        const elPulse = document.getElementById('prefHudPulse');
+        const elDur = document.getElementById('prefToastDuration');
+
+        if (elFmt) localStorage.setItem('fml_pref_format', elFmt.value);
+        if (elDl) localStorage.setItem('fml_pref_autodl', elDl.checked ? 'true' : 'false');
+        if (elDedup) localStorage.setItem('fml_pref_dedup', elDedup.checked ? 'true' : 'false');
+        if (elPulse) localStorage.setItem('fml_pref_pulse', elPulse.checked ? 'true' : 'false');
+        if (elDur) localStorage.setItem('fml_pref_toast', elDur.value);
+
+        if (typeof showToast === 'function') {
+          showToast('Preferences saved successfully!');
+        } else {
+          alert('Preferences saved successfully!');
+        }
+      } catch (err) {
+        console.error('Save preferences failed:', err);
+      }
+    }
 
     function updateUserHeaderUI() {
       const walletBadge = document.getElementById('walletBadge');
@@ -4428,7 +6280,7 @@
         localStorage.setItem('auth_token', data.token);
         updateUserHeaderUI();
         closeGoogleCompleteModal();
-        showToast(`🎉 Registration complete! Welcome ${currentUser.name}! ₹100 Free Bonus credited.`);
+        showToast(`Registration complete! Welcome ${currentUser.name}! ₹100 Free Bonus credited.`);
       } catch (err) {
         showToast('Registration error: ' + err.message);
       } finally {
@@ -4593,11 +6445,18 @@
               ondismiss: function () {
                 btn.disabled = false;
                 selectRechargePack(amount);
+                showToast('Payment cancelled by user.');
               }
             }
           };
 
           const rzp = new Razorpay(options);
+          rzp.on('payment.failed', function (failResp) {
+            console.error('Razorpay payment failed:', failResp.error);
+            showToast(`❌ Payment failed: ${failResp.error.description || failResp.error.reason || 'Payment could not be processed'}`);
+            btn.disabled = false;
+            selectRechargePack(amount);
+          });
           rzp.open();
         }
       } catch (err) {
@@ -4835,6 +6694,7 @@
             },
             modal: {
               ondismiss: function () {
+                showToast('Payment cancelled by user.');
                 if (btn) {
                   btn.disabled = false;
                   selectPageRechargePack(amount);
@@ -4843,6 +6703,14 @@
             }
           };
           const rzp = new Razorpay(options);
+          rzp.on('payment.failed', function (failResp) {
+            console.error('Razorpay payment failed:', failResp.error);
+            showToast(`❌ Payment failed: ${failResp.error.description || failResp.error.reason || 'Payment could not be processed'}`);
+            if (btn) {
+              btn.disabled = false;
+              selectPageRechargePack(amount);
+            }
+          });
           rzp.open();
         }
       } catch (err) {
@@ -4853,6 +6721,109 @@
         }
       }
     }
+
+    // =========================================================================
+    // RAZORPAY STANDARD WEB CHECKOUT (Core Endpoints: /api/create-order & /api/verify-payment)
+    // =========================================================================
+    async function openRazorpayStandardCheckout(amountInPaise = 100) {
+      if (typeof Razorpay === 'undefined') {
+        showToast('Razorpay checkout script not loaded. Please check network connection.');
+        return;
+      }
+
+      showToast('Initiating Razorpay Standard Checkout...');
+
+      try {
+        // Step 1: Call Backend to Create Order (POST /api/create-order)
+        const orderRes = await fetch('/api/create-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(currentUserToken ? { 'Authorization': `Bearer ${currentUserToken}` } : {})
+          },
+          body: JSON.stringify({
+            amount: amountInPaise,
+            currency: 'INR',
+            receipt: 'rcpt_' + Date.now()
+          })
+        });
+
+        const orderData = await orderRes.json();
+        if (!orderRes.ok) {
+          showToast('❌ Order creation failed: ' + (orderData.error || 'Server error'));
+          return;
+        }
+
+        // Step 2: Open Razorpay Payment Modal
+        const options = {
+          key: orderData.key_id,
+          amount: orderData.amount,
+          currency: orderData.currency || 'INR',
+          name: 'LeadScrapper',
+          description: `Razorpay Standard Checkout Test (${(orderData.amount / 100).toFixed(2)} INR)`,
+          order_id: orderData.order_id,
+          prefill: {
+            name: currentUser ? currentUser.name : 'Test Customer',
+            email: currentUser ? currentUser.email : 'customer@example.com',
+            contact: currentUser ? (currentUser.phone || '9999999999') : '9999999999'
+          },
+          theme: {
+            color: '#2563eb'
+          },
+          // Step 3: Success Handler -> Call Backend to Verify Payment Signature (POST /api/verify-payment)
+          handler: async function (response) {
+            showToast('Payment successful! Verifying signature...');
+            try {
+              const verifyRes = await fetch('/api/verify-payment', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  ...(currentUserToken ? { 'Authorization': `Bearer ${currentUserToken}` } : {})
+                },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature
+                })
+              });
+
+              const verifyData = await verifyRes.json();
+              if (verifyRes.ok && verifyData.success) {
+                showToast(`✅ Payment Verified Successfully! ID: ${response.razorpay_payment_id}`);
+                if (currentUser) {
+                  checkAuthStatus();
+                  if (typeof loadPageTransactions === 'function') loadPageTransactions();
+                }
+              } else {
+                showToast('❌ Verification Failed: ' + (verifyData.error || 'Invalid signature mismatch'));
+              }
+            } catch (vErr) {
+              showToast('❌ Error verifying signature: ' + vErr.message);
+            }
+          },
+          modal: {
+            ondismiss: function () {
+              showToast('Payment cancelled by user (modal dismissed).');
+            }
+          }
+        };
+
+        const rzp = new Razorpay(options);
+
+        // Handle payment failure event
+        rzp.on('payment.failed', function (failResp) {
+          console.error('Razorpay payment failure:', failResp.error);
+          showToast(`❌ Payment Failed: ${failResp.error.description || failResp.error.reason || 'Transaction declined'}`);
+        });
+
+        rzp.open();
+
+      } catch (err) {
+        console.error('Standard Checkout error:', err);
+        showToast('❌ Checkout Error: ' + err.message);
+      }
+    }
+    window.openRazorpayStandardCheckout = openRazorpayStandardCheckout;
 
     async function loadPageTransactions() {
       const tbody = document.getElementById('pageWalletTxTableBody');
@@ -4987,56 +6958,454 @@
     // =========================================================================
     // DEDICATED SAVED FILES PAGE CONTROLLER
     // =========================================================================
+        let allSavedFilesData = [];
+
     async function loadPageFiles() {
       const tbody = document.getElementById('pageFilesTableBody');
-      if (!tbody) return;
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:20px;">Fetching saved CSV files...</td></tr>';
+      const feed = document.getElementById('pageFilesCardsContainer');
+
+      if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:25px;">Fetching saved CSV exports...</td></tr>';
+      if (feed) feed.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:25px;">Fetching saved CSV exports...</div>';
 
       try {
         const res = await fetch('/api/history');
         const data = await res.json();
-        const files = data.files || [];
+        allSavedFilesData = data.files || [];
 
-        if (files.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:25px;">No saved CSV files found in output directory yet.</td></tr>';
-          return;
-        }
-
-        let html = '';
-        files.forEach(f => {
-          html += `
-            <tr>
-              <td style="font-weight:700; color:#0f172a;">${escapeHtml(f.name)}</td>
-              <td style="color:#15803d; font-weight:700;">${f.rows} leads</td>
-              <td style="color:#64748b;">${f.size_kb} KB</td>
-              <td style="color:#64748b;">${escapeHtml(f.modified)}</td>
-              <td style="text-align:right;">
-                <a href="/api/download/${encodeURIComponent(f.name)}" class="btn-subtle-sm" style="text-decoration:none;" download>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                  <span>Download</span>
-                </a>
-              </td>
-            </tr>
-          `;
-        });
-        tbody.innerHTML = html;
+        renderFilesUI(allSavedFilesData);
       } catch (e) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444; padding:20px;">Error loading saved files: ${escapeHtml(e.message)}</td></tr>`;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444; padding:20px;">Error loading saved files: ${escapeHtml(e.message)}</td></tr>`;
+        if (feed) feed.innerHTML = `<div style="text-align:center; color:#ef4444; padding:20px;">Error loading saved files: ${escapeHtml(e.message)}</div>`;
       }
+    }
+
+    function renderFilesUI(files) {
+      const tbody = document.getElementById('pageFilesTableBody');
+      const feed = document.getElementById('pageFilesCardsContainer');
+      const countEl = document.getElementById('filesTotalCount');
+      const leadsEl = document.getElementById('filesTotalLeads');
+
+      const totalCount = files.length;
+      const totalLeads = files.reduce((acc, f) => acc + (parseInt(f.rows) || 0), 0);
+
+      if (countEl) countEl.textContent = `${totalCount} File${totalCount !== 1 ? 's' : ''}`;
+      if (leadsEl) leadsEl.textContent = `${totalLeads.toLocaleString()} Total Leads`;
+
+      if (totalCount === 0) {
+        const emptyMsg = `
+          <div style="text-align:center; padding:54px 20px; color:#64748B;">
+            <div style="width:58px; height:58px; border-radius:16px; background:#F1F5F9; display:inline-flex; align-items:center; justify-content:center; margin-bottom:14px; box-shadow:0 2px 8px rgba(15,23,42,0.04);">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div style="font-size:1.1rem; font-weight:800; color:var(--navy); margin-bottom:5px;">No Saved Exports Yet</div>
+            <p style="font-size:0.84rem; color:#64748B; max-width:360px; margin:0 auto 18px; line-height:1.4;">New account detected. Your exported CSV and Excel files will appear here as soon as you run an extraction.</p>
+            <button class="btn-hero-primary" onclick="navigateToView('scraper')" type="button" style="height:42px; padding:0 22px; font-size:0.86rem; display:inline-flex; align-items:center; gap:7px; margin:0 auto;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>Start Lead Extraction</span>
+            </button>
+          </div>
+        `;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="5">${emptyMsg}</td></tr>`;
+        if (feed) feed.innerHTML = emptyMsg;
+        return;
+      }
+
+      // 1. Render Table (Desktop)
+      if (tbody) {
+        tbody.innerHTML = files.map(f => `
+          <tr>
+            <td style="font-weight:700; color:#0f172a;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span>${escapeHtml(f.name)}</span>
+              </div>
+            </td>
+            <td><span style="color:#15803d; font-weight:700; background:#f0fdf4; padding:2px 8px; border-radius:4px;">${f.rows} leads</span></td>
+            <td style="color:#64748b; font-size:0.8rem;">${f.size_kb} KB</td>
+            <td style="color:#64748b; font-size:0.8rem;">${escapeHtml(f.modified)}</td>
+            <td style="text-align:right;">
+              <a href="/api/download/${encodeURIComponent(f.name)}" class="btn-subtle-sm" style="text-decoration:none;" download>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                <span>Download</span>
+              </a>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // 2. Render Mobile Cards Feed
+      if (feed) {
+        feed.innerHTML = files.map(f => `
+          <div class="file-card-mobile">
+            <div class="file-card-left">
+              <div class="file-icon-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span style="font-size:0.6rem; margin-top:-2px;">CSV</span>
+              </div>
+              <div class="file-info-group">
+                <div class="file-name-title" title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</div>
+                <div class="file-sub-details">
+                  <span class="file-leads-highlight">${f.rows} leads</span>
+                  <span>•</span>
+                  <span>${f.size_kb} KB</span>
+                  <span>•</span>
+                  <span>${escapeHtml(f.modified)}</span>
+                </div>
+              </div>
+            </div>
+            <a href="/api/download/${encodeURIComponent(f.name)}" class="file-download-btn" download title="Download CSV file">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              <span>Get</span>
+            </a>
+          </div>
+        `).join('');
+      }
+    }
+
+    function filterFilesList(val) {
+      val = val.trim().toLowerCase();
+      if (!val) {
+        renderFilesUI(allSavedFilesData);
+        return;
+      }
+      const filtered = allSavedFilesData.filter(f => f.name.toLowerCase().includes(val));
+      renderFilesUI(filtered);
     }
 
     // Set query
-    function setQuery(text) {
-      const inp = document.getElementById('searchInput');
+    
+    
+    
+        // Multi-Category & Multi-Place State Engine (Typing-Only Suggestions)
+    let selectedCategories = [];
+    let selectedPlaces = [];
+
+    const POPULAR_CATEGORIES = [
+      "Gyms", "Fitness Centers", "Yoga Centers", "Crossfit", "Zumba Classes",
+      "Hospitals", "Clinics", "Dental Clinics", "Eye Hospitals", "Pharmacies", "Diagnostic Centers", "Ayurvedic Clinics", "Homeopathy",
+      "Hotels", "Resorts", "Lodges", "Homestays", "Restaurants", "Cafes", "Bakeries", "Fast Food", "Sweet Stalls", "Pubs & Bars",
+      "Schools", "Colleges", "Coaching Centers", "Tuition Centers", "Play Schools", "Driving Schools", "Music Schools", "Dance Academies",
+      "Real Estate Agents", "Builders & Developers", "Interior Designers", "Architects", "Civil Contractors", "Modular Kitchens",
+      "IT Companies", "Software Companies", "Web Development", "Digital Marketing", "Computer Training Institutes",
+      "Salons", "Beauty Parlours", "Spas", "Hair Dressers", "Tattoo Studios",
+      "Car Showrooms", "Car Service Centers", "Bike Showrooms", "Tyre Shops", "Car Wash",
+      "Supermarkets", "Departmental Stores", "Jewellery Stores", "Textile & Clothing Stores", "Shoe Stores", "Mobile Stores", "Electronics Stores",
+      "Lawyers & Advocates", "Chartered Accountants", "Financial Advisors", "Insurance Agents",
+      "Event Planners", "Wedding Caterers", "Photographers", "Printing & Xerox Shops", "Security Services"
+    ];
+
+    const POPULAR_PLACES = [
+      "Karur", "Coimbatore", "Chennai", "Madurai", "Salem", "Trichy", "Tiruppur", "Erode",
+      "Dindigul", "Thanjavur", "Tirunelveli", "Vellore", "Tuticorin", "Nagercoil", "Kanchipuram",
+      "Cuddalore", "Kumbakonam", "Tiruvannamalai", "Pudukkottai", "Hosur", "Ambur", "Karaikudi",
+      "Neyveli", "Nagapattinam", "Viluppuram", "Paramakudi", "Kovilpatti", "Theni", "Pollachi",
+      "Rajapalayam", "Sivakasi", "Ooty", "Kodaikanal", "Coonoor", "Ariyalur", "Perambalur",
+      "Namakkal", "Rasipuram", "Tiruchengode", "Gobichettipalayam", "Sathyamangalam", "Dharapuram",
+      "Palani", "Udumalaipettai", "Attur", "Mettur", "Mayiladuthurai", "Ramanathapuram", "Sivaganga",
+      "Bengaluru", "Hyderabad", "Kochi", "Trivandrum", "Mumbai", "Delhi", "Pune"
+    ];
+
+    function focusCategoryInput() {
+      const inp = document.getElementById('categoryInput');
+      if (inp) inp.focus();
+    }
+    function focusPlaceInput() {
+      const inp = document.getElementById('locationInput');
+      if (inp) inp.focus();
+    }
+
+    function highlightMatch(text, query) {
+      if (!query) return escapeHtml(text);
+      const idx = text.toLowerCase().indexOf(query.toLowerCase());
+      if (idx === -1) return escapeHtml(text);
+      const before = escapeHtml(text.substring(0, idx));
+      const match = escapeHtml(text.substring(idx, idx + query.length));
+      const after = escapeHtml(text.substring(idx + query.length));
+      return `${before}<span class="suggestion-item-highlight">${match}</span>${after}`;
+    }
+
+    function renderCategoryChips() {
+      const list = document.getElementById('categoryChipsList');
+      if (!list) return;
+
+      list.innerHTML = selectedCategories.map(cat => `
+        <span class="tag-chip" data-val="${escapeHtml(cat)}">
+          <span>${escapeHtml(cat)}</span>
+          <button type="button" class="tag-chip-remove" onclick="removeCategory('${escapeHtml(cat)}', event)">✕</button>
+        </span>
+      `).join('');
+
+      const badge = document.getElementById('catCountBadge');
+      if (badge) {
+        badge.textContent = `${selectedCategories.length} selected`;
+        badge.style.display = selectedCategories.length > 0 ? 'inline-block' : 'none';
+      }
+
+      updateCombinedQuery();
+    }
+
+    function renderPlaceChips() {
+      const list = document.getElementById('placeChipsList');
+      if (!list) return;
+
+      list.innerHTML = selectedPlaces.map(p => `
+        <span class="tag-chip" data-val="${escapeHtml(p)}">
+          <span>${escapeHtml(p)}</span>
+          <button type="button" class="tag-chip-remove" onclick="removePlace('${escapeHtml(p)}', event)">✕</button>
+        </span>
+      `).join('');
+
+      const badge = document.getElementById('placeCountBadge');
+      if (badge) {
+        badge.textContent = `${selectedPlaces.length} selected`;
+        badge.style.display = selectedPlaces.length > 0 ? 'inline-block' : 'none';
+      }
+
+      updateCombinedQuery();
+    }
+
+    function addCategory(val) {
+      val = val.trim();
+      if (!val) return;
+      if (!selectedCategories.some(c => c.toLowerCase() === val.toLowerCase())) {
+        selectedCategories.push(val);
+        renderCategoryChips();
+      }
+    }
+
+    function removeCategory(val, e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      selectedCategories = selectedCategories.filter(c => c.toLowerCase() !== val.toLowerCase());
+      renderCategoryChips();
+    }
+
+    function handleCategoryInput(val) {
+      const box = document.getElementById('categorySuggestionsBox');
+      if (!box) return;
+      const q = val.trim().toLowerCase();
+      if (!q) {
+        box.style.display = 'none';
+        box.innerHTML = '';
+        return;
+      }
+
+      // Filter matches
+      const matches = POPULAR_CATEGORIES.filter(c => 
+        c.toLowerCase().includes(q) && 
+        !selectedCategories.some(sel => sel.toLowerCase() === c.toLowerCase())
+      ).slice(0, 12);
+
+      if (matches.length === 0) {
+        box.style.display = 'none';
+        box.innerHTML = '';
+        return;
+      }
+
+      box.innerHTML = matches.map(cat => {
+        return `<span class="suggestion-item" onmousedown="selectCategorySuggestion('${escapeHtml(cat)}', event)">+ ${highlightMatch(cat, q)}</span>`;
+      }).join('');
+      box.style.display = 'flex';
+    }
+
+    function selectCategorySuggestion(cat, e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      addCategory(cat);
+      const inp = document.getElementById('categoryInput');
       if (inp) {
-        inp.value = text;
+        inp.value = '';
         inp.focus();
       }
-      document.querySelectorAll('.quick-chip').forEach(c => {
-        c.classList.toggle('active', c.textContent.trim().toLowerCase().includes(text.toLowerCase()));
-      });
-      handleQueryInput(text);
+      const box = document.getElementById('categorySuggestionsBox');
+      if (box) {
+        box.style.display = 'none';
+        box.innerHTML = '';
+      }
     }
+
+    function handleCategoryKey(e) {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        const val = e.target.value.replace(',', '').trim();
+        if (val) {
+          addCategory(val);
+          e.target.value = '';
+          const box = document.getElementById('categorySuggestionsBox');
+          if (box) box.style.display = 'none';
+        }
+      } else if (e.key === 'Backspace' && !e.target.value && selectedCategories.length > 0) {
+        selectedCategories.pop();
+        renderCategoryChips();
+      }
+    }
+
+    function addPlace(val) {
+      val = val.trim();
+      if (!val) return;
+      if (!selectedPlaces.some(p => p.toLowerCase() === val.toLowerCase())) {
+        selectedPlaces.push(val);
+        renderPlaceChips();
+      }
+    }
+
+    function removePlace(val, e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      selectedPlaces = selectedPlaces.filter(p => p.toLowerCase() !== val.toLowerCase());
+      renderPlaceChips();
+    }
+
+    function handlePlaceInput(val) {
+      const box = document.getElementById('placeSuggestionsBox');
+      if (!box) return;
+      const q = val.trim().toLowerCase();
+      if (!q) {
+        box.style.display = 'none';
+        box.innerHTML = '';
+        return;
+      }
+
+      // Filter matches
+      const matches = POPULAR_PLACES.filter(p => 
+        p.toLowerCase().includes(q) && 
+        !selectedPlaces.some(sel => sel.toLowerCase() === p.toLowerCase())
+      ).slice(0, 12);
+
+      if (matches.length === 0) {
+        box.style.display = 'none';
+        box.innerHTML = '';
+        return;
+      }
+
+      box.innerHTML = matches.map(place => {
+        return `<span class="suggestion-item" onmousedown="selectPlaceSuggestion('${escapeHtml(place)}', event)">+ ${highlightMatch(place, q)}</span>`;
+      }).join('');
+      box.style.display = 'flex';
+    }
+
+    function selectPlaceSuggestion(place, e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      addPlace(place);
+      const inp = document.getElementById('locationInput');
+      if (inp) {
+        inp.value = '';
+        inp.focus();
+      }
+      const box = document.getElementById('placeSuggestionsBox');
+      if (box) {
+        box.style.display = 'none';
+        box.innerHTML = '';
+      }
+    }
+
+    function handlePlaceKey(e) {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        const val = e.target.value.replace(',', '').trim();
+        if (val) {
+          addPlace(val);
+          e.target.value = '';
+          const box = document.getElementById('placeSuggestionsBox');
+          if (box) box.style.display = 'none';
+        }
+      } else if (e.key === 'Backspace' && !e.target.value && selectedPlaces.length > 0) {
+        selectedPlaces.pop();
+        renderPlaceChips();
+      }
+    }
+
+    // Dismiss suggestion boxes on outside click
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#categoryTagBox')) {
+        const b = document.getElementById('categorySuggestionsBox');
+        if (b) b.style.display = 'none';
+      }
+      if (!e.target.closest('#placeTagBox')) {
+        const b = document.getElementById('placeSuggestionsBox');
+        if (b) b.style.display = 'none';
+      }
+    });
+
+    function getCombinedQueries() {
+      let cats = selectedCategories.slice();
+      let places = selectedPlaces.slice();
+
+      const catInpVal = (document.getElementById('categoryInput')?.value || '').trim();
+      const placeInpVal = (document.getElementById('locationInput')?.value || '').trim();
+
+      if (catInpVal && !cats.some(c => c.toLowerCase() === catInpVal.toLowerCase())) cats.push(catInpVal);
+      if (placeInpVal && !places.some(p => p.toLowerCase() === placeInpVal.toLowerCase())) places.push(placeInpVal);
+
+      if (cats.length === 0 && places.length === 0) return [];
+      if (cats.length === 0) return places;
+      if (places.length === 0) return cats;
+
+      let queries = [];
+      cats.forEach(c => {
+        places.forEach(p => {
+          queries.push(`${c} in ${p}`);
+        });
+      });
+      return queries;
+    }
+
+    function updateCombinedQuery() {
+      const queries = getCombinedQueries();
+      const searchInp = document.getElementById('searchInput');
+      if (searchInp) {
+        searchInp.value = queries.length > 0 ? queries[0] : '';
+      }
+
+      const total = queries.length;
+      const catsCount = selectedCategories.length || (document.getElementById('categoryInput')?.value.trim() ? 1 : 0);
+      const placesCount = selectedPlaces.length || (document.getElementById('locationInput')?.value.trim() ? 1 : 0);
+
+      const labelText = document.getElementById('comboLabelText');
+      const totalBadge = document.getElementById('comboTotalQueries');
+      const btnStartSpan = document.querySelector('#btnStart span');
+
+      if (labelText) {
+        if (total === 0) {
+          labelText.textContent = 'Type business categories & cities above to extract';
+        } else {
+          labelText.textContent = `${catsCount} Categor${catsCount > 1 ? 'ies' : 'y'} × ${placesCount} Cit${placesCount > 1 ? 'ies' : 'y'} = ${total} Search${total > 1 ? 'es' : ''}`;
+        }
+      }
+      if (totalBadge) {
+        totalBadge.textContent = total > 0 ? `${total} ${total === 1 ? 'Query' : 'Queries'}` : 'Ready';
+      }
+      if (btnStartSpan) {
+        btnStartSpan.textContent = total > 1 ? `Start Lead Extraction (${total} Searches)` : 'Start Lead Extraction';
+      }
+    }
+
+    function setQuery(text) {
+      const parts = text.split(/\s+in\s+/i);
+      selectedCategories = [parts[0] ? parts[0].trim() : text];
+      selectedPlaces = [parts[1] ? parts[1].trim() : ''];
+      renderCategoryChips();
+      renderPlaceChips();
+
+      document.querySelectorAll('.ribbon-pill').forEach(p => {
+        p.classList.toggle('active', p.textContent.trim().toLowerCase().includes(text.toLowerCase()));
+      });
+    }
+
+    // Initialize tags on startup
+    window.addEventListener('DOMContentLoaded', function() {
+      renderCategoryChips();
+      renderPlaceChips();
+    });
 
     // Clear search input
     function clearSearchInput() {
@@ -5131,6 +7500,83 @@
     }
 
     // START SCRAPING (Protected by User Auth & Flat ₹0.25/Lead Rate)
+    
+    // Extraction Filters & Options State
+    let activePhoneFilter = 'all';    // 'all', 'with_phone', 'without_phone'
+    let activeWebsiteFilter = 'all';  // 'all', 'with_website', 'without_website'
+
+    
+    function openFiltersModal() {
+      const modal = document.getElementById('filtersModal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeFiltersModal(e) {
+      if (!e || e.target.id === 'filtersModal' || (e.target.closest && e.target.closest('.modal-close-btn')) || (typeof e === 'undefined')) {
+        const modal = document.getElementById('filtersModal');
+        if (modal) modal.style.display = 'none';
+      }
+    }
+
+    function resetFiltersToDefaults() {
+      setPhoneFilter('all');
+      setWebsiteFilter('all');
+      const r = document.getElementById('filterRatingSelect');
+      if (r) r.value = '0';
+      const l = document.getElementById('filterLimitSelect');
+      if (l) l.value = '50';
+      const d = document.getElementById('filterDistrictDeepToggle');
+      if (d) d.checked = true;
+      updateFiltersSummary();
+      if (typeof showToast === 'function') showToast('Filters reset to default');
+    }
+
+    function toggleExtractionFilters() {
+      const panel = document.getElementById('extractionFiltersPanel');
+      const btn = document.getElementById('btnToggleExtractionFilters');
+      if (!panel || !btn) return;
+      const isOpen = panel.style.display !== 'none';
+      panel.style.display = isOpen ? 'none' : 'flex';
+      btn.classList.toggle('open', !isOpen);
+    }
+
+    function setPhoneFilter(val) {
+      activePhoneFilter = val;
+      document.querySelectorAll('#phoneFilterGroup .filter-pill-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-phone') === val);
+      });
+      updateFiltersSummary();
+    }
+
+    function setWebsiteFilter(val) {
+      activeWebsiteFilter = val;
+      document.querySelectorAll('#websiteFilterGroup .filter-pill-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-site') === val);
+      });
+      updateFiltersSummary();
+    }
+
+    function updateFiltersSummary() {
+      const summaryEl = document.getElementById('filtersActiveSummary');
+      if (!summaryEl) return;
+
+      const pTxt = activePhoneFilter === 'with_phone' ? '📞 Phone Only' : (activePhoneFilter === 'without_phone' ? '📵 No Phone' : 'All Leads');
+      const wTxt = activeWebsiteFilter === 'with_website' ? '🌐 With Site' : (activeWebsiteFilter === 'without_website' ? '🚫 No Website' : 'All Sites');
+
+      const rSelect = document.getElementById('filterRatingSelect');
+      const rVal = rSelect ? rSelect.value : '0';
+      const rTxt = rVal !== '0' ? ` • ${rVal}★+` : '';
+
+      summaryEl.textContent = `${pTxt} • ${wTxt}${rTxt}`;
+
+      // Synchronize hidden limits
+      const limSelect = document.getElementById('filterLimitSelect');
+      const hidLimit = document.getElementById('selectedLimit');
+      if (limSelect && hidLimit) {
+        hidLimit.value = limSelect.value;
+      }
+    }
+
     async function startScraping() {
       // 1. Enforce Authentication
       if (!currentUser) {
@@ -5147,19 +7593,33 @@
         return;
       }
 
-      const query = document.getElementById('searchInput').value.trim();
-      const batchText = document.getElementById('batchQueriesInput').value.trim();
-      const limitVal = document.getElementById('selectedLimit').value;
-      const districtDeep = document.getElementById('districtDeepCheckbox').checked;
+      const combinedQueries = getCombinedQueries();
+      const batchText = document.getElementById('batchQueriesInput') ? document.getElementById('batchQueriesInput').value.trim() : '';
+      const limitVal = document.getElementById('selectedLimit') ? document.getElementById('selectedLimit').value : '50';
+      const districtDeep = document.getElementById('districtDeepCheckbox') ? document.getElementById('districtDeepCheckbox').checked : false;
+
+      let allQueriesToRun = combinedQueries.length > 0 ? combinedQueries : [];
+      if (batchText) {
+        allQueriesToRun = allQueriesToRun.concat(batchText.split('\n').filter(l => l.trim()));
+      }
+
+      const mainQuery = allQueriesToRun.length > 0 ? allQueriesToRun[0] : (document.getElementById('searchInput')?.value?.trim() || 'leads');
+
+      const filterRatingVal = parseFloat(document.getElementById('filterRatingSelect')?.value || 0);
+      const filterDeepVal = document.getElementById('filterDistrictDeepToggle')?.checked ?? districtDeep;
+      const targetLimitNum = limitVal && limitVal !== '0' ? parseInt(limitVal) : null;
 
       const payload = {
-        mode: batchText ? 'batch' : 'query',
-        query: query,
-        queries: batchText ? batchText.split('\n').filter(l => l.trim()) : null,
-        max_results: limitVal ? parseInt(limitVal) : null,
-        require_phone: false,
-        district_deep: districtDeep,
-        output_name: query.toLowerCase().replace(/[^a-z0-9]/g, '_') || 'leads'
+        mode: allQueriesToRun.length > 1 ? 'batch' : 'query',
+        query: mainQuery,
+        queries: allQueriesToRun.length > 1 ? allQueriesToRun : null,
+        max_results: targetLimitNum,
+        require_phone: activePhoneFilter === 'with_phone',
+        phone_filter: activePhoneFilter,
+        website_filter: activeWebsiteFilter,
+        min_rating: filterRatingVal,
+        district_deep: filterDeepVal,
+        output_name: mainQuery.toLowerCase().replace(/[^a-z0-9]/g, '_') || 'leads'
       };
 
       if (!payload.query && !payload.queries) {
@@ -5412,13 +7872,13 @@
         tableWrap.classList.add('visible');
         cardsWrap.style.display = 'none';
         if (toggleText) toggleText.textContent = 'Card View';
-        if (toggleIcon) toggleIcon.textContent = '📇';
+        if (toggleIcon) toggleIcon.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle;"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>';
         showToast('Switched to Horizontal Table View');
       } else {
         tableWrap.classList.remove('visible');
         cardsWrap.style.display = 'flex';
         if (toggleText) toggleText.textContent = 'Table View';
-        if (toggleIcon) toggleIcon.textContent = '📊';
+        if (toggleIcon) toggleIcon.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle;"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>';
         showToast('Switched to Mobile Lead Cards');
       }
     }
@@ -5658,5 +8118,123 @@
       <span>Profile</span>
     </button>
   </nav>
+
+  <!-- MODAL POPUP: LEAD EXTRACTION FILTERS & SETTINGS (User requested Pop Up) -->
+  <div id="filtersModal" class="modal-backdrop" onclick="closeFiltersModal(event)">
+    <div class="modal-glass-sheet" style="max-width: 520px; border-radius: 20px; overflow: hidden; box-shadow: 0 24px 64px rgba(15, 23, 42, 0.25);" onclick="event.stopPropagation()">
+      <div class="modal-header" style="padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: #FFFFFF;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: #EFF6FF; color: #2563EB; display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
+          </div>
+          <div>
+            <div class="modal-title" style="font-size: 1.02rem; font-weight: 800; color: var(--navy); line-height: 1.2;">Extraction Filters & Criteria</div>
+            <div style="font-size: 0.72rem; color: #64748B;">Target leads by website, phone, and rating criteria</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeFiltersModal()" type="button" aria-label="Close" style="background: transparent; border: none; cursor: pointer; color: #64748B; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 14px; padding: 18px 20px; max-height: 72vh; overflow-y: auto;">
+        <!-- 1. Phone Requirement Filter -->
+        <div class="filter-row-section">
+          <div class="filter-section-header">
+            <span class="filter-section-title">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Phone Number Requirement
+            </span>
+            <span class="filter-section-sub">Choose phone presence condition</span>
+          </div>
+          <div class="filter-pills-row" id="phoneFilterGroup">
+            <button type="button" class="filter-pill-btn active" data-phone="all" onclick="setPhoneFilter('all')">
+              All Leads (Any)
+            </button>
+            <button type="button" class="filter-pill-btn" data-phone="with_phone" onclick="setPhoneFilter('with_phone')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              With Phone Only
+            </button>
+            <button type="button" class="filter-pill-btn" data-phone="without_phone" onclick="setPhoneFilter('without_phone')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Without Phone Only
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Website Requirement Filter -->
+        <div class="filter-row-section">
+          <div class="filter-section-header">
+            <span class="filter-section-title">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              Website Requirement
+            </span>
+            <span class="filter-section-sub">Target businesses with or without online websites</span>
+          </div>
+          <div class="filter-pills-row" id="websiteFilterGroup">
+            <button type="button" class="filter-pill-btn active" data-site="all" onclick="setWebsiteFilter('all')">
+              All Leads (Any)
+            </button>
+            <button type="button" class="filter-pill-btn" data-site="with_website" onclick="setWebsiteFilter('with_website')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              With Website Only
+            </button>
+            <button type="button" class="filter-pill-btn" data-site="without_website" onclick="setWebsiteFilter('without_website')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Without Website Only
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. Quality & Rating + Limits -->
+        <div class="filter-grid-dual">
+          <div class="filter-field-cell">
+            <label class="filter-mini-label">Google Rating Minimum</label>
+            <select id="filterRatingSelect" class="filter-select-input" onchange="updateFiltersSummary()">
+              <option value="0">Any Star Rating (All)</option>
+              <option value="3.5">3.5★ Stars & Above</option>
+              <option value="4.0">4.0★ Stars & Above (Popular)</option>
+              <option value="4.5">4.5★ Stars & Above (Top Tier)</option>
+            </select>
+          </div>
+
+          <div class="filter-field-cell">
+            <label class="filter-mini-label">Maximum Leads Target</label>
+            <select id="filterLimitSelect" class="filter-select-input" onchange="updateFiltersSummary()">
+              <option value="20">20 Leads / City</option>
+              <option value="50" selected>50 Leads / City (Standard)</option>
+              <option value="100">100 Leads / City</option>
+              <option value="250">250 Leads / City</option>
+              <option value="0">Unlimited (Extract All Found)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 4. Deep Scanner Toggle -->
+        <div class="filter-toggle-strip">
+          <div class="toggle-text-col">
+            <div class="toggle-label-text">District Deep Scan Across Taluks</div>
+            <div class="toggle-sub-text">Scans all sub-areas, localities & towns across district</div>
+          </div>
+          <label class="pref-switch" style="margin: 0;">
+            <input type="checkbox" id="filterDistrictDeepToggle" checked onchange="updateFiltersSummary()" />
+            <span class="pref-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-top: 1px solid var(--border); background: #F8FAFC; border-radius: 0 0 20px 20px;">
+        <button type="button" class="btn-hero-outline" onclick="resetFiltersToDefaults()" style="height: 38px; padding: 0 14px; font-size: 0.8rem;">
+          Reset to Defaults
+        </button>
+        <button type="button" class="btn-hero-primary" onclick="closeFiltersModal()" style="height: 38px; padding: 0 22px; font-size: 0.84rem;">
+          Apply & Close
+        </button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
