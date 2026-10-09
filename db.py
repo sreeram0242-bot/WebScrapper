@@ -1,4 +1,5 @@
 import os
+import re
 import sqlite3
 import hashlib
 import hmac
@@ -43,6 +44,19 @@ def init_db():
                 updated_at TEXT NOT NULL
             )
         """)
+
+        # Ensure schema migrations for existing databases
+        user_cols = [r[1] for r in conn.execute("PRAGMA table_info(users)").fetchall()]
+        if "google_id" not in user_cols:
+            try:
+                conn.execute("ALTER TABLE users ADD COLUMN google_id TEXT")
+            except Exception:
+                pass
+        if "phone" not in user_cols:
+            try:
+                conn.execute("ALTER TABLE users ADD COLUMN phone TEXT")
+            except Exception:
+                pass
 
         # 2. Wallet Transactions Table (Credit & Debit audit log)
         conn.execute("""
@@ -148,17 +162,20 @@ def update_setting(key: str, value: str):
 def create_user(name: str, email: str, phone: Optional[str], password: str, google_id: Optional[str] = None) -> Dict[str, Any]:
     """Register a new user with password hashing and free signup bonus."""
     email_clean = email.strip().lower()
-    phone_clean = phone.strip() if phone else None
+    phone_clean = re.sub(r'\D', '', phone)[-10:] if phone else None
     name_clean = name.strip()
 
     conn = get_db_connection()
     try:
-        # Check duplicate
+        # Check duplicate by email
         existing = conn.execute("SELECT id FROM users WHERE email = ?", (email_clean,)).fetchone()
         if existing:
             return {"error": "An account with this email already exists."}
         if phone_clean:
-            existing_phone = conn.execute("SELECT id FROM users WHERE phone = ?", (phone_clean,)).fetchone()
+            existing_phone = conn.execute(
+                "SELECT id FROM users WHERE phone = ? OR (length(phone) >= 10 AND substr(phone, -10) = ?)",
+                (phone_clean, phone_clean)
+            ).fetchone()
             if existing_phone:
                 return {"error": "An account with this phone number already exists."}
 
@@ -186,12 +203,20 @@ def create_user(name: str, email: str, phone: Optional[str], password: str, goog
 
 
 def authenticate_user(identifier: str, password: str) -> Optional[Dict[str, Any]]:
-    """Authenticate user by email or phone and password."""
+    """Authenticate user by email or phone and password, supporting flexible formatting."""
     conn = get_db_connection()
     id_clean = identifier.strip().lower()
+    digits = re.sub(r'\D', '', identifier)
+    ten_digit = digits[-10:] if len(digits) >= 10 else digits
+
     row = conn.execute(
-        "SELECT * FROM users WHERE (email = ? OR phone = ?) AND is_banned = 0",
-        (id_clean, id_clean)
+        """SELECT * FROM users 
+           WHERE (email = ? 
+                  OR phone = ? 
+                  OR phone = ? 
+                  OR (length(phone) >= 10 AND substr(phone, -10) = ?))
+             AND is_banned = 0""",
+        (id_clean, id_clean, digits if digits else None, ten_digit if ten_digit else None)
     ).fetchone()
     conn.close()
 
@@ -212,10 +237,47 @@ def get_user_by_id(user_id: int) -> Optional[Dict[str, Any]]:
 
 
 def get_user_by_email(email: str) -> Optional[Dict[str, Any]]:
+    if not email:
+        return None
     conn = get_db_connection()
     row = conn.execute("SELECT * FROM users WHERE email = ?", (email.strip().lower(),)).fetchone()
     conn.close()
     return dict(row) if row else None
+
+
+def get_user_by_google_id(google_id: str) -> Optional[Dict[str, Any]]:
+    if not google_id:
+        return None
+    conn = get_db_connection()
+    row = conn.execute("SELECT * FROM users WHERE google_id = ?", (str(google_id).strip(),)).fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+def get_user_by_phone(phone: str) -> Optional[Dict[str, Any]]:
+    if not phone:
+        return None
+    digits = re.sub(r'\D', '', str(phone))
+    ten = digits[-10:] if len(digits) >= 10 else digits
+    conn = get_db_connection()
+    row = conn.execute(
+        """SELECT * FROM users 
+           WHERE phone = ? OR phone = ? OR (length(phone) >= 10 AND substr(phone, -10) = ?)""",
+        (str(phone).strip(), digits, ten)
+    ).fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+def link_google_account(user_id: int, google_id: str, name: Optional[str] = None):
+    conn = get_db_connection()
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with conn:
+        if name:
+            conn.execute("UPDATE users SET google_id = ?, name = COALESCE(NULLIF(name, ''), ?), updated_at = ? WHERE id = ?", (google_id, name, now, user_id))
+        else:
+            conn.execute("UPDATE users SET google_id = ?, updated_at = ? WHERE id = ?", (google_id, now, user_id))
+    conn.close()
 
 
 # =========================================================================

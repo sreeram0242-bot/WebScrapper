@@ -23,18 +23,18 @@
       /* Pure White Canvas */
       --canvas-bg: #ffffff;
       
-      /* Pure Glassmorphic Tokens */
-      --glass-surface: rgba(255, 255, 255, 0.78);
-      --glass-surface-hover: rgba(255, 255, 255, 0.92);
-      --glass-surface-subtle: rgba(248, 250, 252, 0.7);
-      --glass-border: rgba(226, 232, 240, 0.85);
-      --glass-border-focus: rgba(37, 99, 235, 0.45);
-      --glass-blur: blur(20px) saturate(180%);
+      /* Crisp Modern White SaaS Tokens */
+      --glass-surface: #ffffff;
+      --glass-surface-hover: #f8fafc;
+      --glass-surface-subtle: #f8fafc;
+      --glass-border: #e2e8f0;
+      --glass-border-focus: #2563eb;
+      --glass-blur: none;
       
-      /* Glass Shadows */
-      --glass-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.04), 0 2px 8px -2px rgba(15, 23, 42, 0.02);
-      --glass-shadow-hover: 0 12px 36px 0 rgba(15, 23, 42, 0.07), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
-      --glass-bevel: inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
+      /* Clean Elevation Shadows */
+      --glass-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.03);
+      --glass-shadow-hover: 0 8px 24px -2px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
+      --glass-bevel: none;
 
       /* Accent & Typography */
       --primary: #0f172a;
@@ -2849,30 +2849,46 @@
 
         <div class="search-input-container">
           <span class="search-input-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </span>
           <input 
             type="text" 
             id="searchInput" 
             class="glass-input" 
-            placeholder="e.g. Gyms in Karur, Schools in Chennai..." 
+            placeholder="Type business & city, e.g. Gyms in Karur, Hospitals in Coimbatore..." 
             value="Gyms in Karur"
             oninput="handleQueryInput(this.value)"
             autofocus
           />
+          <button type="button" id="searchClearBtn" onclick="clearSearchInput()" title="Clear search query" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); border: none; background: #e2e8f0; color: #475569; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; font-weight: 700; transition: background 0.15s;">✕</button>
         </div>
 
         <!-- 1-Click Fast Suggestions -->
         <div class="quick-chips-row">
-          <span class="quick-chip" onclick="setQuery('Gyms in Karur')">
+          <span class="quick-chip active" onclick="setQuery('Gyms in Karur')">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/></svg>
             Gyms in Karur
           </span>
-          <span class="quick-chip" onclick="setQuery('Gyms in Chennai')">Gyms in Chennai</span>
-          <span class="quick-chip" onclick="setQuery('Hospitals in Coimbatore')">Hospitals in Coimbatore</span>
-          <span class="quick-chip" onclick="setQuery('Hotels in Madurai')">Hotels in Madurai</span>
-          <span class="quick-chip" onclick="setQuery('Schools in Salem')">Schools in Salem</span>
-          <span class="quick-chip" onclick="setQuery('Clinics in Trichy')">Clinics in Trichy</span>
+          <span class="quick-chip" onclick="setQuery('Hospitals in Coimbatore')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12"/><path d="M6 12h12"/></svg>
+            Hospitals in Coimbatore
+          </span>
+          <span class="quick-chip" onclick="setQuery('Hotels in Madurai')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>
+            Hotels in Madurai
+          </span>
+          <span class="quick-chip" onclick="setQuery('Schools in Salem')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 8-4 8 4-8 4-8-4Z"/><path d="m18 10 4 2-8 4-8-4 4-2"/></svg>
+            Schools in Salem
+          </span>
+          <span class="quick-chip" onclick="setQuery('Gyms in Chennai')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/></svg>
+            Gyms in Chennai
+          </span>
+          <span class="quick-chip" onclick="setQuery('Clinics in Trichy')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+            Clinics in Trichy
+          </span>
         </div>
 
         <!-- DISTRICT DEEP SEARCH TOGGLE (Crucial User Requirement) -->
@@ -3284,9 +3300,13 @@
               </div>
             </div>
             <div style="display: flex; gap: 8px;">
-              <button class="btn-hero-emerald" onclick="navigateToView('wallet')" type="button" style="height: 42px; padding: 0 16px; font-size: 0.85rem;">
+              <button class="btn-hero-emerald" id="profileRechargeBtn" onclick="navigateToView('wallet')" type="button" style="height: 42px; padding: 0 16px; font-size: 0.85rem;">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
                 <span>Recharge Wallet</span>
+              </button>
+              <button class="btn-hero-primary" id="profileSignInBtn" onclick="openAuthModal('login')" type="button" style="height: 42px; padding: 0 16px; font-size: 0.85rem; display: none;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                <span>Sign In to Account</span>
               </button>
             </div>
           </div>
@@ -3519,6 +3539,9 @@
           <button type="submit" class="btn-compact btn-primary-glass" style="width: 100%; height: 48px; font-size: 0.95rem; font-weight: 800; border-radius: 12px; margin-top: 8px;">
             Sign In to Account
           </button>
+          <div style="text-align: center; margin-top: 12px; font-size: 0.84rem; color: #64748b;">
+            Don't have an account? <a href="javascript:void(0)" onclick="switchAuthTab('signup')" style="color: #16a34a; font-weight: 800; text-decoration: underline;">Create Account (Claim ₹100 Free)</a>
+          </div>
         </form>
 
         <!-- Sign Up Form -->
@@ -3546,6 +3569,9 @@
           <button type="submit" class="btn-compact btn-emerald-glass" style="width: 100%; height: 48px; font-size: 0.95rem; font-weight: 800; border-radius: 12px; margin-top: 8px;">
             Claim ₹100 & Register
           </button>
+          <div style="text-align: center; margin-top: 12px; font-size: 0.84rem; color: #64748b;">
+            Already have an account? <a href="javascript:void(0)" onclick="switchAuthTab('login')" style="color: #2563eb; font-weight: 800; text-decoration: underline;">Sign In to Account</a>
+          </div>
         </form>
 
         <!-- Divider & Google Auth -->
@@ -3922,11 +3948,21 @@
         const adminBox = document.getElementById('profileAdminBox');
         if (adminBox) adminBox.style.display = currentUser.role === 'admin' ? 'block' : 'none';
 
+        const profileSignInBtn = document.getElementById('profileSignInBtn');
+        const profileRechargeBtn = document.getElementById('profileRechargeBtn');
+        if (profileSignInBtn) profileSignInBtn.style.display = 'none';
+        if (profileRechargeBtn) profileRechargeBtn.style.display = 'inline-flex';
+
         syncProfileViewInputs();
       } else {
         if (walletBadge) walletBadge.style.display = 'none';
         if (userProfileWrap) userProfileWrap.style.display = 'none';
         if (authGuestWrap) authGuestWrap.style.display = 'inline-flex';
+
+        const profileSignInBtn = document.getElementById('profileSignInBtn');
+        const profileRechargeBtn = document.getElementById('profileRechargeBtn');
+        if (profileSignInBtn) profileSignInBtn.style.display = 'inline-flex';
+        if (profileRechargeBtn) profileRechargeBtn.style.display = 'none';
 
         const dockBadge = document.getElementById('dockWalletBadge');
         if (dockBadge) dockBadge.textContent = '₹0';
@@ -3954,7 +3990,7 @@
       }
     });
 
-    function openAuthModal(tab = 'signup') {
+    function openAuthModal(tab = 'login') {
       switchAuthTab(tab);
       document.getElementById('authModal').style.display = 'flex';
       setTimeout(() => {
@@ -4247,7 +4283,7 @@
     function openWalletModal() {
       if (!currentUser) {
         showToast('Please sign in to access your wallet.');
-        openAuthModal('signup');
+        openAuthModal('login');
         return;
       }
       selectRechargePack(250);
@@ -4283,7 +4319,7 @@
 
     async function executeRazorpayPayment() {
       if (!currentUser) {
-        openAuthModal('signup');
+        openAuthModal('login');
         return;
       }
       const amount = parseFloat(document.getElementById('customRechargeAmount').value) || selectedRecharge;
@@ -4517,7 +4553,7 @@
     async function executePageRazorpayPayment() {
       if (!currentUser) {
         showToast('Please sign in or create an account to recharge.');
-        openAuthModal('signup');
+        openAuthModal('login');
         return;
       }
       const customInp = document.getElementById('pageCustomRechargeAmount');
@@ -4823,13 +4859,32 @@
     // Set query
     function setQuery(text) {
       const inp = document.getElementById('searchInput');
-      inp.value = text;
-      inp.focus();
+      if (inp) {
+        inp.value = text;
+        inp.focus();
+      }
+      document.querySelectorAll('.quick-chip').forEach(c => {
+        c.classList.toggle('active', c.textContent.trim().toLowerCase().includes(text.toLowerCase()));
+      });
       handleQueryInput(text);
+    }
+
+    // Clear search input
+    function clearSearchInput() {
+      const inp = document.getElementById('searchInput');
+      if (inp) {
+        inp.value = '';
+        inp.focus();
+        handleQueryInput('');
+      }
     }
 
     // Handle query input with debounce to preview District Localities
     function handleQueryInput(val) {
+      const clearBtn = document.getElementById('searchClearBtn');
+      if (clearBtn) {
+        clearBtn.style.display = (val && val.trim().length > 0) ? 'flex' : 'none';
+      }
       clearTimeout(previewDebounce);
       previewDebounce = setTimeout(() => {
         checkDistrictExpansion(val);
@@ -4910,8 +4965,8 @@
     async function startScraping() {
       // 1. Enforce Authentication
       if (!currentUser) {
-        showToast('Please sign in or create an account to start scraping leads. (Claim ₹100 Free Bonus!)');
-        openAuthModal('signup');
+        showToast('Please sign in or create an account to start scraping leads.');
+        openAuthModal('login');
         return;
       }
 
