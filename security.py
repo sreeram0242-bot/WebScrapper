@@ -139,6 +139,8 @@ def get_current_user_from_request() -> Optional[Dict[str, Any]]:
         token = auth_header.split(" ")[1].strip()
     elif request.cookies.get("auth_token"):
         token = request.cookies.get("auth_token")
+    elif request.args.get("token"):
+        token = request.args.get("token").strip()
 
     if not token:
         return None

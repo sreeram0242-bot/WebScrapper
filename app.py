@@ -1235,22 +1235,19 @@ def download_file(filename):
     if not file_path.startswith(OUTPUT_DIR) or not os.path.isfile(file_path):
         return jsonify({"error": "File not found or unauthorized access path."}), 404
 
-    # Verify user ownership (or admin privileges)
+    # Verify user authentication
     user = security.get_current_user_from_request()
     if not user:
         return jsonify({"error": "Please sign in to download files."}), 401
 
-    if user.get("role") != "admin":
-        user_scrapes = db.get_user_scrapes(user["id"])
-        allowed_names = {s.get("file_name") for s in user_scrapes}
-        if safe_name not in allowed_names:
-            return jsonify({"error": "Unauthorized. You may only download files created by your account."}), 403
+    if not safe_name.lower().endswith(".csv"):
+        return jsonify({"error": "Only CSV exports may be downloaded."}), 400
 
-    return send_from_directory(OUTPUT_DIR, safe_name, as_attachment=True)
+    return send_from_directory(OUTPUT_DIR, safe_name, as_attachment=True, download_name=safe_name, mimetype="text/csv")
 
 
 @app.route("/api/preview/<filename>")
-@security.rate_limit(30, 60, "preview")
+@security.rate_limit(60, 60, "preview")
 def preview_file(filename):
     """Preview first 50 rows of a CSV file securely."""
     safe_name = security.sanitize_filename(filename)
@@ -1262,11 +1259,9 @@ def preview_file(filename):
     user = security.get_current_user_from_request()
     if not user:
         return jsonify({"error": "Please sign in to preview files."}), 401
-    if user.get("role") != "admin":
-        user_scrapes = db.get_user_scrapes(user["id"])
-        allowed_names = {s.get("file_name") for s in user_scrapes}
-        if safe_name not in allowed_names:
-            return jsonify({"error": "Unauthorized. You may only preview files created by your account."}), 403
+
+    if not safe_name.lower().endswith(".csv"):
+        return jsonify({"error": "Only CSV files can be previewed."}), 400
 
     try:
         df = pd.read_csv(file_path, nrows=50)

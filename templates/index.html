@@ -973,11 +973,19 @@
       background: rgba(15, 23, 42, 0.4);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
-      z-index: 9999;
+      z-index: 100005 !important;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* Automatically hide floating bottom dock when any modal is open */
+    body.modal-open .mobile-bottom-dock,
+    body:has(.modal-backdrop[style*="display: flex"]) .mobile-bottom-dock {
+      display: none !important;
     }
     .modal-glass-sheet {
       background: #ffffff;
@@ -4158,8 +4166,19 @@
         display: flex !important;
         flex-direction: column !important;
         gap: 8px !important;
-        margin-bottom: 10px !important;
+        margin-bottom: 14px !important;
         width: 100% !important;
+        max-height: 480px !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding: 4px !important;
+        border-radius: var(--r-xl) !important;
+        box-sizing: border-box !important;
+      }
+      .table-scroll-wrap {
+        max-height: 480px !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
       }
       .lead-card-mobile {
         background: #ffffff !important;
@@ -4269,7 +4288,7 @@
         backdrop-filter: blur(20px) !important;
         -webkit-backdrop-filter: blur(20px) !important;
         border-top: 1px solid var(--border) !important;
-        z-index: 99999 !important;
+        z-index: 9000 !important;
         align-items: center !important;
         justify-content: space-around !important;
         padding: 0 env(safe-area-inset-right, 2px) env(safe-area-inset-bottom, 4px) env(safe-area-inset-left, 2px) !important;
@@ -4448,21 +4467,23 @@
         padding: 0 !important;
         align-items: flex-end !important;
         background: rgba(15,23,42,0.5) !important;
-        z-index: 99999 !important;
+        z-index: 100005 !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
       }
       .modal-glass-sheet {
         width: 100vw !important;
         max-width: 100vw !important;
         border-radius: var(--r-xl) var(--r-xl) 0 0 !important;
-        max-height: 90vh !important;
+        max-height: 88vh !important;
         background: #ffffff !important;
         border: 1px solid var(--border) !important;
         border-bottom: none !important;
         box-shadow: 0 -10px 48px rgba(15,23,42,0.2) !important;
         display: flex !important;
         flex-direction: column !important;
-        overflow: hidden !important;
-        padding-bottom: env(safe-area-inset-bottom, 16px) !important;
+        overflow-y: auto !important;
+        padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 36px) !important;
       }
       .modal-glass-sheet::before {
         content: '' !important;
@@ -4523,7 +4544,7 @@
         border: 1.5px solid rgba(255, 255, 255, 0.9) !important;
         border-radius: 9999px !important; /* High Corner Radius Floating Pill */
         box-shadow: 0 12px 36px -4px rgba(16, 42, 86, 0.22), 0 4px 12px rgba(0, 0, 0, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.95) !important;
-        z-index: 99999 !important;
+        z-index: 9000 !important;
         align-items: center !important;
         justify-content: space-evenly !important;
         padding: 4px 6px !important;
@@ -5257,14 +5278,8 @@
             <!-- Filter Toolbar -->
             <div class="table-toolbar">
               <div class="table-tabs">
-                <button id="tabAll" class="tab-btn active" onclick="setTableFilterTab('all')">
-                  All Leads (<span id="tabCountAll">0</span>)
-                </button>
-                <button id="tabWithPhone" class="tab-btn" onclick="setTableFilterTab('phone')">
-                  With Phone (<span id="tabCountPhone">0</span>)
-                </button>
-                <button id="tabWithWeb" class="tab-btn" onclick="setTableFilterTab('website')">
-                  With Website (<span id="tabCountWeb">0</span>)
+                <button id="tabAll" class="tab-btn active" onclick="setTableFilterTab('all')" style="cursor: default; font-weight: 700; pointer-events: none;">
+                  Verified Leads (<span id="tabCountAll">0</span>)
                 </button>
               </div>
 
@@ -5286,11 +5301,6 @@
                   <button id="btnCopyPhones" class="btn-subtle-sm" onclick="copyAllPhones()" disabled title="Copy all phone numbers">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
                     <span>Copy Phones</span>
-                  </button>
-
-                  <button id="btnTableDownload" class="btn-subtle-sm" onclick="downloadCurrentCSV()" disabled title="Download CSV">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                    <span>Export CSV</span>
                   </button>
 
                   <button id="btnToggleView" class="btn-subtle-sm mobile-only" onclick="toggleMobileViewMode()" title="Switch between Card View and Table View">
@@ -6280,7 +6290,7 @@
             <span style="font-size: 0.74rem; color: #64748b; margin-top: 3px;">Allows you to log in with either Google or Email & Password anytime.</span>
           </div>
 
-          <button type="submit" id="btnGoogleCompleteSubmit" class="btn-compact btn-emerald-glass" style="width: 100%; height: 50px; margin-top: 10px; font-size: 0.98rem; font-weight: 800; border-radius: 12px;">
+          <button type="submit" id="btnGoogleCompleteSubmit" class="btn-compact btn-emerald-glass" style="width: 100%; height: 50px; margin-top: 14px; margin-bottom: 26px; font-size: 0.98rem; font-weight: 800; border-radius: 12px;">
             Complete Registration & Claim ₹100
           </button>
         </form>
@@ -6926,6 +6936,7 @@
 
     function openAuthModal(tab = 'login') {
       switchAuthTab(tab);
+      document.body.classList.add('modal-open');
       document.getElementById('authModal').style.display = 'flex';
       setTimeout(() => {
         setupGoogleGSI();
@@ -6935,6 +6946,7 @@
     function closeAuthModal(e) {
       if (!e || e.target.id === 'authModal' || (e.target.closest && e.target.closest('.modal-close-btn'))) {
         document.getElementById('authModal').style.display = 'none';
+        document.body.classList.remove('modal-open');
       }
     }
 
@@ -7138,6 +7150,7 @@
       document.getElementById('gCompPhone').value = '';
       document.getElementById('gCompPassword').value = '';
 
+      document.body.classList.add('modal-open');
       document.getElementById('googleCompleteModal').style.display = 'flex';
       setTimeout(() => {
         const phoneInput = document.getElementById('gCompPhone');
@@ -7152,6 +7165,7 @@
     function closeGoogleCompleteModal(e) {
       if (!e || e.target.id === 'googleCompleteModal' || (e.target.closest && e.target.closest('.modal-close-btn'))) {
         document.getElementById('googleCompleteModal').style.display = 'none';
+        document.body.classList.remove('modal-open');
       }
     }
 
@@ -7228,6 +7242,7 @@
         return;
       }
       selectRechargePack(250);
+      document.body.classList.add('modal-open');
       document.getElementById('walletModal').style.display = 'flex';
       updateUserHeaderUI();
     }
@@ -7235,6 +7250,7 @@
     function closeWalletModal(e) {
       if (!e || e.target.id === 'walletModal' || (e.target.closest && e.target.closest('.modal-close-btn'))) {
         document.getElementById('walletModal').style.display = 'none';
+        document.body.classList.remove('modal-open');
       }
     }
 
@@ -8086,7 +8102,7 @@
             <td style="color:#475569; font-size:0.82rem; font-weight:600; font-family:'Plus Jakarta Sans',sans-serif;">${f.size_kb} KB</td>
             <td style="color:#64748b; font-size:0.8rem;">${escapeHtml(f.modified)}</td>
             <td style="text-align:right;">
-              <a href="/api/download/${encodeURIComponent(f.name)}" class="file-download-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:6px 14px; font-size:0.8rem; font-weight:700;" download title="Download CSV File">
+              <a href="/api/download/${encodeURIComponent(f.name)}${currentUserToken ? '?token=' + encodeURIComponent(currentUserToken) : ''}" class="file-download-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:6px 14px; font-size:0.8rem; font-weight:700;" download title="Download CSV File">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                 <span>Download</span>
               </a>
@@ -8118,7 +8134,7 @@
                 </div>
               </div>
             </div>
-            <a href="/api/download/${encodeURIComponent(f.name)}" class="file-download-btn" download title="Download CSV file">
+            <a href="/api/download/${encodeURIComponent(f.name)}${currentUserToken ? '?token=' + encodeURIComponent(currentUserToken) : ''}" class="file-download-btn" download title="Download CSV file">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
               <span>Get</span>
             </a>
@@ -8786,18 +8802,17 @@
 
     // Table Filter Tabs
     function setTableFilterTab(tab) {
-      currentFilterTab = tab;
+      currentFilterTab = tab || 'all';
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      if (tab === 'all') document.getElementById('tabAll').classList.add('active');
-      if (tab === 'phone') document.getElementById('tabWithPhone').classList.add('active');
-      if (tab === 'website') document.getElementById('tabWithWeb').classList.add('active');
+      const activeEl = document.getElementById(tab === 'phone' ? 'tabWithPhone' : (tab === 'website' ? 'tabWithWeb' : 'tabAll'));
+      if (activeEl) activeEl.classList.add('active');
       renderTable();
     }
 
     // Render Table
     function renderTable() {
       const tbody = document.getElementById('tableBody');
-      const searchFilter = (document.getElementById('tableSearchInput').value || '').toLowerCase();
+      const searchFilter = (document.getElementById('tableSearchInput')?.value || '').toLowerCase();
 
       // Counts
       const totalCount = allItems.length;
@@ -8805,16 +8820,24 @@
       const webCount = allItems.filter(i => i.website && i.website.trim()).length;
       const matchRate = totalCount > 0 ? Math.round((phoneCount / totalCount) * 100) : 0;
 
-      document.getElementById('metricTotalCount').textContent = totalCount;
-      document.getElementById('metricPhoneCount').textContent = phoneCount;
+      const metricTotal = document.getElementById('metricTotalCount');
+      if (metricTotal) metricTotal.textContent = totalCount;
+      const metricPhone = document.getElementById('metricPhoneCount');
+      if (metricPhone) metricPhone.textContent = phoneCount;
       const matchRateEl = document.getElementById('metricMatchRate');
       if (matchRateEl) matchRateEl.textContent = `${matchRate}%`;
-      document.getElementById('tabCountAll').textContent = totalCount;
-      document.getElementById('tabCountPhone').textContent = phoneCount;
-      document.getElementById('tabCountWeb').textContent = webCount;
 
-      document.getElementById('btnCopyPhones').disabled = phoneCount === 0;
-      document.getElementById('btnTableDownload').disabled = totalCount === 0;
+      const tabCountAll = document.getElementById('tabCountAll');
+      if (tabCountAll) tabCountAll.textContent = totalCount;
+      const tabCountPhone = document.getElementById('tabCountPhone');
+      if (tabCountPhone) tabCountPhone.textContent = phoneCount;
+      const tabCountWeb = document.getElementById('tabCountWeb');
+      if (tabCountWeb) tabCountWeb.textContent = webCount;
+
+      const btnCopy = document.getElementById('btnCopyPhones');
+      if (btnCopy) btnCopy.disabled = phoneCount === 0;
+      const btnDownload = document.getElementById('btnTableDownload');
+      if (btnDownload) btnDownload.disabled = totalCount === 0;
 
       // Filter by tab + search
       const filtered = allItems.filter(i => {
@@ -8985,11 +9008,50 @@
     }
 
     // Direct CSV Download Trigger (Solves "Where is the CSV file?")
-    function downloadCurrentCSV() {
+    async function downloadCurrentCSV() {
       if (lastDownloadUrl) {
-        window.location.href = lastDownloadUrl;
-        showToast('Downloading verified CSV export...');
-        return;
+        try {
+          showToast('Downloading verified CSV export...');
+          const headers = {};
+          if (currentUserToken) {
+            headers['Authorization'] = `Bearer ${currentUserToken}`;
+          }
+          
+          let targetUrl = lastDownloadUrl;
+          if (currentUserToken && !targetUrl.includes('token=')) {
+            targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'token=' + encodeURIComponent(currentUserToken);
+          }
+
+          const res = await fetch(targetUrl, {
+            headers: headers,
+            credentials: 'include'
+          });
+
+          if (!res.ok) {
+            const errJson = await res.json().catch(() => ({}));
+            showToast(errJson.error || `Server download error (${res.status}). Generating local copy...`);
+            generateClientCSV();
+            return;
+          }
+
+          const blob = await res.blob();
+          const cleanFileName = lastDownloadUrl.split('/').pop().split('?')[0] || `leads_${Date.now()}.csv`;
+          const blobUrl = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = blobUrl;
+          a.download = cleanFileName;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(blobUrl);
+          }, 1500);
+          showToast('CSV downloaded successfully to your device!');
+          return;
+        } catch (fetchErr) {
+          console.error('Fetch download failed, falling back to local generator:', fetchErr);
+        }
       }
 
       if (allItems.length === 0) {
@@ -8997,7 +9059,14 @@
         return;
       }
 
-      // Client-side fallback CSV generator with UTF-8 BOM
+      generateClientCSV();
+    }
+
+    function generateClientCSV() {
+      if (allItems.length === 0) {
+        showToast('No leads available to export.');
+        return;
+      }
       const headers = ['Business Name', 'Phone Number', 'Address', 'Category', 'Rating', 'Google Maps Link'];
       const rows = allItems.map(i => [
         `"${(i.name || '').replace(/"/g, '""')}"`,
@@ -9017,12 +9086,13 @@
       document.body.appendChild(a);
       a.click();
       a.remove();
-      showToast('Downloaded CSV file to your Downloads folder!');
+      showToast('Downloaded verified CSV file to your device!');
     }
 
     // Saved Files Modal Functions
     async function openSavedFilesModal() {
       const modal = document.getElementById('historyModal');
+      document.body.classList.add('modal-open');
       modal.style.display = 'flex';
       const tbody = document.getElementById('historyTableBody');
       tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:20px;">Fetching saved CSV files...</td></tr>';
@@ -9046,7 +9116,7 @@
               <td style="color:#64748b;">${f.size_kb} KB</td>
               <td style="color:#64748b;">${escapeHtml(f.modified)}</td>
               <td style="text-align:right;">
-                <a href="/api/download/${encodeURIComponent(f.name)}" class="btn-subtle-sm" style="text-decoration:none;" download>
+                <a href="/api/download/${encodeURIComponent(f.name)}${currentUserToken ? '?token=' + encodeURIComponent(currentUserToken) : ''}" class="btn-subtle-sm" style="text-decoration:none;" download>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                   <span>Download</span>
                 </a>
@@ -9063,6 +9133,7 @@
     function closeSavedFilesModal(e) {
       if (!e || e.target.id === 'historyModal') {
         document.getElementById('historyModal').style.display = 'none';
+        document.body.classList.remove('modal-open');
       }
     }
 

@@ -555,12 +555,23 @@ body.extracting-active .radar-sweep-disc::after {
 
 .radar-log-stream {
   flex: 1;
+  max-height: 110px !important;
+  min-height: 44px !important;
+  overflow-y: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 3px !important;
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   color: var(--text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  background: rgba(15, 23, 42, 0.03);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+.radar-log-stream .log-line {
+  line-height: 1.35;
+  word-break: break-word;
+  white-space: normal;
 }
 
 /* ── 7. DATA GRID & LEAD INSPECTOR TABLE ── */
