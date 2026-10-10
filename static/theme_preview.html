@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Texture & Aesthetics Studio — 4 Live Design Themes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── RESET & BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      color: #172033;
+      background: #0F172A;
+      transition: background 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── STUDIO TOP BAR ── */
+    .studio-navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      color: #FFFFFF;
+    }
+    .studio-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .studio-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563EB 0%, #10B981 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+    .studio-title h1 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .studio-title p {
+      font-size: 0.76rem;
+      color: #94A3B8;
+    }
+
+    /* ── THEME SWITCHER CONTROLS ── */
+    .theme-selector-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 4px;
+      border-radius: 14px;
+      flex-wrap: wrap;
+    }
+    .theme-tab-btn {
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: #94A3B8;
+      font-size: 0.82rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+    .theme-tab-btn:hover {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .theme-tab-btn.active {
+      color: #FFFFFF;
+      background: #2563EB;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+    .theme-tab-btn svg { width: 15px; height: 15px; }
+
+    .view-mode-switch {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-mode-toggle {
+      height: 36px;
+      padding: 0 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      color: #CBD5E1;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s ease;
+    }
+    .btn-mode-toggle:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+    }
+    .btn-mode-toggle.active {
+      background: #10B981;
+      border-color: #10B981;
+      color: #FFFFFF;
+    }
+
+    /* ── SELECTION BANNER ── */
+    .selection-sticky-banner {
+      background: #1E293B;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #CBD5E1;
+      font-size: 0.84rem;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .selection-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .selection-pill {
+      background: #3B82F6;
+      color: #FFFFFF;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+    }
+    .btn-apply-prompt {
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 9px;
+      padding: 7px 16px;
+      font-weight: 800;
+      font-size: 0.82rem;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      transition: transform 0.16s ease;
+    }
+    .btn-apply-prompt:hover {
+      transform: translateY(-1px);
+    }
+
+    /* ── STAGE CONTAINER ── */
+    .stage-wrapper {
+      padding: 32px 24px 80px;
+      max-width: 1280px;
+      margin: 0 auto;
+      transition: all 0.3s ease;
+    }
+
+    /* ═════════════════════════════════════════════════════════════════════
+       THEME 1: APPLE & LINEAR FROSTED GLASS (Theme 'glass')
+    ═════════════════════════════════════════════════════════════════════ */
+    body.theme-glass {
+      background: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.09) 0px, transparent 50%),
+                  radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.09) 0px, transparent 50%),
+                  radial-gradient(at 50% 50%, rgba(30, 64, 175, 0.05) 0px, transparent 50%),
+                  #F8FAFC;
+      color: #0F172A;
+    }
+    body.theme-glass .preview-card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 22px;
+      box-shadow: 0 8px 32px -4px rgba(15, 23, 42, 0.06),
+                  0 2px 6px rgba(15, 23, 42, 0.02),
+                  inset 0 1px 1px rgba(255, 255, 255, 1);
+    }
+    body.theme-glass .preview-card-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3.5px;
+      background: linear-gradient(90deg, #2563EB, #38BDF8, #10B981);
+    }
+    body.theme-glass .preview-avatar {
+      background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
+      box-shadow: 0 10px 25px -4px rgba(37, 99, 235, 0.4), inset 0 1px 1px rgba(255,255,255,0.4);
+      border: 2.5px solid rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+    }
+    body.theme-glass .preview-stat-box {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 18px;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), inset 0 1px 1px rgba(255,255,255,1);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    body.theme-glass .preview-stat-box:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.08);
+    }
+    body.theme-glass .preview-subtabs-nav {
+      background: rgba(241, 245, 249, 0.65);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 16px;
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+    body.theme-glass .preview-subtab-btn.active {
+      background: rgba(255, 255, 255, 0.95);
+      color: #0F172A;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08), inset 0 1px 0 #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+    }
+    body.theme-glass .btn-primary {
+      background: linear-gradient(180deg, #1E40AF 0%, #172554 100%);
+      box-shadow: 0 4px 14px rgba(30, 64, 175, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+    }
+    body.theme-glass .btn-emerald {
+      background: linear-gradient(180deg, #10B981 0%, #047857 100%);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+    }
+    body.theme-glass .btn-outline-danger {
+      background: rgba(254, 242, 242, 0.7);
+      border: 1px solid rgba(254, 202, 202, 0.8);
+      color: #DC2626;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    }
+    body.theme-glass .preview-form-control {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(203, 213, 225, 0.8);
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+    body.theme-glass .preview-form-control:focus {
+      background: #FFFFFF;
+      border-color: #3B82F6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    /* ═════════════════════════════════════════════════════════════════════
+       THEME 2: STRIPE PRECISION FINTECH (Theme 'stripe')
+    ═════════════════════════════════════════════ */
+    body.theme-stripe {
+      background: #F6F9FC;
+      color: #32325D;
+    }
+    body.theme-stripe .preview-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 100%);
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      border-radius: 16px;
+      box-shadow: 0 2px 5px rgba(50, 50, 93, 0.05),
+                  0 8px 24px -4px rgba(50, 50, 93, 0.07),
+                  0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+    body.theme-stripe .preview-card-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: #1E40AF;
+    }
+    body.theme-stripe .preview-avatar {
+      background: linear-gradient(135deg, #1E40AF 0%, #172554 100%);
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+      border: 3px solid #FFFFFF;
+      border-radius: 14px;
+    }
+    body.theme-stripe .preview-stat-box {
+      background: #FFFFFF;
+      border: 1px solid #E3E8EE;
+      border-radius: 14px;
+      box-shadow: 0 1px 3px rgba(50, 50, 93, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+      transition: all 0.18s ease;
+    }
+    body.theme-stripe .preview-stat-box:hover {
+      box-shadow: 0 6px 18px rgba(50, 50, 93, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+    }
+    body.theme-stripe .preview-subtabs-nav {
+      background: #EEF2F6;
+      border: 1px solid #E3E8EE;
+      border-radius: 12px;
+      padding: 4px;
+    }
+    body.theme-stripe .preview-subtab-btn.active {
+      background: #FFFFFF;
+      color: #0A2540;
+      box-shadow: 0 2px 6px rgba(50, 50, 93, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+      border: 1px solid #E3E8EE;
+      font-weight: 800;
+    }
+    body.theme-stripe .btn-primary {
+      background: #1E40AF;
+      color: #FFFFFF;
+      border: none;
+      box-shadow: 0 2px 4px rgba(45, 35, 66, 0.15), 0 7px 14px -3px rgba(45, 35, 66, 0.2), inset 0 -1px 0 rgba(0,0,0,0.15);
+    }
+    body.theme-stripe .btn-primary:hover {
+      background: #1D4ED8;
+      box-shadow: 0 4px 8px rgba(45, 35, 66, 0.15), 0 9px 18px -3px rgba(45, 35, 66, 0.2);
+    }
+    body.theme-stripe .btn-emerald {
+      background: linear-gradient(180deg, #059669 0%, #047857 100%);
+      color: #FFFFFF;
+      border: none;
+      box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2), 0 6px 14px -2px rgba(5, 150, 105, 0.3), inset 0 -1px 0 rgba(0,0,0,0.2);
+    }
+    body.theme-stripe .btn-outline-danger {
+      background: #FFFFFF;
+      border: 1px solid #FCA5A5;
+      color: #DC2626;
+      box-shadow: 0 1px 2px rgba(220, 38, 38, 0.06);
+    }
+    body.theme-stripe .preview-form-control {
+      background: #FFFFFF;
+      border: 1px solid #E3E8EE;
+      border-radius: 9px;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+    body.theme-stripe .preview-form-control:focus {
+      border-color: #1E40AF;
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.2);
+    }
+
+    /* ═════════════════════════════════════════════════════════════════════
+       THEME 3: SLEEK TECH DARK MODE (Theme 'dark')
+    ═════════════════════════════════════════════ */
+    body.theme-dark {
+      background: #0A0E17;
+      color: #F1F5F9;
+    }
+    body.theme-dark .preview-card {
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    body.theme-dark .preview-card-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3B82F6 0%, #10B981 100%);
+      box-shadow: 0 0 14px rgba(59, 130, 246, 0.8);
+    }
+    body.theme-dark .preview-avatar {
+      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+      border: 2px solid #3B82F6;
+      border-radius: 16px;
+    }
+    body.theme-dark .preview-user-name {
+      color: #FFFFFF !important;
+    }
+    body.theme-dark .preview-contact-chip {
+      background: rgba(30, 41, 59, 0.7) !important;
+      border-color: rgba(71, 85, 105, 0.6) !important;
+      color: #94A3B8 !important;
+    }
+    body.theme-dark .preview-stat-box {
+      background: rgba(17, 24, 39, 0.85);
+      border: 1px solid rgba(75, 85, 99, 0.3);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    body.theme-dark .preview-stat-box:hover {
+      border-color: #3B82F6;
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
+      transform: translateY(-2px);
+    }
+    body.theme-dark .stat-label { color: #94A3B8 !important; }
+    body.theme-dark .stat-val-navy { color: #38BDF8 !important; }
+    body.theme-dark .stat-sub { color: #64748B !important; }
+    body.theme-dark .preview-subtabs-nav {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(71, 85, 105, 0.4);
+      border-radius: 16px;
+    }
+    body.theme-dark .preview-subtab-btn {
+      color: #94A3B8;
+    }
+    body.theme-dark .preview-subtab-btn:hover {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    body.theme-dark .preview-subtab-btn.active {
+      background: rgba(30, 41, 59, 0.95);
+      color: #38BDF8;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.2);
+    }
+    body.theme-dark .btn-primary {
+      background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+      box-shadow: 0 0 18px rgba(37, 99, 235, 0.5);
+      border: 1px solid #3B82F6;
+      color: #FFFFFF;
+    }
+    body.theme-dark .btn-emerald {
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.5);
+      border: 1px solid #34D399;
+      color: #FFFFFF;
+    }
+    body.theme-dark .btn-outline-danger {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #F87171;
+    }
+    body.theme-dark .preview-form-control {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(71, 85, 105, 0.6);
+      color: #FFFFFF;
+    }
+    body.theme-dark .preview-form-control:focus {
+      border-color: #38BDF8;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
+    }
+    body.theme-dark .preference-item {
+      background: rgba(15, 23, 42, 0.7) !important;
+      border-color: rgba(71, 85, 105, 0.4) !important;
+    }
+    body.theme-dark .pref-title { color: #F1F5F9 !important; }
+    body.theme-dark .tariff-box {
+      background: rgba(15, 23, 42, 0.7) !important;
+      border-color: rgba(71, 85, 105, 0.4) !important;
+    }
+    body.theme-dark .tariff-val { color: #F1F5F9 !important; }
+
+    /* ═════════════════════════════════════════════════════════════════════
+       THEME 4: SOFT TACTILE & EMBOSSED (Theme 'tactile')
+    ═════════════════════════════════════════════ */
+    body.theme-tactile {
+      background: #E8EDF2;
+      color: #1E293B;
+    }
+    body.theme-tactile .preview-card {
+      background: #E8EDF2;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 10px 10px 24px #CCD4DE,
+                  -10px -10px 24px #FFFFFF;
+    }
+    body.theme-tactile .preview-card-hero::before {
+      display: none;
+    }
+    body.theme-tactile .preview-avatar {
+      background: #E8EDF2;
+      color: #2563EB;
+      box-shadow: 6px 6px 14px #CCD4DE, -6px -6px 14px #FFFFFF;
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      border-radius: 18px;
+    }
+    body.theme-tactile .preview-stat-box {
+      background: #E8EDF2;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 18px;
+      box-shadow: 6px 6px 16px #CCD4DE, -6px -6px 16px #FFFFFF;
+      transition: all 0.2s ease;
+    }
+    body.theme-tactile .preview-stat-box:hover {
+      box-shadow: 3px 3px 8px #CCD4DE, -3px -3px 8px #FFFFFF;
+      transform: translateY(1px);
+    }
+    body.theme-tactile .preview-subtabs-nav {
+      background: #E8EDF2;
+      border-radius: 18px;
+      box-shadow: inset 4px 4px 10px #CCD4DE, inset -4px -4px 10px #FFFFFF;
+      padding: 6px;
+      border: none;
+    }
+    body.theme-tactile .preview-subtab-btn.active {
+      background: #E8EDF2;
+      color: #2563EB;
+      box-shadow: 4px 4px 10px #CCD4DE, -4px -4px 10px #FFFFFF;
+      font-weight: 800;
+    }
+    body.theme-tactile .btn-primary {
+      background: #E8EDF2;
+      color: #1E3A8A;
+      box-shadow: 5px 5px 12px #CCD4DE, -5px -5px 12px #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+    body.theme-tactile .btn-primary:active {
+      box-shadow: inset 3px 3px 6px #CCD4DE, inset -3px -3px 6px #FFFFFF;
+    }
+    body.theme-tactile .btn-emerald {
+      background: #E8EDF2;
+      color: #059669;
+      box-shadow: 5px 5px 12px #CCD4DE, -5px -5px 12px #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+    body.theme-tactile .btn-outline-danger {
+      background: #E8EDF2;
+      color: #DC2626;
+      box-shadow: 4px 4px 10px #CCD4DE, -4px -4px 10px #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+    body.theme-tactile .preview-form-control {
+      background: #E8EDF2;
+      border: none;
+      box-shadow: inset 3px 3px 7px #CCD4DE, inset -3px -3px 7px #FFFFFF;
+      border-radius: 12px;
+    }
+    body.theme-tactile .preview-form-control:focus {
+      box-shadow: inset 4px 4px 8px #BCC5D1, inset -4px -4px 8px #FFFFFF, 0 0 0 2px #3B82F6;
+    }
+    body.theme-tactile .preference-item {
+      background: #E8EDF2 !important;
+      box-shadow: 4px 4px 12px #CCD4DE, -4px -4px 12px #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    }
+
+    /* ── COMPONENT SKELETON LAYOUTS ── */
+    .preview-shell {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .preview-card {
+      position: relative;
+      overflow: hidden;
+      padding: 26px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: all 0.25s ease;
+    }
+
+    /* Hero Identity Card */
+    .preview-card-hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+    .preview-user-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+    .preview-avatar {
+      width: 66px;
+      height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .preview-online-dot {
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 15px; height: 15px;
+      background: #10B981;
+      border: 2.5px solid #FFFFFF;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+    }
+    .preview-user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .preview-name-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .preview-user-name {
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+    .preview-verified-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #15803D;
+      background: #DCFCE7;
+      border: 1px solid #86EFAC;
+      padding: 2.5px 8px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .preview-contact-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .preview-contact-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #F1F5F9;
+      border: 1px solid #E2E8F0;
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #475569;
+    }
+    .preview-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.74rem;
+      color: #64748B;
+      font-weight: 600;
+    }
+    .badge-member {
+      background: #EFF6FF;
+      color: #2563EB;
+      border: 1px solid #BFDBFE;
+      font-weight: 800;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .preview-actions-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .preview-btn {
+      height: 42px;
+      padding: 0 18px;
+      border-radius: 11px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.18s ease;
+    }
+    .preview-btn:hover {
+      transform: translateY(-1.5px);
+    }
+
+    /* 4 KPI Stats Grid */
+    .preview-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .preview-stat-box {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .stat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748B;
+    }
+    .stat-icon {
+      width: 26px; height: 26px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+    .stat-val {
+      font-size: 1.45rem;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+    .stat-sub {
+      font-size: 0.73rem;
+      font-weight: 600;
+      color: #94A3B8;
+    }
+
+    /* Sub-Tabs Nav */
+    .preview-subtabs-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px;
+      overflow-x: auto;
+    }
+    .preview-subtab-btn {
+      padding: 10px 18px;
+      border-radius: 11px;
+      border: none;
+      background: transparent;
+      color: #64748B;
+      font-size: 0.86rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.18s ease;
+    }
+    .preview-subtab-btn svg { width: 16px; height: 16px; }
+
+    /* Interactive Form Showcase */
+    .preview-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .preview-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .preview-form-label {
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+    .preview-form-control {
+      height: 46px;
+      padding: 0 14px;
+      border-radius: 11px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      color: inherit;
+      outline: none;
+      transition: all 0.16s ease;
+    }
+
+    /* Tariff Showcase */
+    .tariff-trio {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .tariff-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .tariff-title {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .tariff-val {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #102A56;
+    }
+    .tariff-sub {
+      font-size: 0.74rem;
+      color: #64748B;
+      font-weight: 500;
+    }
+
+    /* Preference Row */
+    .preference-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: #F8FAFC;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 14px;
+      gap: 16px;
+    }
+    .pref-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .pref-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #102A56;
+    }
+    .pref-desc {
+      font-size: 0.78rem;
+      color: #64748B;
+    }
+    .ios-switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+    .ios-switch input { opacity: 0; width: 0; height: 0; }
+    .ios-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #CBD5E1;
+      border-radius: 26px;
+      transition: .2s;
+    }
+    .ios-slider:before {
+      position: absolute;
+      content: "";
+      height: 20px; width: 20px;
+      left: 3px; bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: .2s;
+    }
+    .ios-switch input:checked + .ios-slider {
+      background-color: #2563EB;
+    }
+    .ios-switch input:checked + .ios-slider:before {
+      transform: translateX(22px);
+    }
+  </style>
+</head>
+<body class="theme-glass">
+
+  <!-- TOP NAVBAR -->
+  <header class="studio-navbar">
+    <div class="studio-brand">
+      <div class="studio-logo">4T</div>
+      <div class="studio-title">
+        <h1>UI Texture & Aesthetics Studio</h1>
+        <p>Click any theme tab to watch the entire page morph in real-time</p>
+      </div>
+    </div>
+
+    <!-- Live Theme Switcher Tabs -->
+    <div class="theme-selector-pills">
+      <button class="theme-tab-btn active" onclick="switchLiveTheme('glass')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <span>1. Apple Frosted Glass</span>
+      </button>
+      <button class="theme-tab-btn" onclick="switchLiveTheme('stripe')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+        <span>2. Stripe Precision Fintech</span>
+      </button>
+      <button class="theme-tab-btn" onclick="switchLiveTheme('dark')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <span>3. Sleek Tech Dark Mode</span>
+      </button>
+      <button class="theme-tab-btn" onclick="switchLiveTheme('tactile')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+        <span>4. Soft Tactile Embossed</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- SELECTION HELPER STRIP -->
+  <div class="selection-sticky-banner">
+    <div class="selection-text">
+      <span>Currently Previewing:</span>
+      <span class="selection-pill" id="currentThemePill">Theme 1: Apple Frosted Glass</span>
+      <span style="color: #94A3B8; font-size: 0.78rem;" id="currentThemeDesc">— Soft translucent glass, ambient radial glow, inner edge reflections, and micro-gradients.</span>
+    </div>
+    <button class="btn-apply-prompt" onclick="copyApplyCommand()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <span id="btnApplyText">Select This Theme</span>
+    </button>
+  </div>
+
+  <!-- STAGE: LIVE INTERACTIVE PREVIEW -->
+  <main class="stage-wrapper" id="singleLiveStage">
+    <div class="preview-shell">
+
+      <!-- 1. HERO IDENTITY CARD -->
+      <section class="preview-card preview-card-hero">
+        <div class="preview-user-left">
+          <div class="preview-avatar">
+            <span>U</span>
+            <span class="preview-online-dot"></span>
+          </div>
+          <div class="preview-user-info">
+            <div class="preview-name-row">
+              <span class="preview-user-name">Test Lead Hunter</span>
+              <span class="preview-verified-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>VERIFIED</span>
+              </span>
+            </div>
+            <div class="preview-contact-row">
+              <span class="preview-contact-chip">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <span>testhunter@example.com</span>
+              </span>
+              <span class="preview-contact-chip">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>+91 9876543210</span>
+              </span>
+            </div>
+            <div class="preview-badge-row">
+              <span class="badge-member">USER</span>
+              <span>Joined: Active Member</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-actions-right">
+          <button class="preview-btn btn-primary" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>Lead Scraper</span>
+          </button>
+          <button class="preview-btn btn-emerald" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+            <span>Recharge</span>
+          </button>
+          <button class="preview-btn btn-outline-danger" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Sign Out</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 2. 4 KPI STATS GRID -->
+      <section class="preview-stats-grid">
+        <div class="preview-stat-box">
+          <div class="stat-header">
+            <span class="stat-label">Available Balance</span>
+            <span class="stat-icon" style="background: rgba(16, 185, 129, 0.15); color: #10B981;">₹</span>
+          </div>
+          <div class="stat-val" style="color: #10B981;">₹100.00</div>
+          <span class="stat-sub">Live In-App Balance</span>
+        </div>
+
+        <div class="preview-stat-box">
+          <div class="stat-header">
+            <span class="stat-label">Leads Quota</span>
+            <span class="stat-icon" style="background: rgba(37, 99, 235, 0.15); color: #3B82F6;">🎯</span>
+          </div>
+          <div class="stat-val" style="color: #2563EB;">400 Leads</div>
+          <span class="stat-sub">@ ₹0.25 / Verified Phone</span>
+        </div>
+
+        <div class="preview-stat-box">
+          <div class="stat-header">
+            <span class="stat-label">Welcome Bonus</span>
+            <span class="stat-icon" style="background: rgba(30, 64, 175, 0.15); color: #1E40AF;">🎁</span>
+          </div>
+          <div class="stat-val" style="color: #1E40AF;">₹100.00</div>
+          <span class="stat-sub">Credited on Registration</span>
+        </div>
+
+        <div class="preview-stat-box">
+          <div class="stat-header">
+            <span class="stat-label">Tariff Rate</span>
+            <span class="stat-icon" style="background: rgba(15, 23, 42, 0.1); color: #1E293B;">⚡</span>
+          </div>
+          <div class="stat-val stat-val-navy">₹0.25 <span style="font-size: 0.85rem; font-weight: 700; color: #64748B;">/ Lead</span></div>
+          <span class="stat-sub">₹0.00 on Missing Phones</span>
+        </div>
+      </section>
+
+      <!-- 3. SUB-TABS NAVIGATION BAR -->
+      <nav class="preview-subtabs-nav">
+        <button class="preview-subtab-btn active" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Profile Details</span>
+        </button>
+        <button class="preview-subtab-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Security & Access</span>
+        </button>
+        <button class="preview-subtab-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+          <span>Wallet & Tariff</span>
+        </button>
+        <button class="preview-subtab-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="4" x2="20" y1="21" y2="21"/><line x1="4" x2="20" y1="14" y2="14"/><line x1="4" x2="20" y1="7" y2="7"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="14" r="2"/><circle cx="10" cy="21" r="2"/></svg>
+          <span>Preferences</span>
+        </button>
+        <button class="preview-subtab-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>Help & Support</span>
+        </button>
+      </nav>
+
+      <!-- 4. ACTIVE FORM & INPUTS SHOWCASE -->
+      <section class="preview-card">
+        <h3 style="font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em;">Personal Account Credentials</h3>
+        
+        <div class="preview-form-grid">
+          <div class="preview-form-group">
+            <label class="preview-form-label">Full Name</label>
+            <input type="text" class="preview-form-control" value="Test Lead Hunter" />
+          </div>
+          <div class="preview-form-group">
+            <label class="preview-form-label">Mobile Phone Number</label>
+            <input type="tel" class="preview-form-control" value="9876543210" />
+          </div>
+        </div>
+
+        <!-- Tariff Showcase -->
+        <div class="tariff-trio">
+          <div class="tariff-box">
+            <span class="tariff-title">Verified Phone</span>
+            <span class="tariff-val">₹0.25 <span style="font-size: 0.75rem; font-weight: 600;">/ lead</span></span>
+            <span class="tariff-sub">Live Cleaned Leads</span>
+          </div>
+          <div class="tariff-box" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.3);">
+            <span class="tariff-title" style="color: #059669;">Missing Phone</span>
+            <span class="tariff-val" style="color: #059669;">₹0.00 <span style="font-size: 0.75rem; font-weight: 600;">(FREE)</span></span>
+            <span class="tariff-sub">Zero Deductions</span>
+          </div>
+          <div class="tariff-box">
+            <span class="tariff-title">Balance Validity</span>
+            <span class="tariff-val" style="color: #1E40AF;">Lifetime</span>
+            <span class="tariff-sub">Never Expires</span>
+          </div>
+        </div>
+
+        <!-- Preference Row -->
+        <div class="preference-item">
+          <div class="pref-text">
+            <span class="pref-title">Filter Duplicate Phone Numbers</span>
+            <span class="pref-desc">Skip identical telephone numbers across consecutive extraction queries</span>
+          </div>
+          <label class="ios-switch">
+            <input type="checkbox" checked />
+            <span class="ios-slider"></span>
+          </label>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end;">
+          <button class="preview-btn btn-primary" style="height: 46px; padding: 0 28px;">
+            Save Profile Details
+          </button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    const themeDescriptions = {
+      'glass': {
+        name: 'Theme 1: Apple Frosted Glass',
+        desc: '— Soft translucent glass, ambient radial glow, inner edge reflections, and micro-gradients.'
+      },
+      'stripe': {
+        name: 'Theme 2: Stripe Precision Fintech',
+        desc: '— Crisp multi-layered elevation shadows, pearlescent gradient cards, and beveled raised buttons.'
+      },
+      'dark': {
+        name: 'Theme 3: Sleek Tech Dark Mode',
+        desc: '— Deep obsidian black canvas, neon cobalt & teal borders, illuminated control center feel.'
+      },
+      'tactile': {
+        name: 'Theme 4: Soft Tactile Embossed',
+        desc: '— Warm sculpted canvas, embossed dual soft shadows, pressable physical pill buttons.'
+      }
+    };
+
+    let activeTheme = 'glass';
+
+    function switchLiveTheme(themeKey) {
+      activeTheme = themeKey;
+      document.body.className = `theme-${themeKey}`;
+
+      document.querySelectorAll('.theme-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(themeKey));
+      });
+
+      document.getElementById('currentThemePill').textContent = themeDescriptions[themeKey].name;
+      document.getElementById('currentThemeDesc').textContent = themeDescriptions[themeKey].desc;
+      document.getElementById('btnApplyText').textContent = `Choose ${themeDescriptions[themeKey].name}`;
+    }
+
+    function copyApplyCommand() {
+      const msg = `Please apply ${themeDescriptions[activeTheme].name} to Fast Map Leads!`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(msg);
+      }
+      alert(`Awesome! You chose ${themeDescriptions[activeTheme].name}.\n\nTell the assistant in chat:\n"${msg}"`);
+    }
+  </script>
+</body>
+</html>

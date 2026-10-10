@@ -184,6 +184,11 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/theme-preview")
+def theme_preview():
+    return render_template("theme_preview.html")
+
+
 @app.route("/admin")
 def admin_page():
     return render_template("admin.html")

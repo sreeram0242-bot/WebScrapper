@@ -325,46 +325,68 @@
   transform: scale(0.96);
 }
 
-/* ── 4. TACTILE BUTTONS & ACTIONS ── */
+/* ── 4. TACTILE BUTTONS & ACTIONS (STRIPE PRECISION FINTECH) ── */
 .btn-photon {
-  height: 52px;
-  padding: 0 28px;
+  height: 50px;
+  padding: 0 26px;
   border-radius: var(--radius-md);
   background: var(--brand-gradient);
   color: #FFFFFF;
-  font-size: 0.96rem;
-  font-weight: 700;
+  font-size: 0.95rem;
+  font-weight: 800;
   border: none;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  box-shadow: 0 4px 20px var(--brand-primary-glow), var(--shadow-inset-top);
-  transition: all var(--duration-fast) var(--spring-snappy);
+  box-shadow: 0 2px 4px rgba(45, 35, 66, 0.15), 0 7px 14px -3px rgba(45, 35, 66, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+  transition: all 0.18s var(--spring-snappy);
   font-family: inherit;
   position: relative;
   overflow: hidden;
 }
 
 .btn-photon:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px var(--brand-primary-glow), var(--shadow-inset-top);
-  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(45, 35, 66, 0.16), 0 10px 20px -3px rgba(45, 35, 66, 0.25);
+  filter: brightness(1.05);
 }
 
 .btn-photon:active {
-  transform: scale(0.97);
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(45, 35, 66, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+#btnPagePayRazorpay {
+  background: linear-gradient(180deg, #059669 0%, #047857 100%) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2), 0 7px 16px -2px rgba(5, 150, 105, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.18s ease !important;
+}
+
+#btnPagePayRazorpay:hover {
+  background: linear-gradient(180deg, #047857 0%, #065F46 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(5, 150, 105, 0.25), 0 10px 22px -2px rgba(5, 150, 105, 0.4) !important;
+}
+
+#btnPagePayRazorpay:active {
+  transform: translateY(1px) !important;
+  box-shadow: 0 1px 2px rgba(5, 150, 105, 0.3), inset 0 1px 2px rgba(0, 0, 0, 0.2) !important;
 }
 
 .btn-photon-danger {
   background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
-  box-shadow: 0 4px 20px var(--status-rose-glow), var(--shadow-inset-top);
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2), 0 7px 14px -3px rgba(239, 68, 68, 0.28);
 }
 
 .btn-photon-danger:hover {
-  box-shadow: 0 8px 30px var(--status-rose-glow), var(--shadow-inset-top);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.25), 0 10px 20px -3px rgba(239, 68, 68, 0.35);
 }
+
 
 /* ── 5. HUD TELEMETRY METRIC CARDS ── */
 .telemetry-grid {
@@ -905,18 +927,18 @@ body.extracting-active .radar-sweep-disc::after {
 
 .recharge-pack-tier {
   position: relative !important;
-  background: #FFFFFF !important;
-  border: 1.5px solid #E2E8F0 !important;
-  border-radius: 18px !important;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 100%) !important;
+  border: 1px solid #E3E8EE !important;
+  border-radius: 16px !important;
   padding: 18px 14px 14px 14px !important;
   cursor: pointer !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
   gap: 10px !important;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
   user-select: none !important;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+  box-shadow: 0 2px 5px rgba(50, 50, 93, 0.05), 0 8px 24px -4px rgba(50, 50, 93, 0.07), 0 1px 2px rgba(0, 0, 0, 0.03) !important;
   box-sizing: border-box !important;
   min-width: 0 !important;
   max-width: none !important;
@@ -924,16 +946,16 @@ body.extracting-active .radar-sweep-disc::after {
 }
 
 .recharge-pack-tier:hover {
-  background: #FFFFFF;
-  border-color: #94A3B8;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.08);
+  background: #FFFFFF !important;
+  border-color: #CBD5E1 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(50, 50, 93, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04) !important;
 }
 
 .recharge-pack-tier.active {
-  border-color: #2563EB !important;
-  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%) !important;
-  box-shadow: 0 0 0 2px #2563EB, 0 12px 28px -4px rgba(37, 99, 235, 0.22) !important;
+  border-color: #1E40AF !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 2px #1E40AF, 0 8px 24px rgba(30, 64, 175, 0.22) !important;
 }
 
 /* Individual Tier Personality Themes */
@@ -943,8 +965,8 @@ body.extracting-active .radar-sweep-disc::after {
 .recharge-pack-tier.tier-growth:hover { border-color: #60A5FA; }
 .recharge-pack-tier.tier-growth.active { border-color: #2563EB !important; box-shadow: 0 0 0 2px #2563EB, 0 12px 28px -4px rgba(37, 99, 235, 0.28) !important; }
 
-.recharge-pack-tier.tier-scale:hover { border-color: #A78BFA; }
-.recharge-pack-tier.tier-scale.active { border-color: #7C3AED !important; box-shadow: 0 0 0 2px #7C3AED, 0 12px 28px -4px rgba(124, 58, 237, 0.22) !important; }
+.recharge-pack-tier.tier-scale:hover { border-color: #60A5FA; }
+.recharge-pack-tier.tier-scale.active { border-color: #1E40AF !important; box-shadow: 0 0 0 2px #1E40AF, 0 12px 28px -4px rgba(30, 64, 175, 0.22) !important; }
 
 .recharge-pack-tier.tier-titan:hover { border-color: #FBBF24; }
 .recharge-pack-tier.tier-titan.active { border-color: #D97706 !important; box-shadow: 0 0 0 2px #D97706, 0 12px 28px -4px rgba(217, 119, 6, 0.25) !important; }
@@ -982,8 +1004,8 @@ body.extracting-active .radar-sweep-disc::after {
 }
 
 .tier-icon-wrap.icon-scale {
-  background: rgba(124, 58, 237, 0.12);
-  color: #7C3AED;
+  background: rgba(30, 64, 175, 0.12);
+  color: #1E40AF;
 }
 
 .tier-icon-wrap.icon-titan {
@@ -1425,19 +1447,24 @@ body.extracting-active .radar-sweep-disc::after {
     white-space: nowrap !important;
   }
 
-  /* Profile Sub-Tabs: horizontal scroll bar without vertical stretch */
+  /* Profile Sub-Tabs: horizontal smooth scroll without vertical stretch */
   .profile-subtabs-nav {
-    height: 36px !important;
-    min-height: 36px !important;
+    min-height: 44px !important;
+    height: auto !important;
     overflow-x: auto !important;
     white-space: nowrap !important;
     flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+  .profile-subtabs-nav::-webkit-scrollbar {
+    display: none !important;
   }
 
   .profile-subtab-btn {
-    height: 30px !important;
-    min-height: 30px !important;
-    max-height: 30px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
     white-space: nowrap !important;
     flex-shrink: 0 !important;
   }

@@ -24,65 +24,65 @@
 
     
     :root {
-      /* Core Palette */
+      /* Core Palette — Stripe Precision Fintech */
       --white: #ffffff;
-      --navy: #102A56;
-      --navy-deep: #0a1c3a;
-      --navy-mid: #1a3a6e;
-      --blue: #2563EB;
-      --blue-bright: #3B82F6;
+      --navy: #0A2540;
+      --navy-deep: #07172B;
+      --navy-mid: #1A3459;
+      --blue: #1E40AF;
+      --blue-bright: #2563EB;
       --blue-light: #EFF6FF;
       --blue-border: #BFDBFE;
-      --teal: #14B8A6;
-      --teal-light: #F0FDFA;
+      --teal: #00D4B2;
+      --teal-light: #F0FDFB;
       --teal-border: #99F6E4;
-      --violet: #8B5CF6;
-      --violet-light: #F5F3FF;
-      --amber: #F59E0B;
+      --violet: #1E40AF;
+      --violet-light: #EFF6FF;
+      --amber: #D97706;
       --amber-light: #FFFBEB;
-      --green: #10B981;
-      --green-dark: #059669;
+      --green: #059669;
+      --green-dark: #047857;
       --green-light: #ECFDF5;
       --green-border: #A7F3D0;
-      --red: #EF4444;
-      --red-light: #FEF2F2;
-      --red-border: #FECACA;
+      --red: #DF1B41;
+      --red-light: #FFF1F3;
+      --red-border: #FFD0D6;
 
       /* Surfaces */
       --surface: #ffffff;
-      --surface-2: #F8FAFC;
-      --surface-3: #F1F5F9;
+      --surface-2: #F6F9FC;
+      --surface-3: #EEF2F6;
 
       /* Text */
-      --text-primary: #172033;
-      --text-secondary: #334155;
-      --text-muted: #64748B;
-      --text-light: #94A3B8;
-      --text-xlight: #CBD5E1;
+      --text-primary: #0A2540;
+      --text-secondary: #32325D;
+      --text-muted: #4F5B76;
+      --text-light: #8898AA;
+      --text-xlight: #E3E8EE;
 
       /* Borders */
-      --border: #E2E8F0;
+      --border: #E3E8EE;
       --border-strong: #CBD5E1;
-      --border-focus: #2563EB;
+      --border-focus: #1E40AF;
 
-      /* Shadows */
-      --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
-      --shadow-sm: 0 2px 8px -1px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.03);
-      --shadow-md: 0 4px 16px -2px rgba(15, 23, 42, 0.08), 0 2px 4px rgba(15, 23, 42, 0.04);
-      --shadow-lg: 0 8px 28px -4px rgba(15, 23, 42, 0.12), 0 4px 8px rgba(15, 23, 42, 0.05);
-      --shadow-xl: 0 16px 48px -8px rgba(15, 23, 42, 0.18), 0 8px 16px rgba(15, 23, 42, 0.08);
-      --shadow-blue: 0 4px 14px rgba(37, 99, 235, 0.18);
-      --shadow-navy: 0 4px 14px rgba(16, 42, 86, 0.18);
-      --shadow-green: 0 4px 14px rgba(16, 185, 129, 0.18);
+      /* Stripe Signature Multi-Stage Elevation Shadows */
+      --shadow-xs: 0 1px 3px rgba(50, 50, 93, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+      --shadow-sm: 0 2px 5px rgba(50, 50, 93, 0.05), 0 8px 24px -4px rgba(50, 50, 93, 0.08), 0 1px 2px rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 4px 8px rgba(50, 50, 93, 0.06), 0 12px 28px -4px rgba(50, 50, 93, 0.1);
+      --shadow-lg: 0 6px 12px rgba(50, 50, 93, 0.08), 0 18px 40px -6px rgba(50, 50, 93, 0.14);
+      --shadow-xl: 0 13px 27px -5px rgba(50, 50, 93, 0.16), 0 8px 16px -8px rgba(0, 0, 0, 0.2);
+      --shadow-blue: 0 2px 4px rgba(30, 64, 175, 0.2), 0 7px 14px -3px rgba(30, 64, 175, 0.28);
+      --shadow-navy: 0 2px 4px rgba(10, 37, 64, 0.15), 0 7px 14px -3px rgba(10, 37, 64, 0.22);
+      --shadow-green: 0 2px 4px rgba(5, 150, 105, 0.2), 0 6px 14px -2px rgba(5, 150, 105, 0.28);
 
       /* Radius */
       --r-xs: 6px;
       --r-sm: 8px;
       --r-md: 12px;
       --r-lg: 16px;
-      --r-xl: 20px;
-      --r-2xl: 24px;
-      --r-3xl: 28px;
+      --r-xl: 18px;
+      --r-2xl: 22px;
+      --r-3xl: 26px;
 
       /* Transitions */
       --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
@@ -102,8 +102,8 @@
     }
 
     body {
-      font-family: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background-color: #ffffff;
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: #F6F9FC;
       color: var(--text-primary);
       line-height: 1.5;
       min-height: 100vh;
@@ -114,6 +114,7 @@
       width: 100%;
       max-width: 100vw;
     }
+
 
     .glass-backdrop { display: none; }
 
@@ -263,69 +264,91 @@
     }
     .btn-compact:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
 
-    /* Navy primary */
+    /* Navy primary with Stripe precision bevel */
     .btn-primary-glass {
-      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      background: #0A2540;
       color: #ffffff;
-      border-color: transparent;
-      box-shadow: 0 3px 10px rgba(16,42,86,0.18), inset 0 1px 0 rgba(255,255,255,0.12);
+      border: none;
+      box-shadow: 0 2px 4px rgba(10, 37, 64, 0.15), 0 7px 14px -3px rgba(10, 37, 64, 0.22), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.2);
     }
     .btn-primary-glass:hover:not(:disabled) {
-      background: linear-gradient(135deg, var(--navy-mid) 0%, #234a8a 100%);
+      background: #06192E;
       transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(16,42,86,0.24);
+      box-shadow: 0 4px 8px rgba(10, 37, 64, 0.18), 0 10px 20px -3px rgba(10, 37, 64, 0.26);
+    }
+    .btn-primary-glass:active:not(:disabled) {
+      transform: translateY(1px);
+      box-shadow: 0 1px 2px rgba(10, 37, 64, 0.25), inset 0 1px 2px rgba(0,0,0,0.2);
     }
 
-    /* Blue accent */
+    /* Stripe Blurple action button */
     .btn-blue-glass {
-      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-bright) 100%);
+      background: linear-gradient(180deg, #1E40AF 0%, #172554 100%);
       color: #ffffff;
-      border-color: transparent;
-      box-shadow: var(--shadow-blue);
+      border: none;
+      box-shadow: 0 2px 4px rgba(45, 35, 66, 0.15), 0 7px 14px -3px rgba(45, 35, 66, 0.2), inset 0 1px 0 rgba(255,255,255,0.25), inset 0 -1px 0 rgba(0,0,0,0.15);
     }
     .btn-blue-glass:hover:not(:disabled) {
-      background: linear-gradient(135deg, #1d4ed8 0%, var(--blue) 100%);
+      background: linear-gradient(180deg, #1D4ED8 0%, #1E40AF 100%);
       transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(37,99,235,0.28);
+      box-shadow: 0 4px 8px rgba(45, 35, 66, 0.15), 0 9px 18px -3px rgba(45, 35, 66, 0.22);
+    }
+    .btn-blue-glass:active:not(:disabled) {
+      transform: translateY(1px);
+      box-shadow: 0 1px 2px rgba(45, 35, 66, 0.2), inset 0 1px 2px rgba(0,0,0,0.15);
     }
 
-    /* Emerald/Green */
+    /* Emerald Proceed & Success buttons */
     .btn-emerald-glass {
-      background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+      background: linear-gradient(180deg, #059669 0%, #047857 100%);
       color: #ffffff;
-      border-color: transparent;
-      box-shadow: var(--shadow-green);
+      border: none;
+      box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2), 0 6px 14px -2px rgba(5, 150, 105, 0.3), inset 0 1px 0 rgba(255,255,255,0.25), inset 0 -1px 0 rgba(0,0,0,0.18);
     }
     .btn-emerald-glass:hover:not(:disabled) {
-      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      background: linear-gradient(180deg, #047857 0%, #065F46 100%);
       transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(16,185,129,0.28);
+      box-shadow: 0 4px 8px rgba(5, 150, 105, 0.25), 0 9px 18px -2px rgba(5, 150, 105, 0.35);
+    }
+    .btn-emerald-glass:active:not(:disabled) {
+      transform: translateY(1px);
+      box-shadow: 0 1px 2px rgba(5, 150, 105, 0.3), inset 0 1px 2px rgba(0,0,0,0.2);
     }
 
-    /* Outline */
+    /* Outline buttons with multi-stage shadow */
     .btn-outline-glass {
       background: #ffffff;
-      color: var(--text-secondary);
-      border: 1.5px solid var(--border-strong);
-      box-shadow: var(--shadow-xs);
+      color: #0A2540;
+      border: 1px solid #E3E8EE;
+      box-shadow: 0 1px 3px rgba(50, 50, 93, 0.05), 0 1px 2px rgba(0, 0, 0, 0.04);
     }
     .btn-outline-glass:hover:not(:disabled) {
-      background: var(--surface-2);
-      border-color: var(--text-muted);
-      color: var(--text-primary);
+      background: #ffffff;
+      border-color: #CBD5E1;
+      color: #0A2540;
       transform: translateY(-1px);
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 4px 12px rgba(50, 50, 93, 0.08), 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .btn-outline-glass:active:not(:disabled) {
+      transform: translateY(1px);
+      box-shadow: 0 1px 2px rgba(50, 50, 93, 0.08);
     }
 
     /* Danger */
     .btn-danger-glass {
-      background: var(--red-light);
-      color: var(--red);
-      border: 1px solid var(--red-border);
+      background: #ffffff;
+      color: #DF1B41;
+      border: 1px solid #FFD0D6;
+      box-shadow: 0 1px 2px rgba(223, 27, 65, 0.06);
     }
     .btn-danger-glass:hover:not(:disabled) {
-      background: #fee2e2;
+      background: #FFF1F3;
+      border-color: #FCA5A5;
       transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(223, 27, 65, 0.12);
+    }
+    .btn-danger-glass:active:not(:disabled) {
+      transform: translateY(1px);
     }
 
     /* Small subtle */
@@ -335,20 +358,23 @@
       font-size: 0.74rem;
       font-weight: 600;
       border-radius: var(--r-xs);
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
+      background: #ffffff;
+      border: 1px solid #E3E8EE;
+      color: #4F5B76;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 5px;
       transition: all 0.15s;
       font-family: inherit;
+      box-shadow: 0 1px 2px rgba(50, 50, 93, 0.04);
     }
     .btn-subtle-sm:hover:not(:disabled) {
-      background: #ffffff;
-      border-color: var(--border-strong);
-      color: var(--text-primary);
+      background: #FAFCFF;
+      border-color: #CBD5E1;
+      color: #0A2540;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 6px rgba(50, 50, 93, 0.06);
     }
 
     /* Hero buttons */
@@ -363,23 +389,26 @@
       font-weight: 800;
       letter-spacing: -0.01em;
       border-radius: var(--r-md);
-      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      background: linear-gradient(180deg, #1E40AF 0%, #172554 100%);
       color: #ffffff;
       border: none;
-      box-shadow: 0 6px 20px rgba(16,42,86,0.22), inset 0 1px 0 rgba(255,255,255,0.1);
+      box-shadow: 0 2px 4px rgba(45, 35, 66, 0.15), 0 7px 14px -3px rgba(45, 35, 66, 0.22), inset 0 1px 0 rgba(255,255,255,0.25), inset 0 -1px 0 rgba(0,0,0,0.18);
       cursor: pointer;
-      transition: all 0.2s var(--ease-spring);
+      transition: all 0.18s var(--ease-spring);
       user-select: none;
       text-decoration: none;
       font-family: inherit;
       width: 100%;
     }
     .btn-hero-primary:hover:not(:disabled) {
-      background: linear-gradient(135deg, var(--navy-mid) 0%, #1e4a96 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(16,42,86,0.28);
+      background: linear-gradient(180deg, #1D4ED8 0%, #1E40AF 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(45, 35, 66, 0.16), 0 10px 20px -3px rgba(45, 35, 66, 0.25);
     }
-    .btn-hero-primary:active:not(:disabled) { transform: scale(0.98); }
+    .btn-hero-primary:active:not(:disabled) {
+      transform: translateY(1px);
+      box-shadow: 0 1px 2px rgba(45, 35, 66, 0.2), inset 0 1px 2px rgba(0,0,0,0.15);
+    }
 
     .btn-hero-emerald {
       display: inline-flex;
@@ -392,22 +421,25 @@
       font-weight: 800;
       letter-spacing: -0.01em;
       border-radius: var(--r-md);
-      background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+      background: linear-gradient(180deg, #059669 0%, #047857 100%);
       color: #ffffff;
       border: none;
-      box-shadow: 0 6px 20px rgba(16,185,129,0.24);
+      box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2), 0 7px 16px -2px rgba(5, 150, 105, 0.32), inset 0 1px 0 rgba(255,255,255,0.25), inset 0 -1px 0 rgba(0,0,0,0.2);
       cursor: pointer;
-      transition: all 0.2s var(--ease-spring);
+      transition: all 0.18s var(--ease-spring);
       user-select: none;
       text-decoration: none;
       font-family: inherit;
     }
     .btn-hero-emerald:hover:not(:disabled) {
-      background: linear-gradient(135deg, var(--green-dark) 0%, #047857 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(16,185,129,0.3);
+      background: linear-gradient(180deg, #047857 0%, #065F46 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(5, 150, 105, 0.25), 0 10px 22px -2px rgba(5, 150, 105, 0.4);
     }
-    .btn-hero-emerald:active:not(:disabled) { transform: scale(0.98); }
+    .btn-hero-emerald:active:not(:disabled) {
+      transform: translateY(1px);
+      box-shadow: 0 1px 2px rgba(5, 150, 105, 0.3), inset 0 1px 2px rgba(0,0,0,0.2);
+    }
 
     .btn-hero-outline {
       display: inline-flex;
@@ -420,9 +452,9 @@
       font-weight: 700;
       border-radius: var(--r-md);
       background: #ffffff;
-      color: var(--navy);
-      border: 1.5px solid var(--border-strong);
-      box-shadow: var(--shadow-xs);
+      color: #0A2540;
+      border: 1px solid #E3E8EE;
+      box-shadow: 0 1px 3px rgba(50, 50, 93, 0.05), 0 1px 2px rgba(0, 0, 0, 0.04);
       cursor: pointer;
       transition: all 0.18s var(--ease-spring);
       user-select: none;
@@ -430,12 +462,15 @@
       font-family: inherit;
     }
     .btn-hero-outline:hover:not(:disabled) {
-      background: var(--surface-2);
-      border-color: var(--text-muted);
+      background: #ffffff;
+      border-color: #CBD5E1;
       transform: translateY(-1px);
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 4px 12px rgba(50, 50, 93, 0.08), 0 1px 3px rgba(0,0,0,0.05);
     }
-    .btn-hero-outline:active:not(:disabled) { transform: scale(0.98); }
+    .btn-hero-outline:active:not(:disabled) {
+      transform: translateY(1px);
+      box-shadow: 0 1px 2px rgba(50, 50, 93, 0.08);
+    }
 
     /* Back button */
     .btn-subtle-back { display: none !important; }
@@ -460,18 +495,18 @@
 
     /* ── Cards ── */
     .glass-card {
-      background: #ffffff;
-      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 100%);
+      border: 1px solid rgba(226, 232, 240, 0.95);
       border-radius: var(--r-xl);
       padding: 20px;
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 2px 5px rgba(50, 50, 93, 0.05), 0 8px 24px -4px rgba(50, 50, 93, 0.08), 0 1px 2px rgba(0, 0, 0, 0.03);
     }
 
     .card-elevated {
-      background: #ffffff;
-      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 100%);
+      border: 1px solid rgba(226, 232, 240, 0.95);
       border-radius: var(--r-xl);
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 4px 8px rgba(50, 50, 93, 0.06), 0 12px 28px -4px rgba(50, 50, 93, 0.1);
       padding: 24px;
       margin-bottom: 20px;
     }
@@ -513,15 +548,16 @@
       font-weight: 600;
       color: var(--text-primary);
       background: #ffffff;
-      border: 1.5px solid var(--border-strong);
-      border-radius: var(--r-md);
+      border: 1px solid #E3E8EE;
+      border-radius: 10px;
+      box-shadow: inset 0 1px 2px rgba(50, 50, 93, 0.04);
       outline: none;
-      transition: all 0.2s var(--ease-smooth);
+      transition: all 0.18s ease;
       font-family: inherit;
     }
     .glass-input:focus {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+      border-color: #1E40AF;
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.18), inset 0 1px 2px rgba(50, 50, 93, 0.04);
     }
     .glass-input::placeholder { color: var(--text-light); font-weight: 400; }
 
@@ -733,16 +769,20 @@
     }
     .stat-glass-card {
       background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: var(--r-md);
+      border: 1px solid #E3E8EE;
+      border-radius: 14px;
       padding: 14px 16px;
       display: flex;
       align-items: center;
       gap: 12px;
-      box-shadow: var(--shadow-xs);
-      transition: box-shadow 0.18s;
+      box-shadow: 0 1px 3px rgba(50, 50, 93, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+      transition: all 0.18s ease;
     }
-    .stat-glass-card:hover { box-shadow: var(--shadow-sm); }
+    .stat-glass-card:hover {
+      box-shadow: 0 6px 18px rgba(50, 50, 93, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+    }
     .stat-icon-wrap {
       width: 36px;
       height: 36px;
@@ -2639,10 +2679,10 @@
       box-shadow: 0 0 0 2px #2563EB, 0 12px 28px -4px rgba(37, 99, 235, 0.28) !important;
     }
 
-    .recharge-pack-tier.tier-scale:hover { border-color: #A78BFA !important; }
+    .recharge-pack-tier.tier-scale:hover { border-color: #60A5FA !important; }
     .recharge-pack-tier.tier-scale.active {
-      border-color: #7C3AED !important;
-      box-shadow: 0 0 0 2px #7C3AED, 0 12px 28px -4px rgba(124, 58, 237, 0.25) !important;
+      border-color: #1E40AF !important;
+      box-shadow: 0 0 0 2px #1E40AF, 0 12px 28px -4px rgba(30, 64, 175, 0.25) !important;
     }
 
     .recharge-pack-tier.tier-titan:hover { border-color: #FBBF24 !important; }
@@ -2700,7 +2740,7 @@
 
     .tier-icon-wrap.icon-starter { background: rgba(2, 132, 199, 0.12) !important; color: #0284C7 !important; }
     .tier-icon-wrap.icon-growth { background: rgba(37, 99, 235, 0.12) !important; color: #2563EB !important; }
-    .tier-icon-wrap.icon-scale { background: rgba(124, 58, 237, 0.12) !important; color: #7C3AED !important; }
+    .tier-icon-wrap.icon-scale { background: rgba(30, 64, 175, 0.12) !important; color: #1E40AF !important; }
     .tier-icon-wrap.icon-titan { background: rgba(217, 119, 6, 0.14) !important; color: #D97706 !important; }
 
     .tier-title {
@@ -2744,9 +2784,9 @@
     }
 
     .recharge-pack-tier.tier-scale.active .tier-select-indicator {
-      border-color: #7C3AED !important;
-      background: #7C3AED !important;
-      box-shadow: 0 2px 6px rgba(124, 58, 237, 0.35) !important;
+      border-color: #1E40AF !important;
+      background: #1E40AF !important;
+      box-shadow: 0 2px 6px rgba(30, 64, 175, 0.35) !important;
     }
 
     .recharge-pack-tier.tier-titan.active .tier-select-indicator {
@@ -3435,25 +3475,32 @@
       color: #64748B;
     }
 
-.profile-modern-shell {
+    /* ═════════════════════════════════════════════════════════════════════
+       PROFILE PAGE REDESIGN — PREMIUM FINTECH / LINEAR-GRADE ARCHITECTURE
+       Responsive for PC (≥992px) and Mobile (<768px)
+    ═════════════════════════════════════════════════════════════════════ */
+    .profile-modern-shell {
       display: flex;
       flex-direction: column;
       gap: 20px;
       width: 100%;
-      max-width: 1000px;
+      max-width: 1080px;
       margin: 0 auto;
+      box-sizing: border-box;
     }
+
+    /* ── Hero Identity Card ── */
     .profile-hero-card-modern {
-      background: #FFFFFF;
-      border: 1.5px solid var(--border-strong);
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 100%);
+      border: 1px solid rgba(226, 232, 240, 0.95);
       border-radius: 18px;
-      padding: 24px;
-      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      padding: 26px 30px;
+      box-shadow: 0 2px 5px rgba(50, 50, 93, 0.05), 0 8px 24px -4px rgba(50, 50, 93, 0.08), 0 1px 2px rgba(0, 0, 0, 0.03);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 20px;
       position: relative;
       overflow: hidden;
       box-sizing: border-box;
@@ -3464,125 +3511,258 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #102A56, #2563EB);
+      height: 3px;
+      background: linear-gradient(180deg, #1E40AF 0%, #172554 100%);
     }
     .profile-user-left {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 18px;
       min-width: 0;
+      flex: 1 1 320px;
+    }
+    .profile-avatar-wrapper {
+      position: relative;
+      flex-shrink: 0;
     }
     .profile-modern-avatar {
-      width: 60px;
-      height: 60px;
+      width: 68px;
+      height: 68px;
       border-radius: 16px;
-      background: linear-gradient(135deg, #102A56 0%, #2563EB 100%);
+      background: linear-gradient(135deg, #1E40AF 0%, #172554 100%);
       color: #FFFFFF;
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
-      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(30, 64, 175, 0.35);
+      border: 3px solid #FFFFFF;
+      letter-spacing: -0.02em;
+    }
+    .profile-online-badge {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 15px;
+      height: 15px;
+      background: #10B981;
+      border: 2.5px solid #FFFFFF;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+      animation: pulseDot 2s infinite;
     }
     .profile-user-info {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
       min-width: 0;
     }
+    .profile-user-name-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
     .profile-user-name {
-      font-size: 1.3rem;
+      font-size: 1.45rem;
       font-weight: 800;
       color: var(--navy);
       line-height: 1.2;
+      letter-spacing: -0.025em;
     }
     .profile-contact-line {
-      font-size: 0.82rem;
-      color: #64748B;
       display: flex;
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
     }
+    .profile-contact-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      padding: 3px 10px;
+      border-radius: 8px;
+      color: #475569;
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+    .profile-contact-chip svg {
+      color: #64748B;
+      flex-shrink: 0;
+    }
     .profile-badges-strip {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-top: 4px;
+      gap: 7px;
       flex-wrap: wrap;
+      margin-top: 2px;
     }
     .badge-member-tag {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 800;
       color: var(--blue);
       background: #EFF6FF;
       border: 1px solid #BFDBFE;
-      padding: 2px 8px;
+      padding: 2.5px 9px;
       border-radius: 6px;
       letter-spacing: 0.04em;
     }
     .badge-verified-tag {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 800;
-      color: #166534;
+      color: #15803D;
       background: #F0FDF4;
       border: 1px solid #BBF7D0;
-      padding: 2px 8px;
+      padding: 2.5px 9px;
       border-radius: 6px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
     }
+    .profile-joined-text {
+      font-size: 0.75rem;
+      color: #64748B;
+      font-weight: 600;
+      margin-left: 2px;
+    }
+
+    /* ── Hero Actions ── */
     .profile-actions-right {
       display: flex;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
     }
+    .profile-actions-right button {
+      height: 42px;
+      padding: 0 18px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      border-radius: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.18s var(--ease-spring);
+      cursor: pointer;
+    }
+    .profile-actions-right button:hover {
+      transform: translateY(-1.5px);
+    }
+    .profile-bottom-signout-wrap {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid #E2E8F0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .profile-signout-btn {
+      height: 44px !important;
+      padding: 0 26px !important;
+      font-size: 0.9rem !important;
+      font-weight: 800 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      border-radius: 9px !important;
+      background: linear-gradient(180deg, #DC2626 0%, #B91C1C 100%) !important;
+      color: #FFFFFF !important;
+      border: none !important;
+      box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2), 0 7px 14px -3px rgba(185, 28, 28, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.15) !important;
+      cursor: pointer !important;
+      transition: all 0.18s ease !important;
+      width: auto !important;
+    }
+    .profile-signout-btn:hover {
+      background: linear-gradient(180deg, #EF4444 0%, #DC2626 100%) !important;
+      box-shadow: 0 4px 8px rgba(220, 38, 38, 0.25), 0 10px 20px -3px rgba(185, 28, 28, 0.45) !important;
+      transform: translateY(-1px) !important;
+      color: #FFFFFF !important;
+    }
+    .profile-signout-btn:active {
+      transform: translateY(1px) !important;
+      box-shadow: 0 1px 2px rgba(185, 28, 28, 0.3), inset 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+      background: linear-gradient(180deg, #B91C1C 0%, #991B1B 100%) !important;
+    }
 
-    /* Stats Grid */
+    /* ── 4 KPI Stats Grid ── */
     .profile-stats-grid-modern {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 14px;
       width: 100%;
+      box-sizing: border-box;
     }
     .profile-stat-box-modern {
       background: #FFFFFF;
-      border: 1.5px solid var(--border);
+      border: 1px solid #E3E8EE;
       border-radius: 14px;
-      padding: 14px 18px;
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
       gap: 4px;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+      box-shadow: 0 1px 3px rgba(50, 50, 93, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+      transition: all 0.18s ease;
       box-sizing: border-box;
+    }
+    .profile-stat-box-modern:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(50, 50, 93, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+      border-color: #CBD5E1;
+    }
+    .stat-header-modern {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2px;
     }
     .stat-label-modern {
       font-size: 0.72rem;
-      font-weight: 700;
+      font-weight: 800;
       color: #64748B;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
+    .stat-icon-pill {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .icon-emerald { background: #DCFCE7; color: #16A34A; }
+    .icon-blue { background: #EFF6FF; color: #2563EB; }
+    .icon-violet { background: #EFF6FF; color: #1E40AF; }
+    .icon-navy { background: #F1F5F9; color: var(--navy); }
     .stat-val-modern {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--navy);
+      font-size: 1.45rem;
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    .stat-sub-text {
+      font-size: 0.73rem;
+      color: #94A3B8;
+      font-weight: 600;
     }
 
-    /* Modern Sub-Tabs Navigation */
+    /* ── Modern Sub-Tabs Navigation Bar ── */
     .profile-subtabs-nav {
       display: flex;
       align-items: center;
-      gap: 6px;
-      background: #F8FAFC;
-      border: 1.5px solid var(--border);
-      padding: 6px;
-      border-radius: 14px;
+      gap: 4px;
+      background: #EEF2F6;
+      border: 1px solid #E3E8EE;
+      padding: 4px;
+      border-radius: 13px;
       overflow-x: auto;
       scrollbar-width: none;
       box-sizing: border-box;
@@ -3592,39 +3772,51 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 18px;
-      font-size: 0.84rem;
+      padding: 9px 18px;
+      font-size: 0.85rem;
       font-weight: 700;
       font-family: inherit;
-      color: #64748B;
+      color: #4F5B76;
       background: transparent;
-      border: none;
-      border-radius: 10px;
+      border: 1px solid transparent;
+      border-radius: 9px;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.16s ease;
+      flex-shrink: 0;
+    }
+    .profile-subtab-btn svg {
+      transition: transform 0.18s ease;
     }
     .profile-subtab-btn:hover {
-      color: var(--navy);
-      background: rgba(15, 23, 42, 0.04);
+      color: #0A2540;
+      background: rgba(255, 255, 255, 0.7);
+    }
+    .profile-subtab-btn:hover svg {
+      transform: scale(1.08);
     }
     .profile-subtab-btn.active {
-      color: var(--navy);
+      color: #0A2540;
       background: #FFFFFF;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+      box-shadow: 0 2px 6px rgba(50, 50, 93, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+      font-weight: 800;
+      border: 1px solid #E3E8EE;
+    }
+    .profile-subtab-btn.active svg {
+      color: #1E40AF;
     }
 
-    /* Sub-Tab Panels */
+    /* ── Sub-Tab Panel Cards ── */
     .profile-panel-card {
-      background: #FFFFFF;
-      border: 1.5px solid var(--border-strong);
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 100%);
+      border: 1px solid rgba(226, 232, 240, 0.95);
       border-radius: 18px;
-      padding: 24px;
-      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      padding: 28px;
+      box-shadow: 0 2px 5px rgba(50, 50, 93, 0.05), 0 8px 24px -4px rgba(50, 50, 93, 0.08), 0 1px 2px rgba(0, 0, 0, 0.03);
       display: none;
       flex-direction: column;
       gap: 20px;
-      animation: panelFadeIn 0.18s ease-out;
+      animation: panelFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       box-sizing: border-box;
     }
     .profile-panel-card.active {
@@ -3638,57 +3830,270 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 14px;
+      border-bottom: 1.5px solid #F1F5F9;
+      padding-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
     .panel-title-group {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 4px;
     }
     .panel-main-title {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 800;
       color: var(--navy);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      letter-spacing: -0.02em;
+    }
+    .panel-icon-squircle {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #2563EB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
     .panel-sub-title {
+      font-size: 0.82rem;
+      color: #64748B;
+      font-weight: 500;
+    }
+
+    /* ── Form Inputs & Layouts ── */
+    .profile-form-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .profile-form-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-label {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .form-control {
+      height: 46px;
+      border-radius: 11px;
+      border: 1.5px solid #CBD5E1;
+      padding: 0 14px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      color: #172033;
+      background: #FFFFFF;
+      transition: all 0.16s ease;
+      box-sizing: border-box;
+    }
+    .form-control:focus {
+      border-color: #2563EB;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      outline: none;
+    }
+    .input-readonly-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-readonly-wrap .form-control {
+      width: 100%;
+      background: #F8FAFC !important;
+      border-color: #E2E8F0 !important;
+      color: #64748B !important;
+      cursor: not-allowed;
+      padding-right: 90px;
+    }
+    .readonly-badge {
+      position: absolute;
+      right: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      background: #E2E8F0;
+      color: #475569;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .form-helper-text {
+      font-size: 0.74rem;
+      color: #94A3B8;
+      font-weight: 500;
+    }
+    .form-action-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 4px;
+    }
+    .profile-submit-btn {
+      height: 44px;
+      padding: 0 26px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 9px;
+      background: linear-gradient(180deg, #1E40AF 0%, #172554 100%);
+      color: #FFFFFF;
+      border: none;
+      box-shadow: 0 2px 4px rgba(45, 35, 66, 0.15), 0 7px 14px -3px rgba(45, 35, 66, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .profile-submit-btn:hover {
+      background: linear-gradient(180deg, #1D4ED8 0%, #1E40AF 100%);
+      box-shadow: 0 4px 8px rgba(45, 35, 66, 0.15), 0 9px 18px -3px rgba(45, 35, 66, 0.2);
+      transform: translateY(-1px);
+    }
+    .profile-submit-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 2px rgba(45, 35, 66, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+
+    /* ── Trust Banner & Admin Box ── */
+    .security-trust-strip {
+      background: #F0FDF4;
+      border: 1.5px solid #BBF7D0;
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .trust-strip-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .trust-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #DCFCE7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .trust-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #166534;
+    }
+    .trust-sub {
+      font-size: 0.76rem;
+      color: #15803D;
+      font-weight: 500;
+    }
+    .profile-admin-box {
+      background: #F8FAFC;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .admin-box-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .admin-box-sub {
       font-size: 0.8rem;
       color: #64748B;
     }
+    .admin-launch-btn {
+      height: 44px;
+      font-size: 0.88rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 11px;
+      align-self: flex-start;
+      margin-top: 6px;
+    }
 
-    /* Preference Switch and Options */
+    /* ── Preference Switch Rows ── */
     .preference-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 16px;
+      padding: 16px 20px;
       background: #F8FAFC;
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 14px;
       gap: 16px;
+      transition: all 0.18s ease;
+    }
+    .preference-row:hover {
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+    }
+    .pref-left-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+    .pref-icon-chip {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #2563EB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
     .pref-text-group {
       display: flex;
       flex-direction: column;
       gap: 3px;
+      min-width: 0;
     }
     .pref-title {
-      font-size: 0.88rem;
-      font-weight: 700;
+      font-size: 0.9rem;
+      font-weight: 800;
       color: var(--navy);
     }
     .pref-desc {
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       color: #64748B;
+      font-weight: 500;
+    }
+    .pref-select {
+      width: auto;
+      min-width: 170px;
+      font-weight: 700;
+      cursor: pointer;
     }
     .pref-switch {
       position: relative;
       display: inline-block;
-      width: 44px;
-      height: 24px;
+      width: 46px;
+      height: 26px;
       flex-shrink: 0;
     }
     .pref-switch input {
@@ -3701,20 +4106,20 @@
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
       background-color: #CBD5E1;
-      transition: .2s;
-      border-radius: 24px;
+      transition: .22s;
+      border-radius: 26px;
     }
     .pref-slider:before {
       position: absolute;
       content: "";
-      height: 18px;
-      width: 18px;
+      height: 20px;
+      width: 20px;
       left: 3px;
       bottom: 3px;
       background-color: white;
-      transition: .2s;
+      transition: .22s;
       border-radius: 50%;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
     }
     .pref-switch input:checked + .pref-slider {
       background-color: var(--blue, #2563EB);
@@ -3723,28 +4128,74 @@
       transform: translateX(20px);
     }
 
-    @media (max-width: 768px) {
-      .profile-stats-grid-modern {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 8px !important;
-      }
-      .profile-hero-card-modern {
-        padding: 18px !important;
-      }
-      .profile-panel-card {
-        padding: 18px !important;
-      }
-      .profile-actions-right {
-        width: 100% !important;
-      }
-      .profile-actions-right button {
-        flex: 1 !important;
-      }
-      .preference-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-      }
+    /* ── Support Drop Zone & Tickets Feed ── */
+    .btn-refresh-tickets {
+      font-size: 0.8rem;
+      padding: 8px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1.5px solid #CBD5E1;
+      background: #FFFFFF;
+      border-radius: 9px;
+      cursor: pointer;
+      color: var(--navy);
+      font-weight: 700;
+      transition: all 0.16s ease;
+    }
+    .btn-refresh-tickets:hover {
+      background: #F8FAFC;
+      border-color: #94A3B8;
+    }
+    .support-drop-zone {
+      border: 2px dashed #93C5FD;
+      background: #F8FAFC;
+      border-radius: 14px;
+      padding: 22px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .support-drop-zone:hover {
+      border-color: #2563EB;
+      background: #EFF6FF;
+    }
+    .support-upload-icon-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #EFF6FF;
+      color: #2563EB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .user-tickets-section {
+      border-top: 1.5px solid #F1F5F9;
+      padding-top: 20px;
+      margin-top: 10px;
+    }
+    .user-tickets-header {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ticket-count-badge {
+      font-size: 0.74rem;
+      background: #E2E8F0;
+      color: #334155;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-weight: 800;
+    }
+    .user-tickets-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
 @media (max-width: 899px) {
@@ -4808,252 +5259,206 @@
         display: none !important;
       }
 
-      /* ── Profile Page Mobile Sizing (Compact Tabs, Texts, and Fields) ── */
+      /* ── Profile Page Mobile Responsiveness ── */
       .profile-modern-shell {
-        gap: 12px !important;
+        gap: 14px !important;
         padding: 0 0 120px 0 !important;
+        width: 100% !important;
       }
       .profile-hero-card-modern {
-        padding: 14px !important;
-        border-radius: 14px !important;
-        gap: 12px !important;
+        padding: 18px 16px !important;
+        border-radius: 16px !important;
+        gap: 16px !important;
+      }
+      .profile-user-left {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 14px !important;
+        width: 100% !important;
       }
       .profile-modern-avatar {
-        width: 44px !important;
-        height: 44px !important;
-        font-size: 1.15rem !important;
-        border-radius: 12px !important;
+        width: 52px !important;
+        height: 52px !important;
+        font-size: 1.35rem !important;
+        border-radius: 15px !important;
       }
       .profile-user-name {
-        font-size: 1.05rem !important;
+        font-size: 1.15rem !important;
       }
       .profile-contact-line {
-        font-size: 0.72rem !important;
-        gap: 4px !important;
+        gap: 5px !important;
+      }
+      .profile-contact-chip {
+        font-size: 0.74rem !important;
+        padding: 2px 7px !important;
       }
       .badge-member-tag, .badge-verified-tag {
-        font-size: 0.64rem !important;
+        font-size: 0.65rem !important;
         padding: 2px 6px !important;
       }
+      .profile-joined-text {
+        font-size: 0.7rem !important;
+      }
+      .profile-actions-right {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+      }
+      .profile-actions-right button {
+        width: 100% !important;
+        height: 44px !important;
+        padding: 0 10px !important;
+        font-size: 0.82rem !important;
+        justify-content: center !important;
+      }
+      .profile-actions-right #profileSignOutBtn,
+      .profile-actions-right #profileSignInBtn {
+        grid-column: 1 / -1 !important;
+      }
       .profile-stats-grid-modern {
-        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         gap: 8px !important;
       }
       .profile-stat-box-modern {
-        padding: 10px 12px !important;
-        border-radius: 10px !important;
+        padding: 12px 14px !important;
+        border-radius: 12px !important;
         gap: 2px !important;
       }
       .stat-label-modern {
         font-size: 0.65rem !important;
       }
       .stat-val-modern {
-        font-size: 1.05rem !important;
+        font-size: 1.18rem !important;
       }
-      .view-title-group .view-title {
-        font-size: 1.1rem !important;
+      .stat-sub-text {
+        font-size: 0.66rem !important;
       }
-      .view-title-group .view-subtitle {
-        font-size: 0.74rem !important;
-      }
-
-      /* Compact Profile Sub-Tabs */
       .profile-subtabs-nav {
         padding: 4px !important;
         gap: 4px !important;
         border-radius: 12px !important;
       }
       .profile-subtab-btn {
-        padding: 6px 10px !important;
-        font-size: 0.74rem !important;
-        gap: 5px !important;
-        border-radius: 8px !important;
+        padding: 8px 12px !important;
+        font-size: 0.78rem !important;
+        gap: 6px !important;
+        border-radius: 9px !important;
+        height: 38px !important;
       }
       .profile-subtab-btn svg {
-        width: 13px !important;
-        height: 13px !important;
+        width: 14px !important;
+        height: 14px !important;
       }
-
-      /* Compact Profile Forms & Fields */
       .profile-panel-card {
-        padding: 14px !important;
-        border-radius: 14px !important;
-        gap: 12px !important;
+        padding: 18px 16px !important;
+        border-radius: 16px !important;
+        gap: 16px !important;
       }
       .panel-header-row {
-        padding-bottom: 8px !important;
+        padding-bottom: 12px !important;
       }
       .panel-main-title {
-        font-size: 0.92rem !important;
+        font-size: 1rem !important;
+      }
+      .panel-icon-squircle {
+        width: 32px !important;
+        height: 32px !important;
       }
       .panel-sub-title {
-        font-size: 0.7rem !important;
+        font-size: 0.72rem !important;
+      }
+      .profile-form-grid-2 {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
       }
       .form-group {
-        margin-bottom: 8px !important;
+        margin-bottom: 4px !important;
       }
       .form-label {
-        font-size: 0.74rem !important;
-        margin-bottom: 3px !important;
+        font-size: 0.8rem !important;
+        margin-bottom: 2px !important;
       }
       .form-control {
-        height: 38px !important;
-        font-size: 0.82rem !important;
-        padding: 0 10px !important;
-        border-radius: 8px !important;
+        height: 44px !important;
+        font-size: 0.88rem !important;
+        padding: 0 12px !important;
+        border-radius: 9px !important;
       }
-      #btnSaveProfile, #btnChangePassword {
-        height: 40px !important;
-        font-size: 0.84rem !important;
-        padding: 0 18px !important;
+      .profile-submit-btn, #btnSaveProfile, #btnChangePassword, #btnSubmitSupport, .profile-signout-btn, #profileSignOutBtn {
         width: 100% !important;
+        height: 46px !important;
+        font-size: 0.88rem !important;
+        justify-content: center !important;
+        border-radius: 9px !important;
+      }
+      .profile-bottom-signout-wrap {
+        margin-top: 18px !important;
+        padding: 16px 16px 0 16px !important;
+        display: flex !important;
+        width: 100% !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
       }
       .preference-row {
-        padding: 10px 12px !important;
-        border-radius: 10px !important;
-        gap: 8px !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+        padding: 14px 16px !important;
       }
-      .pref-title {
-        font-size: 0.8rem !important;
-      }
-      .pref-desc {
-        font-size: 0.7rem !important;
-      }
-    }
-
-
-    /* ─────────────────────────────────────────────────────────────────────
-       PROFILE BILLING & TARIFF DESIGN (Responsive)
-    ───────────────────────────────────────────────────────────────────── */
-    .wallet-quick-spotlight {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 20px;
-      background: #F0FDF4;
-      border: 1.5px solid #BBF7D0;
-      border-radius: 14px;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-    .wallet-quick-lbl {
-      font-size: 0.74rem;
-      color: #166534;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .wallet-quick-val {
-      font-size: 2rem;
-      font-weight: 900;
-      color: #15803D;
-      line-height: 1.1;
-      margin: 3px 0;
-    }
-    .wallet-quick-tariff {
-      font-size: 0.78rem;
-      color: #166534;
-      font-weight: 600;
-    }
-    .wallet-quick-btn {
-      height: 44px;
-      padding: 0 22px;
-      font-size: 0.88rem;
-    }
-
-    .tariff-cards-trio {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-    .tariff-mini-card {
-      background: #F8FAFC;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .tariff-mini-lbl {
-      font-size: 0.7rem;
-      font-weight: 800;
-      color: #64748B;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .tariff-mini-val {
-      font-size: 1.05rem;
-      font-weight: 900;
-      color: var(--navy);
-      margin: 2px 0;
-    }
-    .tariff-mini-sub {
-      font-size: 0.68rem;
-      color: #64748B;
-    }
-
-    /* Mobile Overrides for Profile & Billing */
-    @media (max-width: 899px) {
-      .profile-subtabs-nav {
-        padding: 3px !important;
-        gap: 3px !important;
-        border-radius: 10px !important;
-      }
-      .profile-subtab-btn {
-        padding: 6px 9px !important;
-        font-size: 0.72rem !important;
-        gap: 4px !important;
-        border-radius: 8px !important;
-      }
-      .profile-subtab-btn svg {
-        width: 12px !important;
-        height: 12px !important;
-      }
-
-      .wallet-quick-spotlight {
-        padding: 12px 14px !important;
-        border-radius: 12px !important;
+      .pref-left-group {
+        width: 100% !important;
         gap: 10px !important;
       }
+      .pref-icon-chip {
+        width: 34px !important;
+        height: 34px !important;
+      }
+      .pref-title {
+        font-size: 0.84rem !important;
+      }
+      .pref-desc {
+        font-size: 0.72rem !important;
+      }
+      .pref-select {
+        width: 100% !important;
+      }
+      .security-trust-strip {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+        padding: 14px !important;
+      }
+      .wallet-quick-spotlight {
+        padding: 16px !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 14px !important;
+      }
       .wallet-quick-lbl {
-        font-size: 0.64rem !important;
+        font-size: 0.68rem !important;
       }
       .wallet-quick-val {
-        font-size: 1.35rem !important; /* Scaled down from 2.2rem! */
-        margin: 2px 0 !important;
+        font-size: 1.75rem !important;
       }
       .wallet-quick-tariff {
-        font-size: 0.7rem !important;
+        font-size: 0.74rem !important;
       }
       .wallet-quick-btn {
-        height: 36px !important;
-        font-size: 0.78rem !important;
-        padding: 0 14px !important;
         width: 100% !important;
-        margin-top: 4px !important;
+        height: 44px !important;
+        font-size: 0.84rem !important;
+        justify-content: center !important;
       }
-
       .tariff-cards-trio {
-        gap: 6px !important;
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
       }
       .tariff-mini-card {
-        padding: 8px 6px !important;
-        border-radius: 10px !important;
-        gap: 1px !important;
-      }
-      .tariff-mini-lbl {
-        font-size: 0.58rem !important;
-        line-height: 1.1 !important;
+        padding: 12px 14px !important;
       }
       .tariff-mini-val {
-        font-size: 0.82rem !important;
-        line-height: 1.1 !important;
-        margin: 1px 0 !important;
-      }
-      .tariff-mini-sub {
-        font-size: 0.58rem !important;
-        line-height: 1.1 !important;
+        font-size: 1.15rem !important;
       }
     }
 
@@ -5495,21 +5900,6 @@
       <section id="viewWallet" class="app-view">
         <div class="wallet-modern-shell">
           
-          <!-- Top Header Navigation Bar -->
-          <div class="view-header-bar">
-            
-            <div class="view-title-group">
-              <h1 class="view-title">Billing & Wallet Dashboard</h1>
-              <p class="view-subtitle">Flat ₹0.25 per extracted verified lead • 100% transparent live billing</p>
-            </div>
-            <div class="view-header-actions">
-              <button class="btn-hero-primary" onclick="navigateToView('scraper')" type="button" style="height: 40px; padding: 0 18px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                <span>Back to Lead Scraper</span>
-              </button>
-            </div>
-          </div>
-
           <!-- Top Hero Grid: Holographic Treasury Card & Recharge Cockpit -->
           <div class="wallet-top-hero">
             
@@ -5746,60 +6136,43 @@
       <section id="viewProfile" class="app-view">
         <div class="profile-modern-shell">
           
-          <!-- Top Header Navigation Bar -->
-          <div class="view-header-bar">
-            
-            <div class="view-title-group">
-              <h1 class="view-title">Account & Profile Settings</h1>
-              <p class="view-subtitle">Manage personal profile details, credentials, billing, and system preferences</p>
-            </div>
-            <div class="view-header-actions">
-              <button class="btn-hero-primary" onclick="navigateToView('scraper')" type="button" style="height: 40px; padding: 0 18px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                <span>Go to Lead Scraper</span>
-              </button>
-            </div>
-          </div>
-
           <!-- Profile Hero Identity Card -->
           <div class="profile-hero-card-modern">
             <div class="profile-user-left">
-              <div class="profile-modern-avatar" id="profilePageAvatar">U</div>
+              <div class="profile-avatar-wrapper">
+                <div class="profile-modern-avatar" id="profilePageAvatar">U</div>
+                <span class="profile-online-badge" title="Active Session"></span>
+              </div>
               <div class="profile-user-info">
-                <div class="profile-user-name" id="profilePageName">User Name</div>
+                <div class="profile-user-name-row">
+                  <div class="profile-user-name" id="profilePageName">User Name</div>
+                  <span class="badge-verified-tag">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>VERIFIED</span>
+                  </span>
+                </div>
                 <div class="profile-contact-line">
-                  <span id="profilePageEmail">user@example.com</span>
-                  <span>•</span>
-                  <span id="profilePagePhone">+91 9876543210</span>
+                  <span class="profile-contact-chip">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <span id="profilePageEmail">user@example.com</span>
+                  </span>
+                  <span class="profile-contact-chip">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <span id="profilePagePhone">+91 9876543210</span>
+                  </span>
                 </div>
                 <div class="profile-badges-strip">
                   <span class="badge-member-tag" id="profilePageRoleBadge">MEMBER</span>
-                  <span class="badge-verified-tag">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    <span>VERIFIED ACCOUNT</span>
-                  </span>
-                  <span style="font-size: 0.72rem; color: #64748B; font-weight: 600;" id="profilePageJoined">Joined: Active Member</span>
+                  <span class="profile-joined-text" id="profilePageJoined">Joined: Active Member</span>
                 </div>
               </div>
             </div>
 
             <!-- Quick Action Buttons -->
             <div class="profile-actions-right">
-              <button class="btn-hero-primary" id="profileScraperBtn" onclick="navigateToView('scraper')" type="button" style="height: 40px; padding: 0 16px; font-size: 0.84rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                <span>Lead Scraper</span>
-              </button>
-              <button class="btn-hero-emerald" id="profileRechargeBtn" onclick="navigateToView('wallet')" type="button" style="height: 40px; padding: 0 16px; font-size: 0.84rem;">
+              <button class="btn-hero-emerald" id="profileRechargeBtn" onclick="navigateToView('wallet')" type="button">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
                 <span>Recharge</span>
-              </button>
-              <button class="btn-hero-primary" id="profileSignInBtn" onclick="openAuthModal('login')" type="button" style="height: 40px; padding: 0 16px; font-size: 0.84rem; display: none;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-                <span>Sign In</span>
-              </button>
-              <button class="btn-hero-outline" id="profileSignOutBtn" onclick="handleUserLogout()" type="button" style="height: 40px; padding: 0 14px; color: #DC2626; border-color: #FECACA; background: #FFF5F5; font-size: 0.84rem;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                <span>Sign Out</span>
               </button>
             </div>
           </div>
@@ -5807,43 +6180,67 @@
           <!-- 4 Key Stats HUD -->
           <div class="profile-stats-grid-modern">
             <div class="profile-stat-box-modern">
-              <div class="stat-label-modern">In-App Balance</div>
+              <div class="stat-header-modern">
+                <span class="stat-label-modern">Available Balance</span>
+                <span class="stat-icon-pill icon-emerald">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                </span>
+              </div>
               <div class="stat-val-modern" id="profileStatBalance" style="color: #16A34A;">₹100.00</div>
+              <div class="stat-sub-text">Live In-App Balance</div>
             </div>
             <div class="profile-stat-box-modern">
-              <div class="stat-label-modern">Leads Capacity</div>
-              <div class="stat-val-modern" id="profileStatLeads" style="color: var(--blue);">400 Leads</div>
+              <div class="stat-header-modern">
+                <span class="stat-label-modern">Leads Quota</span>
+                <span class="stat-icon-pill icon-blue">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+                </span>
+              </div>
+              <div class="stat-val-modern" id="profileStatLeads" style="color: #2563EB;">400 Leads</div>
+              <div class="stat-sub-text">@ ₹0.25 / Verified Phone</div>
             </div>
             <div class="profile-stat-box-modern">
-              <div class="stat-label-modern">Free Bonus</div>
-              <div class="stat-val-modern" id="profileStatBonus" style="color: #2563EB;">₹100.00</div>
+              <div class="stat-header-modern">
+                <span class="stat-label-modern">Welcome Bonus</span>
+                <span class="stat-icon-pill icon-violet">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                </span>
+              </div>
+              <div class="stat-val-modern" id="profileStatBonus" style="color: #1E40AF;">₹100.00</div>
+              <div class="stat-sub-text">Credited on Registration</div>
             </div>
             <div class="profile-stat-box-modern">
-              <div class="stat-label-modern">Tariff Plan</div>
-              <div class="stat-val-modern" style="color: var(--navy); font-size: 1.15rem;">₹0.25 / Lead</div>
+              <div class="stat-header-modern">
+                <span class="stat-label-modern">Tariff Rate</span>
+                <span class="stat-icon-pill icon-navy">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </span>
+              </div>
+              <div class="stat-val-modern" style="color: #102A56;">₹0.25 <span style="font-size: 0.85rem; font-weight: 700; color: #64748B;">/ Lead</span></div>
+              <div class="stat-sub-text">₹0.00 on Missing Phones</div>
             </div>
           </div>
 
           <!-- Modern Sub-Tabs Navigation Bar -->
           <div class="profile-subtabs-nav">
             <button class="profile-subtab-btn active" data-tab="details" onclick="switchProfileTab('details')" type="button">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <span>Profile</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Profile Details</span>
             </button>
             <button class="profile-subtab-btn" data-tab="security" onclick="switchProfileTab('security')" type="button">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              <span>Security</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>Security & Access</span>
             </button>
             <button class="profile-subtab-btn" data-tab="billing" onclick="switchProfileTab('billing')" type="button">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-              <span>Wallet</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+              <span>Wallet & Tariff</span>
             </button>
             <button class="profile-subtab-btn" data-tab="preferences" onclick="switchProfileTab('preferences')" type="button">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-              <span>Settings</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="21" y2="21"/><line x1="4" x2="20" y1="14" y2="14"/><line x1="4" x2="20" y1="7" y2="7"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="14" r="2"/><circle cx="10" cy="21" r="2"/></svg>
+              <span>Preferences</span>
             </button>
             <button class="profile-subtab-btn" data-tab="support" onclick="switchProfileTab('support')" type="button">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
               <span>Help & Support</span>
             </button>
           </div>
@@ -5853,29 +6250,41 @@
             <div class="panel-header-row">
               <div class="panel-title-group">
                 <div class="panel-main-title">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                  <span>Edit Personal Details</span>
+                  <div class="panel-icon-squircle">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </div>
+                  <span>Personal Account Credentials</span>
                 </div>
                 <div class="panel-sub-title">Update display name, contact phone number, and verified profile credentials</div>
               </div>
             </div>
 
-            <form id="profileEditForm" onsubmit="handleProfileUpdateSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
-              <div class="form-group">
-                <label class="form-label" style="font-weight: 700; color: var(--navy);">Full Name</label>
-                <input type="text" id="editProfileName" class="form-control" placeholder="Your full name" required />
+            <form id="profileEditForm" onsubmit="handleProfileUpdateSubmit(event)" class="profile-form-wrap">
+              <div class="profile-form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="editProfileName">Full Name</label>
+                  <input type="text" id="editProfileName" class="form-control" placeholder="Your full name" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="editProfilePhone">Mobile Phone Number</label>
+                  <input type="tel" id="editProfilePhone" class="form-control" placeholder="10-digit mobile phone number" />
+                </div>
               </div>
               <div class="form-group">
-                <label class="form-label" style="font-weight: 700; color: var(--navy);">Mobile Phone Number</label>
-                <input type="tel" id="editProfilePhone" class="form-control" placeholder="10-digit mobile phone number" />
+                <label class="form-label" for="editProfileEmail">Email Address (Primary Account ID & Login Key)</label>
+                <div class="input-readonly-wrap">
+                  <input type="email" id="editProfileEmail" class="form-control" readonly disabled />
+                  <span class="readonly-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span>Locked</span>
+                  </span>
+                </div>
+                <span class="form-helper-text">Verified Google OAuth account email cannot be altered directly.</span>
               </div>
-              <div class="form-group">
-                <label class="form-label" style="font-weight: 700; color: var(--navy);">Email Address (Primary Account ID)</label>
-                <input type="email" id="editProfileEmail" class="form-control" readonly disabled style="background: #F1F5F9; cursor: not-allowed;" />
-              </div>
-              <div style="display: flex; justify-content: flex-end; margin-top: 6px;">
-                <button type="submit" id="btnSaveProfile" class="btn-hero-primary" style="height: 46px; padding: 0 26px; font-size: 0.9rem;">
-                  Save Profile Details
+              <div class="form-action-row">
+                <button type="submit" id="btnSaveProfile" class="btn-hero-primary profile-submit-btn">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  <span>Save Profile Details</span>
                 </button>
               </div>
             </form>
@@ -5886,45 +6295,53 @@
             <div class="panel-header-row">
               <div class="panel-title-group">
                 <div class="panel-main-title">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                  <span>Security & Password Credentials</span>
+                  <div class="panel-icon-squircle">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  </div>
+                  <span>Security & Password Protection</span>
                 </div>
                 <div class="panel-sub-title">Update account access password and manage administrative authorizations</div>
               </div>
             </div>
 
-            <form id="changePasswordForm" onsubmit="handlePasswordChangeSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
-              <div class="form-group">
-                <label class="form-label" style="font-weight: 700; color: var(--navy);">New Account Password</label>
-                <input type="password" id="changeNewPassword" class="form-control" placeholder="Minimum 6 characters" minlength="6" required />
+            <form id="changePasswordForm" onsubmit="handlePasswordChangeSubmit(event)" class="profile-form-wrap">
+              <div class="profile-form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="changeNewPassword">New Account Password</label>
+                  <input type="password" id="changeNewPassword" class="form-control" placeholder="Minimum 6 characters" minlength="6" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="changeConfirmPassword">Confirm New Password</label>
+                  <input type="password" id="changeConfirmPassword" class="form-control" placeholder="Re-enter password to confirm" minlength="6" required />
+                </div>
               </div>
-              <div class="form-group">
-                <label class="form-label" style="font-weight: 700; color: var(--navy);">Confirm New Password</label>
-                <input type="password" id="changeConfirmPassword" class="form-control" placeholder="Re-enter password to confirm" minlength="6" required />
-              </div>
-              <div style="display: flex; justify-content: flex-end; margin-top: 6px;">
-                <button type="submit" id="btnChangePassword" class="btn-hero-primary" style="height: 46px; padding: 0 26px; font-size: 0.9rem;">
-                  Update Password
+              <div class="form-action-row">
+                <button type="submit" id="btnChangePassword" class="btn-hero-primary profile-submit-btn">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span>Update Password</span>
                 </button>
               </div>
             </form>
 
-            <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px;">
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <div class="security-trust-strip">
+              <div class="trust-strip-left">
+                <div class="trust-icon-box">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
                 <div>
-                  <div style="font-size: 0.84rem; font-weight: 700; color: var(--navy);">Active Session Security</div>
-                  <div style="font-size: 0.74rem; color: #64748B;">Protected by 256-bit encryption & bcrypt salted hashing</div>
+                  <div class="trust-title">Enterprise-Grade Session Security</div>
+                  <div class="trust-sub">Protected by 256-bit TLS encryption & bcrypt cryptographic salt hashing</div>
                 </div>
               </div>
-              <span class="badge-verified-tag">SECURE</span>
+              <span class="badge-verified-tag">ENCRYPTED</span>
             </div>
 
-            <div id="profileAdminBox" style="display: none; border-top: 1px solid var(--border); padding-top: 16px;">
-              <div style="font-size: 0.88rem; font-weight: 800; color: var(--navy); margin-bottom: 8px;">Administrative Management</div>
-              <a href="/admin" class="btn-hero-primary" style="height: 44px; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                <span>Launch Admin Portal (/admin)</span>
+            <div id="profileAdminBox" class="profile-admin-box" style="display: none;">
+              <div class="admin-box-title">System Administration</div>
+              <div class="admin-box-sub">Your account has authorized Administrative access to control users, transactions, and engines.</div>
+              <a href="/admin" class="btn-hero-primary admin-launch-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m14 9 3 3-3 3"/></svg>
+                <span>Launch Admin Control Center (/admin)</span>
               </a>
             </div>
           </div>
@@ -5934,39 +6351,54 @@
             <div class="panel-header-row">
               <div class="panel-title-group">
                 <div class="panel-main-title">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-                  <span>In-App Wallet & Service Tariff</span>
+                  <div class="panel-icon-squircle">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                  </div>
+                  <span>Wallet Balance & Transparent Pricing</span>
                 </div>
-                <div class="panel-sub-title">Instant balance overview, rate breakdown, and quick recharge access</div>
+                <div class="panel-sub-title">Instant balance overview, tariff breakdown, and quick recharge access</div>
               </div>
             </div>
 
             <div class="wallet-quick-spotlight">
-              <div>
-                <div class="wallet-quick-lbl">Available Wallet Balance</div>
+              <div class="wallet-quick-left">
+                <div class="wallet-quick-lbl">AVAILABLE IN-APP BALANCE</div>
                 <div class="wallet-quick-val" id="profileWalletQuickBal">₹100.00</div>
-                <div class="wallet-quick-tariff">Transparent pay-per-lead tariff: Flat ₹0.25 / lead</div>
+                <div class="wallet-quick-tariff">
+                  <span class="rate-dot-pulse"></span>
+                  <span>Transparent Pay-Per-Lead Tariff: Flat ₹0.25 / Verified Phone</span>
+                </div>
               </div>
               <button class="btn-hero-emerald wallet-quick-btn" onclick="navigateToView('wallet')" type="button">
-                Open Full Wallet & Statements
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                <span>Open Full Wallet & Statements</span>
               </button>
             </div>
 
             <div class="tariff-cards-trio">
               <div class="tariff-mini-card">
-                <div class="tariff-mini-lbl">VERIFIED PHONE</div>
-                <div class="tariff-mini-val">₹0.25 / lead</div>
-                <div class="tariff-mini-sub">Extracted & cleaned</div>
+                <div class="tariff-header-chip">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span class="tariff-mini-lbl">VERIFIED PHONE</span>
+                </div>
+                <div class="tariff-mini-val">₹0.25 <span class="tariff-unit">/ lead</span></div>
+                <div class="tariff-mini-sub">Standard rate for extracted contact data</div>
+              </div>
+              <div class="tariff-mini-card tariff-card-free">
+                <div class="tariff-header-chip">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span class="tariff-mini-lbl" style="color: #16A34A;">MISSING PHONE</span>
+                </div>
+                <div class="tariff-mini-val" style="color: #16A34A;">₹0.00 <span class="tariff-unit" style="color: #16A34A;">(100% FREE)</span></div>
+                <div class="tariff-mini-sub">Zero deduction if lead lacks contact number</div>
               </div>
               <div class="tariff-mini-card">
-                <div class="tariff-mini-lbl">MISSING PHONE</div>
-                <div class="tariff-mini-val" style="color: #16A34A;">₹0.00 (FREE)</div>
-                <div class="tariff-mini-sub">Zero charge on misses</div>
-              </div>
-              <div class="tariff-mini-card">
-                <div class="tariff-mini-lbl">VALIDITY</div>
-                <div class="tariff-mini-val" style="color: var(--blue);">Lifetime</div>
-                <div class="tariff-mini-sub">Never expires</div>
+                <div class="tariff-header-chip">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1E40AF" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <span class="tariff-mini-lbl">BALANCE VALIDITY</span>
+                </div>
+                <div class="tariff-mini-val" style="color: #1E40AF;">Lifetime <span class="tariff-unit">valid</span></div>
+                <div class="tariff-mini-sub">Your credits never expire or auto-forfeit</div>
               </div>
             </div>
           </div>
@@ -5976,20 +6408,27 @@
             <div class="panel-header-row">
               <div class="panel-title-group">
                 <div class="panel-main-title">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                  <span>Scraper & Application Preferences</span>
+                  <div class="panel-icon-squircle">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  </div>
+                  <span>Scraper Automation & System Preferences</span>
                 </div>
                 <div class="panel-sub-title">Customize default extraction behaviors, auto-export rules, and visual alerts</div>
               </div>
             </div>
 
-            <form id="preferencesForm" onsubmit="saveUserPreferences(event)" style="display: flex; flex-direction: column; gap: 12px;">
+            <form id="preferencesForm" onsubmit="saveUserPreferences(event)" class="profile-form-wrap">
               <div class="preference-row">
-                <div class="pref-text-group">
-                  <div class="pref-title">Default Lead Export Format</div>
-                  <div class="pref-desc">Choose file standard for automatic and manual lead exports</div>
+                <div class="pref-left-group">
+                  <div class="pref-icon-chip">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                  </div>
+                  <div class="pref-text-group">
+                    <div class="pref-title">Default Lead Export Format</div>
+                    <div class="pref-desc">Choose default file format for automatic and 1-click lead campaign exports</div>
+                  </div>
                 </div>
-                <select id="prefExportFormat" class="form-control" style="width: auto; min-width: 150px; font-weight: 700;">
+                <select id="prefExportFormat" class="form-control pref-select">
                   <option value="csv">CSV (Universal UTF-8)</option>
                   <option value="xlsx">Excel Workbook (.xlsx)</option>
                   <option value="json">Raw JSON Array</option>
@@ -5997,9 +6436,14 @@
               </div>
 
               <div class="preference-row hide-on-mobile">
-                <div class="pref-text-group">
-                  <div class="pref-title">Automatic Download on Completion</div>
-                  <div class="pref-desc">Instantly download exported leads file upon scraper batch finish</div>
+                <div class="pref-left-group">
+                  <div class="pref-icon-chip">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="12 18 12 12 15 15"/></svg>
+                  </div>
+                  <div class="pref-text-group">
+                    <div class="pref-title">Automatic Download on Completion</div>
+                    <div class="pref-desc">Instantly download exported leads file upon scraper batch finish</div>
+                  </div>
                 </div>
                 <label class="pref-switch">
                   <input type="checkbox" id="prefAutoDownload" checked />
@@ -6008,9 +6452,14 @@
               </div>
 
               <div class="preference-row hide-on-mobile">
-                <div class="pref-text-group">
-                  <div class="pref-title">Filter Duplicate Phone Numbers</div>
-                  <div class="pref-desc">Skip identical telephone numbers across consecutive extraction queries</div>
+                <div class="pref-left-group">
+                  <div class="pref-icon-chip">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                  </div>
+                  <div class="pref-text-group">
+                    <div class="pref-title">Filter Duplicate Phone Numbers</div>
+                    <div class="pref-desc">Skip identical telephone numbers across consecutive extraction queries</div>
+                  </div>
                 </div>
                 <label class="pref-switch">
                   <input type="checkbox" id="prefDedup" checked />
@@ -6019,9 +6468,14 @@
               </div>
 
               <div class="preference-row hide-on-mobile">
-                <div class="pref-text-group">
-                  <div class="pref-title">Live Telemetry HUD Pulse</div>
-                  <div class="pref-desc">Enable dynamic visual pulse indicators when leads stream into counter</div>
+                <div class="pref-left-group">
+                  <div class="pref-icon-chip">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  </div>
+                  <div class="pref-text-group">
+                    <div class="pref-title">Live Telemetry HUD Pulse</div>
+                    <div class="pref-desc">Enable dynamic visual pulse indicators when leads stream into counter</div>
+                  </div>
                 </div>
                 <label class="pref-switch">
                   <input type="checkbox" id="prefHudPulse" checked />
@@ -6030,20 +6484,26 @@
               </div>
 
               <div class="preference-row hide-on-mobile">
-                <div class="pref-text-group">
-                  <div class="pref-title">Notification Toast Alert Timing</div>
-                  <div class="pref-desc">Duration toast feedback banners remain visible on screen</div>
+                <div class="pref-left-group">
+                  <div class="pref-icon-chip">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                  </div>
+                  <div class="pref-text-group">
+                    <div class="pref-title">Notification Toast Alert Timing</div>
+                    <div class="pref-desc">Duration toast feedback banners remain visible on screen</div>
+                  </div>
                 </div>
-                <select id="prefToastDuration" class="form-control" style="width: auto; min-width: 150px; font-weight: 700;">
+                <select id="prefToastDuration" class="form-control pref-select">
                   <option value="2000">Fast (2 Seconds)</option>
                   <option value="4000" selected>Standard (4 Seconds)</option>
                   <option value="6000">Extended (6 Seconds)</option>
                 </select>
               </div>
 
-              <div style="display: flex; justify-content: flex-end; margin-top: 6px;">
-                <button type="submit" class="btn-hero-primary" style="height: 46px; padding: 0 26px; font-size: 0.9rem;">
-                  Save System Preferences
+              <div class="form-action-row">
+                <button type="submit" class="btn-hero-primary profile-submit-btn">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Save System Preferences</span>
                 </button>
               </div>
             </form>
@@ -6054,21 +6514,23 @@
             <div class="panel-header-row">
               <div class="panel-title-group">
                 <div class="panel-main-title">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  <div class="panel-icon-squircle">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  </div>
                   <span>Help & Technical Support</span>
                 </div>
                 <div class="panel-sub-title">Submit a problem report, attach screenshots or error logs, and track ticket status</div>
               </div>
-              <button type="button" class="btn-compact btn-secondary" onclick="loadUserSupportTickets()" style="font-size: 0.78rem; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: #ffffff; border-radius: 8px; cursor: pointer; color: var(--navy); font-weight: 700;">
+              <button type="button" class="btn-refresh-tickets" onclick="loadUserSupportTickets()">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
                 <span>Refresh Tickets</span>
               </button>
             </div>
 
-            <form id="supportTicketForm" onsubmit="handleSupportSubmit(event)" style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px;">
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;">
+            <form id="supportTicketForm" onsubmit="handleSupportSubmit(event)" class="profile-form-wrap" style="margin-bottom: 24px;">
+              <div class="profile-form-grid-2">
                 <div class="form-group">
-                  <label class="form-label" style="font-weight: 700; color: var(--navy);">Issue Category</label>
+                  <label class="form-label" for="supportCategory">Issue Category</label>
                   <select id="supportCategory" class="form-control" required style="font-weight: 600;">
                     <option value="Payment / Wallet Recharge">💳 Payment / Wallet Recharge Issue</option>
                     <option value="Lead Extraction Issue">🎯 Lead Extraction / Scraper Issue</option>
@@ -6080,30 +6542,30 @@
                   </select>
                 </div>
                 <div class="form-group">
-                  <label class="form-label" style="font-weight: 700; color: var(--navy);">Subject / Headline</label>
+                  <label class="form-label" for="supportSubject">Subject / Headline</label>
                   <input type="text" id="supportSubject" class="form-control" placeholder="Brief summary (e.g. ₹250 deducted but wallet pending)" required />
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="form-label" style="font-weight: 700; color: var(--navy);">Problem Details & Information</label>
-                <textarea id="supportMessage" class="form-control" rows="4" placeholder="Describe in detail what happened, any error messages displayed, and transaction IDs if applicable..." required style="resize: vertical; min-height: 95px;"></textarea>
+                <label class="form-label" for="supportMessage">Problem Details & Information</label>
+                <textarea id="supportMessage" class="form-control" rows="4" placeholder="Describe in detail what happened, any error messages displayed, and transaction IDs if applicable..." required style="resize: vertical; min-height: 100px;"></textarea>
               </div>
 
               <!-- Attachment Upload Area -->
               <div class="form-group">
-                <label class="form-label" style="font-weight: 700; color: var(--navy); display: flex; align-items: center; justify-content: space-between;">
+                <label class="form-label" style="display: flex; align-items: center; justify-content: space-between;">
                   <span>Attachment (Screenshot, Log, PDF or Image)</span>
                   <span style="font-size: 0.72rem; color: #64748B; font-weight: 500;">Optional • Max 10MB</span>
                 </label>
-                <div id="supportDropZone" class="support-drop-zone" onclick="document.getElementById('supportAttachment').click()" ondragover="handleSupportDragOver(event)" ondragleave="handleSupportDragLeave(event)" ondrop="handleSupportDrop(event)" style="border: 2px dashed #CBD5E1; background: #F8FAFC; border-radius: 12px; padding: 18px; text-align: center; cursor: pointer; transition: all 0.2s ease;">
+                <div id="supportDropZone" class="support-drop-zone" onclick="document.getElementById('supportAttachment').click()" ondragover="handleSupportDragOver(event)" ondragleave="handleSupportDragLeave(event)" ondrop="handleSupportDrop(event)">
                   <input type="file" id="supportAttachment" accept="image/*,.pdf,.txt,.log,.csv" style="display: none;" onchange="handleSupportFileSelect(this)" />
                   <div id="supportDropPrompt" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                    <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(37,99,235,0.08); color: #2563EB; display: flex; align-items: center; justify-content: center;">
+                    <div class="support-upload-icon-circle">
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                     </div>
-                    <div style="font-size: 0.88rem; font-weight: 700; color: var(--navy);">Click to upload screenshot or file</div>
-                    <div style="font-size: 0.75rem; color: #64748B;">Supports PNG, JPG, WebP, PDF, TXT, LOG</div>
+                    <div style="font-size: 0.88rem; font-weight: 700; color: #102A56;">Click or drag file here to attach screenshot or log</div>
+                    <div style="font-size: 0.75rem; color: #64748B;">Supports PNG, JPG, WebP, PDF, TXT, LOG up to 10MB</div>
                   </div>
                   <div id="supportFilePreview" style="display: none; align-items: center; justify-content: space-between; background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px; padding: 10px 14px;">
                     <div style="display: flex; align-items: center; gap: 10px; text-align: left;">
@@ -6121,8 +6583,8 @@
                 </div>
               </div>
 
-              <div style="display: flex; justify-content: flex-end; margin-top: 6px;">
-                <button type="submit" id="btnSubmitSupport" class="btn-hero-primary" style="height: 46px; padding: 0 28px; font-size: 0.92rem; display: inline-flex; align-items: center; gap: 8px;">
+              <div class="form-action-row">
+                <button type="submit" id="btnSubmitSupport" class="btn-hero-primary profile-submit-btn">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                   <span>Send Problem Report</span>
                 </button>
@@ -6130,17 +6592,25 @@
             </form>
 
             <!-- User's Previous Support Tickets -->
-            <div style="border-top: 1px solid var(--border); padding-top: 18px; margin-top: 10px;">
-              <div style="font-size: 0.95rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+            <div class="user-tickets-section">
+              <div class="user-tickets-header">
                 <span>Your Submitted Support Tickets</span>
-                <span id="userTicketCountBadge" style="font-size: 0.74rem; background: #E2E8F0; color: #334155; padding: 2px 8px; border-radius: 999px; font-weight: 700;">0 Tickets</span>
+                <span id="userTicketCountBadge" class="ticket-count-badge">0 Tickets</span>
               </div>
-              <div id="userTicketsList" style="display: flex; flex-direction: column; gap: 10px;">
-                <div style="text-align: center; padding: 24px; color: #94A3B8; font-size: 0.85rem;">
+              <div id="userTicketsList" class="user-tickets-feed">
+                <div style="text-align: center; padding: 28px; color: #94A3B8; font-size: 0.85rem;">
                   No support tickets filed yet.
                 </div>
               </div>
             </div>
+          </div>
+
+          <!-- Bottom of Profile Page: Blue Sign Out Action -->
+          <div class="profile-bottom-signout-wrap">
+            <button class="profile-signout-btn" id="profileSignOutBtn" onclick="handleUserLogout()" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span>Sign Out</span>
+            </button>
           </div>
 
         </div>
@@ -7016,9 +7486,9 @@
         const profileSignInBtn = document.getElementById('profileSignInBtn');
         const profileRechargeBtn = document.getElementById('profileRechargeBtn');
         const profileSignOutBtn = document.getElementById('profileSignOutBtn');
-        if (profileSignInBtn) profileSignInBtn.style.display = 'inline-flex';
+        if (profileSignInBtn) profileSignInBtn.style.display = 'none';
         if (profileRechargeBtn) profileRechargeBtn.style.display = 'none';
-        if (profileSignOutBtn) profileSignOutBtn.style.display = 'none';
+        if (profileSignOutBtn) profileSignOutBtn.style.display = 'inline-flex';
 
         const dockBadge = document.getElementById('dockWalletBadge');
         if (dockBadge) dockBadge.textContent = '₹0';
