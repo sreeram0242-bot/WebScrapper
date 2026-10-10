@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
-# SoClose Google Maps Scraper - Universal Silent Launcher for Linux/macOS
+# WebScrapper - Universal Silent Launcher for Linux/macOS
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ "$(basename "$SCRIPT_DIR")" = "scripts" ]; then
+    SCRIPT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+fi
 cd "$SCRIPT_DIR"
 
 case "$(uname -s)" in
     CYGWIN*|MINGW*|MSYS*)
-        cmd.exe /c start wscript.exe //nologo "webscarpper.vbs"
+        cmd.exe /c start wscript.exe //nologo "scripts\\webscarpper.vbs"
         exit 0
         ;;
 esac
@@ -36,7 +39,7 @@ if ! "$VENV_DIR/bin/python" -c "import bs4, selenium, webdriver_manager, pandas,
 fi
 
 # Run in background invisibly
-nohup "$VENV_DIR/bin/python" "$SCRIPT_DIR/app.py" > "$SCRIPT_DIR/scraper_server.log" 2>&1 &
+nohup "$VENV_DIR/bin/python" "$SCRIPT_DIR/app.py" > "$SCRIPT_DIR/output/scraper_server.log" 2>&1 &
 
 # Wait for server and open browser
 for i in {1..20}; do

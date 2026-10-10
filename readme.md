@@ -235,19 +235,27 @@ WebScrapper includes a production-ready, multi-architecture **`Dockerfile`** and
 WebScrapper/
 ├── app.py                   # Flask Web Server, REST API & Server-Sent Events (SSE)
 ├── scraper_engine.py        # Single Unified Ultra-Fast Scraping Engine
-├── templates/
-│   └── index.html           # 1-Click Glassmorphic Dashboard (HTML5, CSS3, JS)
-├── webscarpper.vbs          # Native Invisible Windows Script Host Launcher (SW_HIDE)
-├── webscarpper.bat          # Windows Batch Launcher Wrapper
-├── webscarpper              # POSIX Bash Launcher (macOS/Linux nohup daemon)
-├── stop_app.vbs             # Silent 1-Click Background Process Stopper
-├── stop_app.bat             # Batch Stopper Wrapper
+├── db.py                    # SQLite Database Models & Atomic Wallet Transactions
+├── security.py              # JWT Authentication, Rate Limiting & Security Headers
+├── district_expander.py     # District & Sub-Area Expansion Engine
+├── start_app.bat            # 1-Click Silent Windows Start Launcher
+├── stop_app.bat             # 1-Click Silent Windows Stop Process
+├── scripts/                 # Automation & Silent Platform Launchers
+│   ├── webscarpper.vbs      # Windows Script Host Background Launcher (SW_HIDE)
+│   ├── stop_app.vbs         # Windows Background Process Stopper
+│   ├── run_linux.sh         # POSIX Bash Launcher (macOS/Linux nohup daemon)
+│   └── deploy_to_coolify.py # Coolify Cloud Server Deployment Automation
+├── templates/               # Jinja2 HTML Templates
+│   ├── index.html           # 1-Click Glassmorphic Dashboard
+│   └── admin.html           # Enterprise Admin Management Portal
+├── static/                  # Static Web Assets
+│   ├── css/                 # CSS Design System (tokens.css, components.css)
+│   └── js/                  # Client Engines (ui-core.js)
 ├── Dockerfile               # Multi-arch Chromium & Python Container (AMD64/ARM64)
 ├── docker-compose.yml       # Production Docker Compose with Persistent Storage Volume
-├── .dockerignore            # Docker Build Exclusions Filter
 ├── requirements.txt         # Lightweight Python Package Dependencies
 ├── readme.md                # Project Documentation & Architecture Guide
-└── output/                  # Default Storage for Generated CSV Lead Lists
+└── output/                  # Default Storage for Generated CSV Lead Lists & DB
 ```
 
 ---

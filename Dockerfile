@@ -38,8 +38,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy application files
 COPY . .
 
-# Ensure output directory exists
+# Ensure output directory exists and declare persistent volume
 RUN mkdir -p /app/output
+VOLUME ["/app/output"]
 
 # Expose service ports (both 5000 and 3000 for flexible Coolify routing)
 EXPOSE 5000 3000

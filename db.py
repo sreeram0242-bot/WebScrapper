@@ -228,6 +228,70 @@ def create_user(name: str, email: str, phone: Optional[str], password: str, goog
                 VALUES (?, ?, 'credit', 'Welcome Bonus Credit', ?, ?)
             """, (user_id, bonus, bonus, now))
 
+        try:
+            conn.execute("PRAGMA wal_checkpoint(PASSIVE)")
+        except Exception:
+            pass
+
+        user = get_user_by_id(user_id)
+        return {"success": True, "user": user}
+    except sqlite3.IntegrityError as ie:
+        err_msg = str(ie).lower()
+        if "users.email" in err_msg or "unique constraint failed: users.email" in err_msg:
+            return {"error": "An account with this email already exists."}
+        elif "users.phone" in err_msg or "unique constraint failed: users.phone" in err_msg:
+            return {"error": "An account with this phone number already exists."}
+        return {"error": f"Database integrity constraint failed: {ie}"}
+    except Exception as e:
+        return {"error": f"Account creation failed: {str(e)}"}
+    finally:
+        conn.close()
+
+
+def create_user_by_admin(name: str, email: str, phone: Optional[str], password: str, wallet_balance: float = 100.0, role: str = "user") -> Dict[str, Any]:
+    """Admin-specific user creation function allowing custom role and initial wallet balance."""
+    email_clean = (email or "").strip().lower()
+    name_clean = (name or "").strip()
+    
+    phone_clean = None
+    if phone:
+        digits = re.sub(r'\D', '', str(phone))
+        if digits:
+            phone_clean = digits[-10:] if len(digits) >= 10 else digits
+
+    conn = get_db_connection()
+    try:
+        existing = conn.execute("SELECT id FROM users WHERE lower(email) = ?", (email_clean,)).fetchone()
+        if existing:
+            return {"error": "An account with this email already exists."}
+        if phone_clean:
+            existing_phone = conn.execute(
+                "SELECT id FROM users WHERE phone = ? OR (length(phone) >= 10 AND substr(phone, -10) = ?)",
+                (phone_clean, phone_clean)
+            ).fetchone()
+            if existing_phone:
+                return {"error": "An account with this phone number already exists."}
+
+        pwd_hash = generate_password_hash(password)
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        with conn:
+            cur = conn.execute("""
+                INSERT INTO users (name, email, phone, password_hash, wallet_balance, role, is_banned, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, 0, ?, ?)
+            """, (name_clean, email_clean, phone_clean, pwd_hash, float(wallet_balance), role, now, now))
+            user_id = cur.lastrowid
+
+            conn.execute("""
+                INSERT INTO wallet_transactions (user_id, amount, type, description, balance_after, created_at)
+                VALUES (?, ?, 'credit', 'Admin Account Provisioning', ?, ?)
+            """, (user_id, float(wallet_balance), float(wallet_balance), now))
+
+        try:
+            conn.execute("PRAGMA wal_checkpoint(PASSIVE)")
+        except Exception:
+            pass
+
         user = get_user_by_id(user_id)
         return {"success": True, "user": user}
     except sqlite3.IntegrityError as ie:
@@ -631,7 +695,7 @@ def reject_payment_by_admin(payment_id: int) -> Dict[str, Any]:
 
 def get_admin_dashboard_stats() -> Dict[str, Any]:
     conn = get_db_connection()
-    users_count = conn.execute("SELECT COUNT(*) as c FROM users WHERE role != 'admin'").fetchone()["c"]
+    users_count = conn.execute("SELECT COUNT(*) as c FROM users").fetchone()["c"]
     total_rev = conn.execute("SELECT COALESCE(SUM(amount), 0) as s FROM payments WHERE status = 'approved'").fetchone()["s"]
     pending_count = conn.execute("SELECT COUNT(*) as c FROM payments WHERE status = 'pending'").fetchone()["c"]
     pending_tickets = conn.execute("SELECT COUNT(*) as c FROM support_tickets WHERE status = 'open'").fetchone()["c"]

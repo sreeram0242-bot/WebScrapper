@@ -4,8 +4,11 @@ Dim WshShell, fso, strDir
 Set WshShell = CreateObject("WScript.Shell")
 Set fso = CreateObject("Scripting.FileSystemObject")
 
-' 1. Resolve current directory
+' 1. Resolve current directory (handle execution from root or scripts/)
 strDir = fso.GetParentFolderName(WScript.ScriptFullName)
+If LCase(fso.GetFileName(strDir)) = "scripts" Then
+    strDir = fso.GetParentFolderName(strDir)
+End If
 WshShell.CurrentDirectory = strDir
 
 ' 2. Cleanly free port 5000 if an old instance is still running
@@ -116,7 +119,7 @@ On Error GoTo 0
 ' 6. Launch Flask web server completely hidden in background
 Dim appPy, logFile, launchCmd
 appPy = strDir & "\app.py"
-logFile = strDir & "\scraper_server.log"
+logFile = strDir & "\output\scraper_server.log"
 launchCmd = "cmd /c """"" & venvPy & """ """ & appPy & """ > """ & logFile & """ 2>&1"""
 WshShell.Run launchCmd, 0, False
 

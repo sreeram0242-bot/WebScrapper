@@ -674,8 +674,12 @@ class ScraperEngine:
             self.scraped_items = final_items
 
             # Save clean outputs (always save if we found places)
-            if self.links:
-                pd.DataFrame({"link": self.links}).to_csv(self.links_file, index=False, encoding="utf-8-sig")
+            if self.links and self.links_file:
+                with open(self.links_file, "w", newline="", encoding="utf-8-sig") as f:
+                    w = csv.writer(f)
+                    w.writerow(["link"])
+                    for lk in self.links:
+                        w.writerow([lk])
             if self.scraped_items and self.details_file:
                 export_clean_details_csv(self.scraped_items, self.details_file)
 
