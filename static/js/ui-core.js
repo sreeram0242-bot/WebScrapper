@@ -122,7 +122,7 @@
     if (isAudioEnabled) window.playHaptic('success');
   };
 
-  // ── 3. TOAST NOTIFICATION ENGINE ──
+  // ── 3. TOAST NOTIFICATION ENGINE (White UI Theme · Strictly One Popup per Task) ──
   window.showPhotonToast = function (title, subtitle = '', type = 'info', actionText = null, onAction = null) {
     let tray = document.getElementById('photonToastTray');
     if (!tray) {
@@ -132,43 +132,55 @@
       document.body.appendChild(tray);
     }
 
+    // ALWAYS ensure only ONE popup is shown on screen across the entire app
+    tray.innerHTML = '';
+    const oldTray = document.getElementById('toastTray');
+    if (oldTray) oldTray.innerHTML = '';
+
     const toast = document.createElement('div');
+    toast.className = 'photon-toast-white';
     toast.style.cssText = `
       pointer-events: auto;
-      background: var(--bg-surface-elevated, #161C2E);
-      color: var(--text-primary, #F8FAFC);
-      border: 1px solid var(--border-medium, rgba(255,255,255,0.15));
-      border-radius: var(--radius-md, 14px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-      padding: 12px 16px;
+      background: #FFFFFF;
+      color: #0F172A;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.05);
+      padding: 13px 18px;
       display: flex;
       align-items: center;
       gap: 12px;
-      min-width: 280px;
-      max-width: 420px;
-      animation: toast-enter 0.25s var(--spring-snappy) forwards;
-      backdrop-filter: blur(20px);
+      min-width: 290px;
+      max-width: 440px;
+      animation: toast-enter 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      font-family: inherit;
     `;
 
-    const iconColor = type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#3B82F6';
+    const iconColor = type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#2563EB';
+    const iconBg = type === 'success' ? '#ECFDF5' : type === 'error' ? '#FEF2F2' : '#EFF6FF';
     const iconSvg = type === 'success'
-      ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${iconColor}" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`
+      ? `<div style="width:34px;height:34px;border-radius:10px;background:${iconBg};display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${iconColor}" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>`
       : type === 'error'
-      ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${iconColor}" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`
-      : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${iconColor}" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+      ? `<div style="width:34px;height:34px;border-radius:10px;background:${iconBg};display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${iconColor}" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>`
+      : `<div style="width:34px;height:34px;border-radius:10px;background:${iconBg};display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${iconColor}" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>`;
 
     let actionBtnHtml = '';
     if (actionText && onAction) {
-      actionBtnHtml = `<button id="toastActionBtn" style="background:var(--brand-primary);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:0.75rem;font-weight:700;cursor:pointer;white-space:nowrap;">${actionText}</button>`;
+      actionBtnHtml = `<button id="toastActionBtn" style="background:#2563EB;color:#FFFFFF;border:none;padding:6px 14px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(37,99,235,0.25);transition:all 0.2s;flex-shrink:0;">${actionText}</button>`;
     }
 
+    const closeBtnHtml = `<button id="toastCloseBtn" style="background:transparent;border:none;color:#94A3B8;cursor:pointer;padding:2px 4px;display:flex;align-items:center;justify-content:center;border-radius:6px;flex-shrink:0;margin-left:4px;" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
+
+    const esc = str => String(str || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+
     toast.innerHTML = `
-      <div style="flex-shrink:0;">${iconSvg}</div>
+      ${iconSvg}
       <div style="flex:1;min-width:0;">
-        <div style="font-weight:700;font-size:0.86rem;line-height:1.2;">${title}</div>
-        ${subtitle ? `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">${subtitle}</div>` : ''}
+        <div style="font-weight:700;font-size:0.88rem;line-height:1.25;color:#0F172A;">${esc(title)}</div>
+        ${subtitle ? `<div style="font-size:0.77rem;color:#64748B;margin-top:3px;line-height:1.3;">${esc(subtitle)}</div>` : ''}
       </div>
       ${actionBtnHtml}
+      ${closeBtnHtml}
     `;
 
     if (actionText && onAction) {
@@ -178,15 +190,32 @@
       });
     }
 
-    tray.appendChild(toast);
-    window.playHaptic(type === 'success' ? 'success' : 'click');
+    const closeBtn = toast.querySelector('#toastCloseBtn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => toast.remove());
+    }
 
-    setTimeout(() => {
+    tray.appendChild(toast);
+    if (typeof window.playHaptic === 'function') {
+      window.playHaptic(type === 'success' ? 'success' : 'click');
+    }
+
+    let dismissTimer = setTimeout(() => {
       toast.style.opacity = '0';
       toast.style.transform = 'translateY(10px)';
       toast.style.transition = 'all 0.25s ease';
       setTimeout(() => toast.remove(), 250);
     }, 4500);
+
+    toast.addEventListener('mouseenter', () => clearTimeout(dismissTimer));
+    toast.addEventListener('mouseleave', () => {
+      dismissTimer = setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.25s ease';
+        setTimeout(() => toast.remove(), 250);
+      }, 2500);
+    });
   };
 
   // ── 4. KEYBOARD SHORTCUTS CONTROLLER ──

@@ -941,24 +941,33 @@ def start_scrape():
     elif mode == "from_links" and not from_links:
         return jsonify({"error": "Please select a links CSV file."}), 400
 
+    is_continue = bool(data.get("is_continue", False))
+    already_scraped_links = data.get("already_scraped_links") or []
+    initial_count = 0
+
     # Reset State & Link to User
     with state.lock:
         state.status = "running"
         state.phase = "Starting..."
         state.error_message = None
-        state.logs = []
-        state.items = []
-        state.files = {}
+        if not is_continue:
+            state.logs = []
+            state.items = []
+            state.files = {}
+            state.start_timestamp = time.time()
+            state.duration = 0
+            initial_count = 0
+        else:
+            initial_count = len(state.items)
+            state.add_log(f"Continuing extraction with {initial_count} existing leads...", "INFO")
         state.progress = {
-            "current": 0,
+            "current": len(state.items),
             "total": 0,
             "percent": 0.0,
-            "links_count": 0,
-            "scraped_count": 0,
+            "links_count": len(state.items),
+            "scraped_count": len(state.items),
             "target_limit": max_results,
         }
-        state.start_timestamp = time.time()
-        state.duration = 0
         state.current_user_id = user["id"]
         state.current_query = query or (queries[0] if queries else (url or mode))
 
@@ -981,6 +990,8 @@ def start_scrape():
     def handle_complete(res: Dict[str, Any]):
         with state.lock:
             state.status = res.get("status", "completed")
+            if state.status != "completed":
+                state.status = "stopped"
             state.phase = "Finished" if state.status == "completed" else "Stopped"
             state.duration = res.get("duration", 0)
             details_path = res.get("details_file") or ""
@@ -991,8 +1002,9 @@ def start_scrape():
                 "download_url": f"/api/download/{details_base}" if details_base else None,
             }
 
-        # Atomic Wallet Deduction for extracted leads (Flat ₹0.25 per lead)
-        lead_count = len(state.items)
+        # Atomic Wallet Deduction for newly extracted leads only
+        total_leads = len(state.items)
+        lead_count = total_leads - initial_count
         if state.current_user_id and lead_count > 0:
             try:
                 debit_res = db.debit_wallet_for_scrape(
@@ -1003,7 +1015,7 @@ def start_scrape():
                     file_path=details_path
                 )
                 state.add_log(
-                    f"Wallet Deduction: Deducted ₹{debit_res.get('cost_deducted', 0):.2f} for {lead_count} leads (₹{debit_res.get('rate_per_lead', 0.25):.2f}/lead). New Balance: ₹{debit_res.get('new_balance', 0):.2f}",
+                    f"Wallet Deduction: Deducted ₹{debit_res.get('cost_deducted', 0):.2f} for {lead_count} new leads (₹{debit_res.get('rate_per_lead', 0.25):.2f}/lead). New Balance: ₹{debit_res.get('new_balance', 0):.2f}",
                     "SUCCESS"
                 )
                 state.broadcast("wallet_update", {
@@ -1040,6 +1052,8 @@ def start_scrape():
         website_filter=website_filter,
         min_rating=min_rating,
         district_deep=district_deep,
+        existing_items=state.items if is_continue else None,
+        already_scraped_links=already_scraped_links if is_continue else None,
         on_log=handle_log,
         on_phase=handle_phase,
         on_progress=handle_progress,
@@ -1083,10 +1097,12 @@ def stop_scrape():
                 state.engine.stop()
             except Exception:
                 pass
+        time.sleep(0.4)
         with state.lock:
-            state.status = "stopped"
-            state.phase = "Stopped"
-        state.broadcast("completed", state.get_snapshot())
+            if state.status == "stopping":
+                state.status = "stopped"
+                state.phase = "Stopped"
+                state.broadcast("completed", state.get_snapshot())
 
     threading.Thread(target=async_stop, daemon=True).start()
     return jsonify({"status": "stopping"})

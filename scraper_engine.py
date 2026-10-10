@@ -55,6 +55,62 @@ def is_valid_phone(val: Optional[str]) -> bool:
     return True
 
 
+def export_clean_details_csv(items: List[Dict[str, Any]], filepath: str):
+    """
+    Exports scraped items to a clean, RFC-4180 compliant CSV file.
+    Guarantees:
+    - Proper column order: Business Name, Phone Number, then Address, Category, Rating, Website, Hours, Google Maps Link.
+    - Zero collapsed columns: eliminates internal newlines/tabs and quotes every cell with csv.QUOTE_ALL.
+    - Full Microsoft Excel and Windows viewer compatibility via UTF-8 BOM (utf-8-sig).
+    """
+    if not filepath or not items:
+        return
+
+    headers = [
+        "Business Name",
+        "Phone Number",
+        "Address",
+        "Category",
+        "Rating",
+        "Website",
+        "Opening Hours",
+        "Google Maps Link"
+    ]
+
+    def sanitize_cell(v: Any) -> str:
+        if v is None:
+            return ""
+        s = str(v)
+        # Strip private Unicode icon glyphs (0xE000 - 0xF8FF)
+        s = "".join(ch for ch in s if not (0xE000 <= ord(ch) <= 0xF8FF))
+        # Replace newlines, carriage returns, tabs and multiple spaces with a single space to prevent row/column collapse
+        s = re.sub(r"[\r\n\t]+", " ", s)
+        s = re.sub(r"\s{2,}", " ", s)
+        return s.strip()
+
+    rows = []
+    for item in items:
+        name = sanitize_cell(item.get("name") or "")
+        phone = sanitize_cell(item.get("phone") or "")
+        address = sanitize_cell(item.get("address") or "")
+        category = sanitize_cell(item.get("category") or "")
+        rating = sanitize_cell(item.get("rating") or "")
+        website = sanitize_cell(item.get("website") or "")
+        schedule = sanitize_cell(item.get("schedule") or "")
+        link = sanitize_cell(item.get("link") or "")
+
+        rows.append([name, phone, address, category, rating, website, schedule, link])
+
+    try:
+        os.makedirs(os.path.dirname(os.path.abspath(filepath)), exist_ok=True)
+        with open(filepath, "w", newline="", encoding="utf-8-sig") as f:
+            writer = csv.writer(f, quoting=csv.QUOTE_ALL)
+            writer.writerow(headers)
+            writer.writerows(rows)
+    except Exception as e:
+        logging.error(f"Error exporting CSV to {filepath}: {e}")
+
+
 class ScraperEngine:
     """
     Ultra-Fast Google Maps Scraper Engine.
@@ -124,6 +180,8 @@ class ScraperEngine:
         self.scraped_items: List[Dict[str, Any]] = []
         self.links_file: Optional[str] = None
         self.details_file: Optional[str] = None
+        self.existing_items: List[Dict[str, Any]] = kwargs.get("existing_items", []) or []
+        self.already_scraped_links: set = set(kwargs.get("already_scraped_links", []) or [])
 
         os.makedirs(self.output_dir, exist_ok=True)
 
@@ -295,6 +353,8 @@ class ScraperEngine:
             pass
 
         processed_links = set(x.get("link") for x in self.scraped_items if x.get("link"))
+        if self.already_scraped_links:
+            processed_links.update(self.already_scraped_links)
         stall_count = 0
         scroll_count = 0
 
@@ -393,10 +453,7 @@ class ScraperEngine:
                         self.on_item_scraped(item_data)
 
                     if self.details_file and len(self.scraped_items) % 3 == 0:
-                        clean_export = [dict(x) for x in self.scraped_items]
-                        for c in clean_export:
-                            c.pop("_needs_enrich", None)
-                        pd.DataFrame(clean_export).to_csv(self.details_file, index=False, encoding="utf-8")
+                        export_clean_details_csv(self.scraped_items, self.details_file)
 
                     if self.max_results and len(self.scraped_items) >= self.max_results:
                         break
@@ -463,8 +520,12 @@ class ScraperEngine:
         """Execute the Ultra-Fast Scraping Pipeline."""
         self.is_running = True
         self._stop_requested.clear()
-        self.scraped_items = []
-        self.links = []
+        if self.existing_items:
+            self.scraped_items = [dict(x) for x in self.existing_items]
+            self.links = [x.get("link") for x in self.scraped_items if x.get("link")]
+        else:
+            self.scraped_items = []
+            self.links = []
 
         start_time = time.time()
         self.log("Starting Ultra-Fast Scraping Engine...", "INFO")
@@ -615,8 +676,8 @@ class ScraperEngine:
             # Save clean outputs (always save if we found places)
             if self.links:
                 pd.DataFrame({"link": self.links}).to_csv(self.links_file, index=False, encoding="utf-8-sig")
-            if self.scraped_items:
-                pd.DataFrame(self.scraped_items).to_csv(self.details_file, index=False, encoding="utf-8-sig")
+            if self.scraped_items and self.details_file:
+                export_clean_details_csv(self.scraped_items, self.details_file)
 
             duration = round(time.time() - start_time, 1)
             self.log(f"Scraping Completed in {duration}s! Extracted {len(self.scraped_items)} leads.", "SUCCESS")
@@ -644,6 +705,11 @@ class ScraperEngine:
 
         finally:
             self.is_running = False
+            try:
+                if self.scraped_items and self.details_file:
+                    export_clean_details_csv(self.scraped_items, self.details_file)
+            except Exception:
+                pass
             try:
                 if self.driver:
                     self.driver.quit()

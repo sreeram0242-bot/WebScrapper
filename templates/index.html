@@ -1042,18 +1042,19 @@
       gap: 8px;
     }
     .glass-toast {
-      background: var(--navy-deep);
-      color: #ffffff;
-      padding: 11px 16px;
-      border-radius: var(--r-md);
-      font-size: 0.82rem;
-      font-weight: 600;
-      box-shadow: var(--shadow-lg);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: opacity 0.3s;
-      min-width: 240px;
+      background: #FFFFFF !important;
+      color: #0F172A !important;
+      border: 1px solid #E2E8F0 !important;
+      padding: 12px 18px !important;
+      border-radius: var(--r-md) !important;
+      font-size: 0.85rem !important;
+      font-weight: 600 !important;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1) !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      transition: opacity 0.3s, transform 0.3s !important;
+      min-width: 260px !important;
     }
 
     /* ══════════════════════════════════════════════
@@ -5176,6 +5177,16 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect width="14" height="14" x="5" y="5" rx="2"/></svg>
                 <span>Stop Extraction</span>
               </button>
+              <div id="postStopActions" class="post-stop-actions" style="display: none; width: 100%; gap: 12px; align-items: center;">
+                <button id="btnContinue" class="btn-photon" onclick="continueScraping()" type="button" style="flex: 1; background: var(--blue, #2563EB); color: #FFFFFF; font-weight: 700; height: 46px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: none; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35); cursor: pointer; transition: all 0.2s;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span>Continue</span>
+                </button>
+                <button id="btnFreshStart" class="btn-photon" onclick="freshStart()" type="button" style="flex: 1; background: #FFFFFF; color: var(--navy, #102A56); border: 1.5px solid #CBD5E1; font-weight: 700; height: 46px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); cursor: pointer; transition: all 0.2s;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+                  <span>Fresh Start</span>
+                </button>
+              </div>
             </div>
 
           </div>
@@ -8568,16 +8579,21 @@
         : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg> Close Batch Input`;
     }
 
-    function showToast(msg) {
-      const tray = document.getElementById('toastTray');
-      const t = document.createElement('div');
-      t.className = 'glass-toast';
-      t.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> <span>${escapeHtml(msg)}</span>`;
-      tray.appendChild(t);
-      setTimeout(() => {
-        t.style.opacity = '0';
-        setTimeout(() => t.remove(), 300);
-      }, 3500);
+    function showToast(msg, type = 'info') {
+      if (typeof window.showPhotonToast === 'function') {
+        window.showPhotonToast(msg, '', type);
+      } else {
+        const tray = document.getElementById('toastTray') || document.getElementById('photonToastTray');
+        if (tray) tray.innerHTML = '';
+        const t = document.createElement('div');
+        t.className = 'glass-toast';
+        t.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> <span style="color:#0F172A;font-weight:600;">${escapeHtml(msg)}</span>`;
+        if (tray) tray.appendChild(t);
+        setTimeout(() => {
+          t.style.opacity = '0';
+          setTimeout(() => t.remove(), 250);
+        }, 3500);
+      }
     }
 
     // START SCRAPING (Protected by User Auth & Flat ₹0.25/Lead Rate)
@@ -8747,21 +8763,128 @@
       }
     }
 
+    let isScrapingStopped = false;
+    let justCompletedScrape = false;
+
     // STOP SCRAPING
     async function stopScraping() {
+      isScrapingStopped = true;
       try {
         await fetch('/api/scrape/stop', { method: 'POST' });
         showToast('Stopping search gracefully...');
       } catch (e) {
-        showToast('Error stopping: ' + e.message);
+        showToast('Error stopping: ' + e.message, 'error');
       }
-      setTimeout(() => setRunningUI(false), 500);
+      setTimeout(() => setRunningUI(false, true), 300);
     }
 
-    function setRunningUI(running) {
+    // CONTINUE SCRAPING (Resume where stopped, keeping currently scraped leads)
+    async function continueScraping() {
+      if (!currentUser) {
+        showToast('Please sign in or create an account to continue.');
+        openAuthModal('login');
+        return;
+      }
+
+      const bal = Number(currentUser.wallet_balance || 0);
+      if (bal < 0.25) {
+        showToast(`Insufficient wallet balance (₹${bal.toFixed(2)}). Minimum ₹0.25 required.`);
+        openWalletModal();
+        return;
+      }
+
+      const combinedQueries = getCombinedQueries();
+      const batchText = document.getElementById('batchQueriesInput') ? document.getElementById('batchQueriesInput').value.trim() : '';
+      const limitVal = document.getElementById('selectedLimit') ? document.getElementById('selectedLimit').value : '50';
+      const districtDeep = document.getElementById('districtDeepCheckbox') ? document.getElementById('districtDeepCheckbox').checked : false;
+
+      let allQueriesToRun = combinedQueries.length > 0 ? combinedQueries : [];
+      if (batchText) {
+        allQueriesToRun = allQueriesToRun.concat(batchText.split('\n').filter(l => l.trim()));
+      }
+
+      const mainQuery = allQueriesToRun.length > 0 ? allQueriesToRun[0] : (document.getElementById('searchInput')?.value?.trim() || 'leads');
+      const filterRatingVal = parseFloat(document.getElementById('filterRatingSelect')?.value || 0);
+      const filterDeepVal = document.getElementById('filterDistrictDeepToggle')?.checked ?? districtDeep;
+      const targetLimitNum = limitVal && limitVal !== '0' ? parseInt(limitVal) : null;
+
+      const payload = {
+        mode: allQueriesToRun.length > 1 ? 'batch' : 'query',
+        query: mainQuery,
+        queries: allQueriesToRun.length > 1 ? allQueriesToRun : null,
+        max_results: targetLimitNum,
+        require_phone: activePhoneFilter === 'with_phone',
+        phone_filter: activePhoneFilter,
+        website_filter: activeWebsiteFilter,
+        min_rating: filterRatingVal,
+        district_deep: filterDeepVal,
+        output_name: mainQuery.toLowerCase().replace(/[^a-z0-9]/g, '_') || 'leads',
+        is_continue: true,
+        already_scraped_links: allItems.map(i => i.link).filter(Boolean)
+      };
+
+      isScrapingStopped = false;
+      document.getElementById('completionBanner').style.display = 'none';
+      setRunningUI(true);
+
+      const headers = { 'Content-Type': 'application/json' };
+      if (currentUserToken) headers['Authorization'] = `Bearer ${currentUserToken}`;
+
+      try {
+        const res = await fetch('/api/scrape/start', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.status === 401) {
+          showToast('Authentication required. Please sign in.', 'error');
+          openAuthModal('login');
+          setRunningUI(false, true);
+          return;
+        }
+        if (res.status === 402 || data.needs_recharge) {
+          showToast(data.error || 'Insufficient wallet balance. Please add funds.', 'error');
+          openWalletModal();
+          setRunningUI(false, true);
+          return;
+        }
+        if (!res.ok) {
+          showToast(data.error || 'Failed to resume search.', 'error');
+          setRunningUI(false, true);
+        } else {
+          showToast('Continuing extraction where you stopped...');
+        }
+      } catch (e) {
+        showToast('Connection error: ' + e.message, 'error');
+        setRunningUI(false, true);
+      }
+    }
+
+    // FRESH START (Clean slate: resets leads, metrics and resets back to Start button)
+    function freshStart() {
+      allItems = [];
+      renderTable();
+      isScrapingStopped = false;
+      lastDownloadUrl = null;
+
+      const banner = document.getElementById('completionBanner');
+      if (banner) banner.style.display = 'none';
+
+      const metricDuration = document.getElementById('metricDuration');
+      if (metricDuration) metricDuration.textContent = '0s';
+      seconds = 0;
+      clearInterval(timer);
+
+      setRunningUI(false, false);
+      showToast('Ready for fresh lead extraction!');
+    }
+
+    function setRunningUI(running, stopped = false) {
       isRunning = running;
       const btnStart = document.getElementById('btnStart');
       const btnStop = document.getElementById('btnStop');
+      const postStopActions = document.getElementById('postStopActions');
       const statusDot = document.getElementById('statusDot');
       const statusLabel = document.getElementById('statusLabel');
       const radar = document.getElementById('radarSweepDisc');
@@ -8772,6 +8895,7 @@
       if (running) {
         if (btnStart) btnStart.style.display = 'none';
         if (btnStop) btnStop.style.display = 'inline-flex';
+        if (postStopActions) postStopActions.style.display = 'none';
         if (statusDot) statusDot.className = 'status-dot pulsing';
         if (statusLabel) statusLabel.textContent = 'Scanning...';
         if (radar) radar.classList.add('active');
@@ -8788,15 +8912,28 @@
         }, 1000);
       } else {
         clearInterval(timer);
-        if (btnStart) btnStart.style.display = 'inline-flex';
-        if (btnStop) btnStop.style.display = 'none';
-        if (statusDot) statusDot.className = 'status-dot';
-        if (statusLabel) statusLabel.textContent = 'Completed';
         if (radar) radar.classList.remove('active');
         document.body.classList.remove('extracting-active');
-        if (radarTitle) radarTitle.textContent = 'Engine Standby';
         if (radarBadge) radarBadge.textContent = 'Ready';
         if (streamDot) streamDot.style.background = 'var(--status-emerald)';
+
+        if (stopped) {
+          // After extraction is stopped: Show Continue and Fresh Start buttons
+          if (btnStart) btnStart.style.display = 'none';
+          if (btnStop) btnStop.style.display = 'none';
+          if (postStopActions) postStopActions.style.display = 'flex';
+          if (statusDot) statusDot.className = 'status-dot';
+          if (statusLabel) statusLabel.textContent = 'Stopped';
+          if (radarTitle) radarTitle.textContent = 'Extraction Stopped';
+        } else {
+          // Fresh start or ready
+          if (btnStart) btnStart.style.display = 'inline-flex';
+          if (btnStop) btnStop.style.display = 'none';
+          if (postStopActions) postStopActions.style.display = 'none';
+          if (statusDot) statusDot.className = 'status-dot';
+          if (statusLabel) statusLabel.textContent = allItems.length > 0 ? 'Completed' : 'Ready';
+          if (radarTitle) radarTitle.textContent = 'Engine Standby';
+        }
       }
     }
 
@@ -9011,7 +9148,6 @@
     async function downloadCurrentCSV() {
       if (lastDownloadUrl) {
         try {
-          showToast('Downloading verified CSV export...');
           const headers = {};
           if (currentUserToken) {
             headers['Authorization'] = `Bearer ${currentUserToken}`;
@@ -9028,8 +9164,6 @@
           });
 
           if (!res.ok) {
-            const errJson = await res.json().catch(() => ({}));
-            showToast(errJson.error || `Server download error (${res.status}). Generating local copy...`);
             generateClientCSV();
             return;
           }
@@ -9047,7 +9181,7 @@
             document.body.removeChild(a);
             window.URL.revokeObjectURL(blobUrl);
           }, 1500);
-          showToast('CSV downloaded successfully to your device!');
+          showToast('CSV downloaded successfully to your device!', 'success');
           return;
         } catch (fetchErr) {
           console.error('Fetch download failed, falling back to local generator:', fetchErr);
@@ -9064,20 +9198,44 @@
 
     function generateClientCSV() {
       if (allItems.length === 0) {
-        showToast('No leads available to export.');
+        showToast('No leads available to export.', 'error');
         return;
       }
-      const headers = ['Business Name', 'Phone Number', 'Address', 'Category', 'Rating', 'Google Maps Link'];
+      const headers = [
+        'Business Name',
+        'Phone Number',
+        'Address',
+        'Category',
+        'Rating',
+        'Website',
+        'Opening Hours',
+        'Google Maps Link'
+      ];
+
+      const sanitizeCell = (val) => {
+        if (val === null || val === undefined) return '';
+        let str = String(val);
+        // Strip private Unicode icon glyphs (0xE000 - 0xF8FF)
+        str = str.replace(/[\uE000-\uF8FF]/g, '');
+        // Flatten newlines, carriage returns and tabs into single space to avoid collapsed/broken rows
+        str = str.replace(/[\r\n\t]+/g, ' ').replace(/\s{2,}/g, ' ').trim();
+        // Escape double quotes for RFC-4180
+        str = str.replace(/"/g, '""');
+        return str;
+      };
+
       const rows = allItems.map(i => [
-        `"${(i.name || '').replace(/"/g, '""')}"`,
-        `"${(i.phone || '').replace(/"/g, '""')}"`,
-        `"${(i.address || '').replace(/"/g, '""')}"`,
-        `"${(i.category || '').replace(/"/g, '""')}"`,
-        `"${(i.rating || '').replace(/"/g, '""')}"`,
-        `"${(i.link || '').replace(/"/g, '""')}"`
+        `"${sanitizeCell(i.name)}"`,
+        `"${sanitizeCell(i.phone)}"`,
+        `"${sanitizeCell(i.address)}"`,
+        `"${sanitizeCell(i.category)}"`,
+        `"${sanitizeCell(i.rating)}"`,
+        `"${sanitizeCell(i.website)}"`,
+        `"${sanitizeCell(i.schedule)}"`,
+        `"${sanitizeCell(i.link)}"`
       ]);
 
-      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const csvContent = '\uFEFF' + [headers.map(h => `"${h}"`).join(','), ...rows.map(r => r.join(','))].join('\r\n');
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -9086,7 +9244,7 @@
       document.body.appendChild(a);
       a.click();
       a.remove();
-      showToast('Downloaded verified CSV file to your device!');
+      showToast('CSV downloaded successfully to your device!', 'success');
     }
 
     // Saved Files Modal Functions
@@ -9194,30 +9352,42 @@
 
       eventSource.addEventListener('completed', e => {
         const snap = JSON.parse(e.data);
-        setRunningUI(false);
+        const wasStopped = snap.status === 'stopped' || isScrapingStopped;
+        setRunningUI(false, wasStopped);
 
         if (snap.files && snap.files.download_url) {
           lastDownloadUrl = snap.files.download_url;
         }
 
         if (typeof window.playHaptic === 'function') window.playHaptic('success');
-        if (typeof window.showPhotonToast === 'function') {
-          window.showPhotonToast('Extraction Complete', `${allItems.length} verified leads extracted.`, 'success', 'Download CSV', downloadCurrentCSV);
+
+        // Strictly ONE clean white popup for the extraction task
+        const count = allItems.length;
+        if (wasStopped) {
+          if (typeof window.showPhotonToast === 'function') {
+            window.showPhotonToast('Extraction Stopped', `${count} leads extracted so far.`, 'info', count > 0 ? 'Download CSV' : null, count > 0 ? downloadCurrentCSV : null);
+          }
+        } else {
+          if (typeof window.showPhotonToast === 'function') {
+            window.showPhotonToast('Extraction Complete', `${count} verified leads ready!`, 'success', count > 0 ? 'Download CSV' : null, count > 0 ? downloadCurrentCSV : null);
+          }
         }
+
+        // Suppress extra wallet toast immediately following completion so user only sees ONE popup
+        justCompletedScrape = true;
+        setTimeout(() => { justCompletedScrape = false; }, 3500);
 
         // Show prominent glass completion banner
         const banner = document.getElementById('completionBanner');
         const title = document.getElementById('bannerSuccessTitle');
         const sub = document.getElementById('bannerSuccessSub');
         
-        if (title) title.textContent = `Extraction Complete! ${allItems.length} Verified Leads Ready`;
+        if (title) title.textContent = wasStopped ? `Extraction Stopped (${count} Leads Collected)` : `Extraction Complete! ${count} Verified Leads Ready`;
         if (sub) sub.textContent = `Saved to ${snap.files?.details || 'CSV'}. Click below to download.`;
         if (banner) banner.style.display = 'flex';
 
-        showToast(`Extraction complete! ${allItems.length} leads found.`);
-
         // AUTO-DOWNLOAD: Trigger instant browser download so user never wonders where the file is!
-        if (lastDownloadUrl) {
+        if (lastDownloadUrl && !wasStopped) {
           const downloadAnchor = document.createElement('a');
           downloadAnchor.href = lastDownloadUrl;
           downloadAnchor.download = snap.files?.details || 'leads.csv';
@@ -9234,7 +9404,9 @@
           if (currentUser && currentUser.id === d.user_id) {
             currentUser.wallet_balance = d.new_balance;
             updateUserHeaderUI();
-            showToast(`Wallet: Deducted ₹${Number(d.cost_deducted).toFixed(2)} for ${d.lead_count} leads (@ ₹0.25/lead). Balance: ₹${Number(d.new_balance).toFixed(2)}`);
+            if (!justCompletedScrape) {
+              showToast(`Wallet: Deducted ₹${Number(d.cost_deducted).toFixed(2)} for ${d.lead_count} leads (@ ₹0.25/lead). Balance: ₹${Number(d.new_balance).toFixed(2)}`);
+            }
           }
         } catch (ex) {}
       });
