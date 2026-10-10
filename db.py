@@ -432,7 +432,7 @@ def adjust_wallet_admin(user_id: int, action: str = "add", amount: float = 0.0, 
             amount = float(amount)
             action = (action or "add").lower().strip()
 
-            if action == "reduce" or amount < 0:
+            if action in ["reduce", "deduct", "subtract"] or amount < 0:
                 deduct_amt = abs(amount)
                 new_bal = round(max(0.0, current_bal - deduct_amt), 2)
                 actual_deducted = round(current_bal - new_bal, 2)

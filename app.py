@@ -63,7 +63,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 class StateManager:
     def __init__(self):
-        self.lock = threading.Lock()
+        self.lock = threading.RLock()
         self.engine: Optional[ScraperEngine] = None
         self.thread: Optional[threading.Thread] = None
         self.status: str = "idle"  # idle, running, stopping, completed, stopped, error
@@ -1079,14 +1079,19 @@ def start_scrape():
 
 @app.route("/api/scrape/stop", methods=["POST"])
 def stop_scrape():
+    need_broadcast_idle = False
     with state.lock:
         if state.status != "running" or not state.engine:
             state.status = "idle"
             state.phase = "Ready"
-            state.broadcast("completed", state.get_snapshot())
-            return jsonify({"status": "idle", "message": "State reset to ready."}), 200
-        state.status = "stopping"
-        state.phase = "Stopping gracefully..."
+            need_broadcast_idle = True
+        else:
+            state.status = "stopping"
+            state.phase = "Stopping gracefully..."
+
+    if need_broadcast_idle:
+        state.broadcast("completed", state.get_snapshot())
+        return jsonify({"status": "idle", "message": "State reset to ready."}), 200
 
     state.add_log("Stop requested. Waiting for driver to exit cleanly...", "WARN")
     state.broadcast("phase", {"phase": "Stopping gracefully..."})
@@ -1102,7 +1107,7 @@ def stop_scrape():
             if state.status == "stopping":
                 state.status = "stopped"
                 state.phase = "Stopped"
-                state.broadcast("completed", state.get_snapshot())
+        state.broadcast("completed", state.get_snapshot())
 
     threading.Thread(target=async_stop, daemon=True).start()
     return jsonify({"status": "stopping"})

@@ -90,14 +90,14 @@ def export_clean_details_csv(items: List[Dict[str, Any]], filepath: str):
 
     rows = []
     for item in items:
-        name = sanitize_cell(item.get("name") or "")
+        name = sanitize_cell(item.get("name") or item.get("title") or "")
         phone = sanitize_cell(item.get("phone") or "")
         address = sanitize_cell(item.get("address") or "")
         category = sanitize_cell(item.get("category") or "")
         rating = sanitize_cell(item.get("rating") or "")
         website = sanitize_cell(item.get("website") or "")
-        schedule = sanitize_cell(item.get("schedule") or "")
-        link = sanitize_cell(item.get("link") or "")
+        schedule = sanitize_cell(item.get("schedule") or item.get("opening_hours") or item.get("hours") or "")
+        link = sanitize_cell(item.get("link") or item.get("url") or "")
 
         rows.append([name, phone, address, category, rating, website, schedule, link])
 
