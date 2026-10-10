@@ -12,6 +12,11 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Callable, Optional, Dict, Any, List
 
+import requests
+import openpyxl
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
+
 import pandas as pd
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException, WebDriverException
@@ -55,11 +60,134 @@ def is_valid_phone(val: Optional[str]) -> bool:
     return True
 
 
+# Disallowed domains for website email extraction
+DISALLOWED_WEBSITE_DOMAINS = {
+    "facebook.com", "instagram.com", "twitter.com", "x.com", "linkedin.com",
+    "google.com", "youtube.com", "wa.me", "whatsapp.com", "pinterest.com",
+    "yelp.com", "tripadvisor.com", "justdial.com", "indiamart.com",
+    "jdmagicbox.com", "play.google.com", "apps.apple.com", "t.me",
+    "telegram.org", "wikipedia.org", "maps.google.com"
+}
+
+DISALLOWED_EMAIL_DOMAINS = {
+    "example.com", "domain.com", "yourdomain.com", "email.com",
+    "mysite.com", "sentry.io", "w3.org", "schema.org", "github.com",
+    "wordpress.org", "cloudflare.com", "googleapis.com", "google.com",
+    "gstatic.com", "facebook.com", "instagram.com", "twitter.com"
+}
+
+DISALLOWED_EMAIL_EXTS = {
+    ".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".bmp", ".ico",
+    ".tif", ".tiff", ".css", ".js", ".woff", ".woff2", ".ttf", ".eot"
+}
+
+PREFERRED_EMAIL_PREFIXES = (
+    "info@", "contact@", "support@", "hello@", "sales@",
+    "enquiry@", "enquiries@", "admin@", "office@", "help@", "mail@", "inquiry@"
+)
+
+
+def extract_email_from_website(url: Optional[str], timeout: int = 4) -> Optional[str]:
+    """
+    Crawls a business website homepage and extracts public contact emails.
+    Features:
+    - Skips social networks & directories
+    - Checks mailto: links and regex across visible HTML
+    - Filters out assets (.png, .svg) and schemas (schema.org)
+    - Prioritizes business prefixes (info@, contact@, support@, hello@, sales@)
+    - Fast timeout with custom realistic User-Agent
+    """
+    if not url or not isinstance(url, str):
+        return None
+    url = url.strip()
+    if not url or url.lower() in ["none", "null", "#"]:
+        return None
+    if not url.startswith(("http://", "https://")):
+        url = "http://" + url
+
+    try:
+        parsed = urllib.parse.urlparse(url)
+        netloc = parsed.netloc.lower()
+        if not netloc or any(bad in netloc for bad in DISALLOWED_WEBSITE_DOMAINS):
+            return None
+    except Exception:
+        return None
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+    }
+
+    try:
+        import urllib3
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        resp = requests.get(url, headers=headers, timeout=timeout, allow_redirects=True, verify=False)
+        if resp.status_code != 200:
+            return None
+        content_type = resp.headers.get("Content-Type", "").lower()
+        if content_type and "html" not in content_type and "text" not in content_type:
+            return None
+        html = resp.text
+    except Exception:
+        return None
+
+    found_emails = set()
+
+    # 1. Look for mailto: links
+    mailto_matches = re.findall(r'href=["\']mailto:([^"?\'\s<>]+)', html, re.IGNORECASE)
+    for m in mailto_matches:
+        cleaned = urllib.parse.unquote(m).strip().lower()
+        if "@" in cleaned:
+            found_emails.add(cleaned)
+
+    # 2. General regex search for email addresses
+    raw_matches = re.findall(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', html)
+    for m in raw_matches:
+        found_emails.add(m.strip().lower())
+
+    valid_candidates = []
+    for em in found_emails:
+        if len(em) < 6 or len(em) > 75:
+            continue
+        parts = em.split("@")
+        if len(parts) != 2:
+            continue
+        user_part, domain_part = parts[0], parts[1]
+        if not user_part or not domain_part:
+            continue
+
+        lower_em = em.lower()
+        if any(lower_em.endswith(ext) for ext in DISALLOWED_EMAIL_EXTS):
+            continue
+
+        if any(bad in domain_part for bad in DISALLOWED_EMAIL_DOMAINS):
+            continue
+
+        if "." not in domain_part:
+            continue
+        tld = domain_part.split(".")[-1]
+        if len(tld) < 2 or len(tld) > 10 or not tld.isalpha():
+            continue
+
+        valid_candidates.append(em)
+
+    if not valid_candidates:
+        return None
+
+    def score_email(e: str) -> tuple:
+        is_pref = 0 if any(e.startswith(p) for p in PREFERRED_EMAIL_PREFIXES) else 1
+        return (is_pref, len(e))
+
+    valid_candidates.sort(key=score_email)
+    return valid_candidates[0]
+
+
 def export_clean_details_csv(items: List[Dict[str, Any]], filepath: str):
     """
     Exports scraped items to a clean, RFC-4180 compliant CSV file.
     Guarantees:
-    - Proper column order: Business Name, Phone Number, then Address, Category, Rating, Website, Hours, Google Maps Link.
+    - Proper column order: Business Name, Phone Number, Email, Address, Category, Rating, Website, Hours, Google Maps Link.
     - Zero collapsed columns: eliminates internal newlines/tabs and quotes every cell with csv.QUOTE_ALL.
     - Full Microsoft Excel and Windows viewer compatibility via UTF-8 BOM (utf-8-sig).
     """
@@ -69,6 +197,7 @@ def export_clean_details_csv(items: List[Dict[str, Any]], filepath: str):
     headers = [
         "Business Name",
         "Phone Number",
+        "Email",
         "Address",
         "Category",
         "Rating",
@@ -92,6 +221,7 @@ def export_clean_details_csv(items: List[Dict[str, Any]], filepath: str):
     for item in items:
         name = sanitize_cell(item.get("name") or item.get("title") or "")
         phone = sanitize_cell(item.get("phone") or "")
+        email = sanitize_cell(item.get("email") or "")
         address = sanitize_cell(item.get("address") or "")
         category = sanitize_cell(item.get("category") or "")
         rating = sanitize_cell(item.get("rating") or "")
@@ -99,7 +229,7 @@ def export_clean_details_csv(items: List[Dict[str, Any]], filepath: str):
         schedule = sanitize_cell(item.get("schedule") or item.get("opening_hours") or item.get("hours") or "")
         link = sanitize_cell(item.get("link") or item.get("url") or "")
 
-        rows.append([name, phone, address, category, rating, website, schedule, link])
+        rows.append([name, phone, email, address, category, rating, website, schedule, link])
 
     try:
         os.makedirs(os.path.dirname(os.path.abspath(filepath)), exist_ok=True)
@@ -109,6 +239,121 @@ def export_clean_details_csv(items: List[Dict[str, Any]], filepath: str):
             writer.writerows(rows)
     except Exception as e:
         logging.error(f"Error exporting CSV to {filepath}: {e}")
+
+
+def export_clean_details_xlsx(items: List[Dict[str, Any]], filepath: str):
+    """
+    Exports scraped items to an enterprise-grade Microsoft Excel (.xlsx) workbook.
+    Guarantees:
+    - Dark navy header styling (#1E293B) with bold white font and thin borders.
+    - Frozen panes (row 1 fixed so headers stay visible during scrolling).
+    - Phone numbers stored strictly as text format (@) to prevent truncation or scientific notation.
+    - Clean zebra striping (#FFFFFF and #F8FAFC) for enhanced scanability.
+    - Auto-filtered columns and dynamic column auto-fit with intelligent padding.
+    """
+    if not filepath or not items:
+        return
+
+    try:
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Verified Leads"
+
+        headers = [
+            "Business Name",
+            "Phone Number",
+            "Email",
+            "Address",
+            "Category",
+            "Rating",
+            "Website",
+            "Opening Hours",
+            "Google Maps Link"
+        ]
+        ws.append(headers)
+
+        hdr_fill = PatternFill(start_color="1E293B", end_color="1E293B", fill_type="solid")
+        hdr_font = Font(name="Calibri", size=11, bold=True, color="FFFFFF")
+        hdr_align = Alignment(horizontal="left", vertical="center", wrap_text=False)
+
+        row_fill_white = PatternFill(start_color="FFFFFF", end_color="FFFFFF", fill_type="solid")
+        row_fill_zebra = PatternFill(start_color="F8FAFC", end_color="F8FAFC", fill_type="solid")
+        regular_font = Font(name="Calibri", size=10, color="0F172A")
+        link_font = Font(name="Calibri", size=10, color="2563EB", underline="single")
+
+        thin_border = Border(
+            left=Side(style="thin", color="E2E8F0"),
+            right=Side(style="thin", color="E2E8F0"),
+            top=Side(style="thin", color="E2E8F0"),
+            bottom=Side(style="thin", color="E2E8F0")
+        )
+
+        ws.row_dimensions[1].height = 28
+        for col_idx in range(1, len(headers) + 1):
+            c = ws.cell(row=1, column=col_idx)
+            c.fill = hdr_fill
+            c.font = hdr_font
+            c.alignment = hdr_align
+            c.border = thin_border
+
+        ws.freeze_panes = "A2"
+
+        def sanitize_cell(v: Any) -> str:
+            if v is None:
+                return ""
+            s = str(v)
+            s = "".join(ch for ch in s if not (0xE000 <= ord(ch) <= 0xF8FF))
+            s = re.sub(r"[\r\n\t]+", " ", s)
+            s = re.sub(r"\s{2,}", " ", s)
+            return s.strip()
+
+        for row_idx, item in enumerate(items, start=2):
+            name = sanitize_cell(item.get("name") or item.get("title") or "")
+            phone = sanitize_cell(item.get("phone") or "")
+            email = sanitize_cell(item.get("email") or "")
+            address = sanitize_cell(item.get("address") or "")
+            category = sanitize_cell(item.get("category") or "")
+            rating = sanitize_cell(item.get("rating") or "")
+            website = sanitize_cell(item.get("website") or "")
+            schedule = sanitize_cell(item.get("schedule") or item.get("opening_hours") or item.get("hours") or "")
+            link = sanitize_cell(item.get("link") or item.get("url") or "")
+
+            row_data = [name, phone, email, address, category, rating, website, schedule, link]
+            ws.append(row_data)
+
+            fill = row_fill_zebra if row_idx % 2 == 0 else row_fill_white
+            ws.row_dimensions[row_idx].height = 20
+
+            for col_idx, val in enumerate(row_data, start=1):
+                cell = ws.cell(row=row_idx, column=col_idx)
+                cell.fill = fill
+                cell.border = thin_border
+                cell.font = regular_font
+                cell.alignment = Alignment(vertical="center", horizontal="left")
+
+                if col_idx == 2:
+                    cell.number_format = "@"
+                elif col_idx == 6:
+                    cell.alignment = Alignment(vertical="center", horizontal="center")
+                elif col_idx in (7, 9) and val and val.startswith("http"):
+                    cell.font = link_font
+
+        last_col_letter = get_column_letter(len(headers))
+        ws.auto_filter.ref = f"A1:{last_col_letter}{len(items) + 1}"
+
+        for col in ws.columns:
+            col_letter = get_column_letter(col[0].column)
+            max_len = 0
+            for cell in col:
+                v = str(cell.value or "")
+                if len(v) > max_len:
+                    max_len = len(v)
+            ws.column_dimensions[col_letter].width = max(12, min(55, max_len + 3))
+
+        os.makedirs(os.path.dirname(os.path.abspath(filepath)), exist_ok=True)
+        wb.save(filepath)
+    except Exception as e:
+        logging.error(f"Error exporting XLSX to {filepath}: {e}")
 
 
 class ScraperEngine:
@@ -180,6 +425,7 @@ class ScraperEngine:
         self.scraped_items: List[Dict[str, Any]] = []
         self.links_file: Optional[str] = None
         self.details_file: Optional[str] = None
+        self.xlsx_file: Optional[str] = None
         self.existing_items: List[Dict[str, Any]] = kwargs.get("existing_items", []) or []
         self.already_scraped_links: set = set(kwargs.get("already_scraped_links", []) or [])
 
@@ -435,6 +681,7 @@ class ScraperEngine:
                     item_data = {
                         "name": clean_text(card.get("name")),
                         "phone": clean_text(card.get("phone")),
+                        "email": None,
                         "address": clean_text(card.get("address")),
                         "website": card.get("website"),
                         "category": clean_text(card.get("category")),
@@ -544,6 +791,7 @@ class ScraperEngine:
         clean_name = "".join(c for c in self.output_name if c.isalnum() or c in ("_", "-")).strip() or "leads"
         self.links_file = os.path.join(self.output_dir, f"{clean_name}_links.csv")
         self.details_file = os.path.join(self.output_dir, f"{clean_name}_details.csv")
+        self.xlsx_file = os.path.join(self.output_dir, f"{clean_name}_details.xlsx")
 
         try:
             self.driver = self._create_driver()
@@ -558,7 +806,7 @@ class ScraperEngine:
                     self.links = self.links[:self.max_results]
                 # Populate blank items for parallel HTTP micro-enrichment
                 for lk in self.links:
-                    self.scraped_items.append({"name": "Place", "link": lk, "phone": None, "_needs_enrich": True})
+                    self.scraped_items.append({"name": "Place", "link": lk, "phone": None, "email": None, "_needs_enrich": True})
 
             elif self.queries:
                 self.log(f"Starting batch search for {len(self.queries)} zones...", "INFO")
@@ -633,6 +881,41 @@ class ScraperEngine:
                         except Exception:
                             pass
 
+            # Fast Parallel Automated Website Email Scraper
+            email_candidates = [i for i in self.scraped_items if i.get("website") and not i.get("email")]
+            if email_candidates and not self.is_stopped:
+                self.log(f"Scanning business websites of {len(email_candidates)} places for contact emails...", "INFO")
+                if self.on_phase:
+                    self.on_phase("Automated Email Scraping")
+
+                def _scan_site_email(it):
+                    site = it.get("website")
+                    if not site:
+                        return None
+                    try:
+                        found = extract_email_from_website(site, timeout=4)
+                        if found:
+                            it["email"] = found
+                            return (it, found)
+                    except Exception:
+                        pass
+                    return None
+
+                with ThreadPoolExecutor(max_workers=8) as executor:
+                    futures = {executor.submit(_scan_site_email, it): it for it in email_candidates}
+                    for fut in as_completed(futures):
+                        if self.is_stopped:
+                            break
+                        try:
+                            res = fut.result()
+                            if res:
+                                updated_item, email_str = res
+                                self.log(f"  @ Found Email: {updated_item['name']} -> {email_str}", "SUCCESS")
+                                if self.on_item_scraped:
+                                    self.on_item_scraped(updated_item)
+                        except Exception:
+                            pass
+
             # Finalize items and apply user filter criteria
             final_items = []
             for it in self.scraped_items:
@@ -673,15 +956,18 @@ class ScraperEngine:
 
             self.scraped_items = final_items
 
-            # Save clean outputs (always save if we found places)
+            # Save clean outputs in both CSV and Enterprise Excel XLSX
             if self.links and self.links_file:
                 with open(self.links_file, "w", newline="", encoding="utf-8-sig") as f:
                     w = csv.writer(f)
                     w.writerow(["link"])
                     for lk in self.links:
                         w.writerow([lk])
-            if self.scraped_items and self.details_file:
-                export_clean_details_csv(self.scraped_items, self.details_file)
+            if self.scraped_items:
+                if self.details_file:
+                    export_clean_details_csv(self.scraped_items, self.details_file)
+                if self.xlsx_file:
+                    export_clean_details_xlsx(self.scraped_items, self.xlsx_file)
 
             duration = round(time.time() - start_time, 1)
             self.log(f"Scraping Completed in {duration}s! Extracted {len(self.scraped_items)} leads.", "SUCCESS")
@@ -692,6 +978,7 @@ class ScraperEngine:
                 "total_scraped": len(self.scraped_items),
                 "links_file": self.links_file,
                 "details_file": self.details_file if self.scraped_items else None,
+                "xlsx_file": self.xlsx_file if self.scraped_items else None,
                 "duration": duration,
             }
 
@@ -710,8 +997,11 @@ class ScraperEngine:
         finally:
             self.is_running = False
             try:
-                if self.scraped_items and self.details_file:
-                    export_clean_details_csv(self.scraped_items, self.details_file)
+                if self.scraped_items:
+                    if self.details_file:
+                        export_clean_details_csv(self.scraped_items, self.details_file)
+                    if self.xlsx_file:
+                        export_clean_details_xlsx(self.scraped_items, self.xlsx_file)
             except Exception:
                 pass
             try:

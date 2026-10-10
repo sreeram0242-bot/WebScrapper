@@ -113,7 +113,24 @@ class StateManager:
 
     def add_item(self, item: Dict[str, Any]):
         with self.lock:
-            self.items.append(item)
+            link = item.get("link")
+            name = item.get("name")
+            existing_idx = None
+            if link:
+                for idx, existing in enumerate(self.items):
+                    if existing.get("link") == link:
+                        existing_idx = idx
+                        break
+            elif name:
+                for idx, existing in enumerate(self.items):
+                    if existing.get("name") == name:
+                        existing_idx = idx
+                        break
+
+            if existing_idx is not None:
+                self.items[existing_idx].update(item)
+            else:
+                self.items.append(item)
             self.progress["scraped_count"] = len(self.items)
         self.broadcast("item", item)
 
@@ -996,10 +1013,14 @@ def start_scrape():
             state.duration = res.get("duration", 0)
             details_path = res.get("details_file") or ""
             details_base = os.path.basename(details_path) if details_path else None
+            xlsx_path = res.get("xlsx_file") or ""
+            xlsx_base = os.path.basename(xlsx_path) if xlsx_path else None
             state.files = {
                 "links": os.path.basename(res["links_file"]) if res.get("links_file") else None,
                 "details": details_base,
+                "xlsx": xlsx_base,
                 "download_url": f"/api/download/{details_base}" if details_base else None,
+                "download_xlsx_url": f"/api/download/{xlsx_base}" if xlsx_base else None,
             }
 
         # Atomic Wallet Deduction for newly extracted leads only
@@ -1170,14 +1191,16 @@ def get_history():
     if show_all:
         if os.path.exists(OUTPUT_DIR):
             for f in sorted(os.listdir(OUTPUT_DIR), reverse=True):
-                if f.endswith(".csv") and not f.startswith("."):
+                if (f.endswith(".csv") or f.endswith(".xlsx")) and not f.startswith("."):
                     path = os.path.join(OUTPUT_DIR, f)
                     if os.path.isfile(path):
                         stats = os.stat(path)
                         row_count = 0
+                        is_xlsx = f.endswith(".xlsx")
                         try:
-                            with open(path, "r", encoding="utf-8", errors="ignore") as fl:
-                                row_count = max(0, sum(1 for _ in fl) - 1)
+                            if not is_xlsx:
+                                with open(path, "r", encoding="utf-8", errors="ignore") as fl:
+                                    row_count = max(0, sum(1 for _ in fl) - 1)
                         except Exception:
                             row_count = "?"
                         files.append({
@@ -1185,37 +1208,47 @@ def get_history():
                             "size_kb": round(stats.st_size / 1024, 1),
                             "modified": datetime.fromtimestamp(stats.st_mtime).strftime("%Y-%m-%d %H:%M:%S"),
                             "rows": row_count,
-                            "is_details": "_details.csv" in f,
-                            "is_links": "_links.csv" in f,
+                            "is_details": "_details" in f,
+                            "is_links": "_links" in f,
+                            "is_xlsx": is_xlsx,
                         })
         return jsonify({"files": files})
 
-    # For regular users and new users: return strictly their own generated scrape files
+    # For regular users and new users: return strictly their own generated scrape files (CSV + XLSX)
     user_scrapes = db.get_user_scrapes(user["id"])
     for s in user_scrapes:
         fname = s.get("file_name")
-        if not fname or fname in seen_files:
+        if not fname:
             continue
-        path = os.path.join(OUTPUT_DIR, fname)
-        if os.path.exists(path) and os.path.isfile(path):
-            seen_files.add(fname)
-            stats = os.stat(path)
-            row_count = s.get("lead_count") or 0
-            if row_count == 0:
-                try:
-                    with open(path, "r", encoding="utf-8", errors="ignore") as fl:
-                        row_count = max(0, sum(1 for _ in fl) - 1)
-                except Exception:
-                    row_count = 0
-            files.append({
-                "name": fname,
-                "size_kb": round(stats.st_size / 1024, 1),
-                "modified": s.get("created_at") or datetime.fromtimestamp(stats.st_mtime).strftime("%Y-%m-%d %H:%M:%S"),
-                "rows": row_count,
-                "is_details": "_details.csv" in fname,
-                "is_links": "_links.csv" in fname,
-                "query": s.get("query", ""),
-            })
+        candidate_files = [fname]
+        if fname.endswith(".csv") and "_details.csv" in fname:
+            candidate_files.append(fname.replace(".csv", ".xlsx"))
+
+        for cf in candidate_files:
+            if cf in seen_files:
+                continue
+            path = os.path.join(OUTPUT_DIR, cf)
+            if os.path.exists(path) and os.path.isfile(path):
+                seen_files.add(cf)
+                stats = os.stat(path)
+                row_count = s.get("lead_count") or 0
+                is_xlsx = cf.endswith(".xlsx")
+                if row_count == 0 and not is_xlsx:
+                    try:
+                        with open(path, "r", encoding="utf-8", errors="ignore") as fl:
+                            row_count = max(0, sum(1 for _ in fl) - 1)
+                    except Exception:
+                        row_count = 0
+                files.append({
+                    "name": cf,
+                    "size_kb": round(stats.st_size / 1024, 1),
+                    "modified": s.get("created_at") or datetime.fromtimestamp(stats.st_mtime).strftime("%Y-%m-%d %H:%M:%S"),
+                    "rows": row_count,
+                    "is_details": "_details" in cf,
+                    "is_links": "_links" in cf,
+                    "is_xlsx": is_xlsx,
+                    "query": s.get("query", ""),
+                })
 
     return jsonify({"files": files})
 
@@ -1248,7 +1281,7 @@ def expand_preview():
 @app.route("/api/download/<filename>")
 @security.rate_limit(30, 60, "download")
 def download_file(filename):
-    """Download a CSV file with directory traversal protection."""
+    """Download a CSV or XLSX file with directory traversal protection."""
     safe_name = security.sanitize_filename(filename)
     file_path = os.path.abspath(os.path.join(OUTPUT_DIR, safe_name))
 
@@ -1261,10 +1294,54 @@ def download_file(filename):
     if not user:
         return jsonify({"error": "Please sign in to download files."}), 401
 
-    if not safe_name.lower().endswith(".csv"):
-        return jsonify({"error": "Only CSV exports may be downloaded."}), 400
+    lower_name = safe_name.lower()
+    if not (lower_name.endswith(".csv") or lower_name.endswith(".xlsx")):
+        return jsonify({"error": "Only CSV and Excel (.xlsx) exports may be downloaded."}), 400
 
-    return send_from_directory(OUTPUT_DIR, safe_name, as_attachment=True, download_name=safe_name, mimetype="text/csv")
+    mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" if lower_name.endswith(".xlsx") else "text/csv"
+    return send_from_directory(OUTPUT_DIR, safe_name, as_attachment=True, download_name=safe_name, mimetype=mimetype)
+
+
+@app.route("/api/export/xlsx", methods=["GET", "POST"])
+@security.rate_limit(30, 60, "export_xlsx")
+def export_xlsx_direct():
+    """
+    Streams a styled enterprise Excel (.xlsx) file on demand.
+    Exports currently active leads in memory or items supplied in JSON.
+    """
+    user = security.get_current_user_from_request()
+    if not user:
+        return jsonify({"error": "Please sign in to export Excel files."}), 401
+
+    items_to_export = []
+    if request.method == "POST":
+        body = request.get_json(silent=True) or {}
+        items_to_export = body.get("items") or []
+
+    if not items_to_export:
+        with state.lock:
+            items_to_export = list(state.items)
+
+    if not items_to_export:
+        return jsonify({"error": "No leads available to export."}), 400
+
+    from scraper_engine import export_clean_details_xlsx
+
+    temp_name = f"export_{int(time.time())}_{os.urandom(3).hex()}.xlsx"
+    temp_path = os.path.join(OUTPUT_DIR, temp_name)
+    try:
+        export_clean_details_xlsx(items_to_export, temp_path)
+        download_name = f"leads_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        return send_from_directory(
+            OUTPUT_DIR,
+            temp_name,
+            as_attachment=True,
+            download_name=download_name,
+            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+    except Exception as e:
+        logging.error(f"Error generating direct XLSX: {e}")
+        return jsonify({"error": f"Failed to generate Excel file: {str(e)}"}), 500
 
 
 @app.route("/api/preview/<filename>")

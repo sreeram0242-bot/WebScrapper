@@ -930,6 +930,51 @@
       font-weight: 700;
       font-size: 0.78rem;
     }
+    .lead-email-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 3px 9px;
+      border-radius: var(--r-xs);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .lead-email-pill:hover {
+      background: #dbeafe;
+      color: #1e40af;
+      text-decoration: underline;
+    }
+    .btn-excel-glass {
+      background: #107c41 !important;
+      color: #ffffff !important;
+      border: 1px solid #0c5e31 !important;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    .btn-excel-glass:hover {
+      background: #0b5c30 !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 12px rgba(16, 124, 65, 0.25);
+    }
+    .btn-excel-subtle {
+      background: #f0fdf4 !important;
+      border-color: #bbf7d0 !important;
+      color: #15803d !important;
+    }
+    .btn-excel-subtle:hover:not(:disabled) {
+      background: #dcfce7 !important;
+      border-color: #86efac !important;
+      color: #166534 !important;
+    }
     .lead-rating-badge {
       display: inline-flex;
       align-items: center;
@@ -5272,12 +5317,16 @@
             <div id="completionBanner" class="completion-banner" style="display: none;">
               <div class="banner-text">
                 <strong id="bannerSuccessTitle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:5px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Extraction Completed Successfully!</strong>
-                <span id="bannerSuccessSub">CSV File ready for instant download on your device.</span>
+                <span id="bannerSuccessSub">Files ready for instant download on your device (.csv & styled .xlsx).</span>
               </div>
               <div class="banner-buttons">
                 <button id="bannerDownloadBtn" class="btn-compact btn-emerald-glass" onclick="downloadCurrentCSV()">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                   <span>Download CSV</span>
+                </button>
+                <button id="bannerDownloadXlsxBtn" class="btn-compact btn-excel-glass" onclick="downloadCurrentXLSX()">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                  <span>Download Excel (.xlsx)</span>
                 </button>
                 <button class="btn-compact btn-outline-glass" onclick="openSavedFilesModal()">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
@@ -5309,9 +5358,24 @@
                 </div>
 
                 <div class="table-action-buttons-row">
+                  <button id="btnTableDownloadCSV" class="btn-subtle-sm" onclick="downloadCurrentCSV()" disabled title="Download CSV File">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                    <span>CSV</span>
+                  </button>
+
+                  <button id="btnTableDownloadXLSX" class="btn-subtle-sm btn-excel-subtle" onclick="downloadCurrentXLSX()" disabled title="Direct Excel (.xlsx) Download">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    <span style="color: #15803d; font-weight: 700;">Excel (.xlsx)</span>
+                  </button>
+
                   <button id="btnCopyPhones" class="btn-subtle-sm" onclick="copyAllPhones()" disabled title="Copy all phone numbers">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
                     <span>Copy Phones</span>
+                  </button>
+
+                  <button id="btnCopyEmails" class="btn-subtle-sm" onclick="copyAllEmails()" disabled title="Copy all email addresses">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <span>Copy Emails</span>
                   </button>
 
                   <button id="btnToggleView" class="btn-subtle-sm mobile-only" onclick="toggleMobileViewMode()" title="Switch between Card View and Table View">
@@ -5333,6 +5397,7 @@
                     <th style="width: 40px;">#</th>
                     <th>Business Name</th>
                     <th>Phone Number</th>
+                    <th>Email</th>
                     <th>Area / Category</th>
                     <th>Rating</th>
                     <th>Link</th>
@@ -5340,7 +5405,7 @@
                 </thead>
                 <tbody id="tableBody">
                   <tr>
-                    <td colspan="6" style="text-align: center; color: #94a3b8; padding: 40px 10px;">
+                    <td colspan="7" style="text-align: center; color: #94a3b8; padding: 40px 10px;">
                       No results extracted yet. Type what you want to find and click <strong>Start Extraction</strong>.
                     </td>
                   </tr>
@@ -6429,6 +6494,7 @@
     let eventSource = null;
     let currentFilterTab = 'all'; // 'all' | 'phone' | 'website'
     let lastDownloadUrl = null;
+    let lastDownloadXlsxUrl = null;
     let previewDebounce = null;
 
     // User Auth & In-App Wallet State
@@ -8867,6 +8933,7 @@
       renderTable();
       isScrapingStopped = false;
       lastDownloadUrl = null;
+      lastDownloadXlsxUrl = null;
 
       const banner = document.getElementById('completionBanner');
       if (banner) banner.style.display = 'none';
@@ -8954,6 +9021,7 @@
       // Counts
       const totalCount = allItems.length;
       const phoneCount = allItems.filter(i => i.phone && i.phone.trim()).length;
+      const emailCount = allItems.filter(i => i.email && i.email.trim()).length;
       const webCount = allItems.filter(i => i.website && i.website.trim()).length;
       const matchRate = totalCount > 0 ? Math.round((phoneCount / totalCount) * 100) : 0;
 
@@ -8973,8 +9041,13 @@
 
       const btnCopy = document.getElementById('btnCopyPhones');
       if (btnCopy) btnCopy.disabled = phoneCount === 0;
-      const btnDownload = document.getElementById('btnTableDownload');
-      if (btnDownload) btnDownload.disabled = totalCount === 0;
+      const btnCopyEm = document.getElementById('btnCopyEmails');
+      if (btnCopyEm) btnCopyEm.disabled = emailCount === 0;
+
+      const btnTableCSV = document.getElementById('btnTableDownloadCSV');
+      if (btnTableCSV) btnTableCSV.disabled = totalCount === 0;
+      const btnTableXLSX = document.getElementById('btnTableDownloadXLSX');
+      if (btnTableXLSX) btnTableXLSX.disabled = totalCount === 0;
 
       // Filter by tab + search
       const filtered = allItems.filter(i => {
@@ -8983,6 +9056,7 @@
         if (!searchFilter) return true;
         return (i.name || '').toLowerCase().includes(searchFilter) ||
                (i.phone || '').toLowerCase().includes(searchFilter) ||
+               (i.email || '').toLowerCase().includes(searchFilter) ||
                (i.address || '').toLowerCase().includes(searchFilter) ||
                (i.category || '').toLowerCase().includes(searchFilter);
       });
@@ -8992,7 +9066,7 @@
       if (filtered.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="6" style="text-align: center; color: #94a3b8; padding: 35px 10px;">
+            <td colspan="7" style="text-align: center; color: #94a3b8; padding: 35px 10px;">
               ${totalCount === 0 ? 'No results extracted yet. Click <strong>Start Extraction</strong>.' : 'No matching places found for this filter.'}
             </td>
           </tr>
@@ -9021,6 +9095,13 @@
           </span>
         ` : '<span style="color: #cbd5e1; font-weight: 500;">—</span>';
 
+        const email = it.email ? `
+          <a href="mailto:${escapeHtml(it.email)}" class="lead-email-pill" onclick="event.stopPropagation()" title="Send email to ${escapeHtml(it.email)}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span>${escapeHtml(it.email)}</span>
+          </a>
+        ` : '<span style="color: #cbd5e1; font-weight: 500;">—</span>';
+
         const rating = it.rating ? `
           <span class="lead-rating-badge">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -9035,12 +9116,13 @@
           </a>
         ` : '—';
 
-        // Table Row (Desktop) - Clickable to open dossier drawer
+        // Table Row (Desktop)
         rowsHtml += `
-          <tr onclick="openLeadDossier(${idx})" style="cursor: pointer;" title="Click row to open detailed Lead Dossier">
+          <tr style="cursor: pointer;" title="Business Lead">
             <td style="color: var(--text-muted); font-weight: 600; font-family: var(--font-mono);">${idx + 1}</td>
             <td class="lead-title" style="font-weight: 700; color: var(--text-primary);">${escapeHtml(it.name || 'Unknown')}</td>
             <td>${phone}</td>
+            <td>${email}</td>
             <td style="max-width: 260px; color: var(--text-secondary);">${escapeHtml(it.address || it.category || '—')}</td>
             <td>${rating}</td>
             <td>${link}</td>
@@ -9064,6 +9146,13 @@
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
           </button>
         ` : '<span style="font-size: 0.82rem; color: #94a3b8; font-weight: 600; padding: 8px 0;">No phone listed</span>';
+
+        const mobileEmail = it.email ? `
+          <a href="mailto:${escapeHtml(it.email)}" class="lead-card-btn email" style="color: #1d4ed8; background: #eff6ff; border: 1px solid #bfdbfe;" title="Email business">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span>${escapeHtml(it.email)}</span>
+          </a>
+        ` : '';
 
         const mobileMap = it.link ? `
           <a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" class="lead-card-btn map">
@@ -9091,6 +9180,7 @@
             </div>
             <div class="lead-card-actions">
               ${mobilePhone}
+              ${mobileEmail}
               ${mobileMap}
               ${mobileWeb}
             </div>
@@ -9142,6 +9232,98 @@
       navigator.clipboard.writeText(phones.join('\n')).then(() => {
         showToast(`Copied ${phones.length} phone numbers to clipboard!`);
       });
+    }
+
+    function copyAllEmails() {
+      const emails = allItems.map(i => i.email).filter(e => e && e.trim());
+      if (emails.length === 0) {
+        showToast('No email addresses extracted yet.');
+        return;
+      }
+      navigator.clipboard.writeText(emails.join('\n')).then(() => {
+        showToast(`Copied ${emails.length} email addresses to clipboard!`);
+      });
+    }
+
+    // Direct Excel (.xlsx) Download Trigger
+    async function downloadCurrentXLSX() {
+      if (lastDownloadXlsxUrl) {
+        try {
+          const headers = {};
+          if (currentUserToken) {
+            headers['Authorization'] = `Bearer ${currentUserToken}`;
+          }
+
+          let targetUrl = lastDownloadXlsxUrl;
+          if (currentUserToken && !targetUrl.includes('token=')) {
+            targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'token=' + encodeURIComponent(currentUserToken);
+          }
+
+          const res = await fetch(targetUrl, {
+            headers: headers,
+            credentials: 'include'
+          });
+
+          if (res.ok) {
+            const blob = await res.blob();
+            const cleanFileName = lastDownloadXlsxUrl.split('/').pop().split('?')[0] || `leads_${Date.now()}.xlsx`;
+            const blobUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = blobUrl;
+            a.download = cleanFileName;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+              document.body.removeChild(a);
+              window.URL.revokeObjectURL(blobUrl);
+            }, 1500);
+            showToast('Excel workbook (.xlsx) downloaded successfully!', 'success');
+            return;
+          }
+        } catch (fetchErr) {
+          console.error('Fetch Excel download failed, generating on demand:', fetchErr);
+        }
+      }
+
+      if (allItems.length === 0) {
+        showToast('No leads to download yet!');
+        return;
+      }
+
+      showToast('Generating styled Excel workbook (.xlsx)...');
+      try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (currentUserToken) headers['Authorization'] = `Bearer ${currentUserToken}`;
+
+        const res = await fetch('/api/export/xlsx', {
+          method: 'POST',
+          headers: headers,
+          credentials: 'include',
+          body: JSON.stringify({ items: allItems })
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || 'Failed to generate Excel download');
+        }
+
+        const blob = await res.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = `leads_${Date.now()}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(blobUrl);
+        }, 1500);
+        showToast('Excel workbook (.xlsx) downloaded successfully!', 'success');
+      } catch (err) {
+        showToast(`Excel download failed: ${err.message}`, 'error');
+      }
     }
 
     // Direct CSV Download Trigger (Solves "Where is the CSV file?")
@@ -9204,6 +9386,7 @@
       const headers = [
         'Business Name',
         'Phone Number',
+        'Email',
         'Address',
         'Category',
         'Rating',
@@ -9227,6 +9410,7 @@
       const rows = allItems.map(i => [
         `"${sanitizeCell(i.name)}"`,
         `"${sanitizeCell(i.phone)}"`,
+        `"${sanitizeCell(i.email)}"`,
         `"${sanitizeCell(i.address)}"`,
         `"${sanitizeCell(i.category)}"`,
         `"${sanitizeCell(i.rating)}"`,
@@ -9267,9 +9451,13 @@
 
         let html = '';
         files.forEach(f => {
+          const isXlsx = f.is_xlsx || f.name.endsWith('.xlsx');
+          const typeBadge = isXlsx 
+            ? '<span style="background:#dcfce7; color:#15803d; border:1px solid #bbf7d0; padding:2px 7px; border-radius:4px; font-size:0.7rem; font-weight:700; margin-left:6px;">Excel .xlsx</span>' 
+            : '<span style="background:#f1f5f9; color:#475569; padding:2px 7px; border-radius:4px; font-size:0.7rem; font-weight:600; margin-left:6px;">CSV</span>';
           html += `
             <tr>
-              <td style="font-weight:700; color:#0f172a;">${escapeHtml(f.name)}</td>
+              <td style="font-weight:700; color:#0f172a;">${escapeHtml(f.name)} ${typeBadge}</td>
               <td style="color:#15803d; font-weight:700;">${f.rows} leads</td>
               <td style="color:#64748b;">${f.size_kb} KB</td>
               <td style="color:#64748b;">${escapeHtml(f.modified)}</td>
@@ -9313,16 +9501,20 @@
           allItems = data.items;
           renderTable();
         }
-        if (data.files && data.files.download_url) {
-          lastDownloadUrl = data.files.download_url;
+        if (data.files) {
+          if (data.files.download_url) lastDownloadUrl = data.files.download_url;
+          if (data.files.download_xlsx_url) lastDownloadXlsxUrl = data.files.download_xlsx_url;
         }
       });
 
       eventSource.addEventListener('item', e => {
         const item = JSON.parse(e.data);
-        // Avoid duplicate by link
-        const exists = allItems.some(x => x.link && item.link && x.link === item.link);
-        if (!exists) {
+        // In-place update if item already exists by link or name (for real-time email enrichment)
+        const existingIdx = allItems.findIndex(x => (x.link && item.link && x.link === item.link) || (x.name && item.name && x.name === item.name));
+        if (existingIdx !== -1) {
+          Object.assign(allItems[existingIdx], item);
+          renderTable();
+        } else {
           allItems.unshift(item);
           renderTable();
           if (typeof window.playHaptic === 'function') window.playHaptic('radar_ping');
@@ -9355,8 +9547,9 @@
         const wasStopped = snap.status === 'stopped' || isScrapingStopped;
         setRunningUI(false, wasStopped);
 
-        if (snap.files && snap.files.download_url) {
-          lastDownloadUrl = snap.files.download_url;
+        if (snap.files) {
+          if (snap.files.download_url) lastDownloadUrl = snap.files.download_url;
+          if (snap.files.download_xlsx_url) lastDownloadXlsxUrl = snap.files.download_xlsx_url;
         }
 
         if (typeof window.playHaptic === 'function') window.playHaptic('success');
