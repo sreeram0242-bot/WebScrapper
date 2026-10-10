@@ -19,6 +19,7 @@ load_dotenv()
 import razorpay
 import uuid
 from werkzeug.utils import secure_filename
+from werkzeug.exceptions import HTTPException
 from flask import Flask, render_template, request, jsonify, Response, send_from_directory, make_response, g
 from flask_cors import CORS
 import pandas as pd
@@ -39,6 +40,12 @@ def apply_security_headers(response):
     return security.add_security_headers(response)
 
 # API Global JSON Error Handlers (Guarantees JSON responses for all /api/ endpoints)
+@app.errorhandler(404)
+def handle_404_error(e):
+    if request.path.startswith("/api/"):
+        return jsonify({"error": "Endpoint not found.", "success": False}), 404
+    return render_template("index.html")
+
 @app.errorhandler(500)
 def handle_500_error(e):
     if request.path.startswith("/api/"):
@@ -47,6 +54,10 @@ def handle_500_error(e):
 
 @app.errorhandler(Exception)
 def handle_unhandled_exception(e):
+    if isinstance(e, HTTPException):
+        if request.path.startswith("/api/"):
+            return jsonify({"error": e.description or "Request error.", "success": False}), e.code
+        return e
     if request.path.startswith("/api/"):
         logging.exception(f"Unhandled exception on API route {request.path}: {e}")
         return jsonify({"error": str(e) or "An unexpected server error occurred.", "success": False}), 500

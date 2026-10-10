@@ -1649,21 +1649,22 @@
     .desktop-nav-tabs {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       background: var(--surface-3);
-      padding: 4px;
-      border-radius: var(--r-md);
+      padding: 6px;
+      border-radius: 14px;
+      border: 1px solid rgba(226, 232, 240, 0.9);
     }
     .nav-tab {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      padding: 8px 16px;
-      border-radius: 10px;
+      gap: 9px;
+      padding: 10px 22px;
+      border-radius: 11px;
       border: none;
       background: transparent;
       color: var(--text-muted);
-      font-size: 0.84rem;
+      font-size: 0.98rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.18s var(--ease-spring);
@@ -1672,8 +1673,15 @@
       font-family: inherit;
       letter-spacing: -0.01em;
     }
-    .nav-tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.7); }
-    .nav-tab.active { background: #ffffff; color: var(--navy); box-shadow: 0 2px 8px rgba(15,23,42,0.08); }
+    .nav-tab svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      transition: transform 0.18s ease;
+    }
+    .nav-tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.85); }
+    .nav-tab:hover svg { transform: scale(1.08); }
+    .nav-tab.active { background: #ffffff; color: var(--navy); box-shadow: 0 2px 10px rgba(15,23,42,0.1); font-weight: 800; }
     .nav-tab.active svg { color: var(--blue); }
 
     /* ── Mobile Lead Cards ── */
@@ -1772,10 +1780,10 @@
     /* Command Search Bar */
     
     
-        /* Multi-Category and Multi-Places Tag Engine */
+    /* Multi-Category and Multi-Places Tag Engine */
     .multi-search-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 12px;
       width: 100%;
     }
@@ -2561,172 +2569,210 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 2px 6px 2px;
-      font-size: 0.74rem;
+      padding: 0 4px 6px 4px;
+      font-size: 0.78rem;
       color: var(--text-muted, #64748B);
       font-weight: 600;
     }
 
-    .recharge-packs-scroll-track {
-      display: flex !important;
-      flex-direction: row !important;
-      flex-wrap: nowrap !important;
-      overflow-x: auto !important;
-      overflow-y: visible !important;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      gap: 12px;
-      padding: 12px 4px 14px 4px;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(37, 99, 235, 0.25) transparent;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .recharge-packs-scroll-track::-webkit-scrollbar {
-      height: 5px;
-    }
-
-    .recharge-packs-scroll-track::-webkit-scrollbar-thumb {
-      background: rgba(37, 99, 235, 0.25);
+    .scroll-instant-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #16A34A;
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      padding: 2px 8px;
       border-radius: 999px;
     }
 
+    /* ── REDESIGNED RECHARGE PACKS (Modern Grid, Perfect PC & Mobile Padding) ── */
+    .recharge-packs-grid-modern {
+      display: grid !important;
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      gap: 12px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 18px 2px 8px 2px !important; /* Headroom ensures badges never clip */
+      overflow: visible !important;
+    }
+
     .recharge-pack-tier {
-      flex: 0 0 200px !important;
-      min-width: 200px !important;
-      max-width: 200px !important;
-      scroll-snap-align: start;
-      background: #FFFFFF;
-      border: 1.5px solid #E2E8F0;
-      border-radius: 16px;
-      padding: 16px 14px 14px 14px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      position: relative;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-      user-select: none;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
-      box-sizing: border-box;
+      position: relative !important;
+      background: #FFFFFF !important;
+      border: 1.5px solid #E2E8F0 !important;
+      border-radius: 18px !important;
+      padding: 18px 14px 14px 14px !important;
+      cursor: pointer !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      gap: 10px !important;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      user-select: none !important;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+      box-sizing: border-box !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      flex: 1 1 0 !important;
     }
 
     .recharge-pack-tier:hover {
-      transform: translateY(-2px);
-      border-color: #94A3B8;
-      box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.08);
+      transform: translateY(-3px) !important;
+      border-color: #94A3B8 !important;
+      box-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.1) !important;
     }
 
+    /* Active States with signature vibrant themes */
     .recharge-pack-tier.active {
-      border-color: #2563EB !important;
       background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%) !important;
-      box-shadow: 0 0 0 2px #2563EB, 0 12px 28px -4px rgba(37, 99, 235, 0.22) !important;
     }
 
-    .recharge-pack-tier.tier-starter.active { border-color: #0284C7 !important; box-shadow: 0 0 0 2px #0284C7, 0 12px 28px -4px rgba(2, 132, 199, 0.22) !important; }
-    .recharge-pack-tier.tier-growth.active { border-color: #2563EB !important; box-shadow: 0 0 0 2px #2563EB, 0 12px 28px -4px rgba(37, 99, 235, 0.28) !important; }
-    .recharge-pack-tier.tier-scale.active { border-color: #7C3AED !important; box-shadow: 0 0 0 2px #7C3AED, 0 12px 28px -4px rgba(124, 58, 237, 0.22) !important; }
-    .recharge-pack-tier.tier-titan.active { border-color: #D97706 !important; box-shadow: 0 0 0 2px #D97706, 0 12px 28px -4px rgba(217, 119, 6, 0.25) !important; }
-
-    .tier-header-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .recharge-pack-tier.tier-starter:hover { border-color: #38BDF8 !important; }
+    .recharge-pack-tier.tier-starter.active {
+      border-color: #0284C7 !important;
+      box-shadow: 0 0 0 2px #0284C7, 0 12px 28px -4px rgba(2, 132, 199, 0.25) !important;
     }
 
-    .tier-icon-wrap {
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: transform 0.2s ease;
+    .recharge-pack-tier.tier-growth:hover { border-color: #60A5FA !important; }
+    .recharge-pack-tier.tier-growth.active {
+      border-color: #2563EB !important;
+      box-shadow: 0 0 0 2px #2563EB, 0 12px 28px -4px rgba(37, 99, 235, 0.28) !important;
     }
 
-    .recharge-pack-tier:hover .tier-icon-wrap {
-      transform: scale(1.08);
+    .recharge-pack-tier.tier-scale:hover { border-color: #A78BFA !important; }
+    .recharge-pack-tier.tier-scale.active {
+      border-color: #7C3AED !important;
+      box-shadow: 0 0 0 2px #7C3AED, 0 12px 28px -4px rgba(124, 58, 237, 0.25) !important;
     }
 
-    .tier-icon-wrap.icon-starter { background: rgba(2, 132, 199, 0.12); color: #0284C7; }
-    .tier-icon-wrap.icon-growth { background: rgba(37, 99, 235, 0.12); color: #2563EB; }
-    .tier-icon-wrap.icon-scale { background: rgba(124, 58, 237, 0.12); color: #7C3AED; }
-    .tier-icon-wrap.icon-titan { background: rgba(217, 119, 6, 0.14); color: #D97706; }
-
-    .tier-title {
-      font-size: 0.84rem;
-      font-weight: 800;
-      color: #1E293B;
-      letter-spacing: -0.01em;
+    .recharge-pack-tier.tier-titan:hover { border-color: #FBBF24 !important; }
+    .recharge-pack-tier.tier-titan.active {
+      border-color: #D97706 !important;
+      box-shadow: 0 0 0 2px #D97706, 0 12px 28px -4px rgba(217, 119, 6, 0.28) !important;
     }
 
-    .tier-select-indicator {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 1.5px solid #CBD5E1;
-      background: #FFFFFF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: transparent;
-      transition: all 0.18s ease;
-    }
-
-    .recharge-pack-tier.active .tier-select-indicator {
-      border-color: #2563EB;
-      background: #2563EB;
-      color: #FFFFFF;
-    }
-
-    .recharge-pack-tier.tier-titan.active .tier-select-indicator {
-      border-color: #D97706;
-      background: #D97706;
-    }
-
+    /* Centered Pill Badges (Never Clipped, Balanced Headroom) */
     .tier-badge-flag {
-      position: absolute;
-      top: -10px;
-      left: 14px;
-      background: linear-gradient(135deg, #2563EB, #1D4ED8);
-      color: #FFFFFF;
-      font-size: 0.62rem;
-      font-weight: 800;
-      padding: 2px 9px;
-      border-radius: 20px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      box-shadow: 0 3px 8px rgba(37, 99, 235, 0.35);
-      z-index: 2;
+      position: absolute !important;
+      top: -11px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      background: linear-gradient(135deg, #2563EB, #1D4ED8) !important;
+      color: #FFFFFF !important;
+      font-size: 0.64rem !important;
+      font-weight: 800 !important;
+      padding: 3px 10px !important;
+      border-radius: 999px !important;
+      letter-spacing: 0.05em !important;
+      text-transform: uppercase !important;
+      box-shadow: 0 3px 8px rgba(37, 99, 235, 0.35) !important;
+      z-index: 3 !important;
+      white-space: nowrap !important;
     }
 
     .tier-badge-flag.vip {
-      background: linear-gradient(135deg, #D97706, #92400E);
-      box-shadow: 0 3px 8px rgba(217, 119, 6, 0.35);
+      background: linear-gradient(135deg, #D97706, #92400E) !important;
+      box-shadow: 0 3px 8px rgba(217, 119, 6, 0.35) !important;
     }
 
+    /* Card Top Header: Icon + Name */
+    .tier-header-info {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      padding-right: 24px !important;
+    }
+
+    .tier-icon-wrap {
+      width: 30px !important;
+      height: 30px !important;
+      border-radius: 8px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+      transition: transform 0.2s ease !important;
+    }
+
+    .recharge-pack-tier:hover .tier-icon-wrap {
+      transform: scale(1.08) !important;
+    }
+
+    .tier-icon-wrap.icon-starter { background: rgba(2, 132, 199, 0.12) !important; color: #0284C7 !important; }
+    .tier-icon-wrap.icon-growth { background: rgba(37, 99, 235, 0.12) !important; color: #2563EB !important; }
+    .tier-icon-wrap.icon-scale { background: rgba(124, 58, 237, 0.12) !important; color: #7C3AED !important; }
+    .tier-icon-wrap.icon-titan { background: rgba(217, 119, 6, 0.14) !important; color: #D97706 !important; }
+
+    .tier-title {
+      font-size: 0.88rem !important;
+      font-weight: 800 !important;
+      color: #0F172A !important;
+      letter-spacing: -0.01em !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+
+    /* Radio / Check Selection Indicator */
+    .tier-select-indicator {
+      position: absolute !important;
+      top: 14px !important;
+      right: 12px !important;
+      width: 20px !important;
+      height: 20px !important;
+      border-radius: 50% !important;
+      border: 1.5px solid #CBD5E1 !important;
+      background: #FFFFFF !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: transparent !important;
+      transition: all 0.18s ease !important;
+    }
+
+    .recharge-pack-tier.active .tier-select-indicator {
+      border-color: #2563EB !important;
+      background: #2563EB !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35) !important;
+    }
+
+    .recharge-pack-tier.tier-starter.active .tier-select-indicator {
+      border-color: #0284C7 !important;
+      background: #0284C7 !important;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.35) !important;
+    }
+
+    .recharge-pack-tier.tier-scale.active .tier-select-indicator {
+      border-color: #7C3AED !important;
+      background: #7C3AED !important;
+      box-shadow: 0 2px 6px rgba(124, 58, 237, 0.35) !important;
+    }
+
+    .recharge-pack-tier.tier-titan.active .tier-select-indicator {
+      border-color: #D97706 !important;
+      background: #D97706 !important;
+      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.35) !important;
+    }
+
+    /* Price Section */
     .tier-price-row {
-      display: flex;
-      align-items: baseline;
-      gap: 3px;
-      margin: 2px 0 0 0;
+      display: flex !important;
+      align-items: baseline !important;
+      gap: 3px !important;
+      margin: 4px 0 2px 0 !important;
     }
 
     .tier-price-currency {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: #0F172A;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+      font-size: 1.15rem !important;
+      font-weight: 800 !important;
+      color: #0F172A !important;
     }
 
     .tier-price-val {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
-      font-size: 1.7rem !important;
+      font-size: 1.75rem !important;
       font-weight: 900 !important;
       font-variant-numeric: tabular-nums !important;
       color: #0F172A !important;
@@ -2734,31 +2780,35 @@
       line-height: 1 !important;
     }
 
+    /* Leads Capacity Pill */
     .tier-leads-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: #EFF6FF;
-      border: 1px solid #BFDBFE;
-      color: #1D4ED8;
-      font-size: 0.74rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 6px;
-      width: fit-content;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 5px !important;
+      background: #EFF6FF !important;
+      border: 1px solid #BFDBFE !important;
+      color: #1D4ED8 !important;
+      font-size: 0.76rem !important;
+      font-weight: 700 !important;
+      padding: 4px 9px !important;
+      border-radius: 8px !important;
+      width: fit-content !important;
+      transition: all 0.2s ease !important;
     }
 
     .recharge-pack-tier.active .tier-leads-pill {
-      background: #DBEAFE;
-      border-color: #93C5FD;
-      color: #1E40AF;
+      background: #DBEAFE !important;
+      border-color: #93C5FD !important;
+      color: #1E40AF !important;
+      font-weight: 800 !important;
     }
 
     .tier-sub-title {
-      font-size: 0.7rem;
-      color: #64748B;
-      font-weight: 500;
-      line-height: 1.25;
+      font-size: 0.72rem !important;
+      color: #64748B !important;
+      font-weight: 600 !important;
+      line-height: 1.3 !important;
+      margin-top: 2px !important;
     }
 
     /* Custom Input Box & Pay Button */
@@ -2945,16 +2995,38 @@
       }
 
       .recharge-cockpit-card {
-        padding: 18px 16px !important;
-        border-radius: 16px !important;
+        padding: 18px 14px !important;
+        border-radius: 18px !important;
         gap: 14px !important;
       }
 
+      .recharge-packs-grid-modern {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+        padding: 16px 2px 6px 2px !important;
+      }
+
       .recharge-pack-tier {
-        flex: 0 0 175px !important;
-        min-width: 175px !important;
-        max-width: 175px !important;
-        padding: 14px 12px 12px 12px !important;
+        padding: 16px 12px 12px 12px !important;
+        border-radius: 16px !important;
+        gap: 8px !important;
+      }
+
+      .tier-title {
+        font-size: 0.82rem !important;
+      }
+
+      .tier-price-val {
+        font-size: 1.55rem !important;
+      }
+
+      .tier-leads-pill {
+        font-size: 0.72rem !important;
+        padding: 3px 7px !important;
+      }
+
+      .tier-sub-title {
+        font-size: 0.68rem !important;
       }
 
       .custom-amount-field {
@@ -5008,19 +5080,19 @@
       <!-- Desktop Nav Tabs -->
       <nav class="desktop-nav-tabs">
         <button class="nav-tab active" id="tabScraper" onclick="navigateToView('scraper')" type="button">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <span>Extractor</span>
         </button>
         <button class="nav-tab" id="tabWallet" onclick="navigateToView('wallet')" type="button">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
           <span>Wallet</span>
         </button>
         <button class="nav-tab" id="tabFiles" onclick="navigateToView('files')" type="button">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
           <span>Saved Files</span>
         </button>
         <button class="nav-tab" id="tabProfile" onclick="navigateToView('profile')" type="button">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span>Profile</span>
         </button>
       </nav>
@@ -5481,42 +5553,21 @@
                 </div>
               </div>
 
-              <!-- Security Badges Strip -->
-              <div class="wallet-security-strip">
-                <div class="security-badge-item">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                  <span>256-bit SSL encrypted checkout powered by Razorpay</span>
-                </div>
-                <div class="security-badge-item">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
-                  <span>Pay only for verified leads • Failed/unverified records are never billed</span>
-                </div>
-              </div>
-
+              <!-- Security Badges Strip removed per user request -->
             </div>
 
             <!-- RIGHT COLUMN: Modern Recharge Cockpit Card -->
             <div class="recharge-cockpit-card">
-              <div class="recharge-card-header">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-                <span>Instant Wallet Top-Up Cockpit</span>
-              </div>
-              <p class="recharge-cockpit-desc">
-                Select a high-speed extraction pack or enter a custom amount. Instant automated credit via UPI (GPay, PhonePe, Paytm), Cards, or NetBanking.
-              </p>
 
-              <!-- 4 Redesigned Vibrant Recharge Packs (Horizontally Scrollable with Crisp SVG Icons) -->
+              <!-- 4 Redesigned Vibrant Recharge Packs Grid -->
               <div class="recharge-carousel-container">
                 <div class="recharge-scroll-hint-bar">
-                  <span class="scroll-hint-text">Select extraction tier (scroll sideways)</span>
-                  <div class="scroll-arrows-indicator" title="Scroll right for more tiers">
-                    <span>Swipe</span>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                  </div>
+                  <span class="scroll-hint-text">Select extraction tier (flat ₹0.25 / verified lead)</span>
+                  <span class="scroll-instant-tag">Instant Auto-Credit</span>
                 </div>
-                <div class="recharge-packs-grid-modern recharge-packs-scroll-track" id="rechargePacksTrack">
+                <div class="recharge-packs-grid-modern" id="rechargePacksTrack">
                   <!-- Tier 1: Starter (₹100) -->
-                  <div class="recharge-pack-tier pack-card tier-starter" onclick="selectPageRechargePack(100)" id="pagePack100">
+                  <div class="recharge-pack-tier pack-card tier-starter active" onclick="selectPageRechargePack(100)" id="pagePack100">
                     <div class="tier-select-indicator">
                       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                     </div>
@@ -5540,7 +5591,7 @@
                   </div>
 
                   <!-- Tier 2: Growth Pro (₹250 - Popular) -->
-                  <div class="recharge-pack-tier pack-card tier-growth active" onclick="selectPageRechargePack(250)" id="pagePack250">
+                  <div class="recharge-pack-tier pack-card tier-growth" onclick="selectPageRechargePack(250)" id="pagePack250">
                     <span class="tier-badge-flag">Most Popular</span>
                     <div class="tier-select-indicator">
                       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -5627,27 +5678,21 @@
                     id="pageCustomRechargeAmount" 
                     class="custom-amount-field" 
                     placeholder="Custom amount (Min ₹10)" 
-                    value="250" 
+                    value="100" 
                     min="10" 
                     oninput="handlePageCustomAmount(this.value)" 
                   />
                 </div>
                 <div class="custom-calc-sub">
                   <span>Minimum top-up: ₹10</span>
-                  <span id="pageCustomLeadsEquiv" style="color: #16A34A; font-weight: 800;">≈ 1,000 leads</span>
+                  <span id="pageCustomLeadsEquiv" style="color: #16A34A; font-weight: 800;">≈ 400 leads</span>
                 </div>
               </div>
 
               <!-- Main Checkout Button -->
               <button id="btnPagePayRazorpay" type="button" class="btn-photon" style="width: 100%; height: 50px; font-size: 0.95rem;" onclick="executePageRazorpayPayment()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-                <span id="pagePayBtnLabel">Proceed to Pay ₹250 via Razorpay</span>
-              </button>
-
-              <!-- Direct Standard Checkout Test Button -->
-              <button id="btnPageTestRazorpay" type="button" class="btn-compact" style="width: 100%; height: 38px; font-size: 0.8rem; background: rgba(37,99,235,0.06); color: #2563eb; border: 1px dashed rgba(37,99,235,0.35); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="openRazorpayStandardCheckout(100)">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span>Test Standard Web Checkout (100 paise / ₹1)</span>
+                <span id="pagePayBtnLabel">Proceed to Pay ₹100</span>
               </button>
 
               <div style="display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.74rem; color: var(--text-muted);">
@@ -7602,12 +7647,12 @@
     // =========================================================================
     // DEDICATED WALLET PAGE CONTROLLER & SAFE BUTTON STATE
     // =========================================================================
-    let pageSelectedRecharge = 250;
+    let pageSelectedRecharge = 100;
 
     function setPagePayButtonLoading(isLoading, amount) {
       const btn = document.getElementById('btnPagePayRazorpay');
       if (!btn) return;
-      const amt = amount || pageSelectedRecharge || 250;
+      const amt = amount || pageSelectedRecharge || 100;
       if (isLoading) {
         btn.disabled = true;
         btn.style.opacity = '0.75';
@@ -7622,7 +7667,7 @@
         btn.style.cursor = 'pointer';
         btn.innerHTML = `
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-          <span id="pagePayBtnLabel">Proceed to Pay ₹${amt} via Razorpay</span>
+          <span id="pagePayBtnLabel">Proceed to Pay ₹${amt}</span>
         `;
       }
     }
@@ -7644,11 +7689,11 @@
       const btn = document.getElementById('btnPagePayRazorpay');
       const btnLabel = document.getElementById('pagePayBtnLabel');
       if (btnLabel) {
-        btnLabel.textContent = `Proceed to Pay ₹${amount} via Razorpay`;
+        btnLabel.textContent = `Proceed to Pay ₹${amount}`;
       } else if (btn) {
         btn.innerHTML = `
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-          <span id="pagePayBtnLabel">Proceed to Pay ₹${amount} via Razorpay</span>
+          <span id="pagePayBtnLabel">Proceed to Pay ₹${amount}</span>
         `;
       }
     }
@@ -7667,11 +7712,11 @@
       const btn = document.getElementById('btnPagePayRazorpay');
       const btnLabel = document.getElementById('pagePayBtnLabel');
       if (btnLabel) {
-        btnLabel.textContent = `Proceed to Pay ₹${num} via Razorpay`;
+        btnLabel.textContent = `Proceed to Pay ₹${num}`;
       } else if (btn) {
         btn.innerHTML = `
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-          <span id="pagePayBtnLabel">Proceed to Pay ₹${num} via Razorpay</span>
+          <span id="pagePayBtnLabel">Proceed to Pay ₹${num}</span>
         `;
       }
     }

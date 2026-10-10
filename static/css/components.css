@@ -893,57 +893,34 @@ body.extracting-active .radar-sweep-disc::after {
   50% { transform: translateX(4px); opacity: 1; }
 }
 
-.recharge-packs-scroll-track {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  overflow-x: auto !important;
-  overflow-y: visible !important;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  gap: 14px;
-  padding: 12px 6px 14px 6px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(37, 99, 235, 0.25) transparent;
-}
-
-.recharge-packs-scroll-track::-webkit-scrollbar {
-  height: 5px;
-}
-
-.recharge-packs-scroll-track::-webkit-scrollbar-track {
-  background: rgba(241, 245, 249, 0.7);
-  border-radius: 999px;
-}
-
-.recharge-packs-scroll-track::-webkit-scrollbar-thumb {
-  background: rgba(37, 99, 235, 0.25);
-  border-radius: 999px;
-  transition: background 0.2s ease;
-}
-
-.recharge-packs-scroll-track::-webkit-scrollbar-thumb:hover {
-  background: rgba(37, 99, 235, 0.5);
+.recharge-packs-grid-modern {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 18px 2px 8px 2px !important;
+  overflow: visible !important;
 }
 
 .recharge-pack-tier {
-  flex: 0 0 205px !important;
-  min-width: 205px !important;
-  max-width: 205px !important;
-  scroll-snap-align: start;
-  background: #FFFFFF;
-  border: 1.5px solid #E2E8F0;
-  border-radius: 16px;
-  padding: 16px 16px 14px 16px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  position: relative;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-  user-select: none;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
-  box-sizing: border-box;
+  position: relative !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  border-radius: 18px !important;
+  padding: 18px 14px 14px 14px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  user-select: none !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  flex: 1 1 0 !important;
 }
 
 .recharge-pack-tier:hover {
@@ -1342,25 +1319,17 @@ body.extracting-active .radar-sweep-disc::after {
     font-size: 0.88rem !important;
   }
 
-  /* 4 Recharge Packs Carousel on Mobile: Horizontal swipe track */
-  .recharge-packs-scroll-track {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
+  /* 4 Recharge Packs Grid on Mobile: 2x2 Clean Layout */
+  .recharge-packs-grid-modern {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 10px !important;
-    padding: 10px 4px 12px 4px !important;
-    scroll-snap-type: x mandatory !important;
+    padding: 16px 2px 6px 2px !important;
   }
 
   .recharge-pack-tier {
-    flex: 0 0 190px !important;
-    min-width: 190px !important;
-    max-width: 190px !important;
-    padding: 14px 14px 12px 14px !important;
-    border-radius: 14px !important;
-    min-height: 0 !important;
-    scroll-snap-align: start !important;
+    padding: 16px 12px 12px 12px !important;
+    border-radius: 16px !important;
+    gap: 8px !important;
   }
 
   .tier-price-val {
